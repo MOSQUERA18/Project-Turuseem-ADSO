@@ -46,7 +46,7 @@ const CrudApprentices = () => {
 
   useEffect(() => {
     getAllApprentices();
-  }, [apprenticeList]);
+  }, []);
 
   const getAllApprentices = async () => {
     const token = localStorage.getItem("token");
@@ -66,7 +66,7 @@ const CrudApprentices = () => {
         error: true
       });
     }
-  };
+  }; 
 
   const getApprentice = async (Id_Aprendiz) => {
     setButtonForm("Actualizar");

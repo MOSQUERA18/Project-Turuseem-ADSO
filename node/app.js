@@ -12,13 +12,14 @@ import userRouter from './routes/UserRoutes.js'
 import programaRoutes from './routes/programaRoutes.js'
 
 const app = express();
+const PORT = process.env.PORT || 8080
 
 app.use(cors())
 app.use(express.json())
 app.use(fileUpload())
+app.use('/api/user', userRouter)
 app.use('/aprendiz', apprenticeRoutes)
 app.use('/memorando', memorandumRoutes)
-app.use('/api/user', userRouter)
 app.use('/programa', programaRoutes)
 
 try {
@@ -27,7 +28,6 @@ try {
 } catch (error) {
     console.log(`Error de conexion a la bd ${error}`);
 }
-
-app.listen(8000, () => {
+app.listen(PORT, () => {
     console.log('Server running on port 8000');
 })

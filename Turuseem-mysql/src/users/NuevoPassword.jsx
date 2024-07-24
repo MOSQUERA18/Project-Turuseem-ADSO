@@ -1,11 +1,5 @@
-
-
 const NuevoPassword = () => {
-    return (
-        <>
+  return <></>;
+};
 
-        </>
-    )
-}
-
-export default NuevoPassword
+export default NuevoPassword;

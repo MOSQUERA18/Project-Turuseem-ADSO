@@ -4,17 +4,18 @@ import axios from "axios"
 
 
 const ImportarCSV = ({URI}) => {
-  const [ fileInput, setFileInput ] = useState("")
-
+  const [ fileInput, setFileInput ] = useState(null)
+  
   const readCsv = (e) => {
     e.preventDefault()
     const token = localStorage.getItem("token");
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        };
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    console.log(fileInput);
     axios.post(`${URI}import-csv`, toString(fileInput), config)
   }
   return (
@@ -31,8 +32,7 @@ const ImportarCSV = ({URI}) => {
               id="fileInput"
               type="file"
               className="custom-file-input w-full overflow-clip rounded-xl border border-slate-300 bg-slate-100/50 text-sm text-slate-700 file:mr-4 file:cursor-pointer file:border-none file:px-4 file:py-2 file:font-medium file:text-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 disabled:cursor-not-allowed disabled:opacity-75 dark:text-slate-300 file:bg-green-400 dark:file:text-white dark:focus-visible:outline-blue-600 mt-2"
-              value={fileInput}
-              onChange={(e) => setFileInput(e.target.value)}
+              onChange={(e) => setFileInput(e.target.files[0])}
             />
           {/* </div> */}
           <input

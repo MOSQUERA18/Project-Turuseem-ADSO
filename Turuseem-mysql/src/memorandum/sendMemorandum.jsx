@@ -1,8 +1,17 @@
-import { PDFDownloadLink, Document, Page, Text, View, StyleSheet, PDFViewer } from '@react-pdf/renderer';
+/* eslint-disable no-unused-vars */
+import {
+  PDFDownloadLink,
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  PDFViewer,
+} from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
-  page: { flexDirection: 'row', backgroundColor: '#E4E4E4' },
-  section: { margin: 10, padding: 10, flexGrow: 1 }
+  page: { flexDirection: "row", backgroundColor: "#E4E4E4" },
+  section: { margin: 10, padding: 10, flexGrow: 1 },
 });
 
 const MyDocument = () => (
@@ -18,16 +27,14 @@ const MyDocument = () => (
   </Document>
 );
 
-
-
 const App = () => (
   <div>
     <PDFDownloadLink document={<MyDocument />} fileName="example.pdf">
-      {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download PDF')}
+      {({ blob, url, loading, error }) =>
+        loading ? "Loading document..." : "Download PDF"
+      }
     </PDFDownloadLink>
   </div>
-
-
 );
 
-export default App
+export default App;

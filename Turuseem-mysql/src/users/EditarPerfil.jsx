@@ -1,11 +1,5 @@
-
-
 const EditarPerfil = () => {
-    return (
-        <>
+  return <></>;
+};
 
-        </>
-    )
-}
-
-export default EditarPerfil
+export default EditarPerfil;

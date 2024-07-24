@@ -25,7 +25,8 @@
     "mysql2": "^3.9.7",
     "nodemailer": "^6.9.13",
     "pdfkit": "^0.15.0",
-    "sequelize": "^6.37.3"
+    "sequelize": "^6.37.3",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
     "@types/express-fileupload": "^1.5.0"

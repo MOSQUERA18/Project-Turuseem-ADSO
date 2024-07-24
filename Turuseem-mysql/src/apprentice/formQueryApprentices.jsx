@@ -24,7 +24,11 @@ const FormQueryApprentices = ({ URI, buttonForm, setApprenticeQuery }) => {
       }
       try {
         const respuesta = await axios.get(endpoint, config);
-        setApprenticeQuery(respuesta.data);
+        if ( respuesta.status == 200 ) {
+          setApprenticeQuery(respuesta.data)
+        } else {
+          console.log("Error: " + respuesta.status);
+        }
       } catch (error) {
         console.error("Error al traer el registro", error);
         setApprenticeQuery([]);
