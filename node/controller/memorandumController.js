@@ -1,5 +1,6 @@
-import MemorandumModel from "../models/memorandumModel.js";
 import { Sequelize } from "sequelize";
+import MemorandumModel from "../models/memorandumModel.js";
+import { logger } from "../middleware/logMiddleware.js";
 
 export const getAllMemorandum = async (req, res) => {
   try {
@@ -7,6 +8,7 @@ export const getAllMemorandum = async (req, res) => {
     res.json(memorandum);
   } catch (error) {
     res.json({ message: error.message });
+    logger.error(error.message);
   }
 };
 
@@ -18,6 +20,7 @@ export const getMemorandum = async (req, res) => {
     res.json(memorandum[0]);
   } catch (error) {
     res.json({ message: error.message });
+    logger.error(error.message);
   }
 };
 
@@ -27,6 +30,7 @@ export const createMemorandum = async (req, res) => {
     res.json({ message: "Memorando Registrado Correctamente!" });
   } catch (error) {
     res.json({ message: error.message });
+    logger.error(error.message);
   }
 };
 
@@ -38,6 +42,7 @@ export const updateMemorandum = async (req, res) => {
     res.json({ message: "Memorando Actualizado Correctamente!" });
   } catch (error) {
     res.json({ message: error.message });
+    logger.error(error.message);
   }
 };
 
@@ -49,6 +54,7 @@ export const deleteMemorandum = async (req, res) => {
     res.json({ message: "Memorando Boraado Correctamente!" });
   } catch (error) {
     res.json({ message: error.message });
+    logger.error(error.message);
   }
 };
 
@@ -64,6 +70,7 @@ export const getQueryMemorandum = async (req, res) => {
     res.json(memorando);
   } catch (error) {
     res.json({ message: error.message });
+    logger.error(error.message);
   }
 };
 

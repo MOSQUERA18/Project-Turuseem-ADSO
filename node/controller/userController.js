@@ -57,6 +57,7 @@ export const CreateAccount = async (req, res) => {
         res.json(newUser)
     } catch (error) {
         res.json({message: error.message})
+        logger.error(error.message);
     }
 }
 export const perfil = async (req, res) => {
@@ -108,6 +109,7 @@ export const olvidePassword = async(req, res) => {
         res.json({msg: "Hemos enviado un correo con las instrucciones!"})
     } catch (error) {
         console.log(error);
+        logger.error(error.message);
     }
 }
 export const comprobarToken = async(req, res) => {
@@ -144,5 +146,6 @@ export const nuevoPassword = async(req, res) => {
         // console.log(usuario);
     } catch (error) {
         console.log(error);
+        logger.error(error.message);
     }
 }
