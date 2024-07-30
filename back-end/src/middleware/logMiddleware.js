@@ -1,6 +1,7 @@
 import winston from "winston";
 import DailyRotateFile from "winston-daily-rotate-file";
-import stackTrace from "stack-trace";
+import * as stackTrace from 'stack-trace'
+
 
 const enumerateErrorFormat = winston.format((info) => {
   if (info instanceof Error) {

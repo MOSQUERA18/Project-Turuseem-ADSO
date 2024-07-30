@@ -14,7 +14,6 @@ const UserModel = db.define('users', {
     timestamps: true,
     createdAt: 'created_at',
     updatedAt: 'updated_at',
-}, {
     hooks: {
         beforeSave: async (user, options) => {
             if (user.changed('password')) {
@@ -24,14 +23,6 @@ const UserModel = db.define('users', {
         }
     }
 })
-
-// UserModel.beforeSave(async function (next) {
-//     if (!this.changed("password")) {
-//         next()
-//     }
-//     const salt = await bcrypt.genSalt(10)
-//     this.password = await bcrypt.hash(this.password, salt)
-// })
 
 UserModel.prototype.comprobarPassword = async function (passwordFormulario) {
     return await bcrypt.compare(passwordFormulario, this.password)
