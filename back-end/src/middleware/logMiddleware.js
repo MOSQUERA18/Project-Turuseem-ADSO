@@ -1,6 +1,6 @@
 import winston from "winston";
 import DailyRotateFile from "winston-daily-rotate-file";
-import stackTrace from "stack-trace";
+import * as stackTrace from "stack-trace";
 
 const enumerateErrorFormat = winston.format((info) => {
   if (info instanceof Error) {
@@ -27,6 +27,6 @@ export const logger = winston.createLogger({
       datePattern: "YYYY-MM-DD",
       maxFiles: "14d",
     }),
-    new winston.transports.Console(), // También loguear a la consola para ver el resultado en tiempo real
+    new winston.transports.Console()
   ],
 });
