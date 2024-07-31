@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import UserModel from "../models/userModel.js";
-import { logger } from "./logMiddleware.js";
 
 const checkAuth = async (req, res, next) => {
   let token;
