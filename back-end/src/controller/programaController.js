@@ -90,6 +90,7 @@ export const deletePrograma = async (req, res) => {
     const deletedRows = await ProgramaModel.destroy({
       where: { Id_Programa: req.params.Id_Programa },
     });
+    console.log(deletedRows);
     if (deletedRows === 0) {
       res.status(404).json({
         message: "Programa no encontrado",

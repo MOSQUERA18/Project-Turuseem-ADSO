@@ -12,6 +12,7 @@ CREATE TABLE `aprendices` (
     `Tot_Memorandos` int NOT NULL,
     `Tot_Inasistencias` int NOT NULL,
     `Patrocinio` enum('Si', 'No') NOT NULL,
+    `CentroConvivencia` enum('Si', 'No') NOT NULL,
     `Estado` enum('Activo', 'Inactivo') DEFAULT 'Activo',
     `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
