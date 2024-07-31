@@ -1,5 +1,6 @@
 import db from "../database/db.js";
 import { DataTypes } from "sequelize";
+import AreaModel from "./areaModel.js";
 
 const ProgramaModel = db.define(
   "programasformacion",
@@ -14,7 +15,7 @@ const ProgramaModel = db.define(
     Id_Area: {
       type: DataTypes.INTEGER,
       references: AreaModel,
-      key: 'Id_Area'
+      key: "Id_Area",
     },
   },
   {

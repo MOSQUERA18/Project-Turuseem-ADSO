@@ -5,14 +5,18 @@ import AbsenceModel from "./absenceModel.js";
 const MemorandumModel = db.define(
   "memorandos",
   {
-    Id_Memorando: { type: DataTypes.NUMBER, primaryKey: true, autoIncrement: true },
+    Id_Memorando: {
+      type: DataTypes.NUMBER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
     Fec_Memorando: { type: DataTypes.DATE },
     Mot_Memorando: { type: DataTypes.TEXT },
     Id_Inasistencia: {
       type: DataTypes.NUMBER,
       references: {
         model: AbsenceModel,
-        key: "Id_Inasistencia"
+        key: "Id_Inasistencia",
       },
     },
   },

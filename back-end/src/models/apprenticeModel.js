@@ -1,5 +1,6 @@
 import db from "../database/db.js";
 import { DataTypes } from "sequelize";
+import FichasModel from "./fichasModel.js";
 
 const ApprenticeModel = db.define(
   "aprendices",
@@ -21,8 +22,8 @@ const ApprenticeModel = db.define(
     Tot_Memorandos: { type: DataTypes.INTEGER },
     Tot_Inasistencias: { type: DataTypes.INTEGER },
     Patrocinio: { type: DataTypes.CHAR },
-    Estado: { type: DataTypes.CHAR},
-    CentroConvivencia: { type: DataTypes.CHAR }
+    Estado: { type: DataTypes.CHAR },
+    CentroConvivencia: { type: DataTypes.CHAR },
   },
   {
     timestamps: true,
