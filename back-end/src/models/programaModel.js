@@ -1,12 +1,17 @@
 import db from "../database/db.js";
 import { DataTypes } from "sequelize";
-
+import AreaModel from "./areaModel.js";
 
 const ProgramaModel = db.define('programasformacion', {
-    Id_Programa: { type: DataTypes.INTEGER, primaryKey: true, allowNull: false },
-    Nom_Programa: { type: DataTypes.STRING },
-    Tip_Programa: { type: DataTypes.CHAR },
-    Id_Area: { type: DataTypes.INTEGER }
+    Id_ProgramaFormacion: { type: DataTypes.INTEGER, primaryKey: true,autoIncrement:true, allowNull: false },
+    Nom_ProgramaFormacion: { type: DataTypes.STRING },
+    Tip_ProgramaFormacion: { type: DataTypes.CHAR },
+    Id_Area: { type: DataTypes.INTEGER,
+        references: {
+            model: AreaModel,
+            key: 'Id_Area'
+        }
+     }
 }, {
     timestamps: true,
     createdAt: 'created_at',
@@ -16,4 +21,4 @@ const ProgramaModel = db.define('programasformacion', {
 }
 )
 
-export default ProgramaModel
+export default ProgramaModel;

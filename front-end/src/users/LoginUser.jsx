@@ -27,7 +27,6 @@ const LoginForm = () => {
         Cor_User: Cor_User,
         password: password,
       });
-      console.log(data);
       localStorage.setItem("token", data.token);
       setAuth(data);
       navigate("/admin");
