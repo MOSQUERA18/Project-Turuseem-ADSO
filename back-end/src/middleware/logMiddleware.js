@@ -28,6 +28,6 @@ export const logger = winston.createLogger({
       datePattern: "YYYY-MM-DD",
       maxFiles: "14d",
     }),
-    new winston.transports.Console(), // También loguear a la consola para ver el resultado en tiempo real
+    new winston.transports.Console()
   ],
 });
