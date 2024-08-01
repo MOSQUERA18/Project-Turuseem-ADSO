@@ -32,7 +32,7 @@ const TalentoHumanoModel = db.define(
       },
     },
     Estado: {
-      type: DataTypes.ENUM("activo", "inactivo"),
+      type: DataTypes.ENUM("Activo", "Inactivo"),
     },
   },
   {

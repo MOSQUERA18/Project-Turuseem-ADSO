@@ -5,13 +5,13 @@ import AreaModel from "./areaModel.js";
 const ProgramaModel = db.define(
   "programasformacion",
   {
-    Id_Programa: {
+    Id_ProgramaFormacion: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
     },
-    Nom_Programa: { type: DataTypes.STRING },
-    Tip_Programa: { type: DataTypes.CHAR },
+    Nom_ProgramaFormacion: { type: DataTypes.STRING },
+    Tip_ProgramaFormacion: { type: DataTypes.CHAR },
     Id_Area: {
       type: DataTypes.INTEGER,
       references: AreaModel,

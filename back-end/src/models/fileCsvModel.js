@@ -12,7 +12,9 @@ const FileCsvModel = db.define(
     Nom_Archivo_Csv: { type: DataTypes.STRING },
     Archivo_Csv: { type: DataTypes.STRING },
     Fec_Creacion: { type: DataTypes.DATE },
-    Estado: { type: DataTypes.CHAR },
+    Estado: {
+      type: DataTypes.ENUM("Activo", "Inactivo"),
+    },
   },
   {
     timestamps: true,

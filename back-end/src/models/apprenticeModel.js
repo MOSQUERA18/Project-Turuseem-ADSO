@@ -21,9 +21,13 @@ const ApprenticeModel = db.define(
     Tel_Aprendiz: { type: DataTypes.STRING },
     Tot_Memorandos: { type: DataTypes.INTEGER },
     Tot_Inasistencias: { type: DataTypes.INTEGER },
-    Patrocinio: { type: DataTypes.CHAR },
-    Estado: { type: DataTypes.CHAR },
-    CentroConvivencia: { type: DataTypes.CHAR },
+    Patrocinio: { type: DataTypes.ENUM("Si", "No") },
+    Estado: {
+      type: DataTypes.ENUM("Activo", "Inactivo"),
+    },
+    Nom_Empresa: { type: DataTypes.STRING },
+    Fot_Aprendiz: { type: DataTypes.STRING },
+    CentroConvivencia: { type: DataTypes.ENUM("Si", "No") },
   },
   {
     timestamps: true,
