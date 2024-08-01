@@ -23,7 +23,7 @@ const FichasModel = db.define("fichas", {
         type: DataTypes.INTEGER,
         references:{
             model: ProgramaModel,
-            key: Id_ProgramaFormacion
+            key: "Id_ProgramaFormacion"
         }
     },
     Estado: { 
