@@ -9,7 +9,9 @@ const OfficialModel = db.define(
     Ape_Funcionario: { type: DataTypes.STRING },
     Genero: { type: DataTypes.CHAR },
     Tel_Funcionario: { type: DataTypes.STRING },
-    Estado: { type: DataTypes.CHAR },
+    Estado: {
+      type: DataTypes.ENUM("Activo", "Inactivo"),
+    },
     Cargo: { type: DataTypes.CHAR },
   },
   {
