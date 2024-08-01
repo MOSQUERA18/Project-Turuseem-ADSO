@@ -2,7 +2,7 @@ import db from "../database/db"
 import { DataTypes } from "sequelize"
 import FichasModel from "./fichasModel.js"
 import UnitModel from "./unitModel.js"
-import FuncionarioModel from "./funcionarioModel.js"
+import OfficialModel from "./officialModel.js"
 
 const TurnoEspecialModel = db.define("turnosespeciales",{
     Id_TurnoEspecial :{type : DataTypes.INTEGER,primaryKey:true,autoIncrement:true,allowNull:false},
@@ -20,7 +20,7 @@ const TurnoEspecialModel = db.define("turnosespeciales",{
     Img_TurnoEspecial : {type:DataTypes.STRING},
     Id_Funcionario : {type:DataTypes.STRING(11),
         references:{
-        model: FuncionarioModel,
+        model: OfficialModel,
         key: 'Id_Funcionario'
         }
     },

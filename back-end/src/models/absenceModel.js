@@ -1,5 +1,7 @@
 import db from "../database/db.js";
 import { DataTypes } from "sequelize";
+import TurnoEspecialModel from "./turnoEspecialModel.js";
+import TurnoRutinarioModel from "./turnoRutinarioModel.js"
 
 const AbsenceModel = db.define(
   "inasistencias",
@@ -14,14 +16,14 @@ const AbsenceModel = db.define(
     Id_TurnoRutinario_Aprendiz: {
       type: DataTypes.INTEGER,
       references: {
-        model: TurnoRutinarioMdel,
+        model: TurnoRutinarioModel,
         key: "Id_TurnoRutinario_Aprendiz",
       },
     },
     Id_TurnoEspecial_Aprendiz: {
       type: DataTypes.INTEGER,
       references: {
-        model: TurnoEspecialMdel,
+        model: TurnoEspecialModel,
         key: "Id_TurnoEspecial_Aprendiz",
       },
     },
