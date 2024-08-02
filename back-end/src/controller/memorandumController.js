@@ -1,10 +1,18 @@
 import { logger } from "../middleware/logMiddleware.js";
 import MemorandumModel from "../models/memorandumModel.js";
 import { Sequelize } from "sequelize";
+import AbsenceModel from "../models/absenceModel.js";
 
 export const getAllMemorandum = async (req, res) => {
   try {
-    const memorandums = await MemorandumModel.findAll();
+    const memorandums = await MemorandumModel.findAll({
+      include: [
+        {
+          model: AbsenceModel,
+          as: "inasistencia", // Asegúrate de que el alias aquí coincida con el definido en el modelo
+        },
+      ],
+    });
     if (memorandums.length > 0) {
       res.status(200).json(memorandums);
     } else {
@@ -24,6 +32,12 @@ export const getMemorandum = async (req, res) => {
   try {
     const memorandum = await MemorandumModel.findOne({
       where: { Id_Memorando: req.params.Id_Memorando },
+      include: [
+        {
+          model: AbsenceModel,
+          as: "inasistencia", // Asegúrate de que el alias aquí coincida con el definido en el modelo
+        },
+      ],
     });
     if (memorandum) {
       res.status(200).json(memorandum);
@@ -104,15 +118,21 @@ export const deleteMemorandum = async (req, res) => {
 
 export const getQueryMemorandum = async (req, res) => {
   try {
-    const memorando = await MemorandumModel.findAll({
+    const memorandums = await MemorandumModel.findAll({
       where: {
         Id_Memorando: {
           [Sequelize.Op.like]: `%${req.params.Id_Memorando}%`,
         },
       },
+      include: [
+        {
+          model: AbsenceModel,
+          as: "inasistencia", // Asegúrate de que el alias aquí coincida con el definido en el modelo
+        },
+      ],
     });
-    if (memorando.length > 0) {
-      res.json(memorando);
+    if (memorandums.length > 0) {
+      res.json(memorandums);
     } else {
       res.status(404).json({
         message: "No se encontraron memorandos.",

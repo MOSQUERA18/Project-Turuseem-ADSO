@@ -1,127 +1,180 @@
-import { Sequelize } from "sequelize";
-import fs from "fs";
-import { parse } from "csv-parse";
 import ApprenticeModel from "../models/apprenticeModel.js";
+import FichasModel from "../models/fichasModel.js";
+import { Sequelize, Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 
-//Mostrar todos los registros
-export const getAllApprentice = async (req, res) => {
+import csv from "csv-parser";
+import fs from "fs";
+import path from "path";
+
+export const getAllApprentices = async (req, res) => {
   try {
-    const responseDB = await ApprenticeModel.findAll();
-    if (responseDB.length > 0) {
-      res.status(200).json(responseDB);
-    } else {
-      res.status(404).json({ message: "No se encontraron registros." });
-    }
-  } catch (error) {
-    logger.error("Error al traer los registros", error)
-    res.status(500).json({
-      message: "Error en el servidor. Por favor, inténtelo de nuevo más tarde.",
+    const apprentices = await ApprenticeModel.findAll({
+      include: [
+        {
+          model: FichasModel,
+          as: "ficha", // Alias usado para la relación
+        },
+      ],
     });
+    res.json(apprentices);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    logger.error(`Error al obtener los aprendices: ${error}`);
   }
 };
-//Mostrar un registro
+
 export const getApprentice = async (req, res) => {
   try {
-    const responseDB = await ApprenticeModel.findAll({
-      where: { Id_Aprendiz: req.params.Id_Aprendiz },
+    const apprentice = await ApprenticeModel.findByPk(req.params.Id_Aprendiz, {
+      include: [
+        {
+          model: FichasModel,
+          as: "ficha", // Alias usado para la relación
+        },
+      ],
     });
-
-    if (responseDB.length > 0) {
-      res.status(200).json(responseDB[0]);
+    if (apprentice) {
+      res.json(apprentice);
     } else {
-      res.status(404).json({ message: "Aprendiz no encontrado." });
+      res.status(404).json({ message: "Aprendiz no encontrado" });
     }
   } catch (error) {
-    logger.error("Error al traer el aprendiz: ", error);
-    res.status(500).json({
-      message: "Error en el servidor. Por favor, inténtelo de nuevo más tarde.",
-    });
+    res.status(500).json({ message: error.message });
+    logger.error(`Error al obtener el aprendiz: ${error}`);
   }
 };
-//Crea un aprendiz
+
 export const createApprentice = async (req, res) => {
   try {
-    const respuestaDB = await ApprenticeModel.create(req.body);
-    if (!respuestaDB.Id_Aprendiz) {
-      res.status(201).json({ message: "Registro creado exitosamente!" });
-    } else {
-      res.status(400).json({
-        message: "Ocurrio un error contacte al Administrador",
-      });
-    }
+    const {
+      Id_Aprendiz,
+      Nom_Aprendiz,
+      Ape_Aprendiz,
+      Id_Ficha,
+      Fec_Nacimiento,
+      Gen_Aprendiz,
+      Cor_Aprendiz,
+      Tel_Aprendiz,
+      Tot_Memorandos,
+      Tot_Inasistencias,
+      Patrocinio,
+      Estado,
+      Nom_Empresa,
+      Fot_Aprendiz,
+      CentroConvivencia,
+    } = req.body;
+
+    const newApprentice = await ApprenticeModel.create({
+      Id_Aprendiz,
+      Nom_Aprendiz,
+      Ape_Aprendiz,
+      Id_Ficha,
+      Fec_Nacimiento,
+      Gen_Aprendiz,
+      Cor_Aprendiz,
+      Tel_Aprendiz,
+      Tot_Memorandos,
+      Tot_Inasistencias,
+      Patrocinio,
+      Estado,
+      Nom_Empresa,
+      Fot_Aprendiz,
+      CentroConvivencia,
+    });
+    res.status(201).json(newApprentice);
   } catch (error) {
-    res.json({ message: error.message });
-    logger.error(error);
+    res.status(500).json({ message: error.message });
+    logger.error(`Error al crear el aprendiz: ${error}`);
   }
 };
-//Actualizar un registro
+
 export const updateApprentice = async (req, res) => {
   try {
-    const [updatedRowsCount] = await ApprenticeModel.update(req.body, {
-      where: { Id_Aprendiz: req.params.Id_Aprendiz },
-    });
+    const {
+      Nom_Aprendiz,
+      Ape_Aprendiz,
+      Id_Ficha,
+      Fec_Nacimiento,
+      Gen_Aprendiz,
+      Cor_Aprendiz,
+      Tel_Aprendiz,
+      Tot_Memorandos,
+      Tot_Inasistencias,
+      Patrocinio,
+      Estado,
+      Nom_Empresa,
+      Fot_Aprendiz,
+      CentroConvivencia,
+    } = req.body;
 
-    if (updatedRowsCount === 0) {
-      res.status(404).json({
-        message: "Aprendiz no encontrado o no se hicieron cambios.",
-      });
+    const [updated] = await ApprenticeModel.update(
+      {
+        Nom_Aprendiz,
+        Ape_Aprendiz,
+        Id_Ficha,
+        Fec_Nacimiento,
+        Gen_Aprendiz,
+        Cor_Aprendiz,
+        Tel_Aprendiz,
+        Tot_Memorandos,
+        Tot_Inasistencias,
+        Patrocinio,
+        Estado,
+        Nom_Empresa,
+        Fot_Aprendiz,
+        CentroConvivencia,
+      },
+      {
+        where: { Id_Aprendiz: req.params.Id_Aprendiz },
+      }
+    );
+    if (updated === 0) {
+      res.status(404).json({ message: "Aprendiz no encontrado" });
     } else {
-      res.status(200).json({
-        message: "Registro actualizado exitosamente!",
-      });
+      res.json({ message: "Aprendiz actualizado correctamente" });
     }
   } catch (error) {
-    logger.error("Error updating apprentice: ", error);
-    res.status(500).json({
-      message: "Error en el servidor. Por favor, inténtelo de nuevo más tarde.",
-    });
+    res.status(500).json({ message: error.message });
+    logger.error(`Error al actualizar el aprendiz: ${error}`);
   }
 };
-//Borrar un registro
+
 export const deleteApprentice = async (req, res) => {
   try {
-    const rowsDeleted = await ApprenticeModel.destroy({
+    const result = await ApprenticeModel.destroy({
       where: { Id_Aprendiz: req.params.Id_Aprendiz },
     });
-    if (rowsDeleted === 0) {
-      res.status(404).json({
-        message: "Aprendiz no encontrado.",
-      });
+    if (result === 0) {
+      res.status(404).json({ message: "Aprendiz no encontrado" });
     } else {
-      res.status(200).json({
-        message: "Registro borrado exitosamente!",
-      });
+      res.json({ message: "Aprendiz eliminado correctamente" });
     }
   } catch (error) {
-    logger.error("Error deleting apprentice: ", error);
-    res.status(500).json({
-      message: "Error en el servidor. Por favor, inténtelo de nuevo más tarde.",
-    });
+    res.status(500).json({ message: error.message });
+    logger.error(`Error al eliminar el aprendiz: ${error}`);
   }
 };
-//Consultar registro por su id
+
 export const getQueryApprentice = async (req, res) => {
   try {
     const apprentices = await ApprenticeModel.findAll({
       where: {
         Id_Aprendiz: {
-          [Sequelize.Op.like]: `%${req.params.Id_Aprendiz}%`,
+          [Op.like]: `%${req.params.Id_Aprendiz}%`,
         },
       },
+      include: [
+        {
+          model: FichasModel,
+          as: "ficha", // Alias usado para la relación
+        },
+      ],
     });
-    if (apprentices.length > 0) {
-      res.status(200).json(apprentices);
-    } else {
-      res.status(404).json({
-        message: "No se encontraron registros que coincidan con la consulta.",
-      });
-    }
+    res.json(apprentices);
   } catch (error) {
-    logger.error("Error fetching apprentice data: ", error);
-    res.status(500).json({
-      message: "Error en el servidor. Por favor, inténtelo de nuevo más tarde.",
-    });
+    res.status(500).json({ message: error.message });
+    logger.error(`Error al buscar el aprendiz: ${error}`);
   }
 };
 
@@ -138,46 +191,71 @@ export const getQueryNom_Apprentice = async (req, res) => {
       res.status(200).json(apprentices);
     } else {
       res.status(404).json({
-        message:
-          "No se encontraron registros que coincidan con el nombre proporcionado.",
+        message: "No se encontraron aprendices con ese nombre.",
       });
     }
   } catch (error) {
-    logger.error("Error fetching apprentice data by name: ", error);
+    logger.error("Error fetching apprentices by name: ", error.message);
     res.status(500).json({
-      message: "Error en el servidor. Por favor, inténtelo de nuevo más tarde.",
+      message: "Error al buscar los aprendices por nombre.",
+      error: error.message,
     });
   }
 };
+
 export const importCSV = async (req, res) => {
-  const fileCSV = req.files?.fileInput;
-  if (!fileCSV) {
-    return res.status(400).json({
-      message: "No se ha proporcionado ningún archivo.",
-    });
-  }
   try {
-    const rows = [];
-    fs.createReadStream(fileCSV.tempFilePath)
-      .pipe(parse({ delimiter: ",", from_line: 2 }))
-      .on("data", (row) => {
-        rows.push(row);
-      })
-      .on("end", () => {
-        res.status(200).json({
-          message: "Archivo CSV procesado exitosamente",
-          data: rows,
-        });
-      })
-      .on("error", (error) => {
-        console.error(error.message);
-        logger.error("Error processing CSV file: ", error);
-        res.status(500).json({
-          message: "Error al procesar el archivo CSV.",
-        });
+    if (!req.file) {
+      return res.status(400).json({
+        message: "No se proporcionó un archivo CSV.",
+      });
+    }
+
+    const filePath = path.join(__dirname, "../uploads", req.file.filename);
+
+    const results = [];
+    fs.createReadStream(filePath)
+      .pipe(csv())
+      .on("data", (data) => results.push(data))
+      .on("end", async () => {
+        try {
+          // Ajusta los campos del CSV y el modelo según tu necesidad
+          for (const row of results) {
+            await ApprenticeModel.create({
+              Id_Aprendiz: row.Id_Aprendiz,
+              Nom_Aprendiz: row.Nom_Aprendiz,
+              Ape_Aprendiz: row.Ape_Aprendiz,
+              Id_Ficha: row.Id_Ficha,
+              Fec_Nacimiento: row.Fec_Nacimiento,
+              Gen_Aprendiz: row.Gen_Aprendiz,
+              Cor_Aprendiz: row.Cor_Aprendiz,
+              Tel_Aprendiz: row.Tel_Aprendiz,
+              Tot_Memorandos: row.Tot_Memorandos,
+              Tot_Inasistencias: row.Tot_Inasistencias,
+              Patrocinio: row.Patrocinio,
+              Estado: row.Estado,
+              Nom_Empresa: row.Nom_Empresa,
+              Fot_Aprendiz: row.Fot_Aprendiz,
+              CentroConvivencia: row.CentroConvivencia,
+            });
+          }
+          res.status(200).json({
+            message: "Datos importados correctamente.",
+            data: results,
+          });
+        } catch (error) {
+          logger.error("Error importing data from CSV: ", error.message);
+          res.status(500).json({
+            message: "Error al importar los datos del CSV.",
+            error: error.message,
+          });
+        }
       });
   } catch (error) {
-    logger.error("Unexpected error in importCSV: ", error);
-    res.status(500).json({ message: error.message });
+    logger.error("Error processing CSV file: ", error.message);
+    res.status(500).json({
+      message: "Error al procesar el archivo CSV.",
+      error: error.message,
+    });
   }
 };

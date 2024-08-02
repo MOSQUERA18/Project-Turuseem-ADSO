@@ -1,4 +1,4 @@
-import db from "../database/db";
+import db from "../database/db.js";
 import { DataTypes } from "sequelize";
 import FichasModel from "./fichasModel.js";
 import UnitModel from "./unitModel.js";
