@@ -16,7 +16,7 @@ const TalentoHumanoModel = db.define(
       type: DataTypes.STRING(30),
     },
     Genero_Talento_Humano: {
-      type: DataTypes.ENUM("M", "F", "O"), // Assuming 'M', 'F', 'O' are the possible values
+      type: DataTypes.ENUM("Masculino", "Femenino", "Otro"), // Assuming 'M', 'F', 'O' are the possible values
     },
     Cor_Talento_Humano: {
       type: DataTypes.STRING(30),

@@ -25,6 +25,9 @@ const TurnoRutinarioAprendizModel = db.define(
         key: "Id_Aprendiz",
       },
     },
+    Ind_Asistencia :{
+      type:DataTypes.ENUM('Si','No')
+    },
   },
   {
     timestamps: true,

@@ -4,7 +4,7 @@ import { DataTypes } from "sequelize";
 const AreaModel = db.define(
   "areas",
   {
-    Id_Area: { type: DataTypes.NUMBER, primaryKey: true, autoIncrement: false },
+    Id_Area: { type: DataTypes.NUMBER, primaryKey: true, autoIncrement: true },
     Nom_Area: { type: DataTypes.STRING },
   },
   {

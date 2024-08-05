@@ -9,8 +9,8 @@ const FileCsvModel = db.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    Nom_Archivo_Csv: { type: DataTypes.STRING },
-    Archivo_Csv: { type: DataTypes.STRING },
+    Nom_Archivo_Csv: { type: DataTypes.STRING(30) },
+    Archivo_Csv: { type: DataTypes.STRING(35) },
     Fec_Creacion: { type: DataTypes.DATE },
     Estado: {
       type: DataTypes.ENUM("Activo", "Inactivo"),

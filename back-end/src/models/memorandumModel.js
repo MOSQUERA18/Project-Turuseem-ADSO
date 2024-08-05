@@ -6,14 +6,14 @@ const MemorandumModel = db.define(
   "memorandos",
   {
     Id_Memorando: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
     Fec_Memorando: { type: DataTypes.DATE },
-    Mot_Memorando: { type: DataTypes.TEXT },
+    Mot_Memorando: { type: DataTypes.STRING(40) },
     Id_Inasistencia: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       references: {
         model: AbsenceModel,
         key: "Id_Inasistencia",
