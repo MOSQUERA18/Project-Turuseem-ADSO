@@ -6,20 +6,20 @@ const OfficialModel = db.define(
   {
     Id_Funcionario: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,
+      autoIncrement: false,
       primaryKey: true,
     },
     Nom_Funcionario: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(25),
     },
     Ape_Funcionario: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(25),
     },
     Genero: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM('Masculino','Femenino','Otro'),
     },
     Tel_Funcionario: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(12),
     },
     Estado: {
       type: DataTypes.ENUM("Activo", "Inactivo"),
@@ -31,9 +31,12 @@ const OfficialModel = db.define(
   {
     timestamps: true,
     createdAt: "created_at",
-    updatedAt: "updated_at",
-    freezeTableName: true,
+    updatedAt: "updated_at"
+  },{
+    
+    freezeTableName: true
   }
+  
 );
 
 export default OfficialModel;

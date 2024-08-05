@@ -10,8 +10,8 @@ const ProgramaModel = db.define(
       primaryKey: true,
       allowNull: false,
     },
-    Nom_ProgramaFormacion: { type: DataTypes.STRING },
-    Tip_ProgramaFormacion: { type: DataTypes.CHAR },
+    Nom_ProgramaFormacion: { type: DataTypes.STRING(65) },
+    Tip_ProgramaFormacion: { type: DataTypes.ENUM('Tecnologo') },
     Id_Area: {
       type: DataTypes.INTEGER,
       references: AreaModel,
