@@ -6,10 +6,11 @@ import fileUpload from "express-fileupload";
 // import expressSession from 'express-session';
 
 import db from "./src/database/db.js";
-import apprenticeRoutes from "./src/routes/ApprenticeRoutes.js";
-import memorandumRoutes from "./src/routes/memorandumRoutes.js";
+import apprenticeRoutes from "./src/routes/ApprenticeRoutes.js"
+import memorandumRoutes from "./src/routes/memorandumRoutes.js"
 import userRouter from "./src/routes/UserRoutes.js";
 import programaRoutes from "./src/routes/programaRoutes.js";
+import chargesRoutes from './src/routes/chargesRoutes.js'
 import { logger } from "./src/middleware/logMiddleware.js";
 import routespdf from "./src/routes/routespdf.js";
 
@@ -23,7 +24,7 @@ app.use("/api/user", userRouter);
 app.use("/aprendiz", apprenticeRoutes);
 app.use("/memorando", memorandumRoutes);
 app.use("/programa", programaRoutes);
-app.use('/pdf', routespdf)
+app.use('/cargos', chargesRoutes);
 
 try {
   await db.authenticate().then(() => {

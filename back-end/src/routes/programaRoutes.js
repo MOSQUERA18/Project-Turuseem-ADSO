@@ -1,30 +1,23 @@
 import express from "express";
 import {
-  createPrograma,
-  deletePrograma,
-  getAllPrograma,
+  getAllProgramas,
   getPrograma,
-  getQueryPrograma,
+  createPrograma,
   updatePrograma,
+  deletePrograma,
 } from "../controller/programaController.js";
 import checkAuth from "../middleware/authMiddleware.js";
-const router = express.Router();
 
-// router.get('/', getAllPrograma)
-// router.post('/', createPrograma)
-// router.get('/:Id_Programa', getPrograma)
-// router.put('/:Id_Programa', updatePrograma)
-// router.delete('/:Id_Programa', deletePrograma)
+const router = express.Router();
 
 router
   .route("/")
-  .get(checkAuth, getAllPrograma)
+  .get(checkAuth, getAllProgramas)
   .post(checkAuth, createPrograma);
 router
-  .route("/:Id_Programa")
+  .route("/:Id_ProgramaFormacion")
   .get(checkAuth, getPrograma)
   .put(checkAuth, updatePrograma)
   .delete(checkAuth, deletePrograma);
-router.get("/programa/:Nom_Programa", getQueryPrograma);
 
 export default router;

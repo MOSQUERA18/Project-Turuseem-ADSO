@@ -1,130 +1,119 @@
-import { Sequelize } from "sequelize";
 import ProgramaModel from "../models/programaModel.js";
+import AreaModel from "../models/areaModel.js";
+import { Sequelize, Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 
-//mostrar todos los registros
-export const getAllPrograma = async (req, res) => {
+export const getAllProgramas = async (req, res) => {
   try {
-    const programas = await ProgramaModel.findAll();
-    res.status(200).json(programas);
-  } catch (error) {
-    logger.error("Error fetching all programs: ", error.message);
-    res.status(500).json({
-      message: "Error al obtener los programas.",
-      error: error.message,
+    const Programas = await ProgramaModel.findAll({
+      include: [
+        {
+          model: AreaModel,
+          as: "area", // Alias usado para la relación
+        },
+      ],
     });
+    res.json(Programas);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    logger.error(`Error al obtener los programas: ${error}`);
   }
 };
-//mostrar un registro
+
 export const getPrograma = async (req, res) => {
   try {
-    const programa = await ProgramaModel.findByPk(req.params.Id_Programa);
-    if (programa) {
-      res.status(200).json(programa);
+    const Programa = await ProgramaModel.findByPk(req.params.Id_ProgramaFormacion, {
+      include: [
+        {
+          model: AreaModel,
+          as: "area", // Alias usado para la relación
+        },
+      ],
+    });
+    if (Programa) {
+      res.json(Programa);
     } else {
-      res.status(404).json({
-        message: "Programa no encontrado",
-      });
+      res.status(404).json({ message: "Programa no encontrado" });
     }
   } catch (error) {
-    logger.error(
-      `Error fetching program with ID ${req.params.Id_Programa}: ${error.message}`
-    );
-    res.status(500).json({
-      message: "Error al obtener el programa.",
-      error: error.message,
-    });
+    res.status(500).json({ message: error.message });
+    logger.error(`Error al obtener el programa: ${error}`);
   }
 };
-//crear un player
+
 export const createPrograma = async (req, res) => {
   try {
-    const respuestaDB = await ProgramaModel.create(req.body);
-    if (respuestaDB.Id_Programa) {
-      res.status(201).json({ message: "¡Registro creado exitosamente!" });
-    } else {
-      res.status(400).json({
-        message: "Ocurrió un error, contacte al administrador.",
-      });
-    }
+    const { Nom_ProgramaFormacion, Tip_ProgramaFormacion, Id_Area } = req.body;
+    const NewPrograma = await ProgramaModel.create({
+      Nom_ProgramaFormacion,
+      Tip_ProgramaFormacion,
+      Id_Area,
+    });
+    res.status(201).json(NewPrograma);
   } catch (error) {
     res.status(500).json({ message: error.message });
-    logger.error(error.message);
+    logger.error(`Error al crear el programa: ${error}`);
   }
 };
 
-//actualizar un registro
 export const updatePrograma = async (req, res) => {
   try {
-    const { Id_Programa, Nom_Programa, Tip_Programa } = req.body;
-
-    const [updatedRows] = await ProgramaModel.update(
+    const { Nom_ProgramaFormacion, Tip_ProgramaFormacion, Id_Area } = req.body;
+    const [updated] = await ProgramaModel.update(
       {
-        Nom_Programa,
-        Tip_Programa,
+        Nom_ProgramaFormacion,
+        Tip_ProgramaFormacion,
+        Id_Area,
       },
       {
-        where: { Id_Programa: req.params.Id_Programa },
+        where: { Id_ProgramaFormacion: req.params.Id_ProgramaFormacion },
       }
     );
-
-    // Verificar si se actualizó algún registro
-    if (updatedRows === 0) {
-      res.status(404).json({
-        message: "Programa no encontrado",
-      });
+    if (updated === 0) {
+      res.status(404).json({ message: "Programa no encontrado" });
     } else {
-      res.json({
-        message: "Programa actualizado correctamente",
-      });
+      res.json({ message: "Programa actualizado correctamente" });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
-    logger.error(error.message);
+    logger.error(`Error al actualizar el programa: ${error}`);
   }
 };
 
-//borrar un registro
 export const deletePrograma = async (req, res) => {
   try {
-    const deletedRows = await ProgramaModel.destroy({
-      where: { Id_Programa: req.params.Id_Programa },
+    const Result = await ProgramaModel.destroy({
+      where: { Id_ProgramaFormacion: req.params.Id_ProgramaFormacion },
     });
-    console.log(deletedRows);
-    if (deletedRows === 0) {
-      res.status(404).json({
-        message: "Programa no encontrado",
-      });
+    if (Result === 0) {
+      res.status(404).json({ message: "Programa no encontrado" });
     } else {
-      res.json({
-        message: "¡Registro borrado exitosamente!",
-      });
+      res.json({ message: "Programa eliminado correctamente" });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
-    logger.error(error.message);
+    logger.error(`Error al eliminar el programa: ${error}`);
   }
 };
 
-//Consultar programa por nombre
 export const getQueryPrograma = async (req, res) => {
   try {
-    const programas = await ProgramaModel.findAll({
+    const Programas = await ProgramaModel.findAll({
       where: {
-        Nom_Programa: {
-          [Op.like]: `%${req.params.Nom_Programa}%`,
+        Id_ProgramaFormacion: {
+          [Op.like]: `%${req.params.Id_ProgramaFormacion}%`,
         },
       },
+      include: [
+        {
+          model: AreaModel,
+          as: "area", // Alias usado para la relación
+        },
+      ],
     });
-    if (programas.length > 0) {
-      res.status(200).json(programas);
-    } else {
-      res.status(404).json({
-        message: "No se encontraron programas que coincidan con la búsqueda",
-      });
-    }
+    res.json(Programas);
   } catch (error) {
     res.status(500).json({ message: error.message });
-    logger.error(error.message);
+    logger.error(`Error al buscar el programa: ${error}`);
   }
 };
