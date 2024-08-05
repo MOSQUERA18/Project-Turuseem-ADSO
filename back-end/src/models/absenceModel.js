@@ -11,7 +11,6 @@ const AbsenceModel = db.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    Fec_Inasistencia: { type: DataTypes.DATE },
     Mot_Inasistencia: { type: DataTypes.STRING(50) },
     Id_TurnoRutinario_Aprendiz: {
       type: DataTypes.INTEGER,
