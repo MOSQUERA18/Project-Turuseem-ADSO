@@ -16,6 +16,7 @@ import VerPdf from "./memorandum/verPDF";
 
 import CrudApprentices from "./apprentice/crudApprentices";
 import ImportarCSV from "./apprentice/importarCSV";
+import CrudUnidades from "./unit/CrudUnidad.jsx";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
                 <Route path="importCSV" element={<ImportarCSV />} />
               </Route>
               <Route path="memorandos" element={<CrudMemorandum />} />
+              <Route path="unidades" element={<CrudUnidades />} />
               {/* <Route path='/perfil' element={<MemorandumPDF/>}/> */}
               <Route path="PdfView" element={<VerPdf />} />
             </Route>

@@ -115,3 +115,35 @@ export const deleteUnit = async (req, res) => {
     });
   }
 };
+
+export const getQueryUnit = async (req, res) => {
+  try {
+    const units = await UnitModel.findAll({
+      where: {
+        Nom_Unidad: {
+          [Sequelize.Op.like]: `%${req.params.Nom_Unidad}%`,
+        },
+      },
+      include: [
+        {
+          model: AreaModel,
+          as: "areas",
+          attributes: ["Nom_Area"], // Incluye el nombre del área
+        },
+      ],
+    });
+
+    if (units.length > 0) {
+      res.status(200).json(units);
+    } else {
+      res.status(404).json({
+        message: "No se encontraron unidades que coincidan con la búsqueda.",
+      });
+    }
+  } catch (error) {
+    logger.error("Error searching units: ", error.message);
+    res.status(500).json({
+      message: "Error al buscar las unidades.",
+    });
+  }
+};
