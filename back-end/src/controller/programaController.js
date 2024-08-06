@@ -9,7 +9,7 @@ export const getAllProgramas = async (req, res) => {
       include: [
         {
           model: AreaModel,
-          as: "area", // Alias usado para la relación
+          as: "areas", // Alias usado para la relación
         },
       ],
     });
@@ -28,7 +28,7 @@ export const getPrograma = async (req, res) => {
         include: [
           {
             model: AreaModel,
-            as: "area", // Alias usado para la relación
+            as: "areas", // Alias usado para la relación
           },
         ],
       }
@@ -110,7 +110,7 @@ export const getQueryPrograma = async (req, res) => {
       include: [
         {
           model: AreaModel,
-          as: "area", // Alias usado para la relación
+          as: "areas", // Alias usado para la relación
         },
       ],
     });

@@ -27,6 +27,8 @@ import { logger } from "./src/middleware/logMiddleware.js";
 //Models
 import UnitModel from "./src/models/unitModel.js";
 import AreaModel from "./src/models/areaModel.js";
+import ProgramaModel from "./src/models/programaModel.js";
+import FichasModel from "./src/models/fichasModel.js";
 
 
 const app = express();
@@ -68,5 +70,12 @@ app.listen(PORT, () => {
 AreaModel.hasMany(UnitModel, { foreignKey: "Id_Area", as: "unidades" })
 UnitModel.belongsTo(AreaModel, { foreignKey: "Id_Area", as: "areas" })
 
+AreaModel.hasMany(ProgramaModel, { foreignKey: "Id_Area", as: "programasFormacion" })
+ProgramaModel.belongsTo(ProgramaModel, { foreignKey: "Id_Area", as: "areas"})
 
-export { AreaModel, UnitModel } 
+// ProgramaModel.hasMany(FichasModel, { foreignKey: "Id_ProgramaFormacion", as: )
+// FichasModel.belongsTo()
+
+
+
+export { AreaModel, UnitModel, ProgramaModel } 
