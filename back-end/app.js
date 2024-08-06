@@ -5,6 +5,8 @@ import cors from "cors";
 import fileUpload from "express-fileupload";
 
 import db from "./src/database/db.js";
+
+//Routes
 import absenceRoutes from "./src/routes/absencesRoutes.js";
 import apprenticeRoutes from "./src/routes/ApprenticeRoutes.js";
 import areaRoutes from "./src/routes/areaRoutes.js";
@@ -21,6 +23,11 @@ import unitRoutes from './src/routes/unitRoutes.js'
 import userRouter from "./src/routes/UserRoutes.js";
 import { logger } from "./src/middleware/logMiddleware.js";
 // import routespdf from "./src/routes/routespdf.js";
+
+//Models
+import UnitModel from "./src/models/unitModel.js";
+import AreaModel from "./src/models/areaModel.js";
+
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -40,7 +47,7 @@ app.use("/talentohumano", talentoHumanoRoutes);
 app.use("/turEspAprendiz", turnoEspecialAprendizRoutes);
 app.use("/turRutAprendiz", turnoRutinarioAprendizRoutes);
 app.use("/turnoRutinario", turnoRutinarioRoutes);
-app.use('/inidades', unitRoutes)
+app.use('/unidades', unitRoutes)
 
 app.use("/api/user", userRouter);
 
@@ -56,3 +63,10 @@ try {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+
+AreaModel.hasMany(UnitModel, { foreignKey: "Id_Area", as: "unidades" })
+UnitModel.belongsTo(AreaModel, { foreignKey: "Id_Area", as: "areas" })
+
+
+export { AreaModel, UnitModel } 

@@ -22,14 +22,17 @@ export const getAllProgramas = async (req, res) => {
 
 export const getPrograma = async (req, res) => {
   try {
-    const Programa = await ProgramaModel.findByPk(req.params.Id_ProgramaFormacion, {
-      include: [
-        {
-          model: AreaModel,
-          as: "area", // Alias usado para la relación
-        },
-      ],
-    });
+    const Programa = await ProgramaModel.findByPk(
+      req.params.Id_ProgramaFormacion,
+      {
+        include: [
+          {
+            model: AreaModel,
+            as: "area", // Alias usado para la relación
+          },
+        ],
+      }
+    );
     if (Programa) {
       res.json(Programa);
     } else {

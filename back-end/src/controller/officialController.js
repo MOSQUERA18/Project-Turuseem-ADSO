@@ -28,8 +28,17 @@ export const getFuncionario = async (req, res) => {
 
 export const createFuncionario = async (req, res) => {
   try {
-    const { Nom_Funcionario, Ape_Funcionario, Genero, Tel_Funcionario, Estado, Cargo } = req.body;
+    const {
+      Id_Funcionario,
+      Nom_Funcionario,
+      Ape_Funcionario,
+      Genero,
+      Tel_Funcionario,
+      Estado,
+      Cargo,
+    } = req.body;
     const NewFuncionario = await OfficialModel.create({
+      Id_Funcionario,
       Nom_Funcionario,
       Ape_Funcionario,
       Genero,
@@ -46,7 +55,14 @@ export const createFuncionario = async (req, res) => {
 
 export const updateFuncionario = async (req, res) => {
   try {
-    const { Nom_Funcionario, Ape_Funcionario, Genero, Tel_Funcionario, Estado, Cargo } = req.body;
+    const {
+      Nom_Funcionario,
+      Ape_Funcionario,
+      Genero,
+      Tel_Funcionario,
+      Estado,
+      Cargo,
+    } = req.body;
     const [updated] = await OfficialModel.update(
       {
         Nom_Funcionario,

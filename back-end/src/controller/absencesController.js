@@ -27,18 +27,21 @@ export const getAllAbsences = async (req, res) => {
 
 export const getAbsence = async (req, res) => {
   try {
-    const inasistencia = await AbsenceModel.findByPk(req.params.Id_Inasistencia, {
-      include: [
-        {
-          model: TurnoRutinarioModel,
-          as: "turnoRutinario", // Alias usado para la relación
-        },
-        {
-          model: TurnoEspecialModel,
-          as: "turnoEspecial", // Alias usado para la relación
-        },
-      ],
-    });
+    const inasistencia = await AbsenceModel.findByPk(
+      req.params.Id_Inasistencia,
+      {
+        include: [
+          {
+            model: TurnoRutinarioModel,
+            as: "turnoRutinario", // Alias usado para la relación
+          },
+          {
+            model: TurnoEspecialModel,
+            as: "turnoEspecial", // Alias usado para la relación
+          },
+        ],
+      }
+    );
     if (inasistencia) {
       res.json(inasistencia);
     } else {
@@ -52,7 +55,12 @@ export const getAbsence = async (req, res) => {
 
 export const createAbsence = async (req, res) => {
   try {
-    const { Fec_Inasistencia, Mot_Inasistencia, Id_TurnoRutinario_Aprendiz, Id_TurnoEspecial_Aprendiz } = req.body;
+    const {
+      Fec_Inasistencia,
+      Mot_Inasistencia,
+      Id_TurnoRutinario_Aprendiz,
+      Id_TurnoEspecial_Aprendiz,
+    } = req.body;
 
     const newInasistencia = await AbsenceModel.create({
       Fec_Inasistencia,
@@ -69,7 +77,12 @@ export const createAbsence = async (req, res) => {
 
 export const updateAbsence = async (req, res) => {
   try {
-    const { Fec_Inasistencia, Mot_Inasistencia, Id_TurnoRutinario_Aprendiz, Id_TurnoEspecial_Aprendiz } = req.body;
+    const {
+      Fec_Inasistencia,
+      Mot_Inasistencia,
+      Id_TurnoRutinario_Aprendiz,
+      Id_TurnoEspecial_Aprendiz,
+    } = req.body;
 
     const [updated] = await AbsenceModel.update(
       {

@@ -43,7 +43,15 @@ export const getFicha = async (req, res) => {
 
 export const createFicha = async (req, res) => {
   try {
-    const { Id_Ficha, Fec_InicioEtapaLectiva, Fec_FinEtapaLectiva, Fec_FinEtapaProductiva, Can_Aprendices, Id_ProgramaFormacion, Estado } = req.body;
+    const {
+      Id_Ficha,
+      Fec_InicioEtapaLectiva,
+      Fec_FinEtapaLectiva,
+      Fec_FinEtapaProductiva,
+      Can_Aprendices,
+      Id_ProgramaFormacion,
+      Estado,
+    } = req.body;
     const NewFicha = await FichasModel.create({
       Id_Ficha,
       Fec_InicioEtapaLectiva,
@@ -62,7 +70,14 @@ export const createFicha = async (req, res) => {
 
 export const updateFicha = async (req, res) => {
   try {
-    const { Fec_InicioEtapaLectiva, Fec_FinEtapaLectiva, Fec_FinEtapaProductiva, Can_Aprendices, Id_ProgramaFormacion, Estado } = req.body;
+    const {
+      Fec_InicioEtapaLectiva,
+      Fec_FinEtapaLectiva,
+      Fec_FinEtapaProductiva,
+      Can_Aprendices,
+      Id_ProgramaFormacion,
+      Estado,
+    } = req.body;
     const [updated] = await FichasModel.update(
       {
         Fec_InicioEtapaLectiva,

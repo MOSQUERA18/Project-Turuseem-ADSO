@@ -1,9 +1,17 @@
 import { logger } from "../middleware/logMiddleware.js";
 import UnitModel from "../models/unitModel.js";
+import AreaModel from "../models/areaModel.js";
 
 export const getAllUnits = async (req, res) => {
   try {
-    const units = await UnitModel.findAll();
+    const units = await UnitModel.findAll({
+      include: [
+        {
+          model: AreaModel,
+          as: "areas"
+        }
+      ]
+    });
     if (units.length > 0) {
       res.status(200).json(units);
     } else {
@@ -21,9 +29,16 @@ export const getAllUnits = async (req, res) => {
 
 export const getUnit = async (req, res) => {
   try {
-    const unit = await UnitModel.findOne({
-      where: { Id_Unidad: req.params.Id_Unidad },
-    });
+    const unit = await UnitModel.findByPk(
+      req.params.Id_Unidad, {
+        include: [
+          {
+            model: AreaModel,
+            as: "areas"
+          }
+        ]
+      }
+    );
     if (unit) {
       res.status(200).json(unit);
     } else {
