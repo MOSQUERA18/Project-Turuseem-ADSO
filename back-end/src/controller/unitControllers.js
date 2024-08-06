@@ -1,6 +1,7 @@
 import { logger } from "../middleware/logMiddleware.js";
 import UnitModel from "../models/unitModel.js";
 import AreaModel from "../models/areaModel.js";
+import { Sequelize, Op } from "sequelize";
 
 export const getAllUnits = async (req, res) => {
   try {
@@ -116,7 +117,7 @@ export const deleteUnit = async (req, res) => {
   }
 };
 
-export const getQueryUnit = async (req, res) => {
+export const getQueryNom_Unit = async (req, res) => {
   try {
     const units = await UnitModel.findAll({
       where: {
@@ -142,6 +143,7 @@ export const getQueryUnit = async (req, res) => {
     }
   } catch (error) {
     logger.error("Error searching units: ", error.message);
+    console.log(error)
     res.status(500).json({
       message: "Error al buscar las unidades.",
     });

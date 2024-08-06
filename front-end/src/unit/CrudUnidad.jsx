@@ -172,7 +172,7 @@ const CrudUnidades = () => {
         <div className="flex justify-between">
           <div>
             <h1 className="font-semibold text-lg text-gray-700">
-              Buscar Por Nombre o ID...
+              Buscar Por Nombre...
             </h1>
             <FormQueryUnidades
               getUnidad={getUnidad}
@@ -190,9 +190,9 @@ const CrudUnidades = () => {
           </div> */}
         </div>
         <hr />
-        <h2 className="font-semibold mb-4 text-lg text-gray-700 mt-3">
+        {/* <h2 className="font-semibold mb-4 text-lg text-gray-700 mt-3">
           Doble Click sobre la unidad para ver información detallada...
-        </h2>
+        </h2> */}
         {msg && <Alerta alerta={alerta} />}
         <table className="min-w-full bg-white text-center text-sm">
           <thead className="text-white bg-green-700">
