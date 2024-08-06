@@ -19,14 +19,9 @@ const FormQueryUnidades = ({ buttonForm, setUnidadQuery }) => {
         },
       };
 
-      let endpoint = `/unidades/Nom_Unidad/${query}`;
-      // if (/^\d+$/.test(query)) {
-      //   // endpoint = `/unidades/Id_Unidad/${query}`;
-      // } else {
-        
-      // }
+      let URI = `/unidades/nombre/${query}`;
       try {
-        const respuesta = await clieteAxios(endpoint, config);
+        const respuesta = await clieteAxios(URI, config);
         if ( respuesta.status == 200 ) {
             setUnidadQuery(respuesta.data)
         } else {

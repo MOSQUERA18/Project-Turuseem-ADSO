@@ -5,7 +5,7 @@ import {
   createUnit,
   updateUnit,
   deleteUnit,
-  getQueryUnit,
+  getQueryNom_Unit,
 } from "../controller/unitControllers.js";
 import checkAuth from "../middleware/authMiddleware.js";
 
@@ -22,6 +22,6 @@ router
   .put(checkAuth, updateUnit)
   .delete(checkAuth, deleteUnit);
 
-  router.get("/:Nom_Unidad", checkAuth, getQueryUnit);
+  router.get("/nombre/:Nom_Unidad", checkAuth, getQueryNom_Unit);
 
 export default router;
