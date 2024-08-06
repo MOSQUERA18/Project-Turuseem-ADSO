@@ -1,4 +1,4 @@
-import TurnoEspecialAprendizModel from "../models/turnoEspecialAprendizModel.js";
+import TurnoEspecialAprendizModel from "../models/turnoEspeciales_Aprendices.js";
 import TurnoEspecialModel from "../models/turnoEspecialModel.js";
 import ApprenticeModel from "../models/apprenticeModel.js";
 import { Sequelize, Op } from "sequelize";

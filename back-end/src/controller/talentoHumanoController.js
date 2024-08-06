@@ -1,5 +1,5 @@
 import { logger } from "../middleware/logMiddleware.js";
-import TalentoHumanoModel from "../models/talentoHumanoModel.js";
+import TalentoHumanoModel from "../models/talentoHumano.js";
 import FichasModel from "../models/fichasModel.js";
 
 export const getAllTalentoHumano = async (req, res) => {

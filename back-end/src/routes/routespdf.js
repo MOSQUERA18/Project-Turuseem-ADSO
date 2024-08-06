@@ -1,8 +1,8 @@
-import express from 'express';
-import { crearPdf } from '../prueba/pruebaPdf.js';
-const router = express.Router();
+// import express from 'express';
+// import { crearPdf } from '../prueba/pruebaPdf.js';
+// const router = express.Router();
 
-router.get('/', crearPdf)
+// router.get('/', crearPdf)
 
 
-export default router
+// export default router

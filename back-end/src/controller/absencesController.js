@@ -4,7 +4,7 @@ import TurnoEspecialModel from "../models/turnoEspecialModel.js";
 import { Sequelize, Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 
-export const getAllInasistencias = async (req, res) => {
+export const getAllAbsences = async (req, res) => {
   try {
     const inasistencias = await AbsenceModel.findAll({
       include: [
@@ -25,7 +25,7 @@ export const getAllInasistencias = async (req, res) => {
   }
 };
 
-export const getInasistencia = async (req, res) => {
+export const getAbsence = async (req, res) => {
   try {
     const inasistencia = await AbsenceModel.findByPk(req.params.Id_Inasistencia, {
       include: [
@@ -50,7 +50,7 @@ export const getInasistencia = async (req, res) => {
   }
 };
 
-export const createInasistencia = async (req, res) => {
+export const createAbsence = async (req, res) => {
   try {
     const { Fec_Inasistencia, Mot_Inasistencia, Id_TurnoRutinario_Aprendiz, Id_TurnoEspecial_Aprendiz } = req.body;
 
@@ -67,7 +67,7 @@ export const createInasistencia = async (req, res) => {
   }
 };
 
-export const updateInasistencia = async (req, res) => {
+export const updateAbsence = async (req, res) => {
   try {
     const { Fec_Inasistencia, Mot_Inasistencia, Id_TurnoRutinario_Aprendiz, Id_TurnoEspecial_Aprendiz } = req.body;
 
@@ -93,7 +93,7 @@ export const updateInasistencia = async (req, res) => {
   }
 };
 
-export const deleteInasistencia = async (req, res) => {
+export const deleteAbsence = async (req, res) => {
   try {
     const result = await AbsenceModel.destroy({
       where: { Id_Inasistencia: req.params.Id_Inasistencia },
