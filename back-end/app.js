@@ -19,6 +19,7 @@ import talentoHumanoRoutes from "./src/routes/talentoHumanoRoutes.js";
 import turnoEspecialAprendizRoutes from "./src/routes/turnoEspecialAprendizRoutes.js";
 import turnoRutinarioAprendizRoutes from "./src/routes/turnoRutinarioAprendizRoutes.js";
 import turnoRutinarioRoutes from "./src/routes/turnoRutinarioRoutes.js";
+import turnoEspecialRoutes from "./src/routes/turnoEspecialRoutes.js"
 import unitRoutes from './src/routes/unitRoutes.js'
 import userRouter from "./src/routes/UserRoutes.js";
 import { logger } from "./src/middleware/logMiddleware.js";
@@ -47,6 +48,7 @@ app.use("/funcionarios", officialRoutes);
 app.use("/programa", programaRoutes);
 app.use("/talentohumano", talentoHumanoRoutes);
 app.use("/turEspAprendiz", turnoEspecialAprendizRoutes);
+app.use("/turnoespecial",turnoEspecialRoutes)
 app.use("/turRutAprendiz", turnoRutinarioAprendizRoutes);
 app.use("/turnoRutinario", turnoRutinarioRoutes);
 app.use('/unidades', unitRoutes)
@@ -71,7 +73,7 @@ AreaModel.hasMany(UnitModel, { foreignKey: "Id_Area", as: "unidades" })
 UnitModel.belongsTo(AreaModel, { foreignKey: "Id_Area", as: "areas" })
 
 AreaModel.hasMany(ProgramaModel, { foreignKey: "Id_Area", as: "programasFormacion" })
-ProgramaModel.belongsTo(ProgramaModel, { foreignKey: "Id_Area", as: "areas"})
+ProgramaModel.belongsTo(UnitModel, { foreignKey: "Id_Area", as: "areas"})
 
 // ProgramaModel.hasMany(FichasModel, { foreignKey: "Id_ProgramaFormacion", as: )
 // FichasModel.belongsTo()

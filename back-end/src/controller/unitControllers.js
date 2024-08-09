@@ -59,17 +59,24 @@ export const createUnit = async (req, res) => {
   try {
     const newUnit = await UnitModel.create(req.body);
     res.status(201).json({
-      message: "Unidad registrada correctamente!",
-      data: newUnit,
+      status: 'success',
+      message: 'Unidad registrada correctamente!',
+      data: {
+        id: newUnit.id,
+        name: newUnit.name,
+        // Agrega otros campos que quieras mostrar
+      },
     });
   } catch (error) {
     logger.error("Error creating unit: ", error.message);
     res.status(400).json({
-      message: "Error al registrar la unidad.",
+      status: 'error',
+      message: 'Error al registrar la unidad.',
       error: error.message,
     });
   }
 };
+
 
 export const updateUnit = async (req, res) => {
   try {

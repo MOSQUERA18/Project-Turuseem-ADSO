@@ -6,7 +6,7 @@ export const emailRegistro = async (datos) => {
     service: 'gmail', // Utiliza el servicio de Gmail para enviar correos
     auth: {
       user: process.env.EMAIL_USER, // Usuario del correo (tu dirección de correo)
-      pass: process.env.EMAIL_PASS, // Contraseña del correo
+      pass: process.env.EMAIL_PASS, // Contraseña de aplicaciones del correo
     },
   });
 
@@ -15,7 +15,7 @@ export const emailRegistro = async (datos) => {
   // Configuración del correo a enviar
   const mailOptions = {
     from: `"SENA EMPRESA - LA GRANJA" <${process.env.EMAIL_USER}>`, // Dirección del remitente
-    to: Cor_User, // Dirección del destinatario
+    to: Cor_User, // Dirección del correo electronico del destinatario
     subject: "Comprueba tu cuenta en TURUSEEM", // Asunto del correo
     text: `Hola ${Nom_User}, comprueba tu cuenta en TURUSEEM. Tu cuenta ya está lista, pero debes comprobarla en el siguiente enlace: ${process.env.FRONTEND_URL}/confirmar/${token}. Si tú no creaste esta cuenta, ignora este mensaje.`, // Contenido en texto plano
     html: `<p>Hola ${Nom_User}, comprueba tu cuenta en TURUSEEM</p>
