@@ -1,7 +1,7 @@
 import AbsenceModel from "../models/absenceModel.js";
 import TurnoRutinarioModel from "../models/turnoRutinarioModel.js";
 import TurnoEspecialModel from "../models/turnoEspecialModel.js";
-import { Sequelize, Op } from "sequelize";
+import { Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 
 export const getAllAbsences = async (req, res) => {
