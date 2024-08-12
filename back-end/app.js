@@ -26,10 +26,13 @@ import { logger } from "./src/middleware/logMiddleware.js";
 // import routespdf from "./src/routes/routespdf.js";
 
 //Models
+import TalentoHumanoModel from "./src/models/talentoHumano.js";
 import UnitModel from "./src/models/unitModel.js";
 import AreaModel from "./src/models/areaModel.js";
 import ProgramaModel from "./src/models/programaModel.js";
 import FichasModel from "./src/models/fichasModel.js";
+import AbsenceModel from "./src/models/absenceModel.js";
+import TurnoEspecialAprendizModel from "./src/models/turnoEspeciales_Aprendices.js";
 
 
 const app = express();
@@ -68,16 +71,29 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-
+//Unidades
 AreaModel.hasMany(UnitModel, { foreignKey: "Id_Area", as: "unidades" })
 UnitModel.belongsTo(AreaModel, { foreignKey: "Id_Area", as: "areas" })
 
+//Programas de formacion
 AreaModel.hasMany(ProgramaModel, { foreignKey: "Id_Area", as: "programasFormacion" })
 ProgramaModel.belongsTo(UnitModel, { foreignKey: "Id_Area", as: "areas"})
 
-// ProgramaModel.hasMany(FichasModel, { foreignKey: "Id_ProgramaFormacion", as: )
-// FichasModel.belongsTo()
+
+//Fichas
+ProgramaModel.hasMany(FichasModel, { foreignKey: "Id_ProgramaFormacion", as:"fichas" })
+FichasModel.belongsTo(ProgramaModel,{foreignKey:"Id_ProgramaFormacion",as:"programas"})
 
 
+//TalentoHumano
+FichasModel.hasMany(TalentoHumanoModel,{foreignKey:"Id_Ficha",as:"talentoHumano"})
+TalentoHumanoModel.belongsTo(FichasModel,{foreignKey:"Id_Ficha",as:"fichas"})
+
+
+//Inasistencias
+AbsenceModel.belongsTo(TurnoEspecialAprendizModel,{foreignKey:"Id_TurnoEspecialAprendiz", as:"turnoespecialaprendiz"})
+TurnoEspecialAprendizModel.hasMany(AbsenceModel,{foreignKey:"Id_TurnoEspecialAprendiz",as:"inasistencias"})
+
+//Funcionario No esta relacionado con ninguno sino hasta con Turno Especial....
 
 export { AreaModel, UnitModel, ProgramaModel } 
