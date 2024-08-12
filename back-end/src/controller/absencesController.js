@@ -18,7 +18,14 @@ export const getAllAbsences = async (req, res) => {
         },
       ],
     });
-    res.json(inasistencias);
+    if(inasistencias > 0){
+      res.json(200).json(inasistencias); //a todos los controllers toca agg esto para validar los datos
+      retunr
+    }else {
+      res.status(404).json({
+        message: "No se encontraron inasistencias.",
+      });
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al obtener las inasistencias: ${error}`);
@@ -42,8 +49,9 @@ export const getAbsence = async (req, res) => {
         ],
       }
     );
-    if (inasistencia) {
-      res.json(inasistencia);
+    if (inasistencia > 0) {
+      res.status(200).json(inasistencia);
+      return
     } else {
       res.status(404).json({ message: "Inasistencia no encontrada" });
     }

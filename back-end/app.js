@@ -19,16 +19,20 @@ import talentoHumanoRoutes from "./src/routes/talentoHumanoRoutes.js";
 import turnoEspecialAprendizRoutes from "./src/routes/turnoEspecialAprendizRoutes.js";
 import turnoRutinarioAprendizRoutes from "./src/routes/turnoRutinarioAprendizRoutes.js";
 import turnoRutinarioRoutes from "./src/routes/turnoRutinarioRoutes.js";
+import turnoEspecialRoutes from "./src/routes/turnoEspecialRoutes.js"
 import unitRoutes from './src/routes/unitRoutes.js'
 import userRouter from "./src/routes/UserRoutes.js";
 import { logger } from "./src/middleware/logMiddleware.js";
 // import routespdf from "./src/routes/routespdf.js";
 
 //Models
+import TalentoHumanoModel from "./src/models/talentoHumano.js";
 import UnitModel from "./src/models/unitModel.js";
 import AreaModel from "./src/models/areaModel.js";
 import ProgramaModel from "./src/models/programaModel.js";
 import FichasModel from "./src/models/fichasModel.js";
+import AbsenceModel from "./src/models/absenceModel.js";
+import TurnoEspecialAprendizModel from "./src/models/turnoEspeciales_Aprendices.js";
 
 
 const app = express();
@@ -47,6 +51,7 @@ app.use("/funcionarios", officialRoutes);
 app.use("/programa", programaRoutes);
 app.use("/talentohumano", talentoHumanoRoutes);
 app.use("/turEspAprendiz", turnoEspecialAprendizRoutes);
+app.use("/turnoespecial",turnoEspecialRoutes)
 app.use("/turRutAprendiz", turnoRutinarioAprendizRoutes);
 app.use("/turnoRutinario", turnoRutinarioRoutes);
 app.use('/unidades', unitRoutes)
@@ -66,16 +71,29 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-
+//Unidades
 AreaModel.hasMany(UnitModel, { foreignKey: "Id_Area", as: "unidades" })
 UnitModel.belongsTo(AreaModel, { foreignKey: "Id_Area", as: "areas" })
 
+//Programas de formacion
 AreaModel.hasMany(ProgramaModel, { foreignKey: "Id_Area", as: "programasFormacion" })
-ProgramaModel.belongsTo(ProgramaModel, { foreignKey: "Id_Area", as: "areas"})
-
-// ProgramaModel.hasMany(FichasModel, { foreignKey: "Id_ProgramaFormacion", as: )
-// FichasModel.belongsTo()
+ProgramaModel.belongsTo(UnitModel, { foreignKey: "Id_Area", as: "areas"})
 
 
+//Fichas
+ProgramaModel.hasMany(FichasModel, { foreignKey: "Id_ProgramaFormacion", as:"fichas" })
+FichasModel.belongsTo(ProgramaModel,{foreignKey:"Id_ProgramaFormacion",as:"programas"})
+
+
+//TalentoHumano
+FichasModel.hasMany(TalentoHumanoModel,{foreignKey:"Id_Ficha",as:"talentoHumano"})
+TalentoHumanoModel.belongsTo(FichasModel,{foreignKey:"Id_Ficha",as:"fichas"})
+
+
+//Inasistencias
+AbsenceModel.belongsTo(TurnoEspecialAprendizModel,{foreignKey:"Id_TurnoEspecialAprendiz", as:"turnoespecialaprendiz"})
+TurnoEspecialAprendizModel.hasMany(AbsenceModel,{foreignKey:"Id_TurnoEspecialAprendiz",as:"inasistencias"})
+
+//Funcionario No esta relacionado con ninguno sino hasta con Turno Especial....
 
 export { AreaModel, UnitModel, ProgramaModel } 

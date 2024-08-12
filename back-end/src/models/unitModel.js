@@ -34,7 +34,7 @@ const UnitModel = db.define(
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
-    freezeTableName: true,  // Asegura que el nombre de la tabla sea 'unidades'
+    freezeTableName: true,  
   }
 );
 
