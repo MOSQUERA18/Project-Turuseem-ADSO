@@ -26,7 +26,8 @@
     "react-toastify": "^10.0.5",
     "sort-by": "^1.2.0",
     "sweetalert2": "^11.10.8",
-    "sweetalert2-react-content": "^5.0.7"
+    "sweetalert2-react-content": "^5.0.7",
+    "turuseem-mysql": "file:"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",

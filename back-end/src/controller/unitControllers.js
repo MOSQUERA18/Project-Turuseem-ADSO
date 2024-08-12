@@ -14,7 +14,8 @@ export const getAllUnits = async (req, res) => {
       ]
     });
     if (units.length > 0) {
-      res.status(200).json(units);
+      res.status(200).json(units); //a todos los controllers toca agg esto para validar los datos
+      return
     } else {
       res.status(404).json({
         message: "No se encontraron unidades.",
@@ -41,7 +42,8 @@ export const getUnit = async (req, res) => {
       }
     );
     if (unit) {
-      res.status(200).json(unit);
+      res.status(200).json(unit); //a todos los controllers toca agg esto para validar los datos
+      return
     } else {
       res.status(404).json({
         message: "Unidad no encontrada.",
@@ -83,10 +85,11 @@ export const updateUnit = async (req, res) => {
     const [updated] = await UnitModel.update(req.body, {
       where: { Id_Unidad: req.params.Id_Unidad },
     });
-    if (updated) {
+    if (updated) { //a todos los controllers toca agg esto para validar los datos
       res.json({
         message: "Unidad actualizada correctamente!",
       });
+      return
     } else {
       res.status(404).json({
         message: "Unidad no encontrada.",
@@ -108,7 +111,7 @@ export const deleteUnit = async (req, res) => {
     });
     if (deleted) {
       res.json({
-        message: "Unidad borrada correctamente!",
+        message: "Unidad borrada correctamente!", //a todos los controllers toca agg esto para validar los datos
       });
     } else {
       res.status(404).json({
@@ -143,6 +146,7 @@ export const getQueryNom_Unit = async (req, res) => {
 
     if (units.length > 0) {
       res.status(200).json(units);
+      return
     } else {
       res.status(404).json({
         message: "No se encontraron unidades que coincidan con la búsqueda.",

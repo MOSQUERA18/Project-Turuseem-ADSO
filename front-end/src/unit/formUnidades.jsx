@@ -27,7 +27,9 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
             Authorization: `Bearer ${token}`
           }
         });
-        setAreas(response.data);
+        if(response.status ==200){
+          setAreas(response.data);
+        }
       } catch (error) {
         console.error('Error fetching areas:', error);
       }
