@@ -18,7 +18,9 @@ export const getAllTurnosRutinarios = async (req, res) => {
         },
       ],
     });
-    res.json(turnosRutinarios);
+    if(turnosRutinarios){
+    res.status(200).json(turnosRutinarios);
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al obtener los turnos rutinarios: ${error}`);
@@ -40,7 +42,8 @@ export const getTurnoRutinario = async (req, res) => {
       ],
     });
     if (turnoRutinario) {
-      res.json(turnoRutinario);
+      res.status(200).json(turnoRutinario);
+      return
     } else {
       res.status(404).json({ message: "Turno rutinario no encontrado" });
     }
@@ -73,7 +76,10 @@ export const createTurnoRutinario = async (req, res) => {
       Id_Aprendiz,
       Id_Unidad,
     });
-    res.status(201).json(newTurnoRutinario);
+    if(newTurnoRutinario){
+      res.status(201).json(newTurnoRutinario);
+      return
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al crear el turno rutinario: ${error}`);
@@ -112,6 +118,7 @@ export const updateTurnoRutinario = async (req, res) => {
       res.status(404).json({ message: "Turno rutinario no encontrado" });
     } else {
       res.json({ message: "Turno rutinario actualizado correctamente" });
+      return
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -128,6 +135,7 @@ export const deleteTurnoRutinario = async (req, res) => {
       res.status(404).json({ message: "Turno rutinario no encontrado" });
     } else {
       res.json({ message: "Turno rutinario eliminado correctamente" });
+      return
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -154,7 +162,9 @@ export const getQueryTurnoRutinario = async (req, res) => {
         },
       ],
     });
-    res.json(turnosRutinarios);
+    if(turnosRutinarios){
+    res.status(200).json(turnosRutinarios);
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al buscar el turno rutinario: ${error}`);

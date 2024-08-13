@@ -82,7 +82,7 @@ ProgramaModel.belongsTo(UnitModel, { foreignKey: "Id_Area", as: "areas"})
 
 //Fichas
 ProgramaModel.hasMany(FichasModel, { foreignKey: "Id_ProgramaFormacion", as:"fichas" })
-FichasModel.belongsTo(ProgramaModel,{foreignKey:"Id_ProgramaFormacion",as:"programas"})
+FichasModel.belongsTo(ProgramaModel,{foreignKey:"Id_ProgramaFormacion",as:"programasFormacion"})
 
 
 //TalentoHumano

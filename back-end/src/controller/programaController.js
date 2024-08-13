@@ -52,7 +52,10 @@ export const createPrograma = async (req, res) => {
       Tip_ProgramaFormacion,
       Id_Area,
     });
-    res.status(201).json(NewPrograma);
+    if(NewPrograma){
+      res.status(201).json(NewPrograma);
+      return
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al crear el programa: ${error}`);
@@ -76,6 +79,7 @@ export const updatePrograma = async (req, res) => {
       res.status(404).json({ message: "Programa no encontrado" });
     } else {
       res.json({ message: "Programa actualizado correctamente" });
+      return
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -92,6 +96,7 @@ export const deletePrograma = async (req, res) => {
       res.status(404).json({ message: "Programa no encontrado" });
     } else {
       res.json({ message: "Programa eliminado correctamente" });
+      return
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -114,7 +119,9 @@ export const getQueryPrograma = async (req, res) => {
         },
       ],
     });
-    res.json(Programas);
+    if(getQueryPrograma === 200){
+      res.json(Programas);
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al buscar el programa: ${error}`);

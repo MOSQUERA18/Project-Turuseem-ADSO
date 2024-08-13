@@ -6,6 +6,7 @@ export const getAllAreas = async (req, res) => {
     const areas = await AreaModel.findAll();
     if (areas.length > 0) {
       res.status(200).json(areas);
+      return
     } else {
       res.status(404).json({
         message: "No se encontraron áreas.",

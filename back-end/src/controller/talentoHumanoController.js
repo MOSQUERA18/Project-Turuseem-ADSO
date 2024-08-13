@@ -9,6 +9,7 @@ export const getAllTalentoHumano = async (req, res) => {
     });
     if (talentoHumano.length > 0) {
       res.status(200).json(talentoHumano);
+      return
     } else {
       res.status(404).json({
         message: "No se encontró talento humano.",
@@ -30,6 +31,7 @@ export const getTalentoHumano = async (req, res) => {
     });
     if (talento) {
       res.status(200).json(talento);
+      return
     } else {
       res.status(404).json({
         message: "Talento humano no encontrado.",
@@ -50,6 +52,7 @@ export const createTalentoHumano = async (req, res) => {
       message: "Talento humano registrado correctamente!",
       data: newTalento,
     });
+    return
   } catch (error) {
     logger.error("Error creating talento humano: ", error.message);
     res.status(400).json({
@@ -68,6 +71,7 @@ export const updateTalentoHumano = async (req, res) => {
       res.json({
         message: "Talento humano actualizado correctamente!",
       });
+      return
     } else {
       res.status(404).json({
         message: "Talento humano no encontrado.",
@@ -91,6 +95,7 @@ export const deleteTalentoHumano = async (req, res) => {
       res.json({
         message: "Talento humano borrado correctamente!",
       });
+      return
     } else {
       res.status(404).json({
         message: "Talento humano no encontrado.",

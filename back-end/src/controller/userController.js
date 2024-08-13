@@ -29,6 +29,7 @@ export const autenticar = async (req, res) => {
       Cor_User: usuario.Cor_User,
       token: generarJWT(usuario.Id_User),
     });
+    
   } else {
     const error = new Error("La contraseña es incorrecta!");
     return res.status(403).json({ msg: error.message });

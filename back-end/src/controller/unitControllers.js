@@ -69,6 +69,7 @@ export const createUnit = async (req, res) => {
         // Agrega otros campos que quieras mostrar
       },
     });
+    return
   } catch (error) {
     logger.error("Error creating unit: ", error.message);
     res.status(400).json({
@@ -113,6 +114,7 @@ export const deleteUnit = async (req, res) => {
       res.json({
         message: "Unidad borrada correctamente!", //a todos los controllers toca agg esto para validar los datos
       });
+      return
     } else {
       res.status(404).json({
         message: "Unidad no encontrada.",

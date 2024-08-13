@@ -13,9 +13,6 @@ const FichasModel = db.define("fichas", {
     Fec_FinEtapaLectiva: { 
         type: DataTypes.DATE 
     },
-    Fec_FinEtapaProductiva: { 
-        type: DataTypes.DATE 
-    },
     Can_Aprendices: { 
         type: DataTypes.INTEGER 
     },
