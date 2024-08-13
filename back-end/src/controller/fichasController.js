@@ -127,28 +127,30 @@ export const deleteFicha = async (req, res) => {
   }
 };
 
-// export const getQueryFicha = async (req, res) => {
-//   try {
-//     const Fichas = await FichasModel.findAll({
-//       where: {
-//         Id_Ficha: {
-//           [Op.like]: `%${req.params.Id_Ficha}%`,
-//         },
-//       },
-//       include: [
-//         {
-//           model: ProgramaModel,
-//           as: "programasFormacion", // Alias usado para la relación
-//         },
-//       ],
-//     });
-//     if(Fichas){
-//       res.status(200).json(Fichas);
-//       return
-//     }
-    
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//     logger.error(`Error al buscar la ficha: ${error}`);
-//   }
-// };
+export const getQueryFicha = async (req, res) => {
+  try {
+    const Fichas = await FichasModel.findAll({
+      where: {
+        Id_Ficha: {
+          [Op.like]: `%${req.params.Id_Ficha}%`,
+        },
+      },
+      include: [
+        {
+          model: ProgramaModel,
+          as: "programasFormacion", // Asegúrate de que el alias coincida con tu modelo
+        },
+      ],
+    });
+    if (Fichas.length > 0) {
+      res.status(200).json(Fichas);
+      return
+    } else {
+      res.status(404).json({ message: "No se encontraron fichas con el ID proporcionado." });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    logger.error(`Error al buscar la ficha: ${error}`);
+  }
+};
+

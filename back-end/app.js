@@ -76,8 +76,8 @@ AreaModel.hasMany(UnitModel, { foreignKey: "Id_Area", as: "unidades" })
 UnitModel.belongsTo(AreaModel, { foreignKey: "Id_Area", as: "areas" })
 
 //Programas de formacion
-AreaModel.hasMany(ProgramaModel, { foreignKey: "Id_Area", as: "programasFormacion" })
-ProgramaModel.belongsTo(UnitModel, { foreignKey: "Id_Area", as: "areas"})
+AreaModel.hasMany(ProgramaModel, { foreignKey: "Id_Area", as: "programasformacion" })
+ProgramaModel.belongsTo(AreaModel, { foreignKey: "Id_Area", as: "areas"})
 
 
 //Fichas
@@ -96,4 +96,4 @@ TurnoEspecialAprendizModel.hasMany(AbsenceModel,{foreignKey:"Id_TurnoEspecialApr
 
 //Funcionario No esta relacionado con ninguno sino hasta con Turno Especial....
 
-export { AreaModel, UnitModel, ProgramaModel } 
+export { AreaModel, UnitModel, ProgramaModel,FichasModel,TalentoHumanoModel } 

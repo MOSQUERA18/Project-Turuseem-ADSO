@@ -22,8 +22,6 @@ const CrudFichas = () => {
   const [fichasQuery, setFichasQuery] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddFichas, setStateAddFichas] = useState(false);
-  // const [onDoubleClickUnidad, setOnDoubleClickUnidad] = useState({});
-  // const [modalDialog, setModalDialog] = useState(false);
   const [desde, setDesde] = useState(0);
   const [hasta, setHasta] = useState(0);
   const [alerta, setAlerta] = useState({});
@@ -62,7 +60,7 @@ const CrudFichas = () => {
       }
     } catch (error) {
       setAlerta({
-        msg: `Error al cargar los registros!`,
+        msg: `Error al cargar las Ficha!`,
         error: true,
       });
       console.error(error);
@@ -92,7 +90,7 @@ const CrudFichas = () => {
       }
     } catch (error) {
       setAlerta({
-        msg: `Error al cargar los registros!`,
+        msg: `Error al Tratar de Cargar Las Fichas al Form`,
         error: true,
       });
       console.error(error);
@@ -219,7 +217,7 @@ const CrudFichas = () => {
                     // ]}
                   >
                     <td className="py-2 px-4 border-b">
-                      {fichas.Id_Ficha}
+                      {fichas.Id_Ficha} 
                     </td>
                     <td className="py-2 px-4 border-b">
                       {fichas.Fec_InicioEtapaLectiva}

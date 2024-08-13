@@ -1,5 +1,3 @@
-
-
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 // import axios from "axios";
@@ -19,13 +17,14 @@ const FormQueryFichas = ({ buttonForm, setFichasQuery }) => {
         },
       };
 
-      let URI = `/unidades/nombre/${query}`;
+      let URI = `/fichas/codFicha/${query}`;
       try {
-        const respuesta = await clieteAxios(URI, config);
+        const respuesta = await clieteAxios.get(URI, config);
         if ( respuesta.status == 200 ) {
             setFichasQuery(respuesta.data)
         } else {
           console.log("Error: " + respuesta.status);
+          
         }
       } catch (error) {
         console.error(error);
@@ -52,9 +51,9 @@ const FormQueryFichas = ({ buttonForm, setFichasQuery }) => {
         >
           <div className="mb-4">
             <input
-              type="text"
-              id="documentQuery"
-              placeholder="Buscar Aprendices..."
+              type="number"
+              id="fichasQuery"
+              placeholder="Buscar Fichas..."
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               value={searchQuery}
               onChange={(e) => {
@@ -63,6 +62,7 @@ const FormQueryFichas = ({ buttonForm, setFichasQuery }) => {
                 sendFormQuery(value);
               }}
             />
+            
           </div>
         </form>
       </div>

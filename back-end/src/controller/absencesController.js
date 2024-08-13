@@ -18,7 +18,7 @@ export const getAllAbsences = async (req, res) => {
         },
       ],
     });
-    if(inasistencias > 0){
+    if(inasistencias){
       res.json(200).json(inasistencias); //a todos los controllers toca agg esto para validar los datos
       return
     }else {
@@ -49,7 +49,7 @@ export const getAbsence = async (req, res) => {
         ],
       }
     );
-    if (inasistencia > 0) {
+    if (inasistencia) {
       res.status(200).json(inasistencia);
       return
     } else {
@@ -76,8 +76,8 @@ export const createAbsence = async (req, res) => {
       Id_TurnoRutinario_Aprendiz,
       Id_TurnoEspecial_Aprendiz,
     });
-    if(newInasistencia === 201){
-      res.json(newInasistencia);
+    if(newInasistencia){
+      res.status(201).json(newInasistencia);
       return
     }
     
@@ -156,7 +156,7 @@ export const getQueryInasistencia = async (req, res) => {
         },
       ],
     });
-    if(inasistencias > 0 ){
+    if(inasistencias){
       res.status(200).json(inasistencias);
       return
     }

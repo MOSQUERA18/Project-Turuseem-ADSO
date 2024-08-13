@@ -9,6 +9,7 @@ const ProgramaModel = db.define(
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
+      autoIncrement:true,
     },
     Nom_ProgramaFormacion: { type: DataTypes.STRING(65) },
     Tip_ProgramaFormacion: { type: DataTypes.ENUM('Tecnologo') },
