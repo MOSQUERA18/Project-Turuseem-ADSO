@@ -20,6 +20,6 @@ router
   .get(checkAuth, getFicha)
   .put(checkAuth, updateFicha)
   .delete(checkAuth, deleteFicha);
-router.get("/codFicha/:Id_Ficha", getQueryFicha)
+router.get("/codFicha/:Id_Ficha",checkAuth, getQueryFicha)
 
 export default router;

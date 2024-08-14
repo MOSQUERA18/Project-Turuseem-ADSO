@@ -23,7 +23,7 @@ export const getAllTurnosEspeciales = async (req, res) => {
         },
       ],
     });
-    if(turnosEspeciales){
+    if(turnosEspeciales.length>0){
       res.status(200).json(turnosEspeciales);
       return
     }
@@ -51,7 +51,7 @@ export const getTurnoEspecial = async (req, res) => {
         },
       ],
     });
-    if (turnoEspecial) {
+    if (turnoEspecial.length > 0) {
       res.status(200).json(turnoEspecial);
       return
     } else {

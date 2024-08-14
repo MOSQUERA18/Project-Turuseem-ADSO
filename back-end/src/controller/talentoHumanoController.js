@@ -29,7 +29,7 @@ export const getTalentoHumano = async (req, res) => {
       where: { Id_Talento_Humano: req.params.Id_Talento_Humano },
       include: [{ model: FichasModel, as: 'ficha' }]
     });
-    if (talento) {
+    if (talento.length > 0) {
       res.status(200).json(talento);
       return
     } else {

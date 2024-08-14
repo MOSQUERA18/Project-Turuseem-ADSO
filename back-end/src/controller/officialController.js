@@ -20,7 +20,7 @@ export const getFuncionario = async (req, res) => {
   try {
     const Funcionario = await OfficialModel.findByPk(req.params.Id_Funcionario);
     if (Funcionario > 0) {
-      res.status(200).json(Funcionarios);
+      res.status(200).json(Funcionario);
       return
     } else {
       res.status(404).json({ message: "Funcionario no encontrado" });
@@ -123,7 +123,7 @@ export const getQueryFuncionario = async (req, res) => {
         },
       },
     });
-    if(Funcionarios){
+    if(Funcionarios.length > 0){
       res.status(200).json(Funcionarios);
     }
     

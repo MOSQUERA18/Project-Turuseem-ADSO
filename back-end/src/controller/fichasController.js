@@ -13,7 +13,7 @@ export const getAllFichas = async (req, res) => {
         },
       ],
     });
-    if(Fichas){
+    if(Fichas.length>0){
       res.status(200).json(Fichas);
       return
     }
@@ -142,7 +142,7 @@ export const getQueryFicha = async (req, res) => {
         },
       ],
     });
-    if (Fichas.length > 0) {
+    if (Fichas) {
       res.status(200).json(Fichas);
       return
     } else {

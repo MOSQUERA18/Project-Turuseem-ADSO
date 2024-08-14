@@ -25,7 +25,7 @@ export const getFileCsv = async (req, res) => {
     const fileCsv = await FileCsvModel.findOne({
       where: { Id_Archivo_Csv: req.params.Id_Archivo_Csv },
     });
-    if (fileCsv) {
+    if (fileCsv.length>0) {
       res.status(200).json(fileCsv);
       return
     } else {
