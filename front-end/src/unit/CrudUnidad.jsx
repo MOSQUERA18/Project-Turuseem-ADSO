@@ -1,6 +1,7 @@
 import clieteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import { ReactSession } from 'react-client-session';
 
 import FormUnidades from "./formUnidades.jsx";
 import FormQueryUnidades from "./formQueryUnidades.jsx";
@@ -43,7 +44,7 @@ const CrudUnidades = () => {
   }, []);
 
   const getAllUnidades = async () => {
-    const token = localStorage.getItem("token");
+    const token = ReactSession.get("token");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -71,7 +72,7 @@ const CrudUnidades = () => {
 
   const getUnidad = async (Id_Unidad) => {
     setButtonForm("Actualizar");
-    const token = localStorage.getItem("token");
+    const token = ReactSession.get("token");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -111,7 +112,7 @@ const CrudUnidades = () => {
       cancelButtonText: "Cancelar",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const token = localStorage.getItem("token");
+        const token = ReactSession.get("token");
         const config = {
           headers: {
             "Content-Type": "application/json",

@@ -7,7 +7,8 @@ import { BsFillPeopleFill } from "react-icons/bs";
 import { IoDocumentText, IoSettings } from "react-icons/io5";
 import { PiNotebookFill } from "react-icons/pi";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
-import { FaClipboardCheck } from "react-icons/fa6";
+import { FaClipboardCheck, FaPeopleGroup } from "react-icons/fa6";
+
 
 export default function VerticalNav() {
   // let menuArray = [true, false, false];
@@ -158,6 +159,15 @@ export default function VerticalNav() {
               Fichas
             </Link>
           </button>
+          <button className="flex jusitfy-start items-center w-full  space-x-4 pl-3 focus:outline-none text-white focus:text-indigo-400 rounded border-y py-2 border-white">
+            <FaPeopleGroup size={22} />
+            <Link
+              to="funcionarios"
+              className="text-white text-base uppercase font-bold"
+            >
+              Funcionarios
+            </Link>
+          </button>
         </div>
         <div className="flex flex-col justify-between items-center h-full pb-6   px-6  w-full  space-y-15 ">
           <div className=" flex justify-between items-center w-full">
@@ -178,7 +188,7 @@ export default function VerticalNav() {
                 </p>
               </div>
             </div>
-            <IoSettings size={45} />
+            <IoSettings size={45} className="text-white"/>
           </div>
         </div>
       </div>

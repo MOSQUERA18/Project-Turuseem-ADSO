@@ -1,12 +1,11 @@
 import clieteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import { ReactSession } from 'react-client-session';
 
 import FormFichas from "./formFichas.jsx";
 import FormQueryFichas from "./formQueryFichas.jsx";
-// import ModalDialog from "./modalDialog.jsx";
 import Pagination from "../pagination.jsx";
-// import ImportarCSV from "./importarCSV.jsx";
 import Alerta from "../components/Alerta.jsx";
 
 import { MdDeleteOutline } from "react-icons/md";
@@ -41,7 +40,7 @@ const CrudFichas = () => {
   }, []);
 
   const getAllFichas = async () => {
-    const token = localStorage.getItem("token");
+    const token = ReactSession.get("token");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -69,7 +68,7 @@ const CrudFichas = () => {
 
   const getFicha = async (Id_Ficha) => {
     setButtonForm("Actualizar");
-    const token = localStorage.getItem("token");
+    const token = ReactSession.get("token");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -109,7 +108,7 @@ const CrudFichas = () => {
       cancelButtonText: "Cancelar",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const token = localStorage.getItem("token");
+        const token = ReactSession.get("token");
         const config = {
           headers: {
             "Content-Type": "application/json",

@@ -1,6 +1,7 @@
 import clieteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import { ReactSession } from 'react-client-session';
 
 import FormFuncionarios from "./formFuncionarios.jsx";
 import FormQueryFuncionarios from "./formQueryFuncionarios.jsx";
@@ -39,7 +40,7 @@ const CrudFuncionarios = () => {
   }, []);
 
   const getAllFuncionarios = async () => {
-    const token = localStorage.getItem("token");
+    const token = ReactSession.get("token");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -67,7 +68,7 @@ const CrudFuncionarios = () => {
 
   const getFuncionario = async (Id_Funcionario) => {
     setButtonForm("Actualizar");
-    const token = localStorage.getItem("token");
+    const token = ReactSession.get("token");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -107,7 +108,7 @@ const CrudFuncionarios = () => {
       cancelButtonText: "Cancelar",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const token = localStorage.getItem("token");
+        const token = ReactSession.get("token");
         const config = {
           headers: {
             "Content-Type": "application/json",

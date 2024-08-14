@@ -5,13 +5,14 @@
 // import axios from "axios";
 import { useEffect, useState } from "react";
 import clieteAxios from "../config/axios";
+import { ReactSession } from 'react-client-session';
 
 const FormQueryUnidades = ({ buttonForm, setUnidadQuery }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const sendFormQuery = async (query) => {
     if (query) {
-      const token = localStorage.getItem("token");
+      const token = ReactSession.get("token");
       const config = {
         headers: {
           "Content-Type": "application/json",

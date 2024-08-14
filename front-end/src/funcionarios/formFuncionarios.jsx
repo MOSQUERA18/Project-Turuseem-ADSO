@@ -1,5 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import clieteAxios from "../config/axios";
+import { ReactSession } from 'react-client-session';
 
 const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFuncionarios }) => {
   const [Id_Funcionario, setId_Funcionario] = useState("");
@@ -27,7 +30,7 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
 
   const sendForm = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
+    const token = ReactSession.get("token");
     const config = {
       headers: {
         "Content-Type": "application/json",
