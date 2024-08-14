@@ -10,17 +10,17 @@ import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { FaClipboardCheck } from "react-icons/fa6";
 
 export default function VerticalNav() {
-  let menuArray = [true, false, false];
+  // let menuArray = [true, false, false];
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [menu, setMenu] = useState(menuArray);
+  // const [menu, setMenu] = useState(menuArray);
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [show, setShow] = useState(true);
 
-  const setMenuValue = (props) => {
-    let newArr = [...menu];
-    newArr[props] = !newArr[props];
-    setMenu(newArr);
-  };
+  // const setMenuValue = (props) => {
+  //   let newArr = [...menu];
+  //   newArr[props] = !newArr[props];
+  //   setMenu(newArr);
+  // };
 
   return (
     <div>
