@@ -6,39 +6,43 @@ import { Link } from "react-router-dom";
 import clieteAxios from "../config/axios";
 import Alerta from "../components/Alerta";
 
-const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) => {
-  const [Nom_Unidad, setNom_Unidad] = useState("");
-  const [Hor_Apertura, setHor_Apertura] = useState("");
-  const [Hor_Cierre, setHor_Cierre] = useState("");
+const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
+  const [Id_Ficha, setId_Ficha] = useState("");
+  const [Fec_InicioEtapaLectiva,setFec_InicioEtapaLectiva] = useState("");
+  const [Fec_FinEtapaLectiva,setFec_FinEtapaLectiva] = useState("");
+  const [Can_Aprendices,setCan_Aprendices] = useState("")
+  const [Id_ProgramaFormacion, setId_ProgramaFormacion] = useState(""); // Cambiado a un valor único
   const [Estado, setEstado] = useState("");
-  const [Id_Area, setId_Area] = useState("");  
-  const [selectedArea, setSelectedArea] = useState(null);
-  const [Areas, setAreas] = useState([]);
+  const [selectedPrograma,setSelectedPrograma] = useState(null);
+  const [programasformacion, setProgramasFormacion] = useState([]); 
   const [alerta, setAlerta] = useState({});
+
 
   // Estado para mensajes
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(""); // 'success' o 'error'
 
   useEffect(() => {
-    const fetchAreas = async () => {
+    const fetchProgramas = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await clieteAxios.get('/areas', {
+        const response = await clieteAxios.get('/programa', {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
-        if(response.status ==200){
-          setAreas(response.data);
+        if (response.status === 200) {
+          console.log('Programas de formación:', response.data); // Imprime los datos para verificar
+          setProgramasFormacion(response.data);
         }
       } catch (error) {
-        console.error('Error fetching areas:', error);
+        console.error('Error fetching Programas:', error);
       }
     };
-
-    fetchAreas();
+  
+    fetchProgramas();
   }, []);
+  
 
   useEffect(() => {
     if (message) {
@@ -65,72 +69,79 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
       let respuestApi;
       if (buttonForm === "Actualizar") {
         respuestApi = await clieteAxios.put(
-          `/unidades/${unidad.Id_Unidad}`,
+          `/fichas/${fichas.Id_Ficha}`,
           {
-            Nom_Unidad,
-            Hor_Apertura,
-            Hor_Cierre,
-            Estado,
-            Id_Area,
+            Id_Ficha,
+            Fec_InicioEtapaLectiva,
+            Fec_FinEtapaLectiva,
+            Can_Aprendices,
+            Id_ProgramaFormacion,
+            Estado
+
           },
           config
         );
       } else if (buttonForm === "Enviar") {
         respuestApi = await clieteAxios.post(
-          `/unidades`,
+          `/fichas`,
           {
-            Nom_Unidad,
-            Hor_Apertura,
-            Hor_Cierre,
-            Estado,
-            Id_Area,
+            Id_Ficha,
+            Fec_InicioEtapaLectiva,
+            Fec_FinEtapaLectiva,
+            Can_Aprendices,
+            Id_ProgramaFormacion,
+            Estado
           },
           config
         );
       }
 
       if (respuestApi.status === 201 || respuestApi.status === 200) {
-        setMessage("Unidad registrada correctamente!");
+        setMessage("Ficha registrada correctamente!");
         setMessageType("success");
         clearForm();
-        getAllUnidades();
+        getAllFichas();
         updateTextButton("Enviar");
       } else {
-        setMessage(respuestApi.error.message || "Error al registrar la unidad.");
+        setMessage(respuestApi.data.message || "Error al registrar la Ficha.");
         setMessageType("error");
       }
     } catch (error) {
-      // setMessage("Error al registrar la unidad, Campos Faltantes.");
       setAlerta({
         msg: "Todos los campos son obligatorios!",
         error: true,
       });
+      // setMessage("Error al registrar la Ficha, Por Campos Faltantes.");
       setMessageType("error");
     }
   };
 
   const clearForm = () => {
-    setNom_Unidad("");
-    setHor_Apertura("");
-    setHor_Cierre("");
-    setEstado("");
-    setId_Area("");
-    setSelectedArea(null);
+    setId_Ficha(""),
+    setFec_InicioEtapaLectiva(""),
+    setFec_FinEtapaLectiva(""),
+    setCan_Aprendices(""),
+    setId_ProgramaFormacion(""),
+    setEstado("")
+    setSelectedPrograma(null);
+    
   };
 
   const setData = () => {
-    setNom_Unidad(unidad.Nom_Unidad);
-    setHor_Apertura(unidad.Hor_Apertura);
-    setHor_Cierre(unidad.Hor_Cierre);
-    setEstado(unidad.Estado);
-    setId_Area(unidad.Id_Area);
-    const selected = Areas.find(area => area.Id_Area === unidad.Id_Area);
-    setSelectedArea(selected || null);
+    setId_Ficha(fichas.Id_Ficha);
+    setFec_InicioEtapaLectiva(fichas.Fec_InicioEtapaLectiva);
+    setFec_FinEtapaLectiva(fichas.Fec_FinEtapaLectiva);
+    setCan_Aprendices(fichas.Can_Aprendices);
+    setId_ProgramaFormacion(fichas.Id_ProgramaFormacion || '');
+    setEstado(fichas.Estado);
+    const selected = programasformacion.find(programa => programa.Id_ProgramaFormacion === fichas.Id_ProgramaFormacion);
+    setSelectedPrograma(selected || null);
+    
   };
 
   useEffect(() => {
     setData();
-  }, [unidad]);
+  }, [fichas]);
   const { msg } = alerta;
 
   return (
@@ -143,7 +154,7 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
         >
           {msg && <Alerta alerta={alerta} />}
           <h1 className="font-bold text-green-600 text-3xl uppercase text-center my-5">
-            Registrar Unidades
+            Registro De Fichas
           </h1>
 
           {message && (
@@ -154,14 +165,14 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
 
           <div className="mb-3">
             <label className="text-gray-700 uppercase font-bold">
-              Nombre Unidad
+              Numero de Ficha :
             </label>
             <input
-              type="text"
-              id="nombre"
-              placeholder="Nombre"
-              value={Nom_Unidad}
-              onChange={(e) => setNom_Unidad(e.target.value)}
+              type="number"
+              id="Id_Ficha"
+              placeholder="Numero"
+              value={Id_Ficha}
+              onChange={(e) => setId_Ficha(e.target.value)}
               className="w-full p-2 border rounded"
             />
           </div>
@@ -169,29 +180,65 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
           <div className="flex items-center mb-3 space-x-4">
             <div className="w-1/2">
               <label className="text-gray-700 uppercase font-bold">
-                Hora Apertura:
+                Fecha Inicio Etapa Lectiva:
               </label>
               <input
-                type="time"
-                id="hora_apertura"
-                value={Hor_Apertura}
-                onChange={(e) => setHor_Apertura(e.target.value)}
+                type="date"
+                id="fec_inicioetapalectiva"
+                value={Fec_InicioEtapaLectiva}
+                onChange={(e) => setFec_InicioEtapaLectiva(e.target.value)}
                 className="w-full p-2 border rounded"
               />
             </div>
 
             <div className="w-1/2">
               <label className="text-gray-700 uppercase font-bold">
-                Hora Cierre:
+              Fecha Fin Etapa Lectiva:
               </label>
               <input
-                type="time"
-                id="hora_cierre"
-                value={Hor_Cierre}
-                onChange={(e) => setHor_Cierre(e.target.value)}
+                type="date"
+                id="fec_finetapalectiva"
+                value={Fec_FinEtapaLectiva}
+                onChange={(e) => setFec_FinEtapaLectiva(e.target.value)}
                 className="w-full p-2 border rounded"
               />
             </div>
+          </div>
+
+          <div className="mb-3">
+          <div className="w-1/2">
+              <label className="text-gray-700 uppercase font-bold">
+              Cantidad de Aprendices:
+              </label>
+              <input
+                type="number"
+                id="can_aprendices"
+                value={Can_Aprendices}
+                onChange={(e) => setCan_Aprendices(e.target.value)}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+          </div>
+
+
+
+          <div className="mb-3">
+            <label className="text-gray-700 uppercase font-bold">
+              Nombre del Programa de Formacion
+            </label>
+            <select
+              id="Id_ProgramaFormacion"
+              value={Id_ProgramaFormacion}
+              onChange={(e) => setId_ProgramaFormacion(e.target.value)}
+              className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+            >
+              <option value="">Seleccione un Nombre de Programa:</option>
+              {programasformacion.map((programasFormacion) => (
+                <option key={programasFormacion.Id_ProgramaFormacion} value={programasFormacion.Id_ProgramaFormacion}>
+                  {programasFormacion.Nom_ProgramaFormacion}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="mb-3">
@@ -210,30 +257,14 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
             </select>
           </div>
 
-          <div className="mb-3">
-            <label className="text-gray-700 uppercase font-bold">
-              Área Perteneciente: 
-            </label>
-            <select
-              id="id_area"
-              value={Id_Area}
-              onChange={(e) => setId_Area(e.target.value)}
-              className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-            >
-              <option value="">Seleccione un Área:</option>
-              {Areas.map((area) => (
-                <option key={area.Id_Area} value={area.Id_Area}>
-                  {area.Nom_Area}
-                </option>
-              ))}
-            </select>
-          </div>
+          
 
           <div className="flex justify-around">
             <input
               type="submit"
               id="button"
               value={buttonForm}
+              
               className="bg-green-600 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-700 md:w-auto"
             />
             <input
@@ -242,7 +273,10 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
               value="Limpiar"
               onClick={() => {
                 clearForm();
+                updateTextButton("Enviar")
+                
               }}
+              
               className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-500 md:w-auto"
               aria-label="Limpiar"
             />
@@ -253,4 +287,4 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
   );
 };
 
-export default FormUnidades;
+export default FormFichas;

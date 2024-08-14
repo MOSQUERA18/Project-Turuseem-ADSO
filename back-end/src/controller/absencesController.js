@@ -18,9 +18,9 @@ export const getAllAbsences = async (req, res) => {
         },
       ],
     });
-    if(inasistencias > 0){
+    if(inasistencias){
       res.json(200).json(inasistencias); //a todos los controllers toca agg esto para validar los datos
-      retunr
+      return
     }else {
       res.status(404).json({
         message: "No se encontraron inasistencias.",
@@ -49,7 +49,7 @@ export const getAbsence = async (req, res) => {
         ],
       }
     );
-    if (inasistencia > 0) {
+    if (inasistencia) {
       res.status(200).json(inasistencia);
       return
     } else {
@@ -76,7 +76,11 @@ export const createAbsence = async (req, res) => {
       Id_TurnoRutinario_Aprendiz,
       Id_TurnoEspecial_Aprendiz,
     });
-    res.status(201).json(newInasistencia);
+    if(newInasistencia){
+      res.status(201).json(newInasistencia);
+      return
+    }
+    
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al crear la inasistencia: ${error}`);
@@ -107,6 +111,7 @@ export const updateAbsence = async (req, res) => {
       res.status(404).json({ message: "Inasistencia no encontrada" });
     } else {
       res.json({ message: "Inasistencia actualizada correctamente" });
+      return
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -121,8 +126,10 @@ export const deleteAbsence = async (req, res) => {
     });
     if (result === 0) {
       res.status(404).json({ message: "Inasistencia no encontrada" });
+      
     } else {
       res.json({ message: "Inasistencia eliminada correctamente" });
+      return
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -149,7 +156,10 @@ export const getQueryInasistencia = async (req, res) => {
         },
       ],
     });
-    res.json(inasistencias);
+    if(inasistencias){
+      res.status(200).json(inasistencias);
+      return
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al buscar la inasistencia: ${error}`);

@@ -18,7 +18,10 @@ export const getAllTurnosEspecialesAprendices = async (req, res) => {
         },
       ],
     });
-    res.json(turnosEspecialesAprendices);
+    if(turnosEspecialesAprendices > 0){
+      res.status(200).json(turnosEspecialesAprendices);
+      return
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al obtener los turnos especiales de aprendices: ${error}`);
@@ -41,6 +44,7 @@ export const getTurnoEspecialAprendiz = async (req, res) => {
     });
     if (turnoEspecialAprendiz) {
       res.json(turnoEspecialAprendiz);
+      return
     } else {
       res.status(404).json({ message: "Turno especial de aprendiz no encontrado" });
     }
@@ -58,7 +62,10 @@ export const createTurnoEspecialAprendiz = async (req, res) => {
       Id_TurnoEspecial,
       Id_Aprendiz,
     });
+    if(newTurnoEspecialAprendiz){
     res.status(201).json(newTurnoEspecialAprendiz);
+    return
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al crear el turno especial de aprendiz: ${error}`);
@@ -82,6 +89,7 @@ export const updateTurnoEspecialAprendiz = async (req, res) => {
       res.status(404).json({ message: "Turno especial de aprendiz no encontrado" });
     } else {
       res.json({ message: "Turno especial de aprendiz actualizado correctamente" });
+      return
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -98,6 +106,7 @@ export const deleteTurnoEspecialAprendiz = async (req, res) => {
       res.status(404).json({ message: "Turno especial de aprendiz no encontrado" });
     } else {
       res.json({ message: "Turno especial de aprendiz eliminado correctamente" });
+      return
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -124,7 +133,9 @@ export const getQueryTurnoEspecialAprendiz = async (req, res) => {
         },
       ],
     });
+    if(turnosEspecialesAprendices === 200){
     res.json(turnosEspecialesAprendices);
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al buscar el turno especial de aprendiz: ${error}`);

@@ -5,7 +5,11 @@ import { logger } from "../middleware/logMiddleware.js";
 export const getAllFuncionarios = async (req, res) => {
   try {
     const Funcionarios = await OfficialModel.findAll();
-    res.json(Funcionarios);
+    if( Funcionarios > 0){
+      res.status(200).json(Funcionarios);
+      return
+    }
+    
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al obtener los funcionarios: ${error}`);
@@ -15,8 +19,9 @@ export const getAllFuncionarios = async (req, res) => {
 export const getFuncionario = async (req, res) => {
   try {
     const Funcionario = await OfficialModel.findByPk(req.params.Id_Funcionario);
-    if (Funcionario) {
-      res.json(Funcionario);
+    if (Funcionario > 0) {
+      res.status(200).json(Funcionarios);
+      return
     } else {
       res.status(404).json({ message: "Funcionario no encontrado" });
     }
@@ -46,7 +51,11 @@ export const createFuncionario = async (req, res) => {
       Estado,
       Cargo,
     });
-    res.status(201).json(NewFuncionario);
+    if(NewFuncionario){
+      res.status(201).json(NewFuncionario);
+      return
+    }
+    
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al crear el funcionario: ${error}`);
@@ -80,6 +89,7 @@ export const updateFuncionario = async (req, res) => {
       res.status(404).json({ message: "Funcionario no encontrado" });
     } else {
       res.json({ message: "Funcionario actualizado correctamente" });
+      return
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -96,6 +106,7 @@ export const deleteFuncionario = async (req, res) => {
       res.status(404).json({ message: "Funcionario no encontrado" });
     } else {
       res.json({ message: "Funcionario eliminado correctamente" });
+      return
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -112,7 +123,10 @@ export const getQueryFuncionario = async (req, res) => {
         },
       },
     });
-    res.json(Funcionarios);
+    if(Funcionarios){
+      res.status(200).json(Funcionarios);
+    }
+    
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al buscar el funcionario: ${error}`);
