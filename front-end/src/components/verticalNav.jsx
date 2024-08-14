@@ -25,7 +25,7 @@ export default function VerticalNav() {
 
   return (
     <div>
-      <div className=" bg-green-500 xl:hidden flex justify-between w-full p-6 items-center ">
+      <div className=" bg-green-500 xl:hidden flex justify-between w-full p-6 items-center">
         <div className="flex justify-between  items-center space-x-3">
           <img src={logoTuruseem} className="w-12 drop-shadow-2xl" />
 
