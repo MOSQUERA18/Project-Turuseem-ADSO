@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import axios from "axios";
+import { ReactSession } from 'react-client-session';
 
 const ImportarCSV = ({ URI }) => {
   const [fileInput, setFileInput] = useState(null);
@@ -12,7 +13,7 @@ const ImportarCSV = ({ URI }) => {
       return;
     }
 
-    const token = localStorage.getItem("token");
+    const token = ReactSession.get("token");
     const formData = new FormData();
     formData.append("file", fileInput);
 
