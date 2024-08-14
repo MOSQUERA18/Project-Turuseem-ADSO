@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Alerta from "../components/Alerta";
@@ -29,8 +30,9 @@ const LoginForm = () => {
         Cor_User: Cor_User,
         password: password,
       });
-      ReactSession.setStoreType("localStorage");
-      ReactSession.set("token", data.token);
+      // ReactSession.setStoreType("localStorage");
+      ReactSession.set("token", data.token)
+
       setAuth(data);
       navigate("/admin");
     } catch (error) {
