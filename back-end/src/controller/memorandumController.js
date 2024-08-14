@@ -40,7 +40,7 @@ export const getMemorandum = async (req, res) => {
         },
       ],
     });
-    if (memorandum) {
+    if (memorandum.length>0) {
       res.status(200).json(memorandum);
       return
     } else {

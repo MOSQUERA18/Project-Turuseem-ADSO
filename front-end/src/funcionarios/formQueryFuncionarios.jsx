@@ -1,13 +1,10 @@
-
-
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-// import axios from "axios";
 import { useEffect, useState } from "react";
 import clieteAxios from "../config/axios";
 import { ReactSession } from 'react-client-session';
 
-const FormQueryUnidades = ({ buttonForm, setUnidadQuery }) => {
+const FormQueryFuncionarios = ({ buttonForm, setFuncionarioQuery }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const sendFormQuery = async (query) => {
@@ -20,26 +17,25 @@ const FormQueryUnidades = ({ buttonForm, setUnidadQuery }) => {
         },
       };
 
-      let URI = `/unidades/nombre/${query}`;
+      let URI = `/funcionarios/${query}`;
       try {
         const respuesta = await clieteAxios(URI, config);
         if ( respuesta.status == 200 ) {
-            setUnidadQuery(respuesta.data)
+            setFuncionarioQuery(respuesta.data)
         } else {
           console.log("Error: " + respuesta.status);
         }
       } catch (error) {
         console.error(error);
-        setUnidadQuery([]);
+        setFuncionarioQuery([]);
       }
     } else {
-        setUnidadQuery([]);
+        setFuncionarioQuery([]);
     }
   };
 
   useEffect(() => {
-    setUnidadQuery([]);
-
+    setFuncionarioQuery([]);
     setSearchQuery("");
   }, [buttonForm]);
 
@@ -55,7 +51,7 @@ const FormQueryUnidades = ({ buttonForm, setUnidadQuery }) => {
             <input
               type="text"
               id="documentQuery"
-              placeholder="Buscar Aprendices..."
+              placeholder="Buscar Funcionarios..."
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               value={searchQuery}
               onChange={(e) => {
@@ -70,4 +66,4 @@ const FormQueryUnidades = ({ buttonForm, setUnidadQuery }) => {
     </>
   );
 };
-export default FormQueryUnidades;
+export default FormQueryFuncionarios;

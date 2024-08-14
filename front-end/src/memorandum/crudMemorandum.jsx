@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import { ReactSession } from 'react-client-session';
 import FormMemorandum from "./formMemorandum.jsx";
 import FormQueryMemorandum from "./formQueryMemorandum.jsx";
 import Pagination from "../pagination.jsx";
@@ -36,7 +37,7 @@ const CrudMemorandum = () => {
   }, []);
 
   const getAllMemorandum = async () => {
-    const token = localStorage.getItem("token");
+    const token = ReactSession.get("token");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +58,7 @@ const CrudMemorandum = () => {
 
   const getMemorandum = async (Id_Memorando) => {
     setButtonForm("Actualizar");
-    const token = localStorage.getItem("token");
+    const token = ReactSession.get("token");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -94,7 +95,7 @@ const CrudMemorandum = () => {
       cancelButtonText: "Cancelar",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const token = localStorage.getItem("token");
+        const token = ReactSession.get("token");
         const config = {
           headers: {
             "Content-Type": "application/json",

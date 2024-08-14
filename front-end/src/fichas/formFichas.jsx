@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { ReactSession } from 'react-client-session';
 import clieteAxios from "../config/axios";
 import Alerta from "../components/Alerta";
 
@@ -25,7 +25,7 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
   useEffect(() => {
     const fetchProgramas = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = ReactSession.get("token");
         const response = await clieteAxios.get('/programa', {
           headers: {
             Authorization: `Bearer ${token}`
@@ -57,7 +57,7 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
 
   const sendForm = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
+    const token = ReactSession.get("token");
     const config = {
       headers: {
         "Content-Type": "application/json",

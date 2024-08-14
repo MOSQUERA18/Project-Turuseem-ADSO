@@ -2,9 +2,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import clieteAxios from "../config/axios";
 import Alerta from "../components/Alerta";
+import { ReactSession } from 'react-client-session';
 
 const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) => {
   const [Nom_Unidad, setNom_Unidad] = useState("");
@@ -23,7 +23,7 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
   useEffect(() => {
     const fetchAreas = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = ReactSession.get("token");
         const response = await clieteAxios.get('/areas', {
           headers: {
             Authorization: `Bearer ${token}`
@@ -53,7 +53,7 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
 
   const sendForm = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
+    const token = ReactSession.get("token");
     const config = {
       headers: {
         "Content-Type": "application/json",

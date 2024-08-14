@@ -3,11 +3,9 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
 
-import FormUnidades from "./formUnidades.jsx";
-import FormQueryUnidades from "./formQueryUnidades.jsx";
-// import ModalDialog from "./modalDialog.jsx";
+import FormFuncionarios from "./formFuncionarios.jsx";
+import FormQueryFuncionarios from "./formQueryFuncionarios.jsx";
 import Pagination from "../pagination.jsx";
-// import ImportarCSV from "./importarCSV.jsx";
 import Alerta from "../components/Alerta.jsx";
 
 import { MdDeleteOutline } from "react-icons/md";
@@ -16,34 +14,32 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 
-const URI = "unidades";
+const URI = "funcionarios";
 
-const CrudUnidades = () => {
-  const [unidadList, setUnidadList] = useState([]);
-  const [unidadQuery, setUnidadQuery] = useState([]);
+const CrudFuncionarios = () => {
+  const [funcionarioList, setFuncionarioList] = useState([]);
+  const [funcionarioQuery, setFuncionarioQuery] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
-  const [stateAddUnidad, setStateAddUnidad] = useState(false);
-  // const [onDoubleClickUnidad, setOnDoubleClickUnidad] = useState({});
-  // const [modalDialog, setModalDialog] = useState(false);
+  const [stateAddFuncionario, setStateAddFuncionario] = useState(false);
   const [desde, setDesde] = useState(0);
   const [hasta, setHasta] = useState(0);
   const [alerta, setAlerta] = useState({});
 
-  const [unidad, setUnidad] = useState({
-    // Id_Unidad: "",
-    Nom_Unidad: "",
-    Hor_Apertura: "",
-    Hor_Cierre: "",
+  const [funcionario, setFuncionario] = useState({
+    Id_Funcionario: "",
+    Nom_Funcionario: "",
+    Ape_Funcionario: "",
+    Genero: "",
+    Tel_Funcionario: "",
     Estado: "",
-    Id_Area: "",
+    Cargo: "",
   });
 
   useEffect(() => {
-    getAllUnidades();
-    
+    getAllFuncionarios();
   }, []);
 
-  const getAllUnidades = async () => {
+  const getAllFuncionarios = async () => {
     const token = ReactSession.get("token");
     const config = {
       headers: {
@@ -54,7 +50,7 @@ const CrudUnidades = () => {
     try {
       const respuestApi = await clieteAxios(URI, config);
       if (respuestApi.status === 200) {
-        setUnidadList(respuestApi.data);
+        setFuncionarioList(respuestApi.data);
       } else {
         setAlerta({
           msg: `Error al cargar los registros!`,
@@ -70,7 +66,7 @@ const CrudUnidades = () => {
     }
   };
 
-  const getUnidad = async (Id_Unidad) => {
+  const getFuncionario = async (Id_Funcionario) => {
     setButtonForm("Actualizar");
     const token = ReactSession.get("token");
     const config = {
@@ -80,9 +76,9 @@ const CrudUnidades = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(`${URI}/${Id_Unidad}`, config);
+      const respuestApi = await clieteAxios(`${URI}/${Id_Funcionario}`, config);
       if (respuestApi.status === 200) {
-        setUnidad({
+        setFuncionario({
           ...respuestApi.data,
         });
       } else {
@@ -100,7 +96,7 @@ const CrudUnidades = () => {
     }
   };
 
-  const deleteUnidad = (Id_Unidad) => {
+  const deleteFuncionario = (Id_Funcionario) => {
     Swal.fire({
       title: "¿Estas seguro?",
       text: "No podrás revertir esto!",
@@ -121,11 +117,11 @@ const CrudUnidades = () => {
         };
         try {
           const respuestApi = await clieteAxios.delete(
-            `/${URI}/${Id_Unidad}`,
+            `/${URI}/${Id_Funcionario}`,
             config
           );
           if (respuestApi.status === 200) {
-            getAllUnidades();  // Refrescar la lista después de borrar
+            getAllFuncionarios();
             Swal.fire({
               title: "Borrado!",
               text: "El registro ha sido borrado.",
@@ -158,97 +154,88 @@ const CrudUnidades = () => {
         <button
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
           onClick={() => {
-            setStateAddUnidad(!stateAddUnidad);
+            setStateAddFuncionario(!stateAddFuncionario);
           }}
         >
-          {stateAddUnidad ? (
+          {stateAddFuncionario ? (
             <AiOutlineMinusCircle size={16} className="me-2" />
           ) : (
             <IoMdPersonAdd size={16} className="me-2" />
           )}
-          {stateAddUnidad ? "Ocultar" : "Agregar"}
+          {stateAddFuncionario ? "Ocultar" : "Agregar"}
         </button>
       </div>
       <div className="overflow-x-auto">
         <div className="flex justify-between">
           <div>
             <h1 className="font-semibold text-lg text-gray-700">
-              Buscar Por Nombre...
+              Buscar Por Documento...
             </h1>
-            <FormQueryUnidades
-              getUnidad={getUnidad}
-              deleteUnidad={deleteUnidad}
+            <FormQueryFuncionarios
+              getFuncionario={getFuncionario}
+              deleteFuncionario={deleteFuncionario}
               buttonForm={buttonForm}
-              unidadQuery={unidadQuery}
-              setUnidadQuery={setUnidadQuery}
+              funcionarioQuery={funcionarioQuery}
+              setFuncionarioQuery={setFuncionarioQuery}
             />
           </div>
-          {/* <div>
-            <h1 className="font-semibold text-lg text-gray-700">
-              Subir Archivo CSV
-            </h1>
-            <ImportarCSV URI={URI} />
-          </div> */}
         </div>
         <hr />
-        {/* <h2 className="font-semibold mb-4 text-lg text-gray-700 mt-3">
-          Doble Click sobre la unidad para ver información detallada...
-        </h2> */}
         {msg && <Alerta alerta={alerta} />}
         <table className="min-w-full bg-white text-center text-sm">
           <thead className="text-white bg-green-700">
             <tr className="">
               <th className="py-2 px-4 border-2 border-b-gray-500">ID</th>
               <th className="py-2 px-4 border-2 border-b-gray-500">Nombre</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Hora Apertura</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Hora Cierre</th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Apellido</th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Género</th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Teléfono</th>
               <th className="py-2 px-4 border-2 border-b-gray-500">Estado</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Área</th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Cargo</th>
               <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {(unidadQuery.length ? unidadQuery : unidadList).map(
-              (unidad, indice) =>
+            {(funcionarioQuery.length ? funcionarioQuery : funcionarioList).map(
+              (funcionario, indice) =>
                 indice >= desde && indice < hasta ? (
                   <tr
-                    key={unidad.Id_Unidad}
+                    key={funcionario.Id_Funcionario}
                     className="odd:bg-white even:bg-gray-100 select-none"
-                    // onDoubleClick={() => [
-                    //   // setOnDoubleClickUnidad(unidad),
-                    //   setModalDialog(true),
-                    // ]}
                   >
                     <td className="py-2 px-4 border-b">
-                      {unidad.Id_Unidad}
+                      {funcionario.Id_Funcionario}
                     </td>
                     <td className="py-2 px-4 border-b">
-                      {unidad.Nom_Unidad}
+                      {funcionario.Nom_Funcionario}
                     </td>
                     <td className="py-2 px-4 border-b">
-                      {unidad.Hor_Apertura}
+                      {funcionario.Ape_Funcionario}
                     </td>
                     <td className="py-2 px-4 border-b">
-                      {unidad.Hor_Cierre}
+                      {funcionario.Genero}
                     </td>
                     <td className="py-2 px-4 border-b">
-                      {unidad.Estado}
+                      {funcionario.Tel_Funcionario}
                     </td>
                     <td className="py-2 px-4 border-b">
-                      {unidad.areas.Nom_Area} {/* Puedes reemplazar esto por el nombre del área si lo tienes disponible */}
+                      {funcionario.Estado}
+                    </td>
+                    <td className="py-2 px-4 border-b">
+                      {funcionario.Cargo}
                     </td>
                     <td className="py-2 px-4 border-b">
                       <button
                         onClick={() => [
-                          getUnidad(unidad.Id_Unidad),
-                          setStateAddUnidad(true),
+                          getFuncionario(funcionario.Id_Funcionario),
+                          setStateAddFuncionario(true),
                         ]}
                         className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
                       >
                         <FaRegEdit />
                       </button>
                       <button
-                        onClick={() => deleteUnidad(unidad.Id_Unidad)}
+                        onClick={() => deleteFuncionario(funcionario.Id_Funcionario)}
                         className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
                       >
                         <MdDeleteOutline />
@@ -264,30 +251,19 @@ const CrudUnidades = () => {
       </div>
       <Pagination URI={URI} setDesde={setDesde} setHasta={setHasta} />
       <hr />
-      {stateAddUnidad ? (
-        <FormUnidades
+      {stateAddFuncionario ? (
+        <FormFuncionarios
           buttonForm={buttonForm}
-          unidad={unidad}
+          funcionario={funcionario}
           updateTextButton={updateTextButton}
-          setUnidad={setUnidad}
-          getAllUnidades={getAllUnidades}
+          setFuncionario={setFuncionario}
+          getAllFuncionarios={getAllFuncionarios}
         />
       ) : null}
       <hr />
-
-      {/* {modalDialog ? (
-        <ModalDialog
-          getUnidad={getUnidad}
-          deleteUnidad={deleteUnidad}
-          onDoubleClickUnidad={onDoubleClickUnidad}
-          setModalDialog={setModalDialog}
-          setStateAddUnidad={setStateAddUnidad}
-          setUnidad={setUnidad}
-        />
-      ) : null} */}
       <Outlet />
     </>
   );
 };
 
-export default CrudUnidades;
+export default CrudFuncionarios;

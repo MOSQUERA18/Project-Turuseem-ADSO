@@ -13,7 +13,9 @@ export const getAllProgramas = async (req, res) => {
         },
       ],
     });
-    res.json(Programas);
+    if(Programas.length>0){
+      res.status(200).json(Programas);
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al obtener los programas: ${error}`);
@@ -33,8 +35,8 @@ export const getPrograma = async (req, res) => {
         ],
       }
     );
-    if (Programa) {
-      res.json(Programa);
+    if (Programa.length > 0 ) {
+      res.status(200).json(Programa);
     } else {
       res.status(404).json({ message: "Programa no encontrado" });
     }
