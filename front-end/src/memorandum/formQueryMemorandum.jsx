@@ -5,6 +5,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { BsSendArrowUp } from "react-icons/bs";
 import { MdOutlinePreview } from "react-icons/md";
 import clieteAxios from "../config/axios";
+import { ReactSession } from 'react-client-session';
 
 // eslint-disable-next-line react/prop-types
 const FormQueryMemorandum = ({
@@ -17,7 +18,7 @@ const FormQueryMemorandum = ({
 
   const sendFormQuery = async (Id_Memorando) => {
     if (Id_Memorando) {
-      const token = localStorage.getItem("token");
+      const token = ReactSession.get("token");
       const config = {
         headers: {
           "Content-Type": "application/json",

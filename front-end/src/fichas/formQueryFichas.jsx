@@ -1,11 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-// import axios from "axios";
+import { ReactSession } from 'react-client-session';
 import { useEffect, useState } from "react";
 import clieteAxios from "../config/axios";
-import { ReactSession } from 'react-client-session';
 
-const FormQueryUnidades = ({ buttonForm, setUnidadQuery }) => {
+const FormQueryFichas = ({ buttonForm, setFichasQuery }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const sendFormQuery = async (query) => {
@@ -18,25 +17,26 @@ const FormQueryUnidades = ({ buttonForm, setUnidadQuery }) => {
         },
       };
 
-      let URI = `/unidades/nombre/${query}`;
+      let URI = `/fichas/codFicha/${query}`;
       try {
-        const respuesta = await clieteAxios(URI, config);
+        const respuesta = await clieteAxios.get(URI, config);
         if ( respuesta.status == 200 ) {
-            setUnidadQuery(respuesta.data)
+            setFichasQuery(respuesta.data)
         } else {
           console.log("Error: " + respuesta.status);
+          
         }
       } catch (error) {
         console.error(error);
-        setUnidadQuery([]);
+        setFichasQuery([]);
       }
     } else {
-        setUnidadQuery([]);
+        setFichasQuery([]);
     }
   };
 
   useEffect(() => {
-    setUnidadQuery([]);
+    setFichasQuery([]);
 
     setSearchQuery("");
   }, [buttonForm]);
@@ -51,9 +51,9 @@ const FormQueryUnidades = ({ buttonForm, setUnidadQuery }) => {
         >
           <div className="mb-4">
             <input
-              type="text"
-              id="documentQuery"
-              placeholder="Buscar Aprendices..."
+              type="number"
+              id="fichasQuery"
+              placeholder="Buscar Fichas..."
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               value={searchQuery}
               onChange={(e) => {
@@ -62,10 +62,11 @@ const FormQueryUnidades = ({ buttonForm, setUnidadQuery }) => {
                 sendFormQuery(value);
               }}
             />
+            
           </div>
         </form>
       </div>
     </>
   );
 };
-export default FormQueryUnidades;
+export default FormQueryFichas;

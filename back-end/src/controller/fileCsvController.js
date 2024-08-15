@@ -6,6 +6,7 @@ export const getAllFileCsvs = async (req, res) => {
     const fileCsvs = await FileCsvModel.findAll();
     if (fileCsvs.length > 0) {
       res.status(200).json(fileCsvs);
+      return
     } else {
       res.status(404).json({
         message: "No se encontraron archivos CSV.",
@@ -24,8 +25,9 @@ export const getFileCsv = async (req, res) => {
     const fileCsv = await FileCsvModel.findOne({
       where: { Id_Archivo_Csv: req.params.Id_Archivo_Csv },
     });
-    if (fileCsv) {
+    if (fileCsv.length>0) {
       res.status(200).json(fileCsv);
+      return
     } else {
       res.status(404).json({
         message: "Archivo CSV no encontrado.",
@@ -45,6 +47,7 @@ export const createFileCsv = async (req, res) => {
     res.status(201).json({
       message: "Archivo CSV registrado correctamente!",
       data: newFileCsv,
+      
     });
   } catch (error) {
     logger.error("Error creating file CSV: ", error.message);
@@ -63,7 +66,9 @@ export const updateFileCsv = async (req, res) => {
     if (updated) {
       res.json({
         message: "Archivo CSV actualizado correctamente!",
+        
       });
+      return
     } else {
       res.status(404).json({
         message: "Archivo CSV no encontrado.",
@@ -87,6 +92,7 @@ export const deleteFileCsv = async (req, res) => {
       res.json({
         message: "Archivo CSV borrado correctamente!",
       });
+      return
     } else {
       res.status(404).json({
         message: "Archivo CSV no encontrado.",

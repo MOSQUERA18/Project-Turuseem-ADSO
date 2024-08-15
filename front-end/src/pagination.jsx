@@ -2,9 +2,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import clieteAxios from "./config/axios";
+import { ReactSession } from 'react-client-session';
 
 const Pagination = ({ URI, setDesde, setHasta }) => {
   const [numRegistros, setNumRegistros] = useState(0);
@@ -14,7 +14,7 @@ const Pagination = ({ URI, setDesde, setHasta }) => {
   const [botones, setBotones] = useState([]);
 
   const GetAllApprenticess = async () => {
-    const token = localStorage.getItem("token");
+    const token = ReactSession.get("token");
     const config = {
       headers: {
         "Content-Type": "application/json",

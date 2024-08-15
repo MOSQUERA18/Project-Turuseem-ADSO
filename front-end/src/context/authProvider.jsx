@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect, createContext } from "react";
 import clieteAxios from "../config/axios";
+import { ReactSession } from 'react-client-session';
 
 const AuthContext = createContext()
 
@@ -12,7 +13,7 @@ const AuthProvider = ({children}) => {
 
     useEffect(() => {
         const autenticarUser = async () => {
-            const token = localStorage.getItem('token')
+            const token = ReactSession.get('token')
             if (!token) {
                 setCargando(false)
                 return
@@ -20,10 +21,10 @@ const AuthProvider = ({children}) => {
 
             const config = {
                 headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
-                }
-            }
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`, // Asegúrate de que el token esté correctamente formateado
+                },
+              };
 
             try {
                 const url = `/api/user/perfil`
@@ -39,7 +40,7 @@ const AuthProvider = ({children}) => {
     }, [])
 
     const cerrarSesion = () => {
-        localStorage.removeItem('token')
+        ReactSession.remove('token')
         setAuth({})
     }
     return (

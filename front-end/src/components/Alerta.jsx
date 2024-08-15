@@ -9,8 +9,6 @@ function Alerta({alerta}) {
             {alerta.msg}
         </div>
 
-
-
         </>
     )
 }

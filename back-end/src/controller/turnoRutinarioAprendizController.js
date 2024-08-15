@@ -18,7 +18,9 @@ export const getAllTurnosRutinariosAprendices = async (req, res) => {
         },
       ],
     });
-    res.json(turnosRutinariosAprendices);
+    if(turnosRutinariosAprendices.length>0){
+      res.status(200).json(turnosRutinariosAprendices);
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al obtener los turnos rutinarios de aprendices: ${error}`);
@@ -40,7 +42,7 @@ export const getTurnoRutinarioAprendiz = async (req, res) => {
       ],
     });
     if (turnoRutinarioAprendiz) {
-      res.json(turnoRutinarioAprendiz);
+      res.status(200).json(turnoRutinarioAprendiz);
     } else {
       res.status(404).json({ message: "Turno rutinario de aprendiz no encontrado" });
     }

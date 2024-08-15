@@ -23,7 +23,10 @@ export const getAllTurnosEspeciales = async (req, res) => {
         },
       ],
     });
-    res.json(turnosEspeciales);
+    if(turnosEspeciales.length>0){
+      res.status(200).json(turnosEspeciales);
+      return
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al obtener los turnos especiales: ${error}`);
@@ -48,8 +51,9 @@ export const getTurnoEspecial = async (req, res) => {
         },
       ],
     });
-    if (turnoEspecial) {
-      res.json(turnoEspecial);
+    if (turnoEspecial.length > 0) {
+      res.status(200).json(turnoEspecial);
+      return
     } else {
       res.status(404).json({ message: "Turno especial no encontrado" });
     }
@@ -82,7 +86,11 @@ export const createTurnoEspecial = async (req, res) => {
       Id_Funcionario,
       Id_Unidad,
     });
-    res.status(201).json(newTurnoEspecial);
+    if(newTurnoEspecial){
+      res.status(201).json(newTurnoEspecial);
+      return
+    }
+    
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al crear el turno especial: ${error}`);
@@ -121,6 +129,7 @@ export const updateTurnoEspecial = async (req, res) => {
       res.status(404).json({ message: "Turno especial no encontrado" });
     } else {
       res.json({ message: "Turno especial actualizado correctamente" });
+      return
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -137,6 +146,7 @@ export const deleteTurnoEspecial = async (req, res) => {
       res.status(404).json({ message: "Turno especial no encontrado" });
     } else {
       res.json({ message: "Turno especial eliminado correctamente" });
+      return
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -167,7 +177,9 @@ export const getQueryTurnoEspecial = async (req, res) => {
         },
       ],
     });
-    res.json(turnosEspeciales);
+    if(turnosEspeciales > 0){
+    res.status(200).json(turnosEspeciales);
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al buscar el turno especial: ${error}`);

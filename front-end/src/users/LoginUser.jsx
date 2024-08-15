@@ -1,8 +1,10 @@
+/* eslint-disable no-debugger */
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Alerta from "../components/Alerta";
 import clieteAxios from "../config/axios";
 import useAuth from "../hooks/useAuth";
+import { ReactSession } from "react-client-session";
 
 const LoginForm = () => {
   const [Cor_User, setCor_User] = useState("");
@@ -27,7 +29,8 @@ const LoginForm = () => {
         Cor_User: Cor_User,
         password: password,
       });
-      localStorage.setItem("token", data.token);
+      ReactSession.set("token", data.token);
+
       setAuth(data);
       navigate("/admin");
     } catch (error) {

@@ -9,6 +9,7 @@ const ProgramaModel = db.define(
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
+      autoIncrement:true,
     },
     Nom_ProgramaFormacion: { type: DataTypes.STRING(65) },
     Tip_ProgramaFormacion: { type: DataTypes.ENUM('Tecnologo') },
@@ -22,8 +23,6 @@ const ProgramaModel = db.define(
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
-  },
-  {
     freezeTableName: true,
   }
 );

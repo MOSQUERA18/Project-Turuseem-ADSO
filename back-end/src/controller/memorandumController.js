@@ -15,6 +15,7 @@ export const getAllMemorandum = async (req, res) => {
     });
     if (memorandums.length > 0) {
       res.status(200).json(memorandums);
+      return
     } else {
       res.status(404).json({
         message: "No se encontraron memorandos.",
@@ -39,8 +40,9 @@ export const getMemorandum = async (req, res) => {
         },
       ],
     });
-    if (memorandum) {
+    if (memorandum.length>0) {
       res.status(200).json(memorandum);
+      return
     } else {
       res.status(404).json({
         message: "Memorando no encontrado.",
@@ -79,6 +81,7 @@ export const updateMemorandum = async (req, res) => {
       res.json({
         message: "Memorando actualizado correctamente!",
       });
+      return
     } else {
       res.status(404).json({
         message: "Memorando no encontrado.",
@@ -102,6 +105,7 @@ export const deleteMemorandum = async (req, res) => {
       res.json({
         message: "Memorando borrado correctamente!",
       });
+      return
     } else {
       res.status(404).json({
         message: "Memorando no encontrado.",
@@ -133,6 +137,7 @@ export const getQueryMemorandum = async (req, res) => {
     });
     if (memorandums.length > 0) {
       res.json(memorandums);
+      return
     } else {
       res.status(404).json({
         message: "No se encontraron memorandos.",

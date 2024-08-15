@@ -9,11 +9,17 @@ export const getAllFichas = async (req, res) => {
       include: [
         {
           model: ProgramaModel,
-          as: "programa", // Alias usado para la relación
+          as: "programasFormacion", // Alias usado para la relación
         },
       ],
     });
-    res.json(Fichas);
+    if(Fichas.length>0){
+      res.status(200).json(Fichas);
+      return
+    }
+    res.status(404).json({
+      message: "No se encontraron Fichas.",
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al obtener las fichas: ${error}`);
@@ -26,12 +32,13 @@ export const getFicha = async (req, res) => {
       include: [
         {
           model: ProgramaModel,
-          as: "programa", // Alias usado para la relación
+          as: "programasFormacion", // Alias usado para la relación
         },
       ],
     });
     if (Ficha) {
-      res.json(Ficha);
+      res.status(200).json(Ficha);
+      return
     } else {
       res.status(404).json({ message: "Ficha no encontrada" });
     }
@@ -47,7 +54,6 @@ export const createFicha = async (req, res) => {
       Id_Ficha,
       Fec_InicioEtapaLectiva,
       Fec_FinEtapaLectiva,
-      Fec_FinEtapaProductiva,
       Can_Aprendices,
       Id_ProgramaFormacion,
       Estado,
@@ -56,12 +62,14 @@ export const createFicha = async (req, res) => {
       Id_Ficha,
       Fec_InicioEtapaLectiva,
       Fec_FinEtapaLectiva,
-      Fec_FinEtapaProductiva,
       Can_Aprendices,
       Id_ProgramaFormacion,
       Estado,
     });
-    res.status(201).json(NewFicha);
+    if(NewFicha){
+      res.status(201).json(NewFicha);
+      return
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al crear la ficha: ${error}`);
@@ -73,7 +81,6 @@ export const updateFicha = async (req, res) => {
     const {
       Fec_InicioEtapaLectiva,
       Fec_FinEtapaLectiva,
-      Fec_FinEtapaProductiva,
       Can_Aprendices,
       Id_ProgramaFormacion,
       Estado,
@@ -82,7 +89,6 @@ export const updateFicha = async (req, res) => {
       {
         Fec_InicioEtapaLectiva,
         Fec_FinEtapaLectiva,
-        Fec_FinEtapaProductiva,
         Can_Aprendices,
         Id_ProgramaFormacion,
         Estado,
@@ -93,8 +99,10 @@ export const updateFicha = async (req, res) => {
     );
     if (updated === 0) {
       res.status(404).json({ message: "Ficha no encontrada" });
+      
     } else {
       res.json({ message: "Ficha actualizada correctamente" });
+      return
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -111,6 +119,7 @@ export const deleteFicha = async (req, res) => {
       res.status(404).json({ message: "Ficha no encontrada" });
     } else {
       res.json({ message: "Ficha eliminada correctamente" });
+      return
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -129,13 +138,19 @@ export const getQueryFicha = async (req, res) => {
       include: [
         {
           model: ProgramaModel,
-          as: "programa", // Alias usado para la relación
+          as: "programasFormacion", // Asegúrate de que el alias coincida con tu modelo
         },
       ],
     });
-    res.json(Fichas);
+    if (Fichas) {
+      res.status(200).json(Fichas);
+      return
+    } else {
+      res.status(404).json({ message: "No se encontraron fichas con el ID proporcionado." });
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al buscar la ficha: ${error}`);
   }
 };
+

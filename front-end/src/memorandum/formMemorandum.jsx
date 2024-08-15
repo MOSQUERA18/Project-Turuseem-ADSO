@@ -2,16 +2,17 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import clieteAxios from "../config/axios";
+import { ReactSession } from 'react-client-session';
 
 const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
-  const [Id_Memorando, setId_Memorando] = useState("");
+  // const [Id_Memorando, setId_Memorando] = useState("");
   const [Fec_Memorando, setFec_Memorando] = useState("");
   const [Mot_Memorando, setMot_Memorando] = useState("");
   const [Id_Inasistencia, setId_Inasistencia] = useState("");
 
   const sendForm = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
+    const token = ReactSession.get("token");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -22,7 +23,7 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
       if (buttonForm === "Actualizar") {
         const respuestApi = await clieteAxios.put(`/memorando/${memorandum.Id_Memorando}`, 
         {
-          Id_Memorando: Id_Memorando,
+          // Id_Memorando: Id_Memorando,
           Fec_Memorando: Fec_Memorando,
           Mot_Memorando: Mot_Memorando,
           Id_Inasistencia: Id_Inasistencia,
@@ -36,7 +37,7 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
       }
       } else if (buttonForm === "Enviar") {
         const respuestApi = await clieteAxios.post('/memorando', {
-          Id_Memorando: Id_Memorando,
+          // Id_Memorando: Id_Memorando,
           Fec_Memorando: Fec_Memorando,
           Mot_Memorando: Mot_Memorando,
           Id_Inasistencia: Id_Inasistencia,
@@ -57,14 +58,14 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
   };
 
   const clearForm = () => {
-    setId_Memorando("");
+    // setId_Memorando("");
     setFec_Memorando("");
     setMot_Memorando("");
     setId_Inasistencia("");
   };
 
   const setData = () => {
-    setId_Memorando(memorandum.Id_Memorando);
+    // setId_Memorando(memorandum.Id_Memorando);
     setFec_Memorando(memorandum.Fec_Memorando);
     setMot_Memorando(memorandum.Mot_Memorando);
     setId_Inasistencia(memorandum.Id_Inasistencia);
@@ -87,7 +88,7 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
             Registrar Memorandos
           </h1>
 
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <label
               htmlFor="document"
               className="text-gray-700 uppercase font-bold"
@@ -102,7 +103,7 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
               onChange={(e) => setId_Memorando(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             />
-          </div>
+          </div> */}
 
           <div className="mb-3">
             <label

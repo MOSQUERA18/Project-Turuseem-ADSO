@@ -17,7 +17,10 @@ export const getAllApprentices = async (req, res) => {
         },
       ],
     });
-    res.json(apprentices);
+    if(apprentices.length>0){
+      res.status(200).json(apprentices);
+      return
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al obtener los aprendices: ${error}`);
@@ -34,8 +37,9 @@ export const getApprentice = async (req, res) => {
         },
       ],
     });
-    if (apprentice) {
-      res.json(apprentice);
+    if (apprentice.length>0) {
+      res.status(200).json(apprentice);
+      return
     } else {
       res.status(404).json({ message: "Aprendiz no encontrado" });
     }
@@ -94,7 +98,10 @@ export const createApprentice = async (req, res) => {
       Fot_Aprendiz,
       CentroConvivencia,
     });
-    res.status(201).json(newApprentice);
+    if(newApprentice){
+      res.status(201).json(newApprentice);
+    }
+    
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al crear el aprendiz: ${error}`);
@@ -157,6 +164,7 @@ export const updateApprentice = async (req, res) => {
       res.status(404).json({ message: "Aprendiz no encontrado" });
     } else {
       res.json({ message: "Aprendiz actualizado correctamente" });
+      return
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -173,6 +181,7 @@ export const deleteApprentice = async (req, res) => {
       res.status(404).json({ message: "Aprendiz no encontrado" });
     } else {
       res.json({ message: "Aprendiz eliminado correctamente" });
+      return
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -195,7 +204,15 @@ export const getQueryApprentice = async (req, res) => {
         },
       ],
     });
-    res.json(apprentices);
+    if(apprentices > 0){
+      res.status(200).json(apprentices);
+      return
+    }
+    else{
+      res.status(404).json({
+        message: "No se encontraron aprendices con ese nombre.",
+      });
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al buscar el aprendiz: ${error}`);
@@ -213,6 +230,7 @@ export const getQueryNom_Apprentice = async (req, res) => {
     });
     if (apprentices.length > 0) {
       res.status(200).json(apprentices);
+      return
     } else {
       res.status(404).json({
         message: "No se encontraron aprendices con ese nombre.",
