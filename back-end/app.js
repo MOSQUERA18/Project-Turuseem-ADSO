@@ -34,7 +34,6 @@ import FichasModel from "./src/models/fichasModel.js";
 import AbsenceModel from "./src/models/absenceModel.js";
 import TurnoEspecialAprendizModel from "./src/models/turnoEspeciales_Aprendices.js";
 
-
 const app = express();
 const PORT = process.env.PORT || 8080;
 

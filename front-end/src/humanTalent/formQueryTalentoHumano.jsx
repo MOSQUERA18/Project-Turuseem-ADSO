@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 import clieteAxios from "../config/axios";
 
-const FormQueryUnidades = ({ buttonForm, setUnidadQuery }) => {
+const FormQueryTalentoHumano = ({ buttonForm, setTalentoHumanoQuery }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const sendFormQuery = async (query) => {
@@ -17,25 +17,25 @@ const FormQueryUnidades = ({ buttonForm, setUnidadQuery }) => {
         },
       };
 
-      let URI = `/unidades/nombre/${query}`;
+      let URI = `/talentoHumano/nombre/${query}`;
       try {
         const respuesta = await clieteAxios(URI, config);
         if ( respuesta.status == 200 ) {
-            setUnidadQuery(respuesta.data)
+            setTalentoHumanoQuery(respuesta.data)
         } else {
           console.log("Error: " + respuesta.status);
         }
       } catch (error) {
         console.error(error);
-        setUnidadQuery([]);
+        setTalentoHumanoQuery([]);
       }
     } else {
-        setUnidadQuery([]);
+        setTalentoHumanoQuery([]);
     }
   };
 
   useEffect(() => {
-    setUnidadQuery([]);
+    setTalentoHumanoQuery([]);
 
     setSearchQuery("");
   }, [buttonForm]);
@@ -52,7 +52,7 @@ const FormQueryUnidades = ({ buttonForm, setUnidadQuery }) => {
             <input
               type="text"
               id="documentQuery"
-              placeholder="Buscar Aprendices..."
+              placeholder="Buscar TalentoHumano..."
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               value={searchQuery}
               onChange={(e) => {
@@ -67,4 +67,4 @@ const FormQueryUnidades = ({ buttonForm, setUnidadQuery }) => {
     </>
   );
 };
-export default FormQueryUnidades;
+export default FormQueryTalentoHumano;
