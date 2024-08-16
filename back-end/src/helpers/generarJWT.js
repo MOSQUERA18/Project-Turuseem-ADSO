@@ -4,7 +4,6 @@ import bcrypt from 'bcrypt';
 
 // Clave secreta para el JWT
 
-import jwt from "jsonwebtoken";
 
 
 export const generarJWT = (Id_User) => {
