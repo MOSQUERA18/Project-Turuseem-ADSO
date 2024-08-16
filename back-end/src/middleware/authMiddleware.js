@@ -41,7 +41,6 @@ const checkAuth = async (req, res, next) => {
         attributes: { exclude: ["password", "Confirmado", "token"] },
       });
 
-<<<<<<< HEAD
 
 //NO MUESTRA EL TOKEN CON ESTA INSTRUCCION
       // const hashedId_User = await verificarJWT(token);
@@ -51,11 +50,11 @@ const checkAuth = async (req, res, next) => {
       //   where: { hashedId_User }, // Ajusta esto según tu modelo de datos
       //   attributes: { exclude: ["password", "Confirmado", "token"] },
       // });
-=======
+
       console.log("User db", user);
       
       
->>>>>>> 7d00776b81fd3970aceff38473a2d042d5040ad2
+
 
       // Verifica si el usuario existe y si el token coincide
       if (!user) {
