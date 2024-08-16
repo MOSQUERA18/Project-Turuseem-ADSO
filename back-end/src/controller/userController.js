@@ -26,16 +26,10 @@ export const autenticar = async (req, res) => {
   
   //Comprobar password
   if (await usuario.comprobarPassword(password)) {
-    // const salt = await bcrypt.genSalt(10);
-    // const Id_UserHash = await bcrypt.hash(usuario.Id_User.toString(), salt);
-
     const userString = usuario.Id_User.toString()
     const Id_UserHash = Buffer.from(userString).toString('base64');
-    // const Id_UserHash = usuario.Id_User.toString("base64");
-    console.log(Id_UserHash);
-    
 
-
+    // console.log(Id_UserHash);
     
     res.json({
       Id_User: usuario.Id_User,
@@ -52,7 +46,7 @@ export const autenticar = async (req, res) => {
 };
 
 export const CreateAccount = async (req, res) => {
-  const { Cor_User, Nom_User, Id_User, password } = req.body;
+  const { Cor_User, Nom_User, Id_User } = req.body;
 
   // Validar que Id_User sea un número
   if (isNaN(Id_User)) {

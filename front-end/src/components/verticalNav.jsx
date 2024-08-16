@@ -190,7 +190,11 @@ const VerticalNav = () => {
             >
               Fichas
             </Link>
+
+
+
           </button>
+
           <button className="flex jusitfy-start items-center w-full  space-x-4 pl-3 focus:outline-none text-white focus:text-indigo-400 rounded border-y py-2 border-white">
             <FaPeopleGroup size={22} />
             <Link

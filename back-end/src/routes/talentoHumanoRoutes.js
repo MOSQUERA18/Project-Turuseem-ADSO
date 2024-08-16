@@ -6,18 +6,18 @@ import {
   updateTalentoHumano,
   deleteTalentoHumano,
 } from "../controller/talentoHumanoController.js";
-import checkAuth from "../middleware/authMiddleware.js";
+import verifyAuth from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router
   .route("/")
-  .get(checkAuth, getAllTalentoHumano)
-  .post(checkAuth, createTalentoHumano);
+  .get(verifyAuth, getAllTalentoHumano)
+  .post(verifyAuth, createTalentoHumano);
 router
   .route("/:Id_Talento_Humano")
-  .get(checkAuth, getTalentoHumano)
-  .put(checkAuth, updateTalentoHumano)
-  .delete(checkAuth, deleteTalentoHumano);
+  .get(verifyAuth, getTalentoHumano)
+  .put(verifyAuth, updateTalentoHumano)
+  .delete(verifyAuth, deleteTalentoHumano);
 
 export default router;

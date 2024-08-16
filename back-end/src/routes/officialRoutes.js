@@ -6,18 +6,18 @@ import {
   updateFuncionario,
   deleteFuncionario,
 } from "../controller/officialController.js";
-import checkAuth from "../middleware/authMiddleware.js";
+import verifyAuth from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router
   .route("/")
-  .get(checkAuth, getAllFuncionarios)
-  .post(checkAuth, createFuncionario);
+  .get(verifyAuth, getAllFuncionarios)
+  .post(verifyAuth, createFuncionario);
 router
   .route("/:Id_Funcionario")
-  .get(checkAuth, getFuncionario)
-  .put(checkAuth, updateFuncionario)
-  .delete(checkAuth, deleteFuncionario);
+  .get(verifyAuth, getFuncionario)
+  .put(verifyAuth, updateFuncionario)
+  .delete(verifyAuth, deleteFuncionario);
 
 export default router;

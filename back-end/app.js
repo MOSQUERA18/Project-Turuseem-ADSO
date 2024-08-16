@@ -41,6 +41,7 @@ const PORT = process.env.PORT || 8080;
 app.use(cors());
 app.use(express.json());
 app.use(fileUpload());
+
 app.use("/inasistencias", absenceRoutes);
 app.use("/aprendiz", apprenticeRoutes);
 app.use("/areas", areaRoutes);

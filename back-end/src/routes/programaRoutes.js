@@ -6,18 +6,18 @@ import {
   updatePrograma,
   deletePrograma,
 } from "../controller/programaController.js";
-import checkAuth from "../middleware/authMiddleware.js";
+import verifyAuth from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router
   .route("/")
-  .get(checkAuth, getAllProgramas)
-  .post(checkAuth, createPrograma);
+  .get(verifyAuth, getAllProgramas)
+  .post(verifyAuth, createPrograma);
 router
   .route("/:Id_ProgramaFormacion")
-  .get(checkAuth, getPrograma)
-  .put(checkAuth, updatePrograma)
-  .delete(checkAuth, deletePrograma);
+  .get(verifyAuth, getPrograma)
+  .put(verifyAuth, updatePrograma)
+  .delete(verifyAuth, deletePrograma);
 
 export default router;
