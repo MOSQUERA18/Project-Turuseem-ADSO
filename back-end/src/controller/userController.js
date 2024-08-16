@@ -11,23 +11,31 @@ export const autenticar = async (req, res) => {
   const { Cor_User, password } = req.body;
   //Comprobar si el user existe
   const usuario = await UserModel.findOne({
-    where: { Cor_User: req.body.Cor_User },
+    where: { Cor_User: Cor_User },
   });
   if (!usuario) {
     const error = new Error("El usuario no existe o contraseña no valida!");
     return res.status(404).json({ msg: error.message });
   }
-  debugger;
   //Comprobar si el usuario esta confirmado
   if (!usuario.Confirmado) {
     const error = new Error("Tu cuenta no está confirmada!");
     return res.status(403).json({ msg: error.message });
   }
-
+  
+  
   //Comprobar password
   if (await usuario.comprobarPassword(password)) {
-    const salt = await bcrypt.genSalt(10);
-    const Id_UserHash = await bcrypt.hash(usuario.Id_User.toString(), salt);
+    // const salt = await bcrypt.genSalt(10);
+    // const Id_UserHash = await bcrypt.hash(usuario.Id_User.toString(), salt);
+    const userString = usuario.Id_User.toString()
+    const Id_UserHash = Buffer.from(userString).toString('base64');
+    // const Id_UserHash = usuario.Id_User.toString("base64");
+    console.log(Id_UserHash);
+    
+
+
+    
     res.json({
       Id_User: usuario.Id_User,
       Nom_User: usuario.Nom_User,
