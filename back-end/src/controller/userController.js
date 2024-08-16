@@ -28,9 +28,6 @@ export const autenticar = async (req, res) => {
   if (await usuario.comprobarPassword(password)) {
     // const salt = await bcrypt.genSalt(10);
     // const Id_UserHash = await bcrypt.hash(usuario.Id_User.toString(), salt);
-
-
-
     
     res.json({
       Id_User: usuario.Id_User,
