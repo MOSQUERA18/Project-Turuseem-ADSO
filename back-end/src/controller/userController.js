@@ -5,12 +5,13 @@ import { generarToken } from "../helpers/generarToken.js";
 import { emailRegistro } from "../helpers/emailRegistro.js";
 import { emailOlvidePassword } from "../helpers/emailOlvidePassword.js";
 import { logger } from "../middleware/logMiddleware.js";
+import bcrypt from "bcrypt";
 
 export const autenticar = async (req, res) => {
   const { Cor_User, password } = req.body;
   //Comprobar si el user existe
   const usuario = await UserModel.findOne({
-    where: { Cor_User: req.body.Cor_User },
+    where: { Cor_User: Cor_User },
   });
   if (!usuario) {
     const error = new Error("El usuario no existe o contraseña no valida!");
@@ -21,16 +22,30 @@ export const autenticar = async (req, res) => {
     const error = new Error("Tu cuenta no está confirmada!");
     return res.status(403).json({ msg: error.message });
   }
+  
+  
   //Comprobar password
   if (await usuario.comprobarPassword(password)) {
+    // const salt = await bcrypt.genSalt(10);
+    // const Id_UserHash = await bcrypt.hash(usuario.Id_User.toString(), salt);
+    const userString = usuario.Id_User.toString()
+    const Id_UserHash = Buffer.from(userString).toString('base64');
+    // const Id_UserHash = usuario.Id_User.toString("base64");
+    console.log(Id_UserHash);
+    
+
+
+    
     res.json({
       Id_User: usuario.Id_User,
       Nom_User: usuario.Nom_User,
       Cor_User: usuario.Cor_User,
-      token: generarJWT(usuario.Id_User),
+      token: generarJWT(Id_UserHash),
     });
   } else {
-    const error = new Error("La contraseña es incorrecta o el correo no es valido!");
+    const error = new Error(
+      "La contraseña es incorrecta o el correo no es valido!"
+    );
     return res.status(403).json({ msg: error.message });
   }
 };
@@ -43,7 +58,6 @@ export const CreateAccount = async (req, res) => {
     const error = new Error("El Documento del usuario debe ser un número.");
     return res.status(400).json({ message: error.message });
   }
-  
 
   const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
   if (!nameRegex.test(Nom_User)) {
@@ -54,7 +68,9 @@ export const CreateAccount = async (req, res) => {
   // Validar el formato del correo electrónico
   const emailRegex = /(gmail\.com|hotmail\.com)/;
   if (!emailRegex.test(Cor_User)) {
-    const error = new Error("El correo electrónico debe ser válido y terminar en @gmail.com o @hotmail.com.");
+    const error = new Error(
+      "El correo electrónico debe ser válido y terminar en @gmail.com o @hotmail.com."
+    );
     return res.status(400).json({ message: error.message });
   }
 
@@ -91,14 +107,14 @@ export const CreateAccount = async (req, res) => {
       token: newUser.token,
     });
 
-    res.json({ msg: "Usuario creado. Revisa tu correo para confirmar tu cuenta." });
+    res.json({
+      msg: "Usuario creado. Revisa tu correo para confirmar tu cuenta.",
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(error);
   }
 };
-
-
 
 export const perfil = async (req, res) => {
   const { usuario } = req;
@@ -115,7 +131,7 @@ export const confirmar = async (req, res) => {
     const error = new Error("Token no válido");
     return res.status(404).json({ msg: error.message });
   }
-  
+
   try {
     usuarioConfirmar.token = null;
     usuarioConfirmar.Confirmado = true;

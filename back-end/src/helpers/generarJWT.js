@@ -1,5 +1,9 @@
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+
+// Clave secreta para el JWT
+
 
 
 export const generarJWT = (Id_User) => {
@@ -7,3 +11,4 @@ export const generarJWT = (Id_User) => {
     expiresIn: "1d",
   });
 };
+

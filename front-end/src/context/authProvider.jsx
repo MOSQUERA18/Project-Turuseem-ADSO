@@ -21,10 +21,10 @@ const AuthProvider = ({children}) => {
 
             const config = {
                 headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
-                }
-            }
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`, // Asegúrate de que el token esté correctamente formateado
+                },
+              };
 
             try {
                 const url = `/api/user/perfil`
