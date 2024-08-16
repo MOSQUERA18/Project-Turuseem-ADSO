@@ -35,5 +35,6 @@ UserModel.prototype.comprobarPassword = async function (passwordFormulario) {
   return await bcrypt.compare(passwordFormulario, this.password);
 };
 
+
 export default UserModel;
 
