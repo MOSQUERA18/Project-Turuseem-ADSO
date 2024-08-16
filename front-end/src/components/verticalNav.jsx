@@ -168,6 +168,15 @@ export default function VerticalNav() {
               Funcionarios
             </Link>
           </button>
+
+          <Link
+              to="talentohumano"
+              className="text-white text-base uppercase font-bold"
+            >
+              Talento Humano
+            </Link>
+
+
         </div>
         <div className="flex flex-col justify-between items-center h-full pb-6   px-6  w-full  space-y-15 ">
           <div className=" flex justify-between items-center w-full">

@@ -18,12 +18,10 @@ import CrudApprentices from "./apprentice/crudApprentices.jsx";
 import CrudMemorandum from "./memorandum/crudMemorandum.jsx";
 import ImportarCSV from "./apprentice/importarCSV";
 import CrudUnidades from "./unit/CrudUnidad.jsx";
-<<<<<<< HEAD
 import CrudHumanTalent from "./humanTalent/crudHumanTalent.jsx";
-=======
 import CrudFichas from "./fichas/CrudFichas.jsx"
 import CrudFuncionarios from "./funcionarios/CrudFuncionarios.jsx";
->>>>>>> 8b58cfd022b93ef27697bc235b6060cb146037b0
+
 
 function App() {
   return (
@@ -54,7 +52,7 @@ function App() {
 
               {/* <Route path='/perfil' element={<MemorandumPDF/>}/> */}
               <Route path="PdfView" element={<VerPdf />} />
-              <Route path="talentoHumano/" element={<CrudHumanTalent />}></Route>
+              <Route path="talentoHumano" element={<CrudHumanTalent />}></Route>
             </Route>
           </Routes>
         </AuthProvider>
