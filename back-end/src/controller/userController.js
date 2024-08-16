@@ -5,7 +5,7 @@ import { generarToken } from "../helpers/generarToken.js";
 import { emailRegistro } from "../helpers/emailRegistro.js";
 import { emailOlvidePassword } from "../helpers/emailOlvidePassword.js";
 import { logger } from "../middleware/logMiddleware.js";
-// import bcrypt from "bcrypt";
+import bcrypt from "bcrypt";
 
 export const autenticar = async (req, res) => {
   const { Cor_User, password } = req.body;
@@ -28,7 +28,11 @@ export const autenticar = async (req, res) => {
   if (await usuario.comprobarPassword(password)) {
     // const salt = await bcrypt.genSalt(10);
     // const Id_UserHash = await bcrypt.hash(usuario.Id_User.toString(), salt);
-
+    const userString = usuario.Id_User.toString()
+    const Id_UserHash = Buffer.from(userString).toString('base64');
+    // const Id_UserHash = usuario.Id_User.toString("base64");
+    console.log(Id_UserHash);
+    
 
 
     
@@ -36,7 +40,7 @@ export const autenticar = async (req, res) => {
       Id_User: usuario.Id_User,
       Nom_User: usuario.Nom_User,
       Cor_User: usuario.Cor_User,
-      token: generarJWT(usuario.Id_User),
+      token: generarJWT(Id_UserHash),
     });
   } else {
     const error = new Error(
