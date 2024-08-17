@@ -76,7 +76,7 @@ const CrudPrograma = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(`${URI}/${Id_Unidad}`, config);
+      const respuestApi = await clieteAxios(`${URI}/${Id_ProgramaFormacion}`, config);
       if (respuestApi.status === 200) {
         setPrograma({
           ...respuestApi.data,
@@ -194,10 +194,12 @@ const CrudPrograma = () => {
         <table className="min-w-full bg-white text-center text-sm">
           <thead className="text-white bg-green-700">
             <tr className="">
-              <th className="py-2 px-4 border-2 border-b-gray-500">ID</th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Identificador de Programa</th>
               <th className="py-2 px-4 border-2 border-b-gray-500">Nombre</th>
               <th className="py-2 px-4 border-2 border-b-gray-500">Tipo</th>
               <th className="py-2 px-4 border-2 border-b-gray-500">Área</th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
+
             </tr>
           </thead>
           <tbody>

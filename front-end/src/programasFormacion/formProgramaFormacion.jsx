@@ -70,7 +70,7 @@ const FormProgramaFormacion = ({ buttonForm, programa, updateTextButton, getAllP
         );
       } else if (buttonForm === "Enviar") {
         respuestApi = await clieteAxios.post(
-          `/unidades`,
+          `/programa`,
           {
             Nom_ProgramaFormacion,
             Tip_ProgramaFormacion,
