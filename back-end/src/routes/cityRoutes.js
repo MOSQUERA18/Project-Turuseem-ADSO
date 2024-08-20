@@ -1,11 +1,11 @@
 import express from "express";
-import {getAllAreas} from "../controller/areaController.js";
+import { getAllCities } from "../controller/cityController.js";
 import verifyAuth from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router
   .route("/")
-  .get(verifyAuth, getAllAreas)
+  .get(verifyAuth, getAllCities)
 
 export default router;

@@ -152,6 +152,7 @@ const CrudFuncionarios = () => {
 
   return (
     <>
+    <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">Funcionarios</h1>
       <div className="flex justify-end pb-3">
         <button
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"

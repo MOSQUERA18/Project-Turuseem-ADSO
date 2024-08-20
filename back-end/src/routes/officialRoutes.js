@@ -20,6 +20,7 @@ router
   .get(checkAuth, getFuncionario)
   .put(checkAuth, updateFuncionario)
   .delete(checkAuth, deleteFuncionario);
-  router.get("/document/:Id_Funcionario", checkAuth, getQueryFuncionario)
+router.get("/document/:Id_Funcionario", checkAuth, getQueryFuncionario);
+
 
 export default router;

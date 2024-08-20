@@ -95,7 +95,8 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
           config
         );
       }
-
+      console.log(respuestApi.status);
+      
       if (respuestApi.status === 201 || respuestApi.status === 200) {
         setMessage("Ficha registrada correctamente!");
         setMessageType("success");

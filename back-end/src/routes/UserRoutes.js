@@ -8,7 +8,7 @@ import {
     nuevoPassword
 } from '../controller/userController.js';
 
-import checkAuth from '../middleware/authMiddleware.js';
+import verifyAuth from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -23,6 +23,6 @@ router.route('/olvide-password/:token').get(comprobarToken).post(nuevoPassword)
 // router.post('/olvideContraseña/:token', nuevoPassword)
 
 //Area Privada
-router.get('/perfil',checkAuth, perfil)
+router.get('/perfil',verifyAuth, perfil)
 
 export default router

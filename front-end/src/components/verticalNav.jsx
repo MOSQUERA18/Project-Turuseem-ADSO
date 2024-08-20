@@ -9,6 +9,7 @@ import { IoDocumentText, IoSettings } from "react-icons/io5";
 import { PiNotebookFill } from "react-icons/pi";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { FaClipboardCheck, FaPeopleGroup } from "react-icons/fa6";
+import { MdAssignmentTurnedIn } from "react-icons/md";
 import clienteAxios from "../config/axios.jsx";
 
 const VerticalNav = () => {
@@ -156,7 +157,7 @@ const VerticalNav = () => {
             </Link>
           </button>
           <button className="flex jusitfy-start items-center w-full  space-x-4 pl-3 focus:outline-none text-white focus:text-indigo-400 rounded border-y py-2 border-white ">
-            <SiHomeassistantcommunitystore size={22} />
+            <MdAssignmentTurnedIn size={22} />
             <Link
               to="turnos-especiales"
               className="text-white text-base uppercase font-bold"

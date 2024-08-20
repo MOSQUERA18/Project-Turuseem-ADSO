@@ -20,7 +20,6 @@ const checkAuth = async (req, res, next) => {
       const decodedIdUser = Buffer.from(decoded.Id_User, "base64").toString(
         "utf-8"
       );
-      console.log("Decoding para Id_User: " + decodedIdUser);
 
       // Busca el usuario en la base de datos
       const user = await UserModel.findByPk(decodedIdUser, {

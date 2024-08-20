@@ -4,12 +4,14 @@ import { useState, useEffect, createContext } from "react";
 import clienteAxios from "../config/axios";
 import { ReactSession } from 'react-client-session';
 
+
 const AuthContext = createContext()
 
 
 const AuthProvider = ({children}) => {
     const [ cargando, setCargando ] = useState(true)
     const [ auth, setAuth ] = useState({})
+    //  
 
     useEffect(() => {
         const autenticarUser = async () => {
@@ -21,16 +23,17 @@ const AuthProvider = ({children}) => {
 
             const config = {
                 headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
-                }
-            }
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`, // Asegúrate de que el token esté correctamente formateado
+                },
+              };
 
             try {
                 const url = `/api/user/perfil`
                 const { data } = await clienteAxios(url, config)
                 setAuth(data)
             } catch (error) {
+                // ReactSession.remove('token')
                 console.log(error.response.data.msg);
                 setAuth({}) 
             }
@@ -41,6 +44,8 @@ const AuthProvider = ({children}) => {
 
     const cerrarSesion = () => {
         ReactSession.remove('token')
+        localStorage.clear();
+        localStorage.removeItem('token');
         setAuth({})
     }
     return (
