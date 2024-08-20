@@ -5,6 +5,7 @@ import {
   createPrograma,
   updatePrograma,
   deletePrograma,
+  getQueryNom_Programa
 } from "../controller/programaController.js";
 import verifyAuth from "../middleware/authMiddleware.js";
 
@@ -19,5 +20,6 @@ router
   .get(verifyAuth, getPrograma)
   .put(verifyAuth, updatePrograma)
   .delete(verifyAuth, deletePrograma);
+router.get('/nombre/:Nom_ProgramaFormacion',verifyAuth, getQueryNom_Programa);
 
 export default router;

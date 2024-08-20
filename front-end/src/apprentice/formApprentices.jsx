@@ -23,8 +23,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
   const [Gen_Aprendiz, setGen_Aprendiz] = useState("");
   const [Cor_Aprendiz, setCor_Aprendiz] = useState("");
   const [Tel_Aprendiz, setTel_Aprendiz] = useState("");
-  const [Tot_Memorandos, setTot_Memorando] = useState("");
-  const [Tot_Inasistencias, setTot_Inasistencia] = useState("");
+  const [Tot_Memorandos, setTot_Memorandos] = useState("");
+  const [Tot_Inasistencias, setTot_Inasistencias] = useState("");
   const [Patrocinio, setPatrocinio] = useState("");
   const [Estado, setEstado] = useState("");
   const [Nom_Empresa, setNom_Empresa] = useState("");
@@ -38,12 +38,15 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
   const [ciudades, setCiudades] = useState([]); 
   const inputFoto = useRef(null)
 
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
+
 
   const token = ReactSession.get("token");
   const config = {
     headers: {
-      'Content-Type': 'multipart/form-data',
       Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
     },
   };
 
@@ -54,7 +57,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
       try {
         const response = await clieteAxios.get(URI, {
           headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
           }
         });
         if (response.status === 200) {
@@ -71,7 +75,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
       try{
         const response = await clieteAxios.get(UriFichas,{
           headers:{
-            Authorization:`Bearer ${token}`
+            Authorization:`Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
           }
         })
         if(response.status === 200){
@@ -85,6 +90,20 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
     fetchFichas();
     fetchCiudades();
   }, []);
+
+
+
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
+
 
   const sendForm = async (e) => {
     e.preventDefault();
@@ -117,6 +136,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
       if (Foto_Aprendiz) {
         formData.append('Foto_Aprendiz', Foto_Aprendiz); // Asegúrate de que Foto_Aprendiz sea un archivo
       }
+    
+    
   
   
       let respuestApi;
@@ -130,12 +151,15 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
         respuestApi = await clieteAxios.post(
           `/aprendiz`,
           formData,
-          config
+          config,
         );
       }
   
       if (respuestApi.status === 200 || respuestApi.status === 201) {
         alert(respuestApi.data.message);
+        setMessage("Aprendiz Registrado correctamente!")
+        setMessageType("success"),
+        clearForm()
         if (buttonForm === "Actualizar") {
           updateTextButton("Enviar");
         }
@@ -163,8 +187,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
     setGen_Aprendiz("");
     setCor_Aprendiz("");
     setTel_Aprendiz("");
-    setTot_Memorando("");
-    setTot_Inasistencia("");
+    setTot_Memorandos("");
+    setTot_Inasistencias("");
     setPatrocinio("");
     setEstado("");
     setNom_Empresa(""); // Limpiar Nombre de la Empresa
@@ -188,8 +212,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
     setGen_Aprendiz(apprentice.Gen_Aprendiz);
     setCor_Aprendiz(apprentice.Cor_Aprendiz);
     setTel_Aprendiz(apprentice.Tel_Aprendiz);
-    setTot_Memorando(apprentice.Tot_Memorandos);
-    setTot_Inasistencia(apprentice.Tot_Inasistencias);
+    setTot_Memorandos(apprentice.Tot_Memorandos);
+    setTot_Inasistencias(apprentice.Tot_Inasistencias);
     setPatrocinio(apprentice.Patrocinio);
     setEstado(apprentice.Estado);
     setNom_Empresa(apprentice.Nom_Empresa);
@@ -414,7 +438,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
       id="phone"
       placeholder="memorandos"
       value={Tot_Memorandos}
-      onChange={(e) => setTot_Memorando(e.target.value)}
+      onChange={(e) => setTot_Memorandos(e.target.value)}
       className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
     />
   </div>
@@ -426,7 +450,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
       id="phone"
       placeholder="Inasistencias"
       value={Tot_Inasistencias}
-      onChange={(e) => setTot_Inasistencia(e.target.value)}
+      onChange={(e) => setTot_Inasistencias(e.target.value)}
       className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
     />
   </div>

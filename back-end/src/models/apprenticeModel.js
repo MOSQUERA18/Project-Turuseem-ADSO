@@ -39,7 +39,7 @@ const ApprenticeModel = db.define(
     },
     Nom_Empresa: { type: DataTypes.STRING(50) },
     CentroConvivencia: { type: DataTypes.ENUM("Si", "No") },
-    Foto_Aprendiz: { type: DataTypes.STRING(255)},
+    Foto_Aprendiz: { type: DataTypes.STRING(255), allowNull:false},
   },
   {
     timestamps: true,

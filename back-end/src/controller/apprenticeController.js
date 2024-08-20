@@ -81,7 +81,6 @@ export const createApprentice = async (req, res) => {
       Estado,
       Nom_Empresa,
       CentroConvivencia,
-      // Foto_Aprendiz,
     } = req.body;
 
     const Foto_Aprendiz = req.file ? req.file.filename : null
@@ -119,6 +118,7 @@ export const createApprentice = async (req, res) => {
   }
 };
 
+
 export const updateApprentice = async (req, res) => {
   try {
     const {
@@ -142,60 +142,57 @@ export const updateApprentice = async (req, res) => {
       Estado,
       Nom_Empresa,
       CentroConvivencia,
-      // Foto_Aprendiz,
     } = req.body;
+    
+    const Foto_Aprendiz = req.file ? req.file.filename : null;
 
-    const Foto_Aprendiz = req.file ? req.file.filename : null
-
-    // Verificar si `Id_Aprendiz` está presente en `req.params`
     if (!req.params.Id_Aprendiz) {
       return res.status(400).json({ message: "ID del aprendiz no proporcionado" });
     }
 
+    const updateData = {
+      Id_Aprendiz,
+      Nom_Aprendiz,
+      Ape_Aprendiz,
+      Id_Ficha,
+      Fec_Nacimiento,
+      Id_Ciudad,
+      Lugar_Residencia,
+      Edad,
+      Hijos,
+      Nom_Eps,
+      Tel_Padre,
+      Gen_Aprendiz,
+      Cor_Aprendiz,
+      Tel_Aprendiz,
+      Tot_Memorandos,
+      Tot_Inasistencias,
+      Patrocinio,
+      Estado,
+      Nom_Empresa,
+      CentroConvivencia,
+    };
 
-    if(Foto_Aprendiz != null){
-    // Actualizar el aprendiz
-    const [updated] = await ApprenticeModel.update(
-      {
-        Id_Aprendiz,
-        Nom_Aprendiz,
-        Ape_Aprendiz,
-        Id_Ficha,
-        Fec_Nacimiento,
-        Id_Ciudad,
-        Lugar_Residencia,
-        Edad,
-        Hijos,
-        Nom_Eps,
-        Tel_Padre,
-        Gen_Aprendiz,
-        Cor_Aprendiz,
-        Tel_Aprendiz,
-        Tot_Memorandos,
-        Tot_Inasistencias,
-        Patrocinio,
-        Estado,
-        Nom_Empresa,
-        CentroConvivencia,
-        Foto_Aprendiz,
-      },
-      {
-        where: { Id_Aprendiz: req.params.Id_Aprendiz },
-      }
-    );
-  
-    // Respuesta según el resultado de la actualización
+    // Solo agregar Foto_Aprendiz si está presente
+    // if (Foto_Aprendiz) {
+    //   updateData.Foto_Aprendiz = Foto_Aprendiz;
+    // }
+
+    const [updated] = await ApprenticeModel.update(updateData, {
+      where: { Id_Aprendiz: req.params.Id_Aprendiz },
+    });
+
     if (updated === 0) {
       res.status(404).json({ message: "Aprendiz no encontrado" });
     } else {
       res.json({ message: "Aprendiz actualizado correctamente" });
     }
-  }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al actualizar el aprendiz: ${error}`);
   }
 };
+
 
 
 export const deleteApprentice = async (req, res) => {

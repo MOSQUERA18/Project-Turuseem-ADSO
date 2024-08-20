@@ -83,7 +83,7 @@ AreaModel.hasMany(UnitModel, { foreignKey: "Id_Area", as: "unidades" })
 UnitModel.belongsTo(AreaModel, { foreignKey: "Id_Area", as: "areas" })
 
 //Programas de formacion
-AreaModel.hasMany(ProgramaModel, { foreignKey: "Id_Area", as: "programasformacion" })
+AreaModel.hasMany(ProgramaModel, { foreignKey: "Id_Area", as: "programasFormacion" })
 ProgramaModel.belongsTo(AreaModel, { foreignKey: "Id_Area", as: "areas"})
 
 
