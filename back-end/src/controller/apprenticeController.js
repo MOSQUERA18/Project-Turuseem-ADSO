@@ -1,5 +1,6 @@
 import ApprenticeModel from "../models/apprenticeModel.js";
 import FichasModel from "../models/fichasModel.js";
+import cityModel from "../models/cityModel.js";
 import { Sequelize, Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 
@@ -13,7 +14,11 @@ export const getAllApprentices = async (req, res) => {
       include: [
         {
           model: FichasModel,
-          as: "ficha", // Alias usado para la relación
+          as: "fichas", // Alias usado para la relación
+        },
+        {
+          model: cityModel,
+          as: "ciudades", // Alias para la relación con Ciudad
         },
       ],
     });
@@ -33,15 +38,19 @@ export const getApprentice = async (req, res) => {
       include: [
         {
           model: FichasModel,
-          as: "ficha", // Alias usado para la relación
+          as: "fichas", // Alias usado para la relación
+        },
+        {
+          model: cityModel,
+          as: "ciudades", // Alias para la relación con Ciudad
         },
       ],
     });
-    if (apprentice.length>0) {
+    if (apprentice) {
       res.status(200).json(apprentice);
       return
     } else {
-      res.status(404).json({ message: "Aprendiz no encontrado" });
+      res.status(404).json({ message: "Aprendiz no encontrado o no existe" });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -71,9 +80,11 @@ export const createApprentice = async (req, res) => {
       Patrocinio,
       Estado,
       Nom_Empresa,
-      Fot_Aprendiz,
       CentroConvivencia,
+      // Foto_Aprendiz,
     } = req.body;
+
+    const Foto_Aprendiz = req.file ? req.file.filename : null
 
     const newApprentice = await ApprenticeModel.create({
       Id_Aprendiz,
@@ -95,8 +106,8 @@ export const createApprentice = async (req, res) => {
       Patrocinio,
       Estado,
       Nom_Empresa,
-      Fot_Aprendiz,
       CentroConvivencia,
+      Foto_Aprendiz,
     });
     if(newApprentice){
       res.status(201).json(newApprentice);
@@ -111,6 +122,7 @@ export const createApprentice = async (req, res) => {
 export const updateApprentice = async (req, res) => {
   try {
     const {
+      Id_Aprendiz,
       Nom_Aprendiz,
       Ape_Aprendiz,
       Id_Ficha,
@@ -129,12 +141,23 @@ export const updateApprentice = async (req, res) => {
       Patrocinio,
       Estado,
       Nom_Empresa,
-      Fot_Aprendiz,
       CentroConvivencia,
+      // Foto_Aprendiz,
     } = req.body;
 
+    const Foto_Aprendiz = req.file ? req.file.filename : null
+
+    // Verificar si `Id_Aprendiz` está presente en `req.params`
+    if (!req.params.Id_Aprendiz) {
+      return res.status(400).json({ message: "ID del aprendiz no proporcionado" });
+    }
+
+
+    if(Foto_Aprendiz != null){
+    // Actualizar el aprendiz
     const [updated] = await ApprenticeModel.update(
       {
+        Id_Aprendiz,
         Nom_Aprendiz,
         Ape_Aprendiz,
         Id_Ficha,
@@ -153,24 +176,27 @@ export const updateApprentice = async (req, res) => {
         Patrocinio,
         Estado,
         Nom_Empresa,
-        Fot_Aprendiz,
         CentroConvivencia,
+        Foto_Aprendiz,
       },
       {
         where: { Id_Aprendiz: req.params.Id_Aprendiz },
       }
     );
+  
+    // Respuesta según el resultado de la actualización
     if (updated === 0) {
       res.status(404).json({ message: "Aprendiz no encontrado" });
     } else {
       res.json({ message: "Aprendiz actualizado correctamente" });
-      return
     }
+  }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al actualizar el aprendiz: ${error}`);
   }
 };
+
 
 export const deleteApprentice = async (req, res) => {
   try {
@@ -200,7 +226,11 @@ export const getQueryApprentice = async (req, res) => {
       include: [
         {
           model: FichasModel,
-          as: "ficha", // Alias usado para la relación
+          as: "fichas", // Alias usado para la relación
+        },
+        {
+          model: cityModel,
+          as: "ciudades", // Alias para la relación con Ciudad
         },
       ],
     });

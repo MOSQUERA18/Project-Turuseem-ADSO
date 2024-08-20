@@ -4,12 +4,14 @@ import { useState, useEffect, createContext } from "react";
 import clieteAxios from "../config/axios";
 import { ReactSession } from 'react-client-session';
 
+
 const AuthContext = createContext()
 
 
 const AuthProvider = ({children}) => {
     const [ cargando, setCargando ] = useState(true)
     const [ auth, setAuth ] = useState({})
+    //  
 
     useEffect(() => {
         const autenticarUser = async () => {
@@ -31,6 +33,7 @@ const AuthProvider = ({children}) => {
                 const { data } = await clieteAxios(url, config)
                 setAuth(data)
             } catch (error) {
+                // ReactSession.remove('token')
                 console.log(error.response.data.msg);
                 setAuth({}) 
             }
@@ -41,6 +44,8 @@ const AuthProvider = ({children}) => {
 
     const cerrarSesion = () => {
         ReactSession.remove('token')
+        localStorage.clear();
+        localStorage.removeItem('token');
         setAuth({})
     }
     return (

@@ -6,11 +6,11 @@ import bcrypt from "bcrypt";
 
 const verifyAuth = async (req, res, next) => {
   let GenerateToken;
-
+  
   // Verifica si hay un token en el encabezado Authorization
   if (
     req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
+    req.headers.authorization.startsWith('Bearer')
   ) {
     try {
       // Extrae el token del encabezado

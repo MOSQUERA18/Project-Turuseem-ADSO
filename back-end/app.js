@@ -22,6 +22,7 @@ import turnoRutinarioRoutes from "./src/routes/turnoRutinarioRoutes.js";
 import turnoEspecialRoutes from "./src/routes/turnoEspecialRoutes.js"
 import unitRoutes from './src/routes/unitRoutes.js'
 import userRouter from "./src/routes/UserRoutes.js";
+import cityRoutes from "./src/routes/cityRoutes.js"
 import { logger } from "./src/middleware/logMiddleware.js";
 // import routespdf from "./src/routes/routespdf.js";
 
@@ -32,7 +33,9 @@ import AreaModel from "./src/models/areaModel.js";
 import ProgramaModel from "./src/models/programaModel.js";
 import FichasModel from "./src/models/fichasModel.js";
 import AbsenceModel from "./src/models/absenceModel.js";
+import ApprenticeModel from "./src/models/apprenticeModel.js";
 import TurnoEspecialAprendizModel from "./src/models/turnoEspeciales_Aprendices.js";
+import cityModel from "./src/models/cityModel.js";
 
 
 const app = express();
@@ -56,6 +59,9 @@ app.use("/turnoespecial",turnoEspecialRoutes)
 app.use("/turRutAprendiz", turnoRutinarioAprendizRoutes);
 app.use("/turnoRutinario", turnoRutinarioRoutes);
 app.use('/unidades', unitRoutes)
+app.use('/ciudades',cityRoutes)
+
+app.use('/public/uploads',express.static('public/uploads'))
 
 app.use("/api/user", userRouter);
 
@@ -91,10 +97,20 @@ FichasModel.hasMany(TalentoHumanoModel,{foreignKey:"Id_Ficha",as:"talentoHumano"
 TalentoHumanoModel.belongsTo(FichasModel,{foreignKey:"Id_Ficha",as:"fichas"})
 
 
+//APRENDIZ CON FICHAS
+FichasModel.hasMany(ApprenticeModel,{foreignKey:'Id_Ficha' , as : 'aprendices'})
+ApprenticeModel.belongsTo(FichasModel,{foreignKey:'Id_Ficha', as:'fichas'})
+
+
+//Aprendiz con Ciudad
+cityModel.hasMany(ApprenticeModel,{foreignKey:'Id_Ciudad', as:'aprendices'})
+ApprenticeModel.belongsTo(cityModel,{foreignKey:'Id_Ciudad',as:'ciudades'})
+
+
 //Inasistencias
 AbsenceModel.belongsTo(TurnoEspecialAprendizModel,{foreignKey:"Id_TurnoEspecialAprendiz", as:"turnoespecialaprendiz"})
 TurnoEspecialAprendizModel.hasMany(AbsenceModel,{foreignKey:"Id_TurnoEspecialAprendiz",as:"inasistencias"})
 
 //Funcionario No esta relacionado con ninguno sino hasta con Turno Especial....
 
-export { AreaModel, UnitModel, ProgramaModel,FichasModel,TalentoHumanoModel } 
+export { AreaModel, UnitModel, ProgramaModel,FichasModel,TalentoHumanoModel,cityModel,ApprenticeModel } 

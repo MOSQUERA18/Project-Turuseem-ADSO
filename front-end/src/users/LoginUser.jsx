@@ -31,13 +31,16 @@ const LoginForm = () => {
       });
 
       //ALMACENAMIENTO DEL TOKEN EN LA SESION DEL CLIENTE!!
-      ReactSession.set("token:", data.token);
+      ReactSession.set("token", data.token);  
 
       //MANEJA EL ESTADO DE LA VERIFICACION DEL USUARIO
       setAuth(data);
       //SI ES CORRECTO EL TRY , SERA REDIRIGIDO A LA PAGINA PRINCIPAL LLAMADA '/login'
       navigate("/admin");
     } catch (error) {
+      ReactSession.remove("token");
+      localStorage.clear();
+      // localStorage.removeItem("token");
       setAlerta({
         msg: error.response.data.msg,
         error: true,
