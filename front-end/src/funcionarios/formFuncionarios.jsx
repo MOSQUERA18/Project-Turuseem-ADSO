@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import clieteAxios from "../config/axios";
+import clienteAxios from "../config/axios";
 import { ReactSession } from 'react-client-session';
 
 const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFuncionarios }) => {
@@ -41,7 +41,7 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
     try {
       let respuestApi;
       if (buttonForm === "Actualizar") {
-        respuestApi = await clieteAxios.put(
+        respuestApi = await clienteAxios.put(
           `/funcionarios/${funcionario.Id_Funcionario}`,
           {
             Nom_Funcionario,
@@ -54,7 +54,7 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
           config
         );
       } else if (buttonForm === "Enviar") {
-        respuestApi = await clieteAxios.post(
+        respuestApi = await clienteAxios.post(
           `/funcionarios`,
           {
             Id_Funcionario,
@@ -129,12 +129,12 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
 
           <div className="mb-3">
             <label className="text-gray-700 uppercase font-bold">
-              ID Funcionario
+              Documento
             </label>
             <input
               type="text"
               id="id_funcionario"
-              placeholder="ID Funcionario"
+              placeholder="Documento Funcionario"
               value={Id_Funcionario}
               onChange={(e) => setId_Funcionario(e.target.value)}
               className="w-full p-2 border rounded"
@@ -144,12 +144,12 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
 
           <div className="mb-3">
             <label className="text-gray-700 uppercase font-bold">
-              Nombre
+              Nombres
             </label>
             <input
               type="text"
               id="nombre"
-              placeholder="Nombre"
+              placeholder="Nombres"
               value={Nom_Funcionario}
               onChange={(e) => setNom_Funcionario(e.target.value)}
               className="w-full p-2 border rounded"
@@ -158,12 +158,12 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
 
           <div className="mb-3">
             <label className="text-gray-700 uppercase font-bold">
-              Apellido
+              Apellidos
             </label>
             <input
               type="text"
               id="apellido"
-              placeholder="Apellido"
+              placeholder="Apellidos"
               value={Ape_Funcionario}
               onChange={(e) => setApe_Funcionario(e.target.value)}
               className="w-full p-2 border rounded"

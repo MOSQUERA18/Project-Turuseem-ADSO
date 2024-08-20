@@ -1,4 +1,4 @@
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
@@ -48,7 +48,7 @@ const CrudFichas = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(URI, config);
+      const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setFichasList(respuestApi.data);
       } else {
@@ -76,7 +76,7 @@ const CrudFichas = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(`${URI}/${Id_Ficha}`, config);
+      const respuestApi = await clienteAxios(`${URI}/${Id_Ficha}`, config);
       if (respuestApi.status === 200) {
         setFichas({
           ...respuestApi.data,
@@ -116,7 +116,7 @@ const CrudFichas = () => {
           },
         };
         try {
-          const respuestApi = await clieteAxios.delete(
+          const respuestApi = await clienteAxios.delete(
             `/${URI}/${Id_Ficha}`,
             config
           );

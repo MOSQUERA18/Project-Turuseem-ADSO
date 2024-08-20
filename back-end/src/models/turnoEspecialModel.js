@@ -24,7 +24,7 @@ const TurnoEspecialModel = db.define(
         key: "Id_Ficha",
       },
     },
-    Img_TurnoEspecial: { type: DataTypes.STRING(50) },
+    Img_Asistencia: { type: DataTypes.STRING(50) },
     Id_Funcionario: {
       type: DataTypes.STRING(11),
       references: {

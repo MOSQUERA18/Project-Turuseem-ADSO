@@ -3,7 +3,7 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 // import { Link } from "react-router-dom";
-import clieteAxios from "../config/axios";
+import clienteAxios from "../config/axios";
 import { ReactSession } from 'react-client-session';
 
 
@@ -31,7 +31,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
 
     try {
       if (buttonForm === "Actualizar") {
-        const respuestApi = await clieteAxios.put(
+        const respuestApi = await clienteAxios.put(
           `/aprendiz/${apprentice.Id_Aprendiz}`,
           {
             Id_Aprendiz: Id_Aprendiz,
@@ -55,7 +55,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
           alert(respuestApi.data.message);
         }
       } else if (buttonForm === "Enviar") {
-        const respuestApi = await clieteAxios.post(
+        const respuestApi = await clienteAxios.post(
           `/aprendiz`,
           {
             Id_Aprendiz: Id_Aprendiz,

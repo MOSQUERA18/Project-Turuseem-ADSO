@@ -1,13 +1,11 @@
 import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { ReactSession } from 'react-client-session';
+import { ReactSession } from "react-client-session";
 
-import FormApprentices from "./formApprentices.jsx";
-import FormQueryApprentices from "./formQueryApprentices.jsx";
-import ModalDialog from "./modalDialog.jsx";
+import FormTurnosEspeciales from "./FormTurnosEspeciales.jsx";
+import FormQueryTurnosEspeciales from "./FormQueryTurnosEspeciales.jsx";
 import Pagination from "../pagination.jsx";
-import ImportarCSV from "./importarCSV.jsx";
 import Alerta from "../components/Alerta.jsx";
 
 import { MdDeleteOutline } from "react-icons/md";
@@ -16,39 +14,35 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 
-const URI = "/aprendiz/";
+const URI = "/turnoespecial";
 
-const CrudApprentices = () => {
-  const [apprenticeList, setApprenticeList] = useState([]);
-  const [apprenticeQuery, setApprenticeQuery] = useState([]);
+const CrudTurnosEspeciales = () => {
+  const [turnoEspecialList, setTurnoEspecialList] = useState([]);
+  const [turnoEspecialQuery, setTurnoEspecialQuery] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
-  const [stateAddApprentice, setStateAddApprentice] = useState(false);
-  const [onDoubleClickAppretice, setOnDoubleClickAppretice] = useState({});
-  const [modalDialog, setModalDialog] = useState(false);
+  const [stateAddturnoEspecial, setStateAddturnoEspecial] = useState(false);
   const [desde, setDesde] = useState(0);
   const [hasta, setHasta] = useState(0);
   const [alerta, setAlerta] = useState({});
 
-  const [apprentice, setApprentice] = useState({
-    Id_Aprendiz: "",
-    Nom_Aprendiz: "",
-    Ape_Aprendiz: "",
+  const [turnoEspecial, setturnoEspecial] = useState({
+    Id_TurnoEspecial: "",
+    Fec_TurnoEspecial: "",
+    Hor_Inicio: "",
+    Hor_Fin: "",
+    Obs_TurnoEspecial: "",
+    Tot_AprendicesAsistieron: "",
     Id_Ficha: "",
-    Fec_Nacimiento: "",
-    Gen_Aprendiz: "",
-    Cor_Aprendiz: "",
-    Tel_Aprendiz: "",
-    Tot_Memorandos: "",
-    Tot_Inasistencias: "",
-    Patrocinio: "",
-    CentroConvivencia: "",
+    Img_Asistencia: "",
+    Id_Funcionario: "",
+    Id_Unidad: "",
   });
 
   useEffect(() => {
-    getAllApprentices();
+    getAllTurnoEspeciales();
   }, []);
 
-  const getAllApprentices = async () => {
+  const getAllTurnoEspeciales = async () => {
     const token = ReactSession.get("token");
     const config = {
       headers: {
@@ -57,9 +51,9 @@ const CrudApprentices = () => {
       },
     };
     try {
-      const respuestApi = await clienteAxios.get(`/aprendiz`, config);
+      const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
-        setApprenticeList(respuestApi.data);
+        setTurnoEspecialList(respuestApi.data);
       } else {
         setAlerta({
           msg: `Error al cargar los registros!`,
@@ -75,7 +69,7 @@ const CrudApprentices = () => {
     }
   };
 
-  const getApprentice = async (Id_Aprendiz) => {
+  const getturnoEspecial = async (Id_turnoEspecial) => {
     setButtonForm("Actualizar");
     const token = ReactSession.get("token");
     const config = {
@@ -85,9 +79,9 @@ const CrudApprentices = () => {
       },
     };
     try {
-      const respuestApi = await clienteAxios(`/aprendiz/${Id_Aprendiz}`, config);
+      const respuestApi = await clienteAxios(`${URI}/${Id_turnoEspecial}`, config);
       if (respuestApi.status === 200) {
-        setApprentice({
+        setturnoEspecial({
           ...respuestApi.data,
         });
       } else {
@@ -105,15 +99,15 @@ const CrudApprentices = () => {
     }
   };
 
-  const deleteApprentice = (Id_Aprendiz) => {
+  const deleteturnoEspecial = (Id_turnoEspecial) => {
     Swal.fire({
       title: "¿Estas seguro?",
-      text: "No podras revertir esto!",
+      text: "No podrás revertir esto!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Si, Borrar!",
+      confirmButtonText: "Sí, Borrar!",
       cancelButtonText: "Cancelar",
     }).then(async (result) => {
       if (result.isConfirmed) {
@@ -126,11 +120,11 @@ const CrudApprentices = () => {
         };
         try {
           const respuestApi = await clienteAxios.delete(
-            `/aprendiz/${Id_Aprendiz}`,
+            `/${URI}/${Id_turnoEspecial}`,
             config
           );
-          if (respuestApi.status == 200) {
-            updateTextButton("Enviar");
+          if (respuestApi.status === 200) {
+            getAllTurnoEspeciales(); // Refrescar la lista después de borrar
             Swal.fire({
               title: "Borrado!",
               text: "El registro ha sido borrado.",
@@ -163,105 +157,81 @@ const CrudApprentices = () => {
         <button
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
           onClick={() => {
-            setStateAddApprentice(!stateAddApprentice);
+            setStateAddturnoEspecial(!stateAddturnoEspecial);
           }}
         >
-          {stateAddApprentice ? (
+          {stateAddturnoEspecial ? (
             <AiOutlineMinusCircle size={16} className="me-2" />
           ) : (
             <IoMdPersonAdd size={16} className="me-2" />
           )}
-          {stateAddApprentice ? "Ocultar" : "Agregar"}
+          {stateAddturnoEspecial ? "Ocultar" : "Agregar"}
         </button>
       </div>
       <div className="overflow-x-auto">
         <div className="flex justify-between">
           <div>
             <h1 className="font-semibold text-lg text-gray-700">
-              Buscar Por Nombre o Documento...
+              Buscar Por Nombre...
             </h1>
-            <FormQueryApprentices
-              getApprentice={getApprentice}
-              deleteApprentice={deleteApprentice}
+            <FormQueryTurnosEspeciales
+              getturnoEspecial={getturnoEspecial}
+              deleteturnoEspecial={deleteturnoEspecial}
               buttonForm={buttonForm}
-              apprenticeQuery={apprenticeQuery}
-              setApprenticeQuery={setApprenticeQuery}
+              turnoEspecialQuery={turnoEspecialQuery}
+              setTurnoEspecialQuery={setTurnoEspecialQuery}
             />
-          </div>
-          <div>
-            <h1 className="font-semibold text-lg text-gray-700">
-              Subir Archivo CSV
-            </h1>
-            <ImportarCSV URI={URI} />
           </div>
         </div>
         <hr />
-        <h2 className="font-semibold mb-4 text-lg text-gray-700 mt-3">
-          Doble Click sobre el aprendiz para ver informacion detallada...
-        </h2>
         {msg && <Alerta alerta={alerta} />}
         <table className="min-w-full bg-white text-center text-sm">
           <thead className="text-white bg-green-700">
             <tr className="">
+              <th className="py-2 px-4 border-2 border-b-gray-500">ID</th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Nombre</th>
               <th className="py-2 px-4 border-2 border-b-gray-500">
-                Documento
+                Hora Apertura
               </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Nombres</th>
               <th className="py-2 px-4 border-2 border-b-gray-500">
-                Apellidos
+                Hora Cierre
               </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Ficha</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Genero</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Correo</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Telefono</th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Estado</th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Área</th>
               <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {(apprenticeQuery.length ? apprenticeQuery : apprenticeList).map(
-              (apprentice, indice) =>
+            {(turnoEspecialQuery.length ? turnoEspecialQuery : turnoEspecialList).map(
+              (turnoEspecial, indice) =>
                 indice >= desde && indice < hasta ? (
                   <tr
-                    key={apprentice.Id_Aprendiz}
+                    key={turnoEspecial.Id_turnoEspecial}
                     className="odd:bg-white even:bg-gray-100 select-none"
-                    onDoubleClick={() => [
-                      setOnDoubleClickAppretice(apprentice),
-                      setModalDialog(true),
-                    ]}
                   >
+                    <td className="py-2 px-4 border-b">{turnoEspecial.Id_turnoEspecial}</td>
+                    <td className="py-2 px-4 border-b">{turnoEspecial.Nom_turnoEspecial}</td>
                     <td className="py-2 px-4 border-b">
-                      {apprentice.Id_Aprendiz}
+                      {turnoEspecial.Hor_Apertura}
                     </td>
+                    <td className="py-2 px-4 border-b">{turnoEspecial.Hor_Cierre}</td>
+                    <td className="py-2 px-4 border-b">{turnoEspecial.Estado}</td>
                     <td className="py-2 px-4 border-b">
-                      {apprentice.Nom_Aprendiz}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {apprentice.Ape_Aprendiz}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {apprentice.Id_Ficha}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {apprentice.Gen_Aprendiz}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {apprentice.Cor_Aprendiz}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {apprentice.Tel_Aprendiz}
+                      {turnoEspecial.areas.Nom_Area}{" "}
+                      {/* Puedes reemplazar esto por el nombre del área si lo tienes disponible */}
                     </td>
                     <td className="py-2 px-4 border-b">
                       <button
                         onClick={() => [
-                          getApprentice(apprentice.Id_Aprendiz),
-                          setStateAddApprentice(true),
+                          getturnoEspecial(turnoEspecial.Id_turnoEspecial),
+                          setStateAddturnoEspecial(true),
                         ]}
                         className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
                       >
                         <FaRegEdit />
                       </button>
                       <button
-                        onClick={() => deleteApprentice(apprentice.Id_Aprendiz)}
+                        onClick={() => deleteturnoEspecial(turnoEspecial.Id_turnoEspecial)}
                         className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
                       >
                         <MdDeleteOutline />
@@ -277,29 +247,19 @@ const CrudApprentices = () => {
       </div>
       <Pagination URI={URI} setDesde={setDesde} setHasta={setHasta} />
       <hr />
-      {stateAddApprentice ? (
-        <FormApprentices
+      {stateAddturnoEspecial ? (
+        <FormTurnosEspeciales
           buttonForm={buttonForm}
-          apprentice={apprentice}
+          turnoEspecial={turnoEspecial}
           updateTextButton={updateTextButton}
-          setApprentice={setApprentice}
+          setturnoEspecial={setturnoEspecial}
+          getAllturnoEspeciales={getAllTurnoEspeciales}
         />
       ) : null}
       <hr />
-
-      {modalDialog ? (
-        <ModalDialog
-          getApprentice={getApprentice}
-          deleteApprentice={deleteApprentice}
-          onDoubleClickAppretice={onDoubleClickAppretice}
-          setModalDialog={setModalDialog}
-          setStateAddApprentice={setStateAddApprentice}
-          setApprentice={setApprentice}
-        />
-      ) : null}
       <Outlet />
     </>
   );
 };
 
-export default CrudApprentices;
+export default CrudTurnosEspeciales;

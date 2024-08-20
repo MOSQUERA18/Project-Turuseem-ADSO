@@ -1,4 +1,4 @@
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
@@ -14,7 +14,7 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 
-const URI = "funcionarios";
+const URI = "/funcionarios";
 
 const CrudFuncionarios = () => {
   const [funcionarioList, setFuncionarioList] = useState([]);
@@ -48,7 +48,7 @@ const CrudFuncionarios = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(URI, config);
+      const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setFuncionarioList(respuestApi.data);
       } else {
@@ -76,7 +76,7 @@ const CrudFuncionarios = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(`${URI}/${Id_Funcionario}`, config);
+      const respuestApi = await clienteAxios(`${URI}/${Id_Funcionario}`, config);
       if (respuestApi.status === 200) {
         setFuncionario({
           ...respuestApi.data,
@@ -116,11 +116,13 @@ const CrudFuncionarios = () => {
           },
         };
         try {
-          const respuestApi = await clieteAxios.delete(
-            `/${URI}/${Id_Funcionario}`,
+          const respuestApi = await clienteAxios.delete(
+            `${URI}/${Id_Funcionario}`,
             config
           );
-          if (respuestApi.status === 200) {
+          console.log(respuestApi);
+          
+          if (respuestApi.status == 200) {
             getAllFuncionarios();
             Swal.fire({
               title: "Borrado!",

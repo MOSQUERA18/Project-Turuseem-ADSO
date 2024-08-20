@@ -155,6 +155,15 @@ const VerticalNav = () => {
               Aprendices
             </Link>
           </button>
+          <button className="flex jusitfy-start items-center w-full  space-x-4 pl-3 focus:outline-none text-white focus:text-indigo-400 rounded border-y py-2 border-white ">
+            <SiHomeassistantcommunitystore size={22} />
+            <Link
+              to="turnos-especiales"
+              className="text-white text-base uppercase font-bold"
+            >
+              Turnos Especiales
+            </Link>
+          </button>
           <button className="flex jusitfy-start items-center w-full  space-x-4 pl-3 focus:outline-none text-white focus:text-indigo-400 rounded border-y py-2 border-white">
             <IoDocumentText size={22} />
             <Link

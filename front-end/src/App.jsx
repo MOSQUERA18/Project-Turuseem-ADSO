@@ -15,8 +15,9 @@ import Home from "./home/home";
 import VerPdf from "./memorandum/verPDF";
 
 import CrudApprentices from "./apprentice/crudApprentices.jsx";
-import CrudMemorandum from "./memorandum/crudMemorandum.jsx";
 import ImportarCSV from "./apprentice/importarCSV";
+import CrudTurnosEspeciales from "./turnosEspeciales/CrudTurnosEspeciales.jsx";
+import CrudMemorandum from "./memorandum/crudMemorandum.jsx";
 import CrudUnidades from "./unit/CrudUnidad.jsx";
 import CrudFichas from "./fichas/CrudFichas.jsx"
 import CrudFuncionarios from "./funcionarios/CrudFuncionarios.jsx";
@@ -43,6 +44,7 @@ function App() {
               <Route path="aprendices/" element={<CrudApprentices />}>
                 <Route path="importCSV" element={<ImportarCSV />} />
               </Route>
+              <Route path="turnos-especiales" element={<CrudTurnosEspeciales />}/>
               <Route path="memorandos" element={<CrudMemorandum />} />
               <Route path="unidades" element={<CrudUnidades />} />
               <Route path="fichas" element={<CrudFichas />} />

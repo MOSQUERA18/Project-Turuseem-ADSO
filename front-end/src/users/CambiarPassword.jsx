@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 import Alerta from "../components/Alerta.jsx";
 
 const CambiarPassword = () => {
@@ -21,7 +21,7 @@ const CambiarPassword = () => {
     const comprobarToken = async () => {
       try {
         const url = `/api/user/olvide-password`;
-        await clieteAxios.get(`${url}/${token}`);
+        await clienteAxios.get(`${url}/${token}`);
         console.log(url, token);
         setTokenValido(true);
         setAlerta({
@@ -49,7 +49,7 @@ const CambiarPassword = () => {
     }
     try {
       const url = `/api/user/olvide-password`;
-      const { data } = await clieteAxios.post(`${url}/${token}`, {
+      const { data } = await clienteAxios.post(`${url}/${token}`, {
         password: newPassword,
       });
       setAlerta({
