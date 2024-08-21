@@ -60,6 +60,7 @@ export const getApprentice = async (req, res) => {
 
 export const createApprentice = async (req, res) => {
   try {
+    console.log(req)
     const {
       Id_Aprendiz,
       Nom_Aprendiz,

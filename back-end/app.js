@@ -2,7 +2,9 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import cors from "cors";
-import fileUpload from "express-fileupload";
+// import fileUpload from "express-fileupload";
+import multer from 'multer'
+const upload = multer();
 
 import db from "./src/database/db.js";
 
@@ -36,14 +38,18 @@ import AbsenceModel from "./src/models/absenceModel.js";
 import ApprenticeModel from "./src/models/apprenticeModel.js";
 import TurnoEspecialAprendizModel from "./src/models/turnoEspeciales_Aprendices.js";
 import cityModel from "./src/models/cityModel.js";
+import TurnoEspecialModel from "./src/models/turnoEspecialModel.js";
+import OfficialModel from "./src/models/officialModel.js";
 
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
 app.use(cors());
+app.use(upload.any())
 app.use(express.json());
-app.use(fileUpload());
+// app.use(multer.a)
+// app.use(fileUpload());
 
 app.use("/inasistencias", absenceRoutes);
 app.use("/aprendiz", apprenticeRoutes);
@@ -110,6 +116,21 @@ ApprenticeModel.belongsTo(cityModel,{foreignKey:'Id_Ciudad',as:'ciudades'})
 //Inasistencias
 AbsenceModel.belongsTo(TurnoEspecialAprendizModel,{foreignKey:"Id_TurnoEspecialAprendiz", as:"turnoespecialaprendiz"})
 TurnoEspecialAprendizModel.hasMany(AbsenceModel,{foreignKey:"Id_TurnoEspecialAprendiz",as:"inasistencias"})
+
+
+
+
+//Turno Especial - Fichas
+FichasModel.hasMany(TurnoEspecialModel,{foreignKey:"Id_Ficha",as:"turnoEspecial"})
+TurnoEspecialModel.belongsTo(FichasModel,{foreignKey:"Id_Ficha",as:"fichas"})
+
+//Turno Especial - Unidades
+UnitModel.hasMany(TurnoEspecialModel,{foreignKey:"Id_Unidad",as:"turnoEspecial"})
+TurnoEspecialModel.belongsTo(UnitModel,{foreignKey:"Id_Unidad",as:"unidad"})
+
+//Turno Especial - Funcionarios
+OfficialModel.hasMany(TurnoEspecialModel,{foreignKey:"Id_Funcionario",as:"turnoEspecial"})
+TurnoEspecialModel.belongsTo(OfficialModel,{foreignKey:"Id_Funcionario",as:"funcionario"})
 
 //Funcionario No esta relacionado con ninguno sino hasta con Turno Especial....
 

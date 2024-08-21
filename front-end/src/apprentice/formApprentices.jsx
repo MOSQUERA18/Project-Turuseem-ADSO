@@ -135,6 +135,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
   
       if (Foto_Aprendiz) {
         formData.append('Foto_Aprendiz', Foto_Aprendiz); // Asegúrate de que Foto_Aprendiz sea un archivo
+        formData.append('file', Foto_Aprendiz); // Asegúrate de que Foto_Aprendiz sea un archivo
       }
     
     

@@ -1,5 +1,5 @@
 import db from "../database/db.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { DataTypes } from "sequelize";
 import { generarToken } from "../helpers/generarToken.js";
 

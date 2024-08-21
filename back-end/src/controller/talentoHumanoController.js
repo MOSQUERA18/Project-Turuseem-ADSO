@@ -5,9 +5,9 @@ import FichasModel from "../models/fichasModel.js";
 export const getAllTalentoHumano = async (req, res) => {
   try {
     const talentoHumano = await TalentoHumanoModel.findAll({
-      include: [{ model: FichasModel, as: 'ficha' }]
+      include: [{ model: FichasModel, as: 'fichas' }]
     });
-    if (talentoHumano.length > 0) {
+    if (talentoHumano) {
       res.status(200).json(talentoHumano);
       return
     } else {
@@ -27,9 +27,9 @@ export const getTalentoHumano = async (req, res) => {
   try {
     const talento = await TalentoHumanoModel.findOne({
       where: { Id_Talento_Humano: req.params.Id_Talento_Humano },
-      include: [{ model: FichasModel, as: 'ficha' }]
+      include: [{ model: FichasModel, as: 'fichas' }]
     });
-    if (talento.length > 0) {
+    if (talento) {
       res.status(200).json(talento);
       return
     } else {
@@ -109,3 +109,31 @@ export const deleteTalentoHumano = async (req, res) => {
     });
   }
 };
+
+
+// export const getQueryTalento = async (req, res) => {
+//   try {
+//     const talento = await TalentoHumanoModel.findAll({
+//       where: {
+//         Id_Talento_Humano: {
+//           [Op.like]: `%${req.params.Id_Talento_Humano}%`,
+//         },
+//       },
+//       include: [
+//         {
+//           model: FichasModel,
+//           as: "fichas", // Asegúrate de que el alias coincida con tu modelo
+//         },
+//       ],
+//     });
+//     if (talento) {
+//       res.status(200).json(talento);
+//       return
+//     } else {
+//       res.status(404).json({ message: "No se encontraron Personas(Talento Humano) con el Documento proporcionado." });
+//     }
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//     logger.error(`Error al buscar el Talento Humano: ${error}`);
+//   }
+// };

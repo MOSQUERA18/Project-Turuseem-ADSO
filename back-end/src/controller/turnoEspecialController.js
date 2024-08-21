@@ -11,7 +11,7 @@ export const getAllTurnosEspeciales = async (req, res) => {
       include: [
         {
           model: FichasModel,
-          as: "ficha", // Alias usado para la relación
+          as: "fichas", // Alias usado para la relación
         },
         {
           model: UnitModel,
@@ -39,7 +39,7 @@ export const getTurnoEspecial = async (req, res) => {
       include: [
         {
           model: FichasModel,
-          as: "ficha", // Alias usado para la relación
+          as: "fichas", // Alias usado para la relación
         },
         {
           model: UnitModel,
@@ -51,7 +51,7 @@ export const getTurnoEspecial = async (req, res) => {
         },
       ],
     });
-    if (turnoEspecial.length > 0) {
+    if (turnoEspecial) {
       res.status(200).json(turnoEspecial);
       return
     } else {
@@ -165,7 +165,7 @@ export const getQueryTurnoEspecial = async (req, res) => {
       include: [
         {
           model: FichasModel,
-          as: "ficha", // Alias usado para la relación
+          as: "fichas", // Alias usado para la relación
         },
         {
           model: UnitModel,
