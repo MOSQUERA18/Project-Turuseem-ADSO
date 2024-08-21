@@ -1,4 +1,4 @@
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
@@ -71,7 +71,7 @@ const CrudApprentices = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios.get(URI, config);
+      const respuestApi = await clienteAxios.get(`/aprendiz`, config);
       if (respuestApi.status === 200) {
         setApprenticeList(respuestApi.data);
       } else {
@@ -99,7 +99,7 @@ const CrudApprentices = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios.get(`${URI}${Id_Aprendiz}`, config);
+      const respuestApi = await clienteAxios(`/aprendiz/${Id_Aprendiz}`, config);
       if (respuestApi.status === 200) {
         setApprentice({
           ...respuestApi.data,
@@ -139,7 +139,7 @@ const CrudApprentices = () => {
           },
         };
         try {
-          const respuestApi = await clieteAxios.delete(
+          const respuestApi = await clienteAxios.delete(
             `/aprendiz/${Id_Aprendiz}`,
             config
           );
@@ -174,6 +174,8 @@ const CrudApprentices = () => {
 
   return (
     <>
+    <br />
+    <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">Gestionar Informacion de los Aprendices</h1>
       <div className="flex justify-end pb-3">
         <button
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"

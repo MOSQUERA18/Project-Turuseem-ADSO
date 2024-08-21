@@ -85,7 +85,7 @@ const FormProgramaFormacion = ({ buttonForm, programa, updateTextButton,getAllPr
 
       if (respuestApi.status === 201 || respuestApi.status === 200) {
         setMessageType("success");
-        setMessage("Programa registrado correctamente!");
+        setMessage("Programa Actualizado correctamente!");
         clearForm();
         getAllProgramas();
         updateTextButton("Enviar");

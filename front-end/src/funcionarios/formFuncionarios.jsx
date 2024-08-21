@@ -129,12 +129,12 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
 
           <div className="mb-3">
             <label className="text-gray-700 uppercase font-bold">
-              ID Funcionario
+              Documento
             </label>
             <input
               type="text"
               id="id_funcionario"
-              placeholder="ID Funcionario"
+              placeholder="Documento Funcionario"
               value={Id_Funcionario}
               onChange={(e) => setId_Funcionario(e.target.value)}
               className="w-full p-2 border rounded"
@@ -144,12 +144,12 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
 
           <div className="mb-3">
             <label className="text-gray-700 uppercase font-bold">
-              Nombre
+              Nombres
             </label>
             <input
               type="text"
               id="nombre"
-              placeholder="Nombre"
+              placeholder="Nombres"
               value={Nom_Funcionario}
               onChange={(e) => setNom_Funcionario(e.target.value)}
               className="w-full p-2 border rounded"
@@ -158,12 +158,12 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
 
           <div className="mb-3">
             <label className="text-gray-700 uppercase font-bold">
-              Apellido
+              Apellidos
             </label>
             <input
               type="text"
               id="apellido"
-              placeholder="Apellido"
+              placeholder="Apellidos"
               value={Ape_Funcionario}
               onChange={(e) => setApe_Funcionario(e.target.value)}
               className="w-full p-2 border rounded"

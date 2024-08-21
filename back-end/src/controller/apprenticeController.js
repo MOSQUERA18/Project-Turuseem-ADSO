@@ -46,7 +46,7 @@ export const getApprentice = async (req, res) => {
         },
       ],
     });
-    if (apprentice) {
+    if (apprentice.length>0) {
       res.status(200).json(apprentice);
       return
     } else {

@@ -5,7 +5,7 @@ import { logger } from "../middleware/logMiddleware.js";
 export const getAllFuncionarios = async (req, res) => {
   try {
     const Funcionarios = await OfficialModel.findAll();
-    if( Funcionarios > 0){
+    if( Funcionarios.length > 0){
       res.status(200).json(Funcionarios);
       return
     }
@@ -19,7 +19,7 @@ export const getAllFuncionarios = async (req, res) => {
 export const getFuncionario = async (req, res) => {
   try {
     const Funcionario = await OfficialModel.findByPk(req.params.Id_Funcionario);
-    if (Funcionario > 0) {
+    if (Funcionario) {
       res.status(200).json(Funcionario);
       return
     } else {

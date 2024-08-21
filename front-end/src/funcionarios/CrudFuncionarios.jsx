@@ -14,7 +14,7 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 
-const URI = "funcionarios";
+const URI = "/funcionarios";
 
 const CrudFuncionarios = () => {
   const [funcionarioList, setFuncionarioList] = useState([]);
@@ -117,10 +117,12 @@ const CrudFuncionarios = () => {
         };
         try {
           const respuestApi = await clieteAxios.delete(
-            `/${URI}/${Id_Funcionario}`,
+            `${URI}/${Id_Funcionario}`,
             config
           );
-          if (respuestApi.status === 200) {
+          console.log(respuestApi);
+          
+          if (respuestApi.status == 200) {
             getAllFuncionarios();
             Swal.fire({
               title: "Borrado!",
@@ -150,6 +152,9 @@ const CrudFuncionarios = () => {
 
   return (
     <>
+    <br />
+    <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">Gestionar Informacion de los Funcionarios</h1>
+
       <div className="flex justify-end pb-3">
         <button
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
