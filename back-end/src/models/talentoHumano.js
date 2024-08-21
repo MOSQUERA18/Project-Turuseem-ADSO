@@ -39,8 +39,9 @@ const TalentoHumanoModel = db.define(
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
+    freezeTableName: true
   },
   { freezeTableName: true }
 );
-
+// console.log(db)
 export default TalentoHumanoModel;

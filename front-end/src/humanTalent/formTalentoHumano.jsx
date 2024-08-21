@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import clieteAxios from "../config/axios";
 
 const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAllTalentoHumano }) => {
+  const [Ficha, setFicha] = useState([]); // Añade esta línea al inicio del componente
   const [Id_TalentoHumano, setId_TalentoHumano] = useState("");
   const [Nom_TalentoHumano, setNom_TalentoHumano] = useState("");
   const [Ape_TalentoHumano, setApe_TalentoHumano] = useState("");
@@ -22,8 +23,12 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
   useEffect(() => {
     const fetchFicha = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await clieteAxios.get('/ficha', {
+        const token = localStorage.getItem("token")
+        // if (!token) 
+        //   console.error("No se encontró el token de autenticación.");
+        //   return;
+        // };
+        const response = await clieteAxios.get('/fichas', {
           headers: {
             Authorization: `Bearer ${token}`
           }

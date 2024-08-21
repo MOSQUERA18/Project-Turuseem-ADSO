@@ -54,17 +54,20 @@ const CrudTalentoHumano = () => {
     };
     try {
       const respuestApi = await clieteAxios(URI, config);
+      console.log(respuestApi)
       if (respuestApi.status === 200) {
         setTalentoHumanoList(respuestApi.data);
-      } else {
-        setAlerta({
-          msg: `Error al cargar los registros!`,
-          error: true,
-        });
-      }
+      } 
+      // else {
+      //   setAlerta({
+      //     msg: `Error al cargar los registros!`,
+      //     error: true,
+      //   });
+      // }
     } catch (error) {
+      console.log(error)
       setAlerta({
-        msg: `Error al cargar los registros!`,
+        msg: error.response.data.message,
         error: true,
       });
       console.error(error);

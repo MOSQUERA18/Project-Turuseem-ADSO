@@ -86,7 +86,9 @@ FichasModel.belongsTo(ProgramaModel,{foreignKey:"Id_ProgramaFormacion",as:"progr
 
 //TalentoHumano
 FichasModel.hasMany(TalentoHumanoModel,{foreignKey:"Id_Ficha",as:"talentoHumano"})
-TalentoHumanoModel.belongsTo(FichasModel,{foreignKey:"Id_Ficha",as:"fichas"})
+TalentoHumanoModel.belongsTo(FichasModel,{foreignKey:"Id_Ficha",as:"ficha"})
+// console.log("TalentoHumanoModel")
+// console.log(TalentoHumanoModel)
 
 
 //Inasistencias

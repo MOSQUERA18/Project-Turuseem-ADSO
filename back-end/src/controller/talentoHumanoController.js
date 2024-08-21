@@ -7,16 +7,18 @@ export const getAllTalentoHumano = async (req, res) => {
     const talentoHumano = await TalentoHumanoModel.findAll({
       include: [{ model: FichasModel, as: 'ficha' }]
     });
+    console.log(talentoHumano)
     if (talentoHumano.length > 0) {
       res.status(200).json(talentoHumano);
       return
     } else {
       res.status(404).json({
-        message: "No se encontró talento humano.",
+        message: "No se encontró Registros En talento humano.",
       });
     }
   } catch (error) {
-    logger.error("Error fetching talento humano: ", error.message);
+    console.log(error)
+    logger.error("Error fetching talento humano: ", error);
     res.status(500).json({
       message: "Error al recuperar el talento humano.",
     });
@@ -38,7 +40,7 @@ export const getTalentoHumano = async (req, res) => {
       });
     }
   } catch (error) {
-    logger.error("Error fetching talento humano: ", error.message);
+    logger.error("Error fetching talento humano: ", error);
     res.status(500).json({
       message: "Error al recuperar el talento humano.",
     });
