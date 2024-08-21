@@ -16,6 +16,7 @@ const TurnoEspecialModel = db.define(
     Fec_TurnoEspecial: { type: DataTypes.DATE },
     Hor_Inicio: { type: DataTypes.TIME },
     Hor_Fin: { type: DataTypes.TIME },
+    Tot_AprendicesAsistieron: { type: DataTypes.STRING(10) },
     Obs_TurnoEspecial: { type: DataTypes.STRING(100) },
     Id_Ficha: {
       type: DataTypes.STRING(11),

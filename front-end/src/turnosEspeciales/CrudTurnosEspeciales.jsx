@@ -25,8 +25,8 @@ const CrudTurnosEspeciales = () => {
   const [hasta, setHasta] = useState(0);
   const [alerta, setAlerta] = useState({});
 
-  const [turnoEspecial, setturnoEspecial] = useState({
-    Id_TurnoEspecial: "",
+  const [turnoEspecial, setTurnoEspecial] = useState({
+    // Id_TurnoEspecial: "",
     Fec_TurnoEspecial: "",
     Hor_Inicio: "",
     Hor_Fin: "",
@@ -39,10 +39,10 @@ const CrudTurnosEspeciales = () => {
   });
 
   useEffect(() => {
-    getAllTurnoEspeciales();
+    getAllTurnosEspeciales();
   }, []);
 
-  const getAllTurnoEspeciales = async () => {
+  const getAllTurnosEspeciales = async () => {
     const token = ReactSession.get("token");
     const config = {
       headers: {
@@ -60,16 +60,17 @@ const CrudTurnosEspeciales = () => {
           error: true,
         });
       }
+
+      
     } catch (error) {
       setAlerta({
-        msg: `Error al cargar los registros!`,
+        msg: `Ocurrio un error!`,
         error: true,
       });
       console.error(error);
     }
   };
-
-  const getturnoEspecial = async (Id_turnoEspecial) => {
+  const getTurnoEspecial = async (Id_turnoEspecial) => {
     setButtonForm("Actualizar");
     const token = ReactSession.get("token");
     const config = {
@@ -79,9 +80,12 @@ const CrudTurnosEspeciales = () => {
       },
     };
     try {
-      const respuestApi = await clienteAxios(`${URI}/${Id_turnoEspecial}`, config);
+      const respuestApi = await clienteAxios(
+        `${URI}/${Id_turnoEspecial}`,
+        config
+      );
       if (respuestApi.status === 200) {
-        setturnoEspecial({
+        setTurnoEspecial({
           ...respuestApi.data,
         });
       } else {
@@ -99,7 +103,7 @@ const CrudTurnosEspeciales = () => {
     }
   };
 
-  const deleteturnoEspecial = (Id_turnoEspecial) => {
+  const deleteTurnoEspecial = (Id_turnoEspecial) => {
     Swal.fire({
       title: "¿Estas seguro?",
       text: "No podrás revertir esto!",
@@ -124,7 +128,7 @@ const CrudTurnosEspeciales = () => {
             config
           );
           if (respuestApi.status === 200) {
-            getAllTurnoEspeciales(); // Refrescar la lista después de borrar
+            getAllTurnosEspeciales(); // Refrescar la lista después de borrar
             Swal.fire({
               title: "Borrado!",
               text: "El registro ha sido borrado.",
@@ -153,7 +157,9 @@ const CrudTurnosEspeciales = () => {
 
   return (
     <>
-    <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">Turnos Especiales</h1>
+      <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
+        Turnos Especiales
+      </h1>
       <div className="flex justify-end pb-3">
         <button
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
@@ -176,8 +182,8 @@ const CrudTurnosEspeciales = () => {
               Buscar Por Nombre...
             </h1>
             <FormQueryTurnosEspeciales
-              getturnoEspecial={getturnoEspecial}
-              deleteturnoEspecial={deleteturnoEspecial}
+              getTurnoEspecial={getTurnoEspecial}
+              deleteTurnoEspecial={deleteTurnoEspecial}
               buttonForm={buttonForm}
               turnoEspecialQuery={turnoEspecialQuery}
               setTurnoEspecialQuery={setTurnoEspecialQuery}
@@ -189,59 +195,100 @@ const CrudTurnosEspeciales = () => {
         <table className="min-w-full bg-white text-center text-sm">
           <thead className="text-white bg-green-700">
             <tr className="">
-              <th className="py-2 px-4 border-2 border-b-gray-500">ID</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Nombre</th>
+              {/* <th className="py-2 px-4 border-2 border-b-gray-500">ID</th> */}
               <th className="py-2 px-4 border-2 border-b-gray-500">
-                Hora Apertura
+                Fecha Turno
               </th>
               <th className="py-2 px-4 border-2 border-b-gray-500">
-                Hora Cierre
+                Hora Inicio
               </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Estado</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Área</th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">
+                Hora Fin
+              </th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">
+                Observaciones
+              </th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">
+                Total Aprendices
+              </th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">
+                Ficha
+              </th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">
+                Imagen Asistencia
+              </th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">
+                Funcionario
+              </th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">
+                Unidad
+              </th>
               <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {(turnoEspecialQuery.length ? turnoEspecialQuery : turnoEspecialList).map(
-              (turnoEspecial, indice) =>
-                indice >= desde && indice < hasta ? (
-                  <tr
-                    key={turnoEspecial.Id_turnoEspecial}
-                    className="odd:bg-white even:bg-gray-100 select-none"
-                  >
-                    <td className="py-2 px-4 border-b">{turnoEspecial.Id_turnoEspecial}</td>
-                    <td className="py-2 px-4 border-b">{turnoEspecial.Nom_turnoEspecial}</td>
-                    <td className="py-2 px-4 border-b">
-                      {turnoEspecial.Hor_Apertura}
-                    </td>
-                    <td className="py-2 px-4 border-b">{turnoEspecial.Hor_Cierre}</td>
-                    <td className="py-2 px-4 border-b">{turnoEspecial.Estado}</td>
-                    <td className="py-2 px-4 border-b">
-                      {turnoEspecial.areas.Nom_Area}{" "}
-                      {/* Puedes reemplazar esto por el nombre del área si lo tienes disponible */}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      <button
-                        onClick={() => [
-                          getturnoEspecial(turnoEspecial.Id_turnoEspecial),
-                          setStateAddturnoEspecial(true),
-                        ]}
-                        className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
-                      >
-                        <FaRegEdit />
-                      </button>
-                      <button
-                        onClick={() => deleteturnoEspecial(turnoEspecial.Id_turnoEspecial)}
-                        className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
-                      >
-                        <MdDeleteOutline />
-                      </button>
-                    </td>
-                  </tr>
-                ) : (
-                  ""
-                )
+            {(turnoEspecialQuery.length
+              ? turnoEspecialQuery
+              : turnoEspecialList
+            ).map((turnoEspecial, indice) =>
+              indice >= desde && indice < hasta ? (
+                <tr
+                  key={turnoEspecial.Id_TurnoEspecial}
+                  className="odd:bg-white even:bg-gray-100 select-none"
+                >
+                  {/* <td className="py-2 px-4 border-b">
+                    {turnoEspecial.Id_TurnoEspecial}
+                  </td> */}
+                  <td className="py-2 px-4 border-b">
+                    {turnoEspecial.Fec_TurnoEspecial}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {turnoEspecial.Hor_Inicio}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {turnoEspecial.Hor_Fin}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {turnoEspecial.Obs_TurnoEspecial}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {turnoEspecial.Tot_AprendicesAsistieron}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {turnoEspecial.Id_Ficha}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {turnoEspecial.Img_Asistencia}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {turnoEspecial.funcionario.Nom_Funcionario}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {turnoEspecial.unidad.Nom_Unidad}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    <button
+                      onClick={() => [
+                        getTurnoEspecial(turnoEspecial.Id_TurnoEspecial),
+                        setStateAddturnoEspecial(true),
+                      ]}
+                      className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
+                    >
+                      <FaRegEdit />
+                    </button>
+                    <button
+                      onClick={() =>
+                        deleteTurnoEspecial(turnoEspecial.Id_turnoEspecial)
+                      }
+                      className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
+                    >
+                      <MdDeleteOutline />
+                    </button>
+                  </td>
+                </tr>
+              ) : (
+                ""
+              )
             )}
           </tbody>
         </table>
@@ -253,8 +300,8 @@ const CrudTurnosEspeciales = () => {
           buttonForm={buttonForm}
           turnoEspecial={turnoEspecial}
           updateTextButton={updateTextButton}
-          setturnoEspecial={setturnoEspecial}
-          getAllturnoEspeciales={getAllTurnoEspeciales}
+          // setTurnoEspecial={setTurnoEspecial}
+          getAllTurnosEspeciales={getAllTurnosEspeciales}
         />
       ) : null}
       <hr />
