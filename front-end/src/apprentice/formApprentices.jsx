@@ -2,8 +2,10 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import clieteAxios from "../config/axios";
+import { ReactSession } from 'react-client-session';
+
 
 const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
   const [Id_Aprendiz, setId_Aprendiz] = useState("");
@@ -19,7 +21,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
 
   const sendForm = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
+    const token = ReactSession.get("token");
     const config = {
       headers: {
         "Content-Type": "application/json",

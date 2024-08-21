@@ -1,7 +1,7 @@
 import AbsenceModel from "../models/absenceModel.js";
 import TurnoRutinarioModel from "../models/turnoRutinarioModel.js";
 import TurnoEspecialModel from "../models/turnoEspecialModel.js";
-import { Sequelize, Op } from "sequelize";
+import { Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 
 export const getAllAbsences = async (req, res) => {
@@ -18,7 +18,7 @@ export const getAllAbsences = async (req, res) => {
         },
       ],
     });
-    if(inasistencias){
+    if(inasistencias.length>0){
       res.json(200).json(inasistencias); //a todos los controllers toca agg esto para validar los datos
       return
     }else {
@@ -49,7 +49,7 @@ export const getAbsence = async (req, res) => {
         ],
       }
     );
-    if (inasistencia) {
+    if (inasistencia.length>0) {
       res.status(200).json(inasistencia);
       return
     } else {
@@ -156,7 +156,7 @@ export const getQueryInasistencia = async (req, res) => {
         },
       ],
     });
-    if(inasistencias){
+    if(inasistencias.length > 0){
       res.status(200).json(inasistencias);
       return
     }

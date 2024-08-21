@@ -17,7 +17,7 @@ export const getAllApprentices = async (req, res) => {
         },
       ],
     });
-    if(apprentices){
+    if(apprentices.length>0){
       res.status(200).json(apprentices);
       return
     }
@@ -37,8 +37,8 @@ export const getApprentice = async (req, res) => {
         },
       ],
     });
-    if (apprentice) {
-      res.json(apprentice);
+    if (apprentice.length>0) {
+      res.status(200).json(apprentice);
       return
     } else {
       res.status(404).json({ message: "Aprendiz no encontrado" });

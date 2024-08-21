@@ -2,8 +2,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { ReactSession } from 'react-client-session';
 import clieteAxios from "../config/axios";
+import Alerta from "../components/Alerta";
 
 const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
   const [Id_Ficha, setId_Ficha] = useState("");
@@ -14,6 +15,7 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
   const [Estado, setEstado] = useState("");
   const [selectedPrograma,setSelectedPrograma] = useState(null);
   const [programasformacion, setProgramasFormacion] = useState([]); 
+  const [alerta, setAlerta] = useState({});
 
 
   // Estado para mensajes
@@ -23,7 +25,7 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
   useEffect(() => {
     const fetchProgramas = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = ReactSession.get("token");
         const response = await clieteAxios.get('/programa', {
           headers: {
             Authorization: `Bearer ${token}`
@@ -55,7 +57,7 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
 
   const sendForm = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
+    const token = ReactSession.get("token");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -105,7 +107,11 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
         setMessageType("error");
       }
     } catch (error) {
-      setMessage("Error al registrar la Ficha.");
+      setAlerta({
+        msg: "Todos los campos son obligatorios!",
+        error: true,
+      });
+      // setMessage("Error al registrar la Ficha, Por Campos Faltantes.");
       setMessageType("error");
     }
   };
@@ -136,6 +142,7 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
   useEffect(() => {
     setData();
   }, [fichas]);
+  const { msg } = alerta;
 
   return (
     <>
@@ -145,6 +152,7 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
           onSubmit={sendForm}
           className="bg-white shadow-2xl rounded-2xl px-14 pt-6 pb-8 mb-4 max-w-3xl w-full mt-10"
         >
+          {msg && <Alerta alerta={alerta} />}
           <h1 className="font-bold text-green-600 text-3xl uppercase text-center my-5">
             Registro De Fichas
           </h1>

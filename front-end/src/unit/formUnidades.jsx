@@ -2,8 +2,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import clieteAxios from "../config/axios";
+import Alerta from "../components/Alerta";
+import { ReactSession } from 'react-client-session';
 
 const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) => {
   const [Nom_Unidad, setNom_Unidad] = useState("");
@@ -12,7 +13,8 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
   const [Estado, setEstado] = useState("");
   const [Id_Area, setId_Area] = useState("");  
   const [selectedArea, setSelectedArea] = useState(null);
-  const [Areas, setAreas] = useState([]);  
+  const [Areas, setAreas] = useState([]);
+  const [alerta, setAlerta] = useState({});
 
   // Estado para mensajes
   const [message, setMessage] = useState("");
@@ -21,7 +23,7 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
   useEffect(() => {
     const fetchAreas = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = ReactSession.get("token");
         const response = await clieteAxios.get('/areas', {
           headers: {
             Authorization: `Bearer ${token}`
@@ -51,7 +53,7 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
 
   const sendForm = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
+    const token = ReactSession.get("token");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -94,11 +96,15 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
         getAllUnidades();
         updateTextButton("Enviar");
       } else {
-        setMessage(respuestApi.data.message || "Error al registrar la unidad.");
+        setMessage(respuestApi.error.message || "Error al registrar la unidad.");
         setMessageType("error");
       }
     } catch (error) {
-      setMessage("Error al registrar la unidad.");
+      // setMessage("Error al registrar la unidad, Campos Faltantes.");
+      setAlerta({
+        msg: "Todos los campos son obligatorios!",
+        error: true,
+      });
       setMessageType("error");
     }
   };
@@ -125,6 +131,7 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
   useEffect(() => {
     setData();
   }, [unidad]);
+  const { msg } = alerta;
 
   return (
     <>
@@ -134,6 +141,7 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
           onSubmit={sendForm}
           className="bg-white shadow-2xl rounded-2xl px-14 pt-6 pb-8 mb-4 max-w-3xl w-full mt-10"
         >
+          {msg && <Alerta alerta={alerta} />}
           <h1 className="font-bold text-green-600 text-3xl uppercase text-center my-5">
             Registrar Unidades
           </h1>

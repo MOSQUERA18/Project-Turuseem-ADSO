@@ -43,7 +43,7 @@ export const getTurnoEspecialAprendiz = async (req, res) => {
       ],
     });
     if (turnoEspecialAprendiz) {
-      res.json(turnoEspecialAprendiz);
+      res.status(200).json(turnoEspecialAprendiz);
       return
     } else {
       res.status(404).json({ message: "Turno especial de aprendiz no encontrado" });

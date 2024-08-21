@@ -18,7 +18,7 @@ export const getAllTurnosRutinarios = async (req, res) => {
         },
       ],
     });
-    if(turnosRutinarios){
+    if(turnosRutinarios.length > 0){
     res.status(200).json(turnosRutinarios);
     }
   } catch (error) {

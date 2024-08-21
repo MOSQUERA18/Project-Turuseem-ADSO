@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import { useState, useEffect, createContext } from "react";
 import clieteAxios from "../config/axios";
+import { ReactSession } from 'react-client-session';
 
 const AuthContext = createContext()
 
@@ -12,18 +11,18 @@ const AuthProvider = ({children}) => {
 
     useEffect(() => {
         const autenticarUser = async () => {
-            const token = localStorage.getItem('token')
-            if (!token) {
+            const session = ReactSession.get('session')
+            if (!session) {
                 setCargando(false)
                 return
             }
 
             const config = {
                 headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
-                }
-            }
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${session}`, 
+                },
+              };
 
             try {
                 const url = `/api/user/perfil`
@@ -39,7 +38,7 @@ const AuthProvider = ({children}) => {
     }, [])
 
     const cerrarSesion = () => {
-        localStorage.removeItem('token')
+        ReactSession.remove('session')
         setAuth({})
     }
     return (

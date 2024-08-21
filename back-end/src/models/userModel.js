@@ -10,7 +10,7 @@ const UserModel = db.define(
     Nom_User: { type: DataTypes.STRING },
     Cor_User: { type: DataTypes.STRING },
     password: { type: DataTypes.STRING },
-    token: { type: DataTypes.STRING, defaultValue: generarToken() },
+    token: { type: DataTypes.STRING },
     Confirmado: { type: DataTypes.BOOLEAN },
   },
   {
@@ -24,6 +24,9 @@ const UserModel = db.define(
           user.password = await bcrypt.hash(user.password, salt);
         }
       },
+      beforeCreate: async (user, options) => {
+        user.token = generarToken(); // Genera un nuevo token al crear el usuario
+      },
     },
   }
 );
@@ -32,4 +35,6 @@ UserModel.prototype.comprobarPassword = async function (passwordFormulario) {
   return await bcrypt.compare(passwordFormulario, this.password);
 };
 
+
 export default UserModel;
+

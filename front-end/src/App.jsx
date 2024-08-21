@@ -12,14 +12,14 @@ import { AuthProvider } from "./context/authProvider";
 
 //AQUI VAN LOS CRUD (FORMULARIOS)
 import Home from "./home/home";
-import CrudMemorandum from "./memorandum/crudMemorandum";
 import VerPdf from "./memorandum/verPDF";
 
-import CrudApprentices from "./apprentice/crudApprentices";
+import CrudApprentices from "./apprentice/crudApprentices.jsx";
+import CrudMemorandum from "./memorandum/crudMemorandum.jsx";
 import ImportarCSV from "./apprentice/importarCSV";
 import CrudUnidades from "./unit/CrudUnidad.jsx";
 import CrudFichas from "./fichas/CrudFichas.jsx"
-import CrudProgramaFormacion from "./programasFormacion/CrudProgramaFormacion.jsx"
+
 
 function App() {
   return (
@@ -46,7 +46,6 @@ function App() {
               <Route path="memorandos" element={<CrudMemorandum />} />
               <Route path="unidades" element={<CrudUnidades />} />
               <Route path="fichas" element={<CrudFichas />} />
-              <Route path="programa-formacion" element={<CrudProgramaFormacion />} />
 
               {/* <Route path='/perfil' element={<MemorandumPDF/>}/> */}
               <Route path="PdfView" element={<VerPdf />} />

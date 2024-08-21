@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-// import axios from "axios";
+import { ReactSession } from 'react-client-session';
 import { useEffect, useState } from "react";
 import clieteAxios from "../config/axios";
 
@@ -9,7 +9,7 @@ const FormQueryFichas = ({ buttonForm, setFichasQuery }) => {
 
   const sendFormQuery = async (query) => {
     if (query) {
-      const token = localStorage.getItem("token");
+      const token = ReactSession.get("token");
       const config = {
         headers: {
           "Content-Type": "application/json",
