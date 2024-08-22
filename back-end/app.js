@@ -4,7 +4,7 @@ import express from "express";
 import cors from "cors";
 import multer from 'multer'
 const upload = multer();
-// import verifyAuth from "./src/middleware/authMiddleware.js";
+// import checkAuth from "./src/middleware/authMiddleware.js";
 
 import db from "./src/database/db.js";
 
@@ -13,7 +13,7 @@ import absenceRoutes from "./src/routes/absencesRoutes.js";
 import apprenticeRoutes from "./src/routes/ApprenticeRoutes.js";
 import areaRoutes from "./src/routes/areaRoutes.js";
 import fichasRoutes from "./src/routes/fichasRoutes.js";
-import fileCsvRoutes from "./src/routes/fileCsvRoutes.js";
+
 import memorandumRoutes from "./src/routes/memorandumRoutes.js";
 import officialRoutes from "./src/routes/officialRoutes.js";
 import programaRoutes from "./src/routes/programaRoutes.js";
@@ -60,7 +60,7 @@ app.use("/inasistencias", absenceRoutes);
 app.use("/aprendiz", apprenticeRoutes);
 app.use("/areas", areaRoutes);
 app.use("/fichas", fichasRoutes);
-app.use("/archivo-csv", fileCsvRoutes);
+
 app.use("/memorando", memorandumRoutes);
 app.use("/funcionarios", officialRoutes);
 app.use("/programa", programaRoutes);

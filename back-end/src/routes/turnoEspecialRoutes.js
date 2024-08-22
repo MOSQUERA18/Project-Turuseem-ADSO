@@ -7,23 +7,23 @@ import {
   deleteTurnoEspecial,
   getQueryTurnoEspecial
 } from '../controller/turnoEspecialController.js';
-import verifyAuth from '../middleware/authMiddleware.js';
+import checkAuth from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 router
   .route('/')
-  .get(verifyAuth, getAllTurnosEspeciales)
-  .post(verifyAuth, createTurnoEspecial);
+  .get(checkAuth, getAllTurnosEspeciales)
+  .post(checkAuth, createTurnoEspecial);
 
 router
   .route('/:Id_TurnoEspecial')
-  .get(verifyAuth, getTurnoEspecial)
-  .put(verifyAuth, updateTurnoEspecial)
-  .delete(verifyAuth, deleteTurnoEspecial);
+  .get(checkAuth, getTurnoEspecial)
+  .put(checkAuth, updateTurnoEspecial)
+  .delete(checkAuth, deleteTurnoEspecial);
 
 router
   .route('/query/:Id_TurnoEspecial')
-  .get(verifyAuth, getQueryTurnoEspecial);
+  .get(checkAuth, getQueryTurnoEspecial);
 
 export default router;

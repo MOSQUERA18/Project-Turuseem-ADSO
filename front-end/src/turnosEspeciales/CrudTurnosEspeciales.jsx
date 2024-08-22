@@ -1,4 +1,4 @@
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
@@ -50,7 +50,7 @@ const CrudTurnosEspeciales = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(URI, config);
+      const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setTurnoEspecialList(respuestApi.data);
       } else {
@@ -79,7 +79,7 @@ const CrudTurnosEspeciales = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(
+      const respuestApi = await clienteAxios(
         `${URI}/${Id_turnoEspecial}`,
         config
       );
@@ -122,7 +122,7 @@ const CrudTurnosEspeciales = () => {
           },
         };
         try {
-          const respuestApi = await clieteAxios.delete(
+          const respuestApi = await clienteAxios.delete(
             `/${URI}/${Id_turnoEspecial}`,
             config
           );

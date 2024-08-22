@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 import Alerta from "../components/Alerta.jsx";
 import { ReactSession } from "react-client-session";
 
@@ -36,7 +36,7 @@ const FormTurnosEspeciales = ({
     const getAllFichas = async () => {
       try {
         const token = ReactSession.get("token");
-        const responseFichas = await clieteAxios("/fichas", {
+        const responseFichas = await clienteAxios("/fichas", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -52,7 +52,7 @@ const FormTurnosEspeciales = ({
     const getAllFuncionarios = async () => {
       try {
         const token = ReactSession.get("token");
-        const responseFuncionarios = await clieteAxios("/funcionarios", {
+        const responseFuncionarios = await clienteAxios("/funcionarios", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -68,7 +68,7 @@ const FormTurnosEspeciales = ({
     const getAllUnidades = async () => {
       try {
         const token = ReactSession.get("token");
-        const responseUnidades = await clieteAxios("/unidades", {
+        const responseUnidades = await clienteAxios("/unidades", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -96,7 +96,7 @@ const FormTurnosEspeciales = ({
     try {
       let respuestApi;
       if (buttonForm === "Actualizar") {
-        respuestApi = await clieteAxios.put(
+        respuestApi = await clienteAxios.put(
           `/turnoespecial/${Id_TurnoEspecial}`,
           {
             Fec_TurnoEspecial,
@@ -112,7 +112,7 @@ const FormTurnosEspeciales = ({
           config
         );
       } else if (buttonForm === "Enviar") {
-        respuestApi = await clieteAxios.post(
+        respuestApi = await clienteAxios.post(
           `/unidades`,
           {
             Fec_TurnoEspecial,

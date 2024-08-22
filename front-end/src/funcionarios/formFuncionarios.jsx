@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import clieteAxios from "../config/axios";
+import clienteAxios from "../config/axios";
 import { ReactSession } from 'react-client-session';
 
 const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFuncionarios }) => {
@@ -41,7 +41,7 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
     try {
       let respuestApi;
       if (buttonForm === "Actualizar") {
-        respuestApi = await clieteAxios.put(
+        respuestApi = await clienteAxios.put(
           `/funcionarios/${funcionario.Id_Funcionario}`,
           {
             Nom_Funcionario,
@@ -54,7 +54,7 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
           config
         );
       } else if (buttonForm === "Enviar") {
-        respuestApi = await clieteAxios.post(
+        respuestApi = await clienteAxios.post(
           `/funcionarios`,
           {
             Id_Funcionario,

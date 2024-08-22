@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Alerta from "../components/Alerta";
-import clieteAxios from "../config/axios";
+import clienteAxios from "../config/axios";
 import useAuth from "../hooks/useAuth";
 import { ReactSession } from "react-client-session";
 
@@ -25,7 +25,7 @@ const LoginForm = () => {
     }
     try {
       const direccionURL = `/api/user/login`;
-      const { data } = await clieteAxios.post(direccionURL, {
+      const { data } = await clienteAxios.post(direccionURL, {
         Cor_User: Cor_User,
         password: password,
       });

@@ -4,7 +4,7 @@ import { logger } from "./logMiddleware.js";
 import bcrypt from "bcrypt";
 
 
-const verifyAuth = async (req, res, next) => {
+const checkAuth = async (req, res, next) => {
   let GenerateToken;
   
   // Verifica si hay un token en el encabezado Authorization
@@ -52,5 +52,5 @@ const verifyAuth = async (req, res, next) => {
   next();
 };
 
-export default verifyAuth;
+export default checkAuth;
 

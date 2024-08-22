@@ -1,4 +1,4 @@
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
@@ -56,7 +56,7 @@ const CrudTalentoHumano = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(URI, config);
+      const respuestApi = await clienteAxios(URI, config);
       console.log(respuestApi)
       if (respuestApi.status === 200) {
         setTalentoHumanoList(respuestApi.data);
@@ -87,7 +87,7 @@ const CrudTalentoHumano = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(`${URI}/${Id_Talento_Humano}`, config);
+      const respuestApi = await clienteAxios(`${URI}/${Id_Talento_Humano}`, config);
       if (respuestApi.status === 200) {
         setTalentoHumano({
           ...respuestApi.data,
@@ -127,7 +127,7 @@ const CrudTalentoHumano = () => {
           },
         };
         try {
-          const respuestApi = await clieteAxios.delete(
+          const respuestApi = await clienteAxios.delete(
             `/${URI}/${Id_Talento_Humano}`,
             config
           );

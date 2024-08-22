@@ -9,7 +9,7 @@ import { IoDocumentText, IoSettings } from "react-icons/io5";
 import { PiNotebookFill } from "react-icons/pi";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { FaClipboardCheck, FaPeopleGroup } from "react-icons/fa6";
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 
 const VerticalNav = () => {
   const [show, setShow] = useState(true);
@@ -33,7 +33,7 @@ const VerticalNav = () => {
         };
 
         const url = `/api/user/perfil`;
-        const responseApi = await clieteAxios.get(url, config);
+        const responseApi = await clienteAxios.get(url, config);
 
         if (responseApi.status === 200) {
           setUser(responseApi.data);

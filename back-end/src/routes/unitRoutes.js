@@ -7,21 +7,21 @@ import {
   deleteUnit,
   getQueryNom_Unit,
 } from "../controller/unitControllers.js";
-import verifyAuth from "../middleware/authMiddleware.js";
+import checkAuth from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router
   .route("/")
-  .get(verifyAuth, getAllUnits)
-  // .get(verifyAuth,getQueryUnit)
-  .post(verifyAuth, createUnit);
+  .get(checkAuth, getAllUnits)
+  // .get(checkAuth,getQueryUnit)
+  .post(checkAuth, createUnit);
 router
   .route("/:Id_Unidad")
-  .get(verifyAuth, getUnit)
-  .put(verifyAuth, updateUnit)
-  .delete(verifyAuth, deleteUnit);
+  .get(checkAuth, getUnit)
+  .put(checkAuth, updateUnit)
+  .delete(checkAuth, deleteUnit);
 
-  router.get("/nombre/:Nom_Unidad", verifyAuth, getQueryNom_Unit);
+  router.get("/nombre/:Nom_Unidad", checkAuth, getQueryNom_Unit);
 
 export default router;

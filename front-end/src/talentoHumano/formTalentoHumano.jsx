@@ -3,7 +3,7 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import clieteAxios from "../config/axios";
+import clienteAxios from "../config/axios";
 
 import { ReactSession } from 'react-client-session';
 
@@ -28,7 +28,7 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
     const fetchFichas = async () => {
       try {
         const token = ReactSession.get("token")
-        const response = await clieteAxios.get('/fichas', {
+        const response = await clienteAxios.get('/fichas', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -68,7 +68,7 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
     try {
       let respuestApi;
       if (buttonForm === "Actualizar") {
-        respuestApi = await clieteAxios.put(
+        respuestApi = await clienteAxios.put(
           `/talentoHumano/${talentoHumano.Id_Talento_Humano}`,
           {
             Id_Talento_Humano,
@@ -83,7 +83,7 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
           config
         );
       } else if (buttonForm === "Enviar") {
-        respuestApi = await clieteAxios.post(
+        respuestApi = await clienteAxios.post(
           `/talentoHumano`,
           {
             Id_Talento_Humano,

@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import Alerta from "../components/Alerta.jsx";
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 
 const ConfirmarCuenta = () => {
   const [cuentaConfirmada, setCuentaConfirmada] = useState(false);
@@ -20,7 +20,7 @@ const ConfirmarCuenta = () => {
     const confirmarCuenta = async () => {
       try {
         const url = `/api/user/confirmar/${id}`;
-        const { data } = await clieteAxios.get(url);
+        const { data } = await clienteAxios.get(url);
         setCuentaConfirmada(true);
         setAlerta({
           msg: data.msg,

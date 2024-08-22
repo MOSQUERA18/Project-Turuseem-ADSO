@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useRef,useState, useEffect } from "react";
-import clieteAxios from "../config/axios";
+import clienteAxios from "../config/axios";
 import { ReactSession } from 'react-client-session';
 
 const URI = "/ciudades/"
@@ -55,7 +55,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
   useEffect(() => {
     const fetchCiudades = async () => {
       try {
-        const response = await clieteAxios.get(URI, {
+        const response = await clienteAxios.get(URI, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -73,7 +73,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
 
     const fetchFichas = async () => {
       try{
-        const response = await clieteAxios.get(UriFichas,{
+        const response = await clienteAxios.get(UriFichas,{
           headers:{
             Authorization:`Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -143,13 +143,13 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
   
       let respuestApi;
       if (buttonForm === "Actualizar") {
-        respuestApi = await clieteAxios.put(
+        respuestApi = await clienteAxios.put(
           `/aprendiz/${Id_Aprendiz}`,
           formData,
           config
         );
       } else if (buttonForm === "Enviar") {
-        respuestApi = await clieteAxios.post(
+        respuestApi = await clienteAxios.post(
           `/aprendiz`,
           formData,
           config,

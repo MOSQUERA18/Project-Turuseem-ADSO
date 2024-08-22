@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import clieteAxios from "../config/axios";
+import clienteAxios from "../config/axios";
 import Alerta from "../components/Alerta";
 import { ReactSession } from 'react-client-session';
 
@@ -20,7 +20,7 @@ const FormProgramaFormacion = ({ buttonForm, programa, updateTextButton,getAllPr
     const fetchAreas = async () => {
       try {
         const token = ReactSession.get("token");
-        const response = await clieteAxios.get('/areas', {
+        const response = await clienteAxios.get('/areas', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -60,7 +60,7 @@ const FormProgramaFormacion = ({ buttonForm, programa, updateTextButton,getAllPr
     try {
       let respuestApi;
       if (buttonForm === "Actualizar") {
-        respuestApi = await clieteAxios.put(
+        respuestApi = await clienteAxios.put(
           `/programa/${programa.Id_ProgramaFormacion}`,
           {
             Nom_ProgramaFormacion,
@@ -71,7 +71,7 @@ const FormProgramaFormacion = ({ buttonForm, programa, updateTextButton,getAllPr
     
         );
       } else if (buttonForm === "Enviar") {
-        respuestApi = await clieteAxios.post(
+        respuestApi = await clienteAxios.post(
           `/programa`,
           {
             

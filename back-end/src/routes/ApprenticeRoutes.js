@@ -14,7 +14,7 @@ import {
   getQueryNom_Apprentice,
   importCSV,
 } from "../controller/apprenticeController.js";
-import verifyAuth from "../middleware/authMiddleware.js";
+import checkAuth from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -67,18 +67,18 @@ const upload = multer({
 
 router
   .route("/")
-  .get(verifyAuth, getAllApprentices)
-  .post(verifyAuth,async (req,res, next)=>{
+  .get(checkAuth, getAllApprentices)
+  .post(checkAuth,async (req,res, next)=>{
     console.log(req)
     next()
   },upload.single('Foto_Aprendiz'), createApprentice);
 router
   .route("/:Id_Aprendiz")
-  .get(verifyAuth, getApprentice)
-  .put(verifyAuth,upload.single('Foto_Aprendiz'), updateApprentice)
-  .delete(verifyAuth, deleteApprentice);
-router.get("/documento/:Id_Aprendiz", verifyAuth, getQueryApprentice);
-router.get("/nombre/:Nom_Aprendiz", verifyAuth, getQueryNom_Apprentice);
-router.post("/import-csv", verifyAuth, importCSV);
+  .get(checkAuth, getApprentice)
+  .put(checkAuth,upload.single('Foto_Aprendiz'), updateApprentice)
+  .delete(checkAuth, deleteApprentice);
+router.get("/documento/:Id_Aprendiz", checkAuth, getQueryApprentice);
+router.get("/nombre/:Nom_Aprendiz", checkAuth, getQueryNom_Apprentice);
+router.post("/import-csv", checkAuth, importCSV);
 
 export default router;

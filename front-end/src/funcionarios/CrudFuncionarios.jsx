@@ -1,4 +1,4 @@
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
@@ -50,7 +50,7 @@ const CrudFuncionarios = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(URI, config);
+      const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setFuncionarioList(respuestApi.data);
       } else {
@@ -78,7 +78,7 @@ const CrudFuncionarios = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(`${URI}/${Id_Funcionario}`, config);
+      const respuestApi = await clienteAxios(`${URI}/${Id_Funcionario}`, config);
       if (respuestApi.status === 200) {
         setFuncionario({
           ...respuestApi.data,
@@ -118,7 +118,7 @@ const CrudFuncionarios = () => {
           },
         };
         try {
-          const respuestApi = await clieteAxios.delete(
+          const respuestApi = await clienteAxios.delete(
             `${URI}/${Id_Funcionario}`,
             config
           );
