@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthLayout from "./layout/authLayout";
 import RutaProtegida from "./layout/RutaProtegida";
+// import 'datatables.net-responsive-dt';
 
 import LoginForm from "./users/LoginUser";
 import UserForm from "./users/CreateAccount";

@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import cors from "cors";
-import fileUpload from "express-fileupload";
+import { app, BrowserWindow } from "electron";
 
 import db from "./src/database/db.js";
 
@@ -36,29 +36,42 @@ import TurnoEspecialAprendizModel from "./src/models/turnoEspeciales_Aprendices.
 import TurnoEspecialModel from "./src/models/turnoEspecialModel.js";
 import OfficialModel from "./src/models/officialModel.js";
 
+const createWindow = () => {
+  const win = new BrowserWindow({
+    width: 800,
+    height: 600
+  })
 
-const app = express();
+  win.loadURL('http://localhost:5173/')
+}
+
+app.whenReady().then(() => {
+  createWindow()
+})
+
+const appExpress = express();
 const PORT = process.env.PORT || 8080;
 
-app.use(cors());
-app.use(express.json());
-app.use(fileUpload());
-app.use("/inasistencias", absenceRoutes);
-app.use("/aprendiz", apprenticeRoutes);
-app.use("/areas", areaRoutes);
-app.use("/fichas", fichasRoutes);
-app.use("/fileCsv", fileCsvRoutes);
-app.use("/memorando", memorandumRoutes);
-app.use("/funcionarios", officialRoutes);
-app.use("/programa", programaRoutes);
-app.use("/talentohumano", talentoHumanoRoutes);
-app.use("/turEspAprendiz", turnoEspecialAprendizRoutes);
-app.use("/turnoespecial",turnoEspecialRoutes)
-app.use("/turRutAprendiz", turnoRutinarioAprendizRoutes);
-app.use("/turnoRutinario", turnoRutinarioRoutes);
-app.use('/unidades', unitRoutes)
+appExpress.use(cors());
+appExpress.use(express.json());
+appExpress.use("/inasistencias", absenceRoutes);
+appExpress.use("/aprendiz", apprenticeRoutes);
+appExpress.use("/areas", areaRoutes);
+appExpress.use("/fichas", fichasRoutes);
+appExpress.use("/fileCsv", fileCsvRoutes);
+appExpress.use("/memorando", memorandumRoutes);
+appExpress.use("/funcionarios", officialRoutes);
+appExpress.use("/programa", programaRoutes);
+appExpress.use("/talentohumano", talentoHumanoRoutes);
+appExpress.use("/turEspAprendiz", turnoEspecialAprendizRoutes);
+appExpress.use("/turnoespecial",turnoEspecialRoutes)
+appExpress.use("/turRutAprendiz", turnoRutinarioAprendizRoutes);
+appExpress.use("/turnoRutinario", turnoRutinarioRoutes);
+appExpress.use('/unidades', unitRoutes)
 
-app.use("/api/user", userRouter);
+appExpress.use('/public/uploads/', express.static('public/uploads'))
+
+appExpress.use("/api/user", userRouter);
 
 try {
   await db.authenticate().then(() => {
@@ -69,7 +82,7 @@ try {
   logger.error(error);
 }
 
-app.listen(PORT, () => {
+appExpress.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 

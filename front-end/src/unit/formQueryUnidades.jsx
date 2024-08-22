@@ -53,7 +53,7 @@ const FormQueryUnidades = ({ buttonForm, setUnidadQuery }) => {
             <input
               type="text"
               id="documentQuery"
-              placeholder="Buscar Aprendices..."
+              placeholder="Buscar Unidades..."
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               value={searchQuery}
               onChange={(e) => {

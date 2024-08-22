@@ -70,7 +70,7 @@ const CrudTurnosEspeciales = () => {
       console.error(error);
     }
   };
-  const getTurnoEspecial = async (Id_turnoEspecial) => {
+  const getTurnoEspecial = async (Id_TurnoEspecial) => {
     setButtonForm("Actualizar");
     const token = ReactSession.get("token");
     const config = {
@@ -81,7 +81,7 @@ const CrudTurnosEspeciales = () => {
     };
     try {
       const respuestApi = await clienteAxios(
-        `${URI}/${Id_turnoEspecial}`,
+        `${URI}/${Id_TurnoEspecial}`,
         config
       );
       if (respuestApi.status === 200) {
@@ -103,7 +103,7 @@ const CrudTurnosEspeciales = () => {
     }
   };
 
-  const deleteTurnoEspecial = (Id_turnoEspecial) => {
+  const deleteTurnoEspecial = (Id_TurnoEspecial) => {
     Swal.fire({
       title: "¿Estas seguro?",
       text: "No podrás revertir esto!",
@@ -124,7 +124,7 @@ const CrudTurnosEspeciales = () => {
         };
         try {
           const respuestApi = await clienteAxios.delete(
-            `/${URI}/${Id_turnoEspecial}`,
+            `${URI}/${Id_TurnoEspecial}`,
             config
           );
           if (respuestApi.status === 200) {
@@ -278,7 +278,7 @@ const CrudTurnosEspeciales = () => {
                     </button>
                     <button
                       onClick={() =>
-                        deleteTurnoEspecial(turnoEspecial.Id_turnoEspecial)
+                        deleteTurnoEspecial(turnoEspecial.Id_TurnoEspecial)
                       }
                       className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
                     >
