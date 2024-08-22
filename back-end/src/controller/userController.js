@@ -5,7 +5,7 @@ import { generarToken } from "../helpers/generarToken.js";
 import { emailRegistro } from "../helpers/emailRegistro.js";
 import { emailOlvidePassword } from "../helpers/emailOlvidePassword.js";
 import { logger } from "../middleware/logMiddleware.js";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 
 export const autenticar = async (req, res) => {
   const { Cor_User, password } = req.body;

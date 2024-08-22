@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
 
+import { CSVLink } from 'react-csv';
+
 import FormProgramaFormacion from "./formProgramaFormacion.jsx";
 import FormQueryProgramaFormacion from "./formQueryProgramaFormacion.jsx";
 // import ModalDialog from "./modalDialog.jsx";
@@ -150,6 +152,13 @@ const CrudPrograma = () => {
 
   const { msg } = alerta;
 
+      // Preparar los datos para CSV
+      const csvData = (programaQuery.length ? programaQuery : programaList).map(programa => ({
+        ID: programa.Id_ProgramaFormacion,
+        Nombre_Programa: programa.Nom_ProgramaFormacion,
+        Tipo_Programa: programa.Tip_ProgramaFormacion,
+        Area: programa.areas ? programa.areas.Nom_Area : "N/A", // Asume que tienes el nombre del área
+      }));
   return (
     <>
     <br />
@@ -168,6 +177,10 @@ const CrudPrograma = () => {
           )}
           {stateAddPrograma ? "Ocultar" : "Agregar"}
         </button>
+
+        <CSVLink data={csvData} filename={"Programas.csv"} className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800">
+                Exportar a excel
+              </CSVLink>
       </div>
       <div className="overflow-x-auto">
         <div className="flex justify-between">

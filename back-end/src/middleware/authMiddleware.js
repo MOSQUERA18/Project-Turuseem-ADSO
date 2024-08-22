@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import UserModel from "../models/userModel.js";
 import { logger } from "./logMiddleware.js";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 
 
 const verifyAuth = async (req, res, next) => {

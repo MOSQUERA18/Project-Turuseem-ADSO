@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
 
+import { CSVLink } from 'react-csv';
+
 import FormFuncionarios from "./formFuncionarios.jsx";
 import FormQueryFuncionarios from "./formQueryFuncionarios.jsx";
 import Pagination from "../pagination.jsx";
@@ -150,6 +152,19 @@ const CrudFuncionarios = () => {
 
   const { msg } = alerta;
 
+
+
+  const csvData = (funcionarioQuery.length ? funcionarioQuery : funcionarioList).map(funcionario => ({
+    Documento : funcionario.Id_Funcionario,
+    Nombre: funcionario.Nom_Funcionario,
+    Apellidos : funcionario.Ape_Funcionario,
+    Genero: funcionario.Genero,
+    Telefono: funcionario.Tel_Funcionario,
+    Estado: funcionario.Estado,
+    Cargo: funcionario.Cargo,
+  }));
+
+
   return (
     <>
     <br />
@@ -169,6 +184,10 @@ const CrudFuncionarios = () => {
           )}
           {stateAddFuncionario ? "Ocultar" : "Agregar"}
         </button>
+
+        <CSVLink data={csvData} filename={"Funcionarios.csv"} className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800">
+                Exportar a excel
+              </CSVLink>
       </div>
       <div className="overflow-x-auto">
         <div className="flex justify-between">

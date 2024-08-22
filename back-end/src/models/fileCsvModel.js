@@ -14,9 +14,11 @@ const FileCsvModel = db.define(
     Fec_Creacion: { type: DataTypes.DATE },
     Estado: {
       type: DataTypes.ENUM("Activo", "Inactivo"),
+      defaultValue: 'Activo'
     },
   },
   {
+    freezeTableName:true,
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",

@@ -1,13 +1,11 @@
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
 
 import FormUnidades from "./formUnidades.jsx";
 import FormQueryUnidades from "./formQueryUnidades.jsx";
-// import ModalDialog from "./modalDialog.jsx";
 import Pagination from "../pagination.jsx";
-// import ImportarCSV from "./importarCSV.jsx";
 import Alerta from "../components/Alerta.jsx";
 
 import { MdDeleteOutline } from "react-icons/md";
@@ -16,6 +14,9 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 
+
+import { CSVLink } from 'react-csv';
+
 const URI = "unidades";
 
 const CrudUnidades = () => {
@@ -23,14 +24,11 @@ const CrudUnidades = () => {
   const [unidadQuery, setUnidadQuery] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddUnidad, setStateAddUnidad] = useState(false);
-  // const [onDoubleClickUnidad, setOnDoubleClickUnidad] = useState({});
-  // const [modalDialog, setModalDialog] = useState(false);
   const [desde, setDesde] = useState(0);
   const [hasta, setHasta] = useState(0);
   const [alerta, setAlerta] = useState({});
 
   const [unidad, setUnidad] = useState({
-    // Id_Unidad: "",
     Nom_Unidad: "",
     Hor_Apertura: "",
     Hor_Cierre: "",
@@ -52,7 +50,7 @@ const CrudUnidades = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(URI, config);
+      const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setUnidadList(respuestApi.data);
       } else {
@@ -80,7 +78,7 @@ const CrudUnidades = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(`${URI}/${Id_Unidad}`, config);
+      const respuestApi = await clienteAxios(`${URI}/${Id_Unidad}`, config);
       if (respuestApi.status === 200) {
         setUnidad({
           ...respuestApi.data,
@@ -120,7 +118,7 @@ const CrudUnidades = () => {
           },
         };
         try {
-          const respuestApi = await clieteAxios.delete(
+          const respuestApi = await clienteAxios.delete(
             `/${URI}/${Id_Unidad}`,
             config
           );
@@ -152,12 +150,26 @@ const CrudUnidades = () => {
 
   const { msg } = alerta;
 
+
+
+    // Preparar los datos para CSV
+    const csvData = (unidadQuery.length ? unidadQuery : unidadList).map(unidad => ({
+      ID: unidad.Id_Unidad,
+      Nombre: unidad.Nom_Unidad,
+      HoraApertura: unidad.Hor_Apertura,
+      HoraCierre: unidad.Hor_Cierre,
+      Estado: unidad.Estado,
+      Area: unidad.areas ? unidad.areas.Nom_Area : "N/A", // Asume que tienes el nombre del área
+    }));
+
   return (
     <>
-    <br />
-    
-        <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">Gestionar Informacion de las Unidades</h1>
+    <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">Gestionar Informacion de las Unidades</h1>
+
       <div className="flex justify-end pb-3">
+      <CSVLink data={csvData} filename={"Unidades.csv"} className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800">
+                Exportar a excel
+              </CSVLink>
         <button
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
           onClick={() => {
@@ -186,17 +198,8 @@ const CrudUnidades = () => {
               setUnidadQuery={setUnidadQuery}
             />
           </div>
-          {/* <div>
-            <h1 className="font-semibold text-lg text-gray-700">
-              Subir Archivo CSV
-            </h1>
-            <ImportarCSV URI={URI} />
-          </div> */}
         </div>
         <hr />
-        {/* <h2 className="font-semibold mb-4 text-lg text-gray-700 mt-3">
-          Doble Click sobre la unidad para ver información detallada...
-        </h2> */}
         {msg && <Alerta alerta={alerta} />}
         <table className="min-w-full bg-white text-center text-sm">
           <thead className="text-white bg-green-700">
@@ -217,10 +220,6 @@ const CrudUnidades = () => {
                   <tr
                     key={unidad.Id_Unidad}
                     className="odd:bg-white even:bg-gray-100 select-none"
-                    // onDoubleClick={() => [
-                    //   // setOnDoubleClickUnidad(unidad),
-                    //   setModalDialog(true),
-                    // ]}
                   >
                     <td className="py-2 px-4 border-b">
                       {unidad.Id_Unidad}
@@ -277,17 +276,6 @@ const CrudUnidades = () => {
         />
       ) : null}
       <hr />
-
-      {/* {modalDialog ? (
-        <ModalDialog
-          getUnidad={getUnidad}
-          deleteUnidad={deleteUnidad}
-          onDoubleClickUnidad={onDoubleClickUnidad}
-          setModalDialog={setModalDialog}
-          setStateAddUnidad={setStateAddUnidad}
-          setUnidad={setUnidad}
-        />
-      ) : null} */}
       <Outlet />
     </>
   );

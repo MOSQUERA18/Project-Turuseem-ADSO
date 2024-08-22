@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
 
+import { CSVLink } from 'react-csv';
 
 import FormTalentoHumano from "./formTalentoHumano.jsx"
 import FormQueryTalentoHumano from "./formQueryTalentoHumano.jsx"
@@ -158,6 +159,19 @@ const CrudTalentoHumano = () => {
 
   const { msg } = alerta;
 
+
+  const csvData = (talentoHumanoQuery.length ? talentoHumanoQuery : talentoHumanoList).map(talentoHumano=> ({
+    Documento: talentoHumano.Id_Talento_Humano,
+    Nombre: talentoHumano.Nom_Talento_Humano,
+    Apellido: talentoHumano.Ape_Talento_Humano,
+    Genero: talentoHumano.Genero_Talento_Humano,
+    Cor_Talento_Humano: talentoHumano.Cor_Talento_Humano,
+    Tel_Talento_Humano: talentoHumano.Tel_Talento_Humano,
+    Ficha: talentoHumano.fichas ? talentoHumano.fichas.Id_Ficha : "N/A", 
+    Estado: talentoHumano.Estado,
+    // Asume que tienes el nombre del área
+  }));
+
   return (
     <>
             <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">Gestionar Informacion de Talento Humano</h1>
@@ -176,6 +190,10 @@ const CrudTalentoHumano = () => {
           )}
           {stateAddTalentoHumano ? "Ocultar" : "Agregar"}
         </button>
+
+        <CSVLink data={csvData} filename={"Talento Humano.csv"} className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800">
+                Exportar a excel
+              </CSVLink>
       </div>
       <div className="overflow-x-auto">
         <div className="flex justify-between">

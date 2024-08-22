@@ -2,9 +2,9 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import cors from "cors";
-// import fileUpload from "express-fileupload";
 import multer from 'multer'
 const upload = multer();
+// import verifyAuth from "./src/middleware/authMiddleware.js";
 
 import db from "./src/database/db.js";
 
@@ -45,9 +45,14 @@ import OfficialModel from "./src/models/officialModel.js";
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+
+
 app.use(cors());
+
 app.use(upload.any())
 app.use(express.json());
+
+
 // app.use(multer.a)
 // app.use(fileUpload());
 
@@ -55,7 +60,7 @@ app.use("/inasistencias", absenceRoutes);
 app.use("/aprendiz", apprenticeRoutes);
 app.use("/areas", areaRoutes);
 app.use("/fichas", fichasRoutes);
-app.use("/fileCsv", fileCsvRoutes);
+app.use("/archivo-csv", fileCsvRoutes);
 app.use("/memorando", memorandumRoutes);
 app.use("/funcionarios", officialRoutes);
 app.use("/programa", programaRoutes);
@@ -67,9 +72,10 @@ app.use("/turnoRutinario", turnoRutinarioRoutes);
 app.use('/unidades', unitRoutes)
 app.use('/ciudades',cityRoutes)
 
+
 app.use('/public/uploads',express.static('public/uploads'))
 
-app.use("/api/user", userRouter);
+app.use("/api/user",userRouter);
 
 try {
   await db.authenticate().then(() => {
@@ -79,6 +85,7 @@ try {
   console.log(`Error de conexion a la bd ${error}`);
   logger.error(error);
 }
+
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

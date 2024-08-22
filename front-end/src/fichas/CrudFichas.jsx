@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
 
+
+import { CSVLink } from 'react-csv';
+
 import FormFichas from "./formFichas.jsx";
 import FormQueryFichas from "./formQueryFichas.jsx";
 import Pagination from "../pagination.jsx";
@@ -148,6 +151,17 @@ const CrudFichas = () => {
 
   const { msg } = alerta;
 
+
+  const csvData = (fichasQuery.length ? fichasQuery : fichasList).map(fichas => ({
+    Documento : fichas.Id_Ficha,
+    Fecha_Inicio_Etapa_Lectiva: fichas.Fec_InicioEtapaLectiva,
+    Fec_Fin_Etapa_Lectiva : fichas.Fec_FinEtapaLectiva,
+    Cantidad_Aprendices: fichas.Can_Aprendices,
+    Nombre_Programa_Formacion: fichas.programasFormacion ? fichas.programasFormacion.Nom_ProgramaFormacion : "N/A", 
+    Estado: fichas.Estado,
+
+  }));
+
   return (
     <>
     <br />
@@ -166,6 +180,9 @@ const CrudFichas = () => {
           )}
           {stateAddFichas ? "Ocultar" : "Agregar"}
         </button>
+        <CSVLink data={csvData} filename={"Fichas.csv"} className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800">
+                Exportar a excel
+              </CSVLink>
       </div>
       <div className="overflow-x-auto">
         <div className="flex justify-between">

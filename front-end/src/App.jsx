@@ -23,6 +23,7 @@ import CrudFuncionarios from "./funcionarios/CrudFuncionarios.jsx";
 import CrudPrograma from "./programasFormacion/CrudProgramaFormacion.jsx";
 import CrudTalentoHumano from "./talentoHumano/CrudTalentoHumano.jsx";
 // import CrudTurnosEspeciales from "./turnosEspeciales/CrudTurnosEspeciales.jsx"
+// import CrudArchivo from "./archivo_Csv/crudCsv.jsx";
 
 function App() {
   return (
@@ -53,7 +54,9 @@ function App() {
               <Route path="programa-formacion" element={<CrudPrograma />} />
               <Route path="funcionarios" element={<CrudFuncionarios />} />
               <Route path="talentohumano" element={<CrudTalentoHumano />} />
+              {/* <Route path="archivo-csv" element={<CrudArchivo />} /> */}
               {/* <Route path="turnoespecial" element={<CrudTurnosEspeciales />} /> */}
+
             
 
               {/* <Route path='/perfil' element={<MemorandumPDF/>}/> */}

@@ -212,6 +212,16 @@ const VerticalNav = () => {
             </Link>
           </button>
 
+          {/* <button className="flex jusitfy-start items-center w-full  space-x-4 pl-3 focus:outline-none text-white focus:text-indigo-400 rounded border-y py-2 border-white ">
+            <PiNotebookFill size={22} />
+            <Link
+              to="archivo-csv"
+              className="text-white text-base uppercase font-bold"
+            >
+              Archivos CSV
+            </Link>
+          </button> */}
+
           {/* <button className="flex jusitfy-start items-center w-full  space-x-4 pl-3 focus:outline-none text-white focus:text-indigo-400 rounded border-y py-2 border-white">
             <FaPeopleGroup size={22} />
             <Link
