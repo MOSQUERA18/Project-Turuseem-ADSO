@@ -31,11 +31,8 @@ const DataTableUnit = ({
             zeroRecords: "No se encontraron resultados",
             info: "Mostrando página _PAGE_ de _PAGES_",
             infoEmpty: "No hay registros disponibles",
-            infoFiltered: "(filtrado de _MAX_ registros totales)",
-          },
-          drawCallback: () => {
-            $("select").addClass("w-16");
-          },
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+          }
         });
       } else {
         tableInstance.current.clear().rows.add(unidadList).draw();
@@ -55,18 +52,14 @@ const DataTableUnit = ({
       <table
         ref={tableRef}
         id="tablaUnidad"
-        className="display responsive nowrap text-center w"
+        className="display responsive nowrap text-center"
       >
-        <thead className="text-white bg-green-700 ">
+        <thead className="text-white bg-green-700">
           <tr>
             <th className="py-2 px-4 border-2 border-b-gray-500">ID</th>
             <th className="py-2 px-4 border-2 border-b-gray-500">Nombre</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">
-              Hora Apertura
-            </th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">
-              Hora Cierre
-            </th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">Hora Apertura</th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">Hora Cierre</th>
             <th className="py-2 px-4 border-2 border-b-gray-500">Estado</th>
             <th className="py-2 px-4 border-2 border-b-gray-500">Área</th>
             <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>

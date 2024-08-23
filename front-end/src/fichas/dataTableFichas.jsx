@@ -9,17 +9,17 @@ import "datatables.net-responsive-dt/css/responsive.dataTables.min.css";
 import { MdDeleteOutline } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 
-const DataTableUnit = ({
-  unidadList,
-  getUnidad,
-  deleteUnidad,
-  setStateAddUnidad,
+const DataTableFichas = ({
+  fichasList,
+  getFicha,
+  deleteFichas,
+  setStateAddFichas,
 }) => {
   const tableRef = useRef(null);
   const tableInstance = useRef(null);
 
   useEffect(() => {
-    if (unidadList.length > 0) {
+    if (fichasList.length > 0) {
       const tableElement = $(tableRef.current);
 
       if (!tableInstance.current) {
@@ -38,7 +38,7 @@ const DataTableUnit = ({
           },
         });
       } else {
-        tableInstance.current.clear().rows.add(unidadList).draw();
+        tableInstance.current.clear().rows.add(fichasList).draw();
       }
     }
 
@@ -48,51 +48,68 @@ const DataTableUnit = ({
         tableInstance.current = null;
       }
     };
-  }, [unidadList]);
+  }, [fichasList]);
 
   return (
     <div>
       <table
         ref={tableRef}
-        id="tablaUnidad"
-        className="display responsive nowrap text-center w"
+        id="tablaFichas"
+        className="display responsive nowrap text-center"
       >
-        <thead className="text-white bg-green-700 ">
+        <thead className="text-white bg-green-700 text-center">
           <tr>
-            <th className="py-2 px-4 border-2 border-b-gray-500">ID</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Nombre</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">
-              Hora Apertura
+            <th className="py-2 px-4 border-2 border-b-gray-500 w-auto">
+              Numero <br />
+              de Ficha
+            </th>
+            <th className="py-2 px-4 border-2 border-b-gray-500 text-center">
+              Fecha Inicio <br /> Etapa Lectiva
             </th>
             <th className="py-2 px-4 border-2 border-b-gray-500">
-              Hora Cierre
+              Fecha Fin <br /> Etapa Lectiva
             </th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Estado</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Área</th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">
+              Cantidad <br /> Aprendices
+            </th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">
+              Nombre <br /> Programa
+            </th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">
+              Estado Ficha
+            </th>
             <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {unidadList.map((unidad) => (
-            <tr key={unidad.Id_Unidad}>
-              <td className="py-2 px-4 border-b">{unidad.Id_Unidad}</td>
-              <td className="py-2 px-4 border-b">{unidad.Nom_Unidad}</td>
-              <td className="py-2 px-4 border-b">{unidad.Hor_Apertura}</td>
-              <td className="py-2 px-4 border-b">{unidad.Hor_Cierre}</td>
-              <td className="py-2 px-4 border-b">{unidad.Estado}</td>
-              <td className="py-2 px-4 border-b">{unidad.areas?.Nom_Area}</td>
+          {fichasList.map((ficha) => (
+            <tr key={ficha.Id_Ficha}>
+              <td className="py-2 px-4 border-b">{ficha.Id_Ficha}</td>
+              <td className="py-2 px-4 border-b">
+                {ficha.Fec_InicioEtapaLectiva}
+              </td>
+              <td className="py-2 px-4 border-b">
+                {ficha.Fec_FinEtapaLectiva}
+              </td>
+              <td className="py-2 px-4 border-b">{ficha.Can_Aprendices}</td>
+              <td className="py-2 px-4 border-b">
+                {ficha.programasFormacion?.Nom_ProgramaFormacion}
+              </td>
+              <td className="py-2 px-4 border-b">
+                {ficha.Estado === "Inactivo" ? "Inactiva" : "Activa"}
+              </td>
               <td className="py-2 px-4 border-b">
                 <button
                   onClick={() => [
-                    getUnidad(unidad.Id_Unidad),
-                    setStateAddUnidad(true),
+                    getFicha(ficha.Id_Ficha),
+                    setStateAddFichas(true),
                   ]}
                   className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
                 >
                   <FaRegEdit />
                 </button>
                 <button
-                  onClick={() => deleteUnidad(unidad.Id_Unidad)}
+                  onClick={() => deleteFichas(ficha.Id_Ficha)}
                   className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
                 >
                   <MdDeleteOutline />
@@ -106,4 +123,4 @@ const DataTableUnit = ({
   );
 };
 
-export default DataTableUnit;
+export default DataTableFichas;

@@ -9,24 +9,30 @@ import "datatables.net-responsive-dt/css/responsive.dataTables.min.css";
 import { MdDeleteOutline } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 
-const DataTableUnit = ({
-  unidadList,
-  getUnidad,
-  deleteUnidad,
-  setStateAddUnidad,
+const DataTableFuncionarios = ({
+  funcionarioList,
+  getFuncionario,
+  deleteFuncionario,
+  setStateAddFuncionario,
 }) => {
   const tableRef = useRef(null);
   const tableInstance = useRef(null);
 
   useEffect(() => {
-    if (unidadList.length > 0) {
+    if (funcionarioList.length > 0) {
       const tableElement = $(tableRef.current);
 
       if (!tableInstance.current) {
         tableInstance.current = tableElement.DataTable({
           responsive: true,
           language: {
-            search: "Buscar:", // Cambia el texto de búsqueda aquí
+            // paginate: {
+            //   first: "<<",
+            //   previous: "<",
+            //   next: ">",
+            //   last: ">>"
+            // },
+            search: "Buscar:",
             lengthMenu: "Mostrar _MENU_ registros por página",
             zeroRecords: "No se encontraron resultados",
             info: "Mostrando página _PAGE_ de _PAGES_",
@@ -38,7 +44,7 @@ const DataTableUnit = ({
           },
         });
       } else {
-        tableInstance.current.clear().rows.add(unidadList).draw();
+        tableInstance.current.clear().rows.add(funcionarioList).draw();
       }
     }
 
@@ -48,51 +54,57 @@ const DataTableUnit = ({
         tableInstance.current = null;
       }
     };
-  }, [unidadList]);
+  }, [funcionarioList]);
 
   return (
     <div>
       <table
         ref={tableRef}
-        id="tablaUnidad"
-        className="display responsive nowrap text-center w"
+        id="tablaFuncionarios"
+        className="display responsive nowrap text-center"
       >
-        <thead className="text-white bg-green-700 ">
+        <thead className="text-white bg-green-700">
           <tr>
-            <th className="py-2 px-4 border-2 border-b-gray-500">ID</th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">Documento</th>
             <th className="py-2 px-4 border-2 border-b-gray-500">Nombre</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">
-              Hora Apertura
-            </th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">
-              Hora Cierre
-            </th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">Apellido</th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">Género</th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">Teléfono</th>
             <th className="py-2 px-4 border-2 border-b-gray-500">Estado</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Área</th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">Cargo</th>
             <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {unidadList.map((unidad) => (
-            <tr key={unidad.Id_Unidad}>
-              <td className="py-2 px-4 border-b">{unidad.Id_Unidad}</td>
-              <td className="py-2 px-4 border-b">{unidad.Nom_Unidad}</td>
-              <td className="py-2 px-4 border-b">{unidad.Hor_Apertura}</td>
-              <td className="py-2 px-4 border-b">{unidad.Hor_Cierre}</td>
-              <td className="py-2 px-4 border-b">{unidad.Estado}</td>
-              <td className="py-2 px-4 border-b">{unidad.areas?.Nom_Area}</td>
+          {funcionarioList.map((funcionario) => (
+            <tr key={funcionario.Id_Funcionario}>
+              <td className="py-2 px-4 border-b">
+                {funcionario.Id_Funcionario}
+              </td>
+              <td className="py-2 px-4 border-b">
+                {funcionario.Nom_Funcionario}
+              </td>
+              <td className="py-2 px-4 border-b">
+                {funcionario.Ape_Funcionario}
+              </td>
+              <td className="py-2 px-4 border-b">{funcionario.Genero}</td>
+              <td className="py-2 px-4 border-b">
+                {funcionario.Tel_Funcionario}
+              </td>
+              <td className="py-2 px-4 border-b">{funcionario.Estado}</td>
+              <td className="py-2 px-4 border-b">{funcionario.Cargo}</td>
               <td className="py-2 px-4 border-b">
                 <button
                   onClick={() => [
-                    getUnidad(unidad.Id_Unidad),
-                    setStateAddUnidad(true),
+                    getFuncionario(funcionario.Id_funcionario),
+                    setStateAddFuncionario(true),
                   ]}
                   className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
                 >
                   <FaRegEdit />
                 </button>
                 <button
-                  onClick={() => deleteUnidad(unidad.Id_Unidad)}
+                  onClick={() => deleteFuncionario(funcionario.Id_funcionario)}
                   className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
                 >
                   <MdDeleteOutline />
@@ -106,4 +118,4 @@ const DataTableUnit = ({
   );
 };
 
-export default DataTableUnit;
+export default DataTableFuncionarios;
