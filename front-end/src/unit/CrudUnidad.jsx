@@ -8,6 +8,9 @@ import "datatables.net-responsive-dt";
 // import "datatables.net";
 // import "datatables.net-dt/css/dataTables.dataTables.min.css";
 
+
+import { CSVLink } from 'react-csv';
+
 import FormUnidades from "./formUnidades.jsx";
 import Alerta from "../components/Alerta.jsx";
 import DataTableUnit from "./dataTableUnit.jsx";
@@ -145,10 +148,21 @@ const CrudUnidades = () => {
 
   const { msg } = alerta;
 
+
+  const csvData = (unidad.length ? unidad : unidadList).map(unidad => ({
+    ID: unidad.Id_Unidad,
+    Nombre: unidad.Nom_Unidad,
+    HoraApertura: unidad.Hor_Apertura,
+    HoraCierre: unidad.Hor_Cierre,
+    Estado: unidad.Estado,
+    Area: unidad.areas ? unidad.areas.Nom_Area : "N/A", // Asume que tienes el nombre del área
+  }));
+
+
   return (
     <>
       <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
-        Unidades
+      Gestionar Informacion de las Unidades
       </h1>
       <div className="flex justify-end pb-3">
         <button
@@ -164,6 +178,10 @@ const CrudUnidades = () => {
           )}
           {stateAddUnidad ? "Ocultar" : "Agregar"}
         </button>
+
+        <CSVLink data={csvData} filename={"Unidades.csv"} className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800">
+                Exportar a excel
+              </CSVLink>
       </div>
       <div className="overflow-x-auto">
         <hr />

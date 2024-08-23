@@ -7,6 +7,9 @@ import FormFuncionarios from "./formFuncionarios.jsx";
 import Alerta from "../components/Alerta.jsx";
 import DataTableFuncionarios from "./dataTableFuncionarios.jsx";
 
+
+import { CSVLink } from 'react-csv';
+
 import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
@@ -147,10 +150,22 @@ const CrudFuncionarios = () => {
 
   const { msg } = alerta;
 
+
+
+  const csvData = (funcionario.length ? funcionario : funcionarioList).map(funcionario => ({
+    Documento : funcionario.Id_Funcionario,
+    Nombre: funcionario.Nom_Funcionario,
+    Apellidos : funcionario.Ape_Funcionario,
+    Genero: funcionario.Genero,
+    Telefono: funcionario.Tel_Funcionario,
+    Estado: funcionario.Estado,
+    Cargo: funcionario.Cargo,
+  }));
+
   return (
     <>
       <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
-        Funcionarios
+      Gestionar Informacion de los Funcionarios
       </h1>
       <div className="flex justify-end pb-3">
         <button
@@ -166,6 +181,11 @@ const CrudFuncionarios = () => {
           )}
           {stateAddFuncionario ? "Ocultar" : "Agregar"}
         </button>
+
+
+        <CSVLink data={csvData} filename={"Funcionarios.csv"} className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800">
+                Exportar a excel
+              </CSVLink>
       </div>
       <div className="overflow-x-auto">
         <hr />
