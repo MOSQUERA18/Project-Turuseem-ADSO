@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
 
 import { CSVLink } from 'react-csv';
+import Alerta from "../components/Alerta.jsx";
 
 import FormTalentoHumano from "./formTalentoHumano.jsx";
 // import Alerta from "../components/Alerta.jsx";
@@ -143,6 +144,8 @@ const CrudTalentoHumano = () => {
     setButtonForm(text);
   };
 
+  const { msg } = alerta;
+
   const csvData = (talentoHumano.length ? talentoHumano : talentoHumanoList).map(talentoHumano => ({
     Documento: talentoHumano.Id_Talento_Humano,
     Nombre: talentoHumano.Nom_Talento_Humano,
@@ -183,20 +186,29 @@ const CrudTalentoHumano = () => {
           Exportar a Excel
         </CSVLink>
       </div>
-
-      <DataTableTalentoHumano
+      <div className="overflow-x-auto">
+        <hr />
+        {msg && <Alerta alerta={alerta} />}
+        <hr />
+        <DataTableTalentoHumano
         talentoHumanoList={talentoHumanoList}
         getTalentoHumano={getTalentoHumano}
         deleteTalentoHumano={deleteTalentoHumano}
         setStateAddTalentoHumano={setStateAddTalentoHumano}
       />
-      <FormTalentoHumano
-        buttonForm={buttonForm}
-        talentoHumano={talentoHumano}
-        updateTextButton={updateTextButton}
-        setTalentoHumano={setTalentoHumano}
-        getAllTalentoHumano={getAllTalentoHumano}
-      />
+      </div>
+
+      {
+        stateAddTalentoHumano ? (
+          <FormTalentoHumano
+            buttonForm={buttonForm}
+            talentoHumano={talentoHumano}
+            updateTextButton={updateTextButton}
+            setTalentoHumano={setTalentoHumano}
+            getAllTalentoHumano={getAllTalentoHumano}
+          />
+        ) : null
+      }
 
       <hr />
 
