@@ -1,11 +1,11 @@
 import express from "express";
 import { getAllCities } from "../controller/cityController.js";
-import checkAuth from "../middleware/authMiddleware.js";
+import verifyAuth from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router
   .route("/")
-  .get(checkAuth, getAllCities)
+  .get(verifyAuth, getAllCities)
 
 export default router;

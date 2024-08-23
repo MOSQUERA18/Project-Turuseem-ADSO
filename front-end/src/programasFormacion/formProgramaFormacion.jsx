@@ -1,13 +1,20 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import clienteAxios from "../config/axios";
+import clieteAxios from "../config/axios";
 import Alerta from "../components/Alerta";
-import { ReactSession } from 'react-client-session';
+import { ReactSession } from "react-client-session";
 
-const FormProgramaFormacion = ({ buttonForm, programa, updateTextButton,getAllProgramas}) => {
-  // const [Id_ProgramaFormacion, setId_ProgramaFormacion] = useState("");
+const FormProgramaFormacion = ({
+  buttonForm,
+  programa,
+  updateTextButton,
+  getAllProgramas,
+}) => {
   const [Nom_ProgramaFormacion, setNom_ProgramaFormacion] = useState("");
   const [Tip_ProgramaFormacion, setTip_ProgramaFormacion] = useState("");
-  const [Id_Area, setId_Area] = useState("");  
+  const [Id_Area, setId_Area] = useState("");
+  // eslint-disable-next-line no-unused-vars
   const [selectedArea, setSelectedArea] = useState(null);
   const [Areas, setAreas] = useState([]);
   const [alerta, setAlerta] = useState({});
@@ -20,16 +27,16 @@ const FormProgramaFormacion = ({ buttonForm, programa, updateTextButton,getAllPr
     const fetchAreas = async () => {
       try {
         const token = ReactSession.get("token");
-        const response = await clienteAxios.get('/areas', {
+        const response = await clieteAxios.get("/areas", {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
-        if(response.status ==200){
+        if (response.status == 200) {
           setAreas(response.data);
         }
       } catch (error) {
-        console.error('Error fetching areas:', error);
+        console.error("Error fetching areas:", error);
       }
     };
 
@@ -60,21 +67,19 @@ const FormProgramaFormacion = ({ buttonForm, programa, updateTextButton,getAllPr
     try {
       let respuestApi;
       if (buttonForm === "Actualizar") {
-        respuestApi = await clienteAxios.put(
+        respuestApi = await clieteAxios.put(
           `/programa/${programa.Id_ProgramaFormacion}`,
           {
             Nom_ProgramaFormacion,
             Tip_ProgramaFormacion,
             Id_Area,
           },
-          config,
-    
+          config
         );
       } else if (buttonForm === "Enviar") {
-        respuestApi = await clienteAxios.post(
+        respuestApi = await clieteAxios.post(
           `/programa`,
           {
-            
             Nom_ProgramaFormacion,
             Tip_ProgramaFormacion,
             Id_Area,
@@ -84,18 +89,26 @@ const FormProgramaFormacion = ({ buttonForm, programa, updateTextButton,getAllPr
       }
 
       if (respuestApi.status === 201 || respuestApi.status === 200) {
-        setMessageType("success");
-        setMessage("Programa Actualizado correctamente!");
+        setAlerta({
+          msg: "Registro Exitoso!",
+          error: false,
+        });
         clearForm();
         getAllProgramas();
         updateTextButton("Enviar");
       } else {
-        setMessage(respuestApi.error.message || "Error al registrar el programa.");
-        setMessageType("error");
+        setAlerta({
+          msg: "Error al realizar el registro!",
+          error: true,
+        });
       }
     } catch (error) {
-
-      setMessageType("error");
+      setAlerta({
+        msg: "Ocurrio un error!",
+        error: true,
+      });
+      console.log(error);
+      
     }
   };
 
@@ -110,15 +123,14 @@ const FormProgramaFormacion = ({ buttonForm, programa, updateTextButton,getAllPr
     setNom_ProgramaFormacion(programa.Nom_ProgramaFormacion);
     setTip_ProgramaFormacion(programa.Tip_ProgramaFormacion);
     setId_Area(programa.Id_Area);
-    const selected = Areas.find(area => area.Id_Area === programa.Id_Area);
+    const selected = Areas.find((area) => area.Id_Area === programa.Id_Area);
     setSelectedArea(selected || null);
   };
-  
 
   useEffect(() => {
     setData();
   }, [programa]);
-  
+
   const { msg } = alerta;
 
   return (
@@ -135,7 +147,11 @@ const FormProgramaFormacion = ({ buttonForm, programa, updateTextButton,getAllPr
           </h1>
 
           {message && (
-            <div className={`p-4 mb-4 text-white rounded-md ${messageType === 'success' ? 'bg-green-500' : 'bg-red-500'}`}>
+            <div
+              className={`p-4 mb-4 text-white rounded-md ${
+                messageType === "success" ? "bg-green-500" : "bg-red-500"
+              }`}
+            >
               {message}
             </div>
           )}
@@ -154,11 +170,8 @@ const FormProgramaFormacion = ({ buttonForm, programa, updateTextButton,getAllPr
             />
           </div>
 
-
           <div className="mb-3">
-            <label className="text-gray-700 uppercase font-bold">
-              Tipo:
-            </label>
+            <label className="text-gray-700 uppercase font-bold">Tipo:</label>
             <select
               id="tipo"
               value={Tip_ProgramaFormacion}
@@ -172,7 +185,7 @@ const FormProgramaFormacion = ({ buttonForm, programa, updateTextButton,getAllPr
 
           <div className="mb-3">
             <label className="text-gray-700 uppercase font-bold">
-              Área Perteneciente: 
+              Área Perteneciente:
             </label>
             <select
               id="id_area"

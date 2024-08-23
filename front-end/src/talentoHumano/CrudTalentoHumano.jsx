@@ -5,30 +5,20 @@ import { ReactSession } from 'react-client-session';
 
 import { CSVLink } from 'react-csv';
 
-import FormTalentoHumano from "./formTalentoHumano.jsx"
-import FormQueryTalentoHumano from "./formQueryTalentoHumano.jsx"
-// import ModalDialog from "./modalDialog.jsx";
-import Pagination from "../pagination.jsx";
-// import ImportarCSV from "./importarCSV.jsx";
-import Alerta from "../components/Alerta.jsx";
-
-import { MdDeleteOutline } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
+import FormTalentoHumano from "./formTalentoHumano.jsx";
+// import Alerta from "../components/Alerta.jsx";
 import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
+import DataTableTalentoHumano from "./dataTableTalentoHumano.jsx";
 
 const URI = "talentoHumano";
 
 const CrudTalentoHumano = () => {
   const [talentoHumanoList, setTalentoHumanoList] = useState([]);
-  const [talentoHumanoQuery, setTalentoHumanoQuery] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddTalentoHumano, setStateAddTalentoHumano] = useState(false);
-  // const [onDoubleClickUnidad, setOnDoubleClickUnidad] = useState({});
-  // const [modalDialog, setModalDialog] = useState(false);
-  const [desde, setDesde] = useState(0);
-  const [hasta, setHasta] = useState(0);
+  
   const [alerta, setAlerta] = useState({});
 
   const [talentoHumano, setTalentoHumano] = useState({
@@ -44,7 +34,6 @@ const CrudTalentoHumano = () => {
 
   useEffect(() => {
     getAllTalentoHumano();
-    
   }, []);
 
   const getAllTalentoHumano = async () => {
@@ -57,20 +46,17 @@ const CrudTalentoHumano = () => {
     };
     try {
       const respuestApi = await clienteAxios(URI, config);
-      console.log(respuestApi)
       if (respuestApi.status === 200) {
         setTalentoHumanoList(respuestApi.data);
-      } 
-      // else {
-      //   setAlerta({
-      //     msg: `Error al cargar los registros!`,
-      //     error: true,
-      //   });
-      // }
+      } else {
+        setAlerta({
+          msg: `Error al cargar los registros!`,
+          error: true,
+        });
+      }
     } catch (error) {
-      console.log(error)
       setAlerta({
-        msg: error.response.data.message,
+        msg: `Error al cargar los registros!`,
         error: true,
       });
       console.error(error);
@@ -157,24 +143,22 @@ const CrudTalentoHumano = () => {
     setButtonForm(text);
   };
 
-  const { msg } = alerta;
-
-
-  const csvData = (talentoHumanoQuery.length ? talentoHumanoQuery : talentoHumanoList).map(talentoHumano=> ({
+  const csvData = (talentoHumano.length ? talentoHumano : talentoHumanoList).map(talentoHumano => ({
     Documento: talentoHumano.Id_Talento_Humano,
     Nombre: talentoHumano.Nom_Talento_Humano,
     Apellido: talentoHumano.Ape_Talento_Humano,
     Genero: talentoHumano.Genero_Talento_Humano,
-    Cor_Talento_Humano: talentoHumano.Cor_Talento_Humano,
-    Tel_Talento_Humano: talentoHumano.Tel_Talento_Humano,
-    Ficha: talentoHumano.fichas ? talentoHumano.fichas.Id_Ficha : "N/A", 
+    Correo: talentoHumano.Cor_Talento_Humano,
+    Teléfono: talentoHumano.Tel_Talento_Humano,
+    Ficha: talentoHumano.fichas ? talentoHumano.fichas.Id_Ficha : "N/A",
     Estado: talentoHumano.Estado,
-    // Asume que tienes el nombre del área
   }));
 
   return (
     <>
-            <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">Gestionar Informacion de Talento Humano</h1>
+      <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
+        Gestionar Información de Talento Humano
+      </h1>
 
       <div className="flex justify-end pb-3">
         <button
@@ -191,113 +175,29 @@ const CrudTalentoHumano = () => {
           {stateAddTalentoHumano ? "Ocultar" : "Agregar"}
         </button>
 
-        <CSVLink data={csvData} filename={"Talento Humano.csv"} className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800">
-                Exportar a excel
-              </CSVLink>
+        <CSVLink
+          data={csvData}
+          filename={"Talento_Humano.csv"}
+          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
+        >
+          Exportar a Excel
+        </CSVLink>
       </div>
-      <div className="overflow-x-auto">
-        <div className="flex justify-between">
-          <div>
-            <h1 className="font-semibold text-lg text-gray-700">
-              Buscar Por Nombre...
-            </h1>
-            <FormQueryTalentoHumano
-              getTalentoHumano={getTalentoHumano}
-              deleteTalentoHumano={deleteTalentoHumano}
-              buttonForm={buttonForm}
-              talentoHumanoQuery={talentoHumanoQuery}
-              setTalentoHumanoQuery={setTalentoHumanoQuery}
-            />
-          </div>
-        </div>
-        <hr />
-        {msg && <Alerta alerta={alerta} />}
-        <table className="min-w-full bg-white text-center text-sm">
-          <thead className="text-white bg-green-700">
-            <tr className="">
-              <th className="py-2 px-4 border-2 border-b-gray-500">Documento</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Nombre</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Apellido</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Genero</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Correo</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Telefono</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Ficha</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Estado</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(talentoHumanoQuery.length ? talentoHumanoQuery : talentoHumanoList).map(
-              (talentoHumano, indice) =>
-                indice >= desde && indice < hasta ? (
-                  <tr
-                    key={talentoHumano.Id_talento_Humano}
-                    className="odd:bg-white even:bg-gray-100 select-none"
-                    // onDoubleClick={() => [
-                    //   // setOnDoubleClickUnidad(unidad),
-                    //   setModalDialog(true),
-                    // ]}
-                  >
-                    <td className="py-2 px-4 border-b">
-                      {talentoHumano.Id_Talento_Humano}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {talentoHumano.Nom_Talento_Humano}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {talentoHumano.Ape_Talento_Humano}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {talentoHumano.Genero_Talento_Humano}
-                    </td>
-                      <td className="py-2 px-4 border-b">
-                        {talentoHumano.Cor_Talento_Humano}
-                      </td>
-                    <td className="py-2 px-4 border-b">
-                      {talentoHumano.Tel_Talento_Humano}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {talentoHumano.Id_Ficha}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {talentoHumano.Estado}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      <button
-                        onClick={() => [
-                          getTalentoHumano(talentoHumano.Id_Talento_Humano),
-                          setStateAddTalentoHumano(true),
-                        ]}
-                        className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
-                      >
-                        <FaRegEdit />
-                      </button>
-                      <button
-                        onClick={() => deleteTalentoHumano(talentoHumano.Id_Talento_Humano)}
-                        className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
-                      >
-                        <MdDeleteOutline />
-                      </button>
-                    </td>
-                  </tr>
-                ) : (
-                  ""
-                )
-            )}
-          </tbody>
-        </table>
-      </div>
-      <Pagination URI={URI} setDesde={setDesde} setHasta={setHasta} />
-      <hr />
-      {stateAddTalentoHumano? (
-        <FormTalentoHumano
-          buttonForm={buttonForm}
-          talentoHumano={talentoHumano}
-          updateTextButton={updateTextButton}
-          setTalentoHumano={setTalentoHumano}
-          getAllTalentoHumano={getAllTalentoHumano}
-        />
-      ) : null}
+
+      <DataTableTalentoHumano
+        talentoHumanoList={talentoHumanoList}
+        getTalentoHumano={getTalentoHumano}
+        deleteTalentoHumano={deleteTalentoHumano}
+        setStateAddTalentoHumano={setStateAddTalentoHumano}
+      />
+      <FormTalentoHumano
+        buttonForm={buttonForm}
+        talentoHumano={talentoHumano}
+        updateTextButton={updateTextButton}
+        setTalentoHumano={setTalentoHumano}
+        getAllTalentoHumano={getAllTalentoHumano}
+      />
+
       <hr />
 
       <Outlet />

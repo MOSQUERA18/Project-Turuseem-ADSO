@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useRef,useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+// import { Link } from "react-router-dom";
 import clienteAxios from "../config/axios";
 import { ReactSession } from 'react-client-session';
 
@@ -135,7 +136,6 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
   
       if (Foto_Aprendiz) {
         formData.append('Foto_Aprendiz', Foto_Aprendiz); // Asegúrate de que Foto_Aprendiz sea un archivo
-        formData.append('file', Foto_Aprendiz); // Asegúrate de que Foto_Aprendiz sea un archivo
       }
     
     
@@ -143,13 +143,24 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
   
       let respuestApi;
       if (buttonForm === "Actualizar") {
-        respuestApi = await clienteAxios.put(
-          `/aprendiz/${Id_Aprendiz}`,
-          formData,
+        const respuestApi = await clienteAxios.put(
+          `/aprendiz/${apprentice.Id_Aprendiz}`,
+          {
+            Id_Aprendiz: Id_Aprendiz,
+            Nom_Aprendiz: Nom_Aprendiz,
+            Ape_Aprendiz: Ape_Aprendiz,
+            Id_Ficha: Id_Ficha,
+            Fec_Nacimiento: Fec_Nacimiento,
+            Gen_Aprendiz: Gen_Aprendiz,
+            Cor_Aprendiz: Cor_Aprendiz,
+            Tel_Aprendiz: Tel_Aprendiz,
+            Patrocinio: Patrocinio,
+            CentroConvivencia: CentroConvivencia,
+          },
           config
         );
       } else if (buttonForm === "Enviar") {
-        respuestApi = await clienteAxios.post(
+        const respuestApi = await clienteAxios.post(
           `/aprendiz`,
           formData,
           config,

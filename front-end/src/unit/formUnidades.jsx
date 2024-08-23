@@ -90,7 +90,7 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
       }
 
       if (respuestApi.status === 201 || respuestApi.status === 200) {
-        setMessage("Unidad Actualizada Correctamente!");
+        setMessage("Unidad registrada correctamente!");
         setMessageType("success");
         clearForm();
         getAllUnidades();

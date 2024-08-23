@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthLayout from "./layout/authLayout";
 import RutaProtegida from "./layout/RutaProtegida";
+// import 'datatables.net-responsive-dt';
 
 import LoginForm from "./users/LoginUser";
 import UserForm from "./users/CreateAccount";
@@ -15,15 +16,14 @@ import Home from "./home/home";
 import VerPdf from "./memorandum/verPDF";
 
 import CrudApprentices from "./apprentice/crudApprentices.jsx";
-import CrudMemorandum from "./memorandum/crudMemorandum.jsx";
 import ImportarCSV from "./apprentice/importarCSV";
+import CrudTurnosEspeciales from "./turnosEspeciales/CrudTurnosEspeciales.jsx";
+import CrudMemorandum from "./memorandum/crudMemorandum.jsx";
 import CrudUnidades from "./unit/CrudUnidad.jsx";
 import CrudFichas from "./fichas/CrudFichas.jsx"
 import CrudFuncionarios from "./funcionarios/CrudFuncionarios.jsx";
 import CrudPrograma from "./programasFormacion/CrudProgramaFormacion.jsx";
 import CrudTalentoHumano from "./talentoHumano/CrudTalentoHumano.jsx";
-// import CrudTurnosEspeciales from "./turnosEspeciales/CrudTurnosEspeciales.jsx"
-// import CrudArchivo from "./archivo_Csv/crudCsv.jsx";
 
 function App() {
   return (
@@ -47,16 +47,13 @@ function App() {
               <Route path="aprendices/" element={<CrudApprentices />}>
                 <Route path="importCSV" element={<ImportarCSV />} />
               </Route>
+              <Route path="turnos-especiales" element={<CrudTurnosEspeciales />}/>
               <Route path="memorandos" element={<CrudMemorandum />} />
               <Route path="unidades" element={<CrudUnidades />} />
               <Route path="fichas" element={<CrudFichas />} />
               <Route path="funcionarios" element={<CrudFuncionarios />} />
               <Route path="programa-formacion" element={<CrudPrograma />} />
-              <Route path="funcionarios" element={<CrudFuncionarios />} />
               <Route path="talentohumano" element={<CrudTalentoHumano />} />
-              {/* <Route path="archivo-csv" element={<CrudArchivo />} /> */}
-              {/* <Route path="turnoespecial" element={<CrudTurnosEspeciales />} /> */}
-
             
 
               {/* <Route path='/perfil' element={<MemorandumPDF/>}/> */}

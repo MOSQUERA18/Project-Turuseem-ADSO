@@ -100,7 +100,7 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
       }
 
       if (respuestApi.status === 201 || respuestApi.status === 200) {
-        setMessage("Talento Humano registrado correctamente!");
+        setMessage("Talento Humano Actualizado correctamente!");
         setMessageType("success");
         clearForm();
         getAllTalentoHumano();

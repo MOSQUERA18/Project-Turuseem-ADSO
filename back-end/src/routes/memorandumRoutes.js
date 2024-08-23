@@ -7,19 +7,19 @@ import {
   deleteMemorandum,
   getQueryMemorandum,
 } from "../controller/memorandumController.js";
-import checkAuth from "../middleware/authMiddleware.js";
+import verifyAuth from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router
   .route("/")
-  .get(checkAuth, getAllMemorandum)
-  .post(checkAuth, createMemorandum);
+  .get(verifyAuth, getAllMemorandum)
+  .post(verifyAuth, createMemorandum);
 router
   .route("/:Id_Memorando")
-  .get(checkAuth, getMemorandum)
-  .put(checkAuth, updateMemorandum)
-  .delete(checkAuth, deleteMemorandum);
-router.get("/query/:Id_Memorando", checkAuth, getQueryMemorandum);
+  .get(verifyAuth, getMemorandum)
+  .put(verifyAuth, updateMemorandum)
+  .delete(verifyAuth, deleteMemorandum);
+router.get("/query/:Id_Memorando", verifyAuth, getQueryMemorandum);
 
 export default router;

@@ -24,8 +24,8 @@ const LoginForm = () => {
       return;
     }
     try {
-      const direccionURL = `/api/user/login`;
-      const { data } = await clienteAxios.post(direccionURL, {
+      const url = `/api/user/login`;
+      const { data } = await clienteAxios.post(url, {
         Cor_User: Cor_User,
         password: password,
       });

@@ -2,8 +2,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import clienteAxios from "../config/axios.jsx";
-import Alerta from "../components/Alerta.jsx";
+import clienteAxios from "../config/axios";
+import Alerta from "../components/Alerta";
 import { ReactSession } from "react-client-session";
 
 const FormTurnosEspeciales = ({
@@ -16,10 +16,10 @@ const FormTurnosEspeciales = ({
   const [Fec_TurnoEspecial, setFec_TurnoEspecial] = useState("");
   const [Hor_Inicio, setHor_Inicio] = useState("");
   const [Hor_Fin, setHor_Fin] = useState("");
-  const [observaciones, setObservaciones] = useState("");
-  const [totAprendices, setTotAprendices] = useState("");
+  const [Obs_TurnoEspecial, setObs_TurnoEspecial] = useState("");
+  const [Tot_AprendicesAsistieron, setTot_AprendicesAsistieron] = useState("");
   const [Id_Ficha, setId_Ficha] = useState("");
-  const [Img_Asistencia, setImg_Asistencia] = useState("");
+  const [Img_Asistencia, setImg_Asistencia] = useState(null);
   const [Id_Funcionario, setId_Funcionario] = useState("");
   const [Id_Unidad, setId_Unidad] = useState("");
 
@@ -102,33 +102,39 @@ const FormTurnosEspeciales = ({
             Fec_TurnoEspecial,
             Hor_Inicio,
             Hor_Fin,
-            observaciones,
-            totAprendices,
+            Obs_TurnoEspecial,
+            Tot_AprendicesAsistieron,
             Id_Ficha,
             Img_Asistencia,
             Id_Funcionario,
-            Id_Unidad,
+            Id_Unidad
+          },{
+            headers: { "Content-Type": "multipart/form-data" },
           },
           config
         );
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
-          `/unidades`,
+          `/turnoespecial`,
           {
             Fec_TurnoEspecial,
             Hor_Inicio,
             Hor_Fin,
-            observaciones,
-            totAprendices,
+            Obs_TurnoEspecial,
+            Tot_AprendicesAsistieron,
             Id_Ficha,
             Img_Asistencia,
             Id_Funcionario,
             Id_Unidad,
+          },{
+            headers: { "Content-Type": "multipart/form-data" },
           },
           config
         );
       }
-
+      console.log(respuestApi.status);
+      console.log(Id_TurnoEspecial)
+      
       if (respuestApi.status === 201 || respuestApi.status === 200) {
         setAlerta({
           msg: `Registro exitoso!`,
@@ -145,37 +151,37 @@ const FormTurnosEspeciales = ({
       }
     } catch (error) {
       setAlerta({
-        msg: "Ocurrio un error!, Intente de nuevo.",
+        msg: "Ocurrio un error! Intente de nuevo.",
         error: true,
       });
     }
   };
+  
 
   const clearForm = () => {
-    setId_TurnoEspecial("");
+    // setId_TurnoEspecial("");
     setFec_TurnoEspecial("");
     setHor_Inicio("");
     setHor_Fin("");
-    setObservaciones("");
-    setTotAprendices("");
+    setObs_TurnoEspecial("");
+    setTot_AprendicesAsistieron("");
     setId_Ficha("");
-    setImg_Asistencia("");
+    setImg_Asistencia(null);
     setId_Funcionario("");
     setId_Unidad("");
 
     // setSelectedArea(null);
   };
-  console.log(turnoEspecial);
 
   const setData = () => {
-    // setId_TurnoEspecial(turnoEspecial.Id_TurnoEspecial);
+    setId_TurnoEspecial(turnoEspecial.Id_TurnoEspecial);
     setFec_TurnoEspecial(turnoEspecial.Fec_TurnoEspecial);
     setHor_Inicio(turnoEspecial.Hor_Inicio);
     setHor_Fin(turnoEspecial.Hor_Fin);
-    setObservaciones(turnoEspecial.Obs_TurnoEspecial);
-    setTotAprendices(turnoEspecial.Tot_AprendicesAsistieron);
+    setObs_TurnoEspecial(turnoEspecial.Obs_TurnoEspecial);
+    setTot_AprendicesAsistieron(turnoEspecial.Tot_AprendicesAsistieron);
     setId_Ficha(turnoEspecial.Id_Ficha || "");
-    // setImg_Asistencia(turnoEspecial.Img_Asistencia);
+    setImg_Asistencia(turnoEspecial.Img_Asistencia);
     setId_Funcionario(turnoEspecial.Id_Funcionario || "");
     setId_Unidad(turnoEspecial.Id_Unidad || "");
     const selectedFic = Fichas.find(ficha => ficha.Id_Ficha === turnoEspecial.Id_Ficha);
@@ -199,7 +205,7 @@ const FormTurnosEspeciales = ({
           onSubmit={sendForm}
           className="bg-white shadow-2xl rounded-2xl px-14 pt-6 pb-8 mb-4 max-w-3xl w-full mt-10"
         >
-          {msg && <Alerta alerta={alerta} />}
+          {msg && <Alerta alerta={alerta} setAlerta={setAlerta}/>}
           <h1 className="font-bold text-green-600 text-3xl uppercase text-center my-5">
             Crear Turnos Especiales
           </h1>
@@ -248,10 +254,10 @@ const FormTurnosEspeciales = ({
               Observaciones
             </label>
             <textarea
-              id="observaciones"
-              placeholder="Observaciones"
-              value={observaciones}
-              onChange={(e) => setObservaciones(e.target.value)}
+              id="Obs_TurnoEspecial"
+              placeholder="Observaciones Turno Especial"
+              value={Obs_TurnoEspecial}
+              onChange={(e) => setObs_TurnoEspecial(e.target.value)}
               className="w-full p-2 border rounded"
             />
           </div>
@@ -263,8 +269,8 @@ const FormTurnosEspeciales = ({
               type="text"
               id="total_aprendices"
               placeholder="Total Aprendices Asistieron"
-              value={totAprendices}
-              onChange={(e) => setTotAprendices(e.target.value)}
+              value={Tot_AprendicesAsistieron}
+              onChange={(e) => setTot_AprendicesAsistieron(e.target.value)}
               className="w-full p-2 border rounded"
             />
           </div>
@@ -349,8 +355,7 @@ const FormTurnosEspeciales = ({
             <input
               type="file"
               id="imagen_asistencia"
-              value={Img_Asistencia}
-              onChange={(e) => setImg_Asistencia(e.target.value)}
+              onChange={(e) => setImg_Asistencia(e.target.files[0])}
               className="w-full p-2 border rounded"
             />
           </div>

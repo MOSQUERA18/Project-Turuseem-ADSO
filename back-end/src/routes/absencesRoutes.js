@@ -6,18 +6,18 @@ import {
   updateAbsence,
   deleteAbsence,
 } from "../controller/absencesController.js";
-import checkAuth from "../middleware/authMiddleware.js";
+import verifyAuth from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router
   .route("/")
-  .get(checkAuth, getAllAbsences)
-  .post(checkAuth, createAbsence);
+  .get(verifyAuth, getAllAbsences)
+  .post(verifyAuth, createAbsence);
 router
   .route("/:Id_Inasistencia")
-  .get(checkAuth, getAbsence)
-  .put(checkAuth, updateAbsence)
-  .delete(checkAuth, deleteAbsence);
+  .get(verifyAuth, getAbsence)
+  .put(verifyAuth, updateAbsence)
+  .delete(verifyAuth, deleteAbsence);
 
 export default router;

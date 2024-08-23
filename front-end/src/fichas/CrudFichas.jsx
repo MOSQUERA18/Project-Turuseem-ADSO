@@ -1,18 +1,16 @@
 import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { ReactSession } from 'react-client-session';
+import { ReactSession } from "react-client-session";
 
 
 import { CSVLink } from 'react-csv';
 
-import FormFichas from "./formFichas.jsx";
-import FormQueryFichas from "./formQueryFichas.jsx";
-import Pagination from "../pagination.jsx";
-import Alerta from "../components/Alerta.jsx";
 
-import { MdDeleteOutline } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
+import FormFichas from "./formFichas.jsx";
+import Alerta from "../components/Alerta.jsx";
+import DataTableFichas from "./dataTableFichas.jsx";
+
 import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
@@ -21,25 +19,21 @@ const URI = "fichas";
 
 const CrudFichas = () => {
   const [fichasList, setFichasList] = useState([]);
-  const [fichasQuery, setFichasQuery] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddFichas, setStateAddFichas] = useState(false);
-  const [desde, setDesde] = useState(0);
-  const [hasta, setHasta] = useState(0);
   const [alerta, setAlerta] = useState({});
 
-  const [fichas,setFichas] = useState({
-    Id_Ficha :"",
-    Fec_IniEtapaLectiva:"",
-    Fec_FinEtapaLectiva:"",
-    Can_Aprendices:"",
-    Id_ProgramaFormacion:"",
-    Estado:"",
+  const [fichas, setFichas] = useState({
+    Id_Ficha: "",
+    Fec_IniEtapaLectiva: "",
+    Fec_FinEtapaLectiva: "",
+    Can_Aprendices: "",
+    Id_ProgramaFormacion: "",
+    Estado: "",
   });
 
   useEffect(() => {
     getAllFichas();
-    
   }, []);
 
   const getAllFichas = async () => {
@@ -86,16 +80,16 @@ const CrudFichas = () => {
         });
       } else {
         setAlerta({
-          msg: `Error al cargar los registros!`,
+          msg: respuestApi.data.message,
           error: true,
         });
       }
     } catch (error) {
       setAlerta({
-        msg: `Error al Tratar de Cargar Las Fichas al Form`,
+        msg: error.response.data.message,
         error: true,
       });
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -124,7 +118,7 @@ const CrudFichas = () => {
             config
           );
           if (respuestApi.status === 200) {
-            getAllFichas();  // Refrescar la lista después de borrar
+            getAllFichas(); // Refrescar la lista después de borrar
             Swal.fire({
               title: "Borrado!",
               text: "El registro ha sido borrado.",
@@ -151,9 +145,8 @@ const CrudFichas = () => {
 
   const { msg } = alerta;
 
-
-  const csvData = (fichasQuery.length ? fichasQuery : fichasList).map(fichas => ({
-    Documento : fichas.Id_Ficha,
+  const csvData = (fichas.length ? fichas : fichasList).map(fichas => ({
+    Numero_de_Ficha: fichas.Id_Ficha,
     Fecha_Inicio_Etapa_Lectiva: fichas.Fec_InicioEtapaLectiva,
     Fec_Fin_Etapa_Lectiva : fichas.Fec_FinEtapaLectiva,
     Cantidad_Aprendices: fichas.Can_Aprendices,
@@ -164,8 +157,10 @@ const CrudFichas = () => {
 
   return (
     <>
+
     <br />
     <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">Gestionar Informacion de las Fichas</h1>
+
       <div className="flex justify-end pb-3">
         <button
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
@@ -180,36 +175,15 @@ const CrudFichas = () => {
           )}
           {stateAddFichas ? "Ocultar" : "Agregar"}
         </button>
+
         <CSVLink data={csvData} filename={"Fichas.csv"} className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800">
                 Exportar a excel
               </CSVLink>
       </div>
       <div className="overflow-x-auto">
-        <div className="flex justify-between">
-          <div>
-            <h1 className="font-semibold text-lg text-gray-700">
-              Buscar Por Numero de Ficha...
-            </h1>
-            <FormQueryFichas
-              getFicha={getFicha}
-              deleteFichas={deleteFichas}
-              buttonForm={buttonForm}
-              fichasQuery={fichasQuery}
-              setFichasQuery={setFichasQuery}
-            />
-          </div>
-          {/* <div>
-            <h1 className="font-semibold text-lg text-gray-700">
-              Subir Archivo CSV
-            </h1>
-            <ImportarCSV URI={URI} />
-          </div> */}
-        </div>
         <hr />
-        {/* <h2 className="font-semibold mb-4 text-lg text-gray-700 mt-3">
-          Doble Click sobre la unidad para ver información detallada...
-        </h2> */}
         {msg && <Alerta alerta={alerta} />}
+
         <table className="min-w-full bg-white text-center text-sm">
           <thead className="text-white bg-green-700">
             <tr className="">
@@ -223,9 +197,7 @@ const CrudFichas = () => {
             </tr>
           </thead>
           <tbody>
-            {(fichasQuery.length ? fichasQuery : fichasList).map(
-              (fichas, indice) =>
-                indice >= desde && indice < hasta ? (
+
                   <tr
                     key={fichas.Id_Ficha}
                     className={`${fichas.Estado === 'Inactivo' ? 'bg-red-600 text-white' : ''}`}
@@ -260,24 +232,26 @@ const CrudFichas = () => {
                         ]}
                         className="text-white-500 hover:text-white-700 hover:border hover:border-white-500 mr-3 p-1 rounded"
                       >
-                        <FaRegEdit />
-                      </button>
-                      <button
-                        onClick={() => deleteFichas(fichas.Id_Ficha)}
-                        className="text-white-500 hover:text-white-700 hover:border hover:border-white-500 p-1 rounded"
-                      >
-                        <MdDeleteOutline />
+
                       </button>
                     </td>
                   </tr>
                 ) : (
-                  ""
+                  
                 )
-            )}
+            
           </tbody>
         </table>
+
+        <hr />
+        <DataTableFichas
+          fichasList={fichasList}
+          getFicha={getFicha}
+          deleteFichas={deleteFichas}
+          setStateAddFichas={setStateAddFichas}
+        />
+
       </div>
-      <Pagination URI={URI} setDesde={setDesde} setHasta={setHasta} />
       <hr />
       {stateAddFichas ? (
         <FormFichas
@@ -289,17 +263,6 @@ const CrudFichas = () => {
         />
       ) : null}
       <hr />
-
-      {/* {modalDialog ? (
-        <ModalDialog
-          getUnidad={getUnidad}
-          deleteUnidad={deleteUnidad}
-          onDoubleClickUnidad={onDoubleClickUnidad}
-          setModalDialog={setModalDialog}
-          setStateAddUnidad={setStateAddUnidad}
-          setUnidad={setUnidad}
-        />
-      ) : null} */}
       <Outlet />
     </>
   );

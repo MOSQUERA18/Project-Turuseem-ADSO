@@ -1,17 +1,15 @@
 import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { ReactSession } from 'react-client-session';
+import { ReactSession } from "react-client-session";
 
 import { CSVLink } from 'react-csv';
 
 import FormFuncionarios from "./formFuncionarios.jsx";
-import FormQueryFuncionarios from "./formQueryFuncionarios.jsx";
-import Pagination from "../pagination.jsx";
 import Alerta from "../components/Alerta.jsx";
+import DataTableFuncionarios from "./dataTableFuncionarios.jsx";
 
-import { MdDeleteOutline } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
+
 import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
@@ -20,11 +18,8 @@ const URI = "/funcionarios";
 
 const CrudFuncionarios = () => {
   const [funcionarioList, setFuncionarioList] = useState([]);
-  const [funcionarioQuery, setFuncionarioQuery] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddFuncionario, setStateAddFuncionario] = useState(false);
-  const [desde, setDesde] = useState(0);
-  const [hasta, setHasta] = useState(0);
   const [alerta, setAlerta] = useState({});
 
   const [funcionario, setFuncionario] = useState({
@@ -78,7 +73,10 @@ const CrudFuncionarios = () => {
       },
     };
     try {
+
       const respuestApi = await clienteAxios(`${URI}/${Id_Funcionario}`, config);
+
+
       if (respuestApi.status === 200) {
         setFuncionario({
           ...respuestApi.data,
@@ -123,7 +121,6 @@ const CrudFuncionarios = () => {
             config
           );
           console.log(respuestApi);
-          
           if (respuestApi.status == 200) {
             getAllFuncionarios();
             Swal.fire({
@@ -154,7 +151,8 @@ const CrudFuncionarios = () => {
 
 
 
-  const csvData = (funcionarioQuery.length ? funcionarioQuery : funcionarioList).map(funcionario => ({
+  const csvData = (funcionario.length ? funcionario : funcionarioList).map(funcionario => ({
+
     Documento : funcionario.Id_Funcionario,
     Nombre: funcionario.Nom_Funcionario,
     Apellidos : funcionario.Ape_Funcionario,
@@ -165,11 +163,12 @@ const CrudFuncionarios = () => {
   }));
 
 
+
   return (
     <>
-    <br />
-    <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">Gestionar Informacion de los Funcionarios</h1>
-
+      <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
+      Gestionar Informacion de los Funcionarios
+      </h1>
       <div className="flex justify-end pb-3">
         <button
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
@@ -190,90 +189,16 @@ const CrudFuncionarios = () => {
               </CSVLink>
       </div>
       <div className="overflow-x-auto">
-        <div className="flex justify-between">
-          <div>
-            <h1 className="font-semibold text-lg text-gray-700">
-              Buscar Por Documento...
-            </h1>
-            <FormQueryFuncionarios
-              getFuncionario={getFuncionario}
-              deleteFuncionario={deleteFuncionario}
-              buttonForm={buttonForm}
-              funcionarioQuery={funcionarioQuery}
-              setFuncionarioQuery={setFuncionarioQuery}
-            />
-          </div>
-        </div>
         <hr />
         {msg && <Alerta alerta={alerta} />}
-        <table className="min-w-full bg-white text-center text-sm">
-          <thead className="text-white bg-green-700">
-            <tr className="">
-              <th className="py-2 px-4 border-2 border-b-gray-500">ID</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Nombre</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Apellido</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Género</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Teléfono</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Estado</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Cargo</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(funcionarioQuery.length ? funcionarioQuery : funcionarioList).map(
-              (funcionario, indice) =>
-                indice >= desde && indice < hasta ? (
-                  <tr
-                    key={funcionario.Id_Funcionario}
-                    className="odd:bg-white even:bg-gray-100 select-none"
-                  >
-                    <td className="py-2 px-4 border-b">
-                      {funcionario.Id_Funcionario}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {funcionario.Nom_Funcionario}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {funcionario.Ape_Funcionario}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {funcionario.Genero}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {funcionario.Tel_Funcionario}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {funcionario.Estado}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {funcionario.Cargo}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      <button
-                        onClick={() => [
-                          getFuncionario(funcionario.Id_Funcionario),
-                          setStateAddFuncionario(true),
-                        ]}
-                        className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
-                      >
-                        <FaRegEdit />
-                      </button>
-                      <button
-                        onClick={() => deleteFuncionario(funcionario.Id_Funcionario)}
-                        className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
-                      >
-                        <MdDeleteOutline />
-                      </button>
-                    </td>
-                  </tr>
-                ) : (
-                  ""
-                )
-            )}
-          </tbody>
-        </table>
+        <hr />
+        <DataTableFuncionarios
+          funcionarioList={funcionarioList}
+          getFuncionario={getFuncionario}
+          deleteFuncionario={deleteFuncionario}
+          setStateAddFuncionario={setStateAddFuncionario}
+        />
       </div>
-      <Pagination URI={URI} setDesde={setDesde} setHasta={setHasta} />
       <hr />
       {stateAddFuncionario ? (
         <FormFuncionarios
@@ -289,5 +214,6 @@ const CrudFuncionarios = () => {
     </>
   );
 };
+
 
 export default CrudFuncionarios;

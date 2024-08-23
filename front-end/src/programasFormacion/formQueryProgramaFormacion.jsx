@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import clienteAxios from "../config/axios";
+import clieteAxios from "../config/axios";
 import { ReactSession } from 'react-client-session';
 
 const FormQueryPrograma = ({ buttonForm, setProgramaQuery }) => {
@@ -17,7 +17,7 @@ const FormQueryPrograma = ({ buttonForm, setProgramaQuery }) => {
 
       let URI = `/programa/nombre/${query}`;
       try {
-        const respuesta = await clienteAxios.get(URI, config);
+        const respuesta = await clieteAxios.get(URI, config);
         if ( respuesta.status == 200 ) {
             setProgramaQuery(respuesta.data)
         } else {

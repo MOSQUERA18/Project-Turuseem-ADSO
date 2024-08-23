@@ -1,11 +1,11 @@
 import express from "express";
 import {getAllAreas} from "../controller/areaController.js";
-import checkAuth from "../middleware/authMiddleware.js";
+import verifyAuth from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router
   .route("/")
-  .get(checkAuth, getAllAreas)
+  .get(verifyAuth, getAllAreas)
 
 export default router;
