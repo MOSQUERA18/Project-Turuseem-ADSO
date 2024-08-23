@@ -83,39 +83,43 @@ const DataTableFichas = ({
         </thead>
         <tbody>
           {fichasList.map((ficha) => (
-            <tr key={ficha.Id_Ficha}>
-              <td className="py-2 px-4 border-b">{ficha.Id_Ficha}</td>
-              <td className="py-2 px-4 border-b">
-                {ficha.Fec_InicioEtapaLectiva}
-              </td>
-              <td className="py-2 px-4 border-b">
-                {ficha.Fec_FinEtapaLectiva}
-              </td>
-              <td className="py-2 px-4 border-b">{ficha.Can_Aprendices}</td>
-              <td className="py-2 px-4 border-b">
-                {ficha.programasFormacion?.Nom_ProgramaFormacion}
-              </td>
-              <td className="py-2 px-4 border-b">
-                {ficha.Estado === "Inactivo" ? "Inactiva" : "Activa"}
-              </td>
-              <td className="py-2 px-4 border-b">
-                <button
-                  onClick={() => [
-                    getFicha(ficha.Id_Ficha),
-                    setStateAddFichas(true),
-                  ]}
-                  className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
-                >
-                  <FaRegEdit />
-                </button>
-                <button
-                  onClick={() => deleteFichas(ficha.Id_Ficha)}
-                  className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
-                >
-                  <MdDeleteOutline />
-                </button>
-              </td>
-            </tr>
+            <tr key={ficha.Id_Ficha} 
+            // className={`${
+            //   ficha.Estado === 'Inactivo' ? 'bg-red-800 text-yellow' : ''
+            // }`}
+          >
+            <td className="py-2 px-4 border-b">{ficha.Id_Ficha}</td>
+            <td className="py-2 px-4 border-b">
+              {ficha.Fec_InicioEtapaLectiva}
+            </td>
+            <td className="py-2 px-4 border-b">
+              {ficha.Fec_FinEtapaLectiva}
+            </td>
+            <td className="py-2 px-4 border-b">{ficha.Can_Aprendices}</td>
+            <td className="py-2 px-4 border-b">
+              {ficha.programasFormacion?.Nom_ProgramaFormacion}
+            </td>
+            <td className="py-2 px-4 border-b">
+              {ficha.Estado === "Inactivo" ? "Inactiva" : "Activa"}
+            </td>
+            <td className="py-2 px-4 border-b">
+              <button
+                onClick={() => [
+                  getFicha(ficha.Id_Ficha),
+                  setStateAddFichas(true),
+                ]}
+                className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
+              >
+                <FaRegEdit />
+              </button>
+              <button
+                onClick={() => deleteFichas(ficha.Id_Ficha)}
+                className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
+              >
+                <MdDeleteOutline />
+              </button>
+            </td>
+          </tr>
           ))}
         </tbody>
       </table>

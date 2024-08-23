@@ -23,6 +23,7 @@ import CrudUnidades from "./unit/CrudUnidad.jsx";
 import CrudFichas from "./fichas/CrudFichas.jsx"
 import CrudFuncionarios from "./funcionarios/CrudFuncionarios.jsx";
 import CrudPrograma from "./programasFormacion/CrudProgramaFormacion.jsx";
+import CrudTalentoHumano from "./talentoHumano/CrudTalentoHumano.jsx";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
               <Route path="fichas" element={<CrudFichas />} />
               <Route path="funcionarios" element={<CrudFuncionarios />} />
               <Route path="programa-formacion" element={<CrudPrograma />} />
+              <Route path="talentohumano" element={<CrudTalentoHumano />} />
             
 
               {/* <Route path='/perfil' element={<MemorandumPDF/>}/> */}
