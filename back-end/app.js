@@ -8,6 +8,7 @@ import db from "./src/database/db.js";
 
 //Routes
 import absenceRoutes from "./src/routes/absencesRoutes.js";
+import cityRoutes from "./src/routes/cityRoutes.js"
 import apprenticeRoutes from "./src/routes/ApprenticeRoutes.js";
 import areaRoutes from "./src/routes/areaRoutes.js";
 import fichasRoutes from "./src/routes/fichasRoutes.js";
@@ -25,6 +26,8 @@ import { logger } from "./src/middleware/logMiddleware.js";
 // import routespdf from "./src/routes/routespdf.js";
 
 //Models
+import cityModel from "./src/models/cityModel.js";
+import ApprenticeModel from "./src/models/apprenticeModel.js";
 import TalentoHumanoModel from "./src/models/talentoHumano.js";
 import UnitModel from "./src/models/unitModel.js";
 import AreaModel from "./src/models/areaModel.js";
@@ -66,6 +69,8 @@ appExpress.use("/turnoespecial",turnoEspecialRoutes)
 appExpress.use("/turRutAprendiz", turnoRutinarioAprendizRoutes);
 appExpress.use("/turnoRutinario", turnoRutinarioRoutes);
 appExpress.use('/unidades', unitRoutes)
+appExpress.use('/ciudades', cityRoutes)
+
 
 appExpress.use('/public/uploads/', express.static('public/uploads'))
 
@@ -89,7 +94,7 @@ AreaModel.hasMany(UnitModel, { foreignKey: "Id_Area", as: "unidades" })
 UnitModel.belongsTo(AreaModel, { foreignKey: "Id_Area", as: "areas" })
 
 //Programas de formacion
-AreaModel.hasMany(ProgramaModel, { foreignKey: "Id_Area", as: "programasformacion" })
+AreaModel.hasMany(ProgramaModel, { foreignKey: "Id_Area", as: "programasFormacion" })
 ProgramaModel.belongsTo(AreaModel, { foreignKey: "Id_Area", as: "areas"})
 
 
@@ -102,9 +107,25 @@ FichasModel.belongsTo(ProgramaModel,{foreignKey:"Id_ProgramaFormacion",as:"progr
 FichasModel.hasMany(TalentoHumanoModel,{foreignKey:"Id_Ficha",as:"talentoHumano"})
 TalentoHumanoModel.belongsTo(FichasModel,{foreignKey:"Id_Ficha",as:"fichas"})
 
+
+//APRENDIZ CON FICHAS
+FichasModel.hasMany(ApprenticeModel,{foreignKey:'Id_Ficha' , as : 'aprendices'})
+ApprenticeModel.belongsTo(FichasModel,{foreignKey:'Id_Ficha', as:'fichas'})
+
+
+//Aprendiz con Ciudad
+cityModel.hasMany(ApprenticeModel,{foreignKey:'Id_Ciudad', as:'aprendices'})
+ApprenticeModel.belongsTo(cityModel,{foreignKey:'Id_Ciudad',as:'ciudad'})
+
+
+//Inasistencias
+AbsenceModel.belongsTo(TurnoEspecialAprendizModel,{foreignKey:"Id_TurnoEspecialAprendiz", as:"turnoespecialaprendiz"})
+TurnoEspecialAprendizModel.hasMany(AbsenceModel,{foreignKey:"Id_TurnoEspecialAprendiz",as:"inasistencias"})
+
+
 //Turno Especial - Fichas
 FichasModel.hasMany(TurnoEspecialModel,{foreignKey:"Id_Ficha",as:"turnoEspecial"})
-TurnoEspecialModel.belongsTo(FichasModel,{foreignKey:"Id_Ficha",as:"ficha"})
+TurnoEspecialModel.belongsTo(FichasModel,{foreignKey:"Id_Ficha",as:"fichas"})
 
 //Turno Especial - Unidades
 UnitModel.hasMany(TurnoEspecialModel,{foreignKey:"Id_Unidad",as:"turnoEspecial"})
@@ -114,11 +135,6 @@ TurnoEspecialModel.belongsTo(UnitModel,{foreignKey:"Id_Unidad",as:"unidad"})
 OfficialModel.hasMany(TurnoEspecialModel,{foreignKey:"Id_Funcionario",as:"turnoEspecial"})
 TurnoEspecialModel.belongsTo(OfficialModel,{foreignKey:"Id_Funcionario",as:"funcionario"})
 
-
-//Inasistencias
-AbsenceModel.belongsTo(TurnoEspecialAprendizModel,{foreignKey:"Id_TurnoEspecialAprendiz", as:"turnoespecialaprendiz"})
-TurnoEspecialAprendizModel.hasMany(AbsenceModel,{foreignKey:"Id_TurnoEspecialAprendiz",as:"inasistencias"})
-
 //Funcionario No esta relacionado con ninguno sino hasta con Turno Especial....
 
-export { AreaModel, UnitModel, ProgramaModel,FichasModel,TalentoHumanoModel } 
+export { AreaModel, UnitModel, ProgramaModel,FichasModel,TalentoHumanoModel,cityModel,ApprenticeModel } 

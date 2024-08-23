@@ -174,6 +174,7 @@ const CrudApprentices = () => {
 
   return (
     <>
+    <br />
     <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">Gestionar Informacion de los Aprendices</h1>
       <div className="flex justify-end pb-3">
         <button
@@ -189,6 +190,14 @@ const CrudApprentices = () => {
           )}
           {stateAddApprentice ? "Ocultar" : "Agregar"}
         </button>
+
+        <a
+          href="/src/Archivos CSV/Aprendiz.csv"
+          download="Aprendiz.csv"
+          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
+        >
+          Descargar CSV
+        </a>  
       </div>
       <div className="overflow-x-auto">
         <div className="flex justify-between">

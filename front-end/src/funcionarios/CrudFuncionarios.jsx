@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
 
-import { CSVLink } from 'react-csv';
+import { exportToExcel } from './ExportExcel.js'; 
+
 
 import FormFuncionarios from "./formFuncionarios.jsx";
 import Alerta from "../components/Alerta.jsx";
@@ -149,18 +150,9 @@ const CrudFuncionarios = () => {
 
   const { msg } = alerta;
 
-
-
-  const csvData = (funcionario.length ? funcionario : funcionarioList).map(funcionario => ({
-
-    Documento : funcionario.Id_Funcionario,
-    Nombre: funcionario.Nom_Funcionario,
-    Apellidos : funcionario.Ape_Funcionario,
-    Genero: funcionario.Genero,
-    Telefono: funcionario.Tel_Funcionario,
-    Estado: funcionario.Estado,
-    Cargo: funcionario.Cargo,
-  }));
+  const handleExportToExcel = () => {
+    exportToExcel([], funcionarioList); // Pasar [] si `programa` está vacío
+  };
 
 
 
@@ -184,9 +176,15 @@ const CrudFuncionarios = () => {
           {stateAddFuncionario ? "Ocultar" : "Agregar"}
         </button>
 
-        <CSVLink data={csvData} filename={"Funcionarios.csv"} className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800">
-                Exportar a excel
-              </CSVLink>
+        <button
+          onClick={handleExportToExcel}
+          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
+        >
+          Exportar a Excel
+        </button>
+
+
+
       </div>
       <div className="overflow-x-auto">
         <hr />

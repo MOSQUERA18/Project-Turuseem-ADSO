@@ -11,6 +11,8 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 
+import { exportToExcel } from './ExportExcel.js';
+
 const URI = "/turnoespecial";
 const URI_FOTOS = '/public/uploads/'
 
@@ -150,6 +152,11 @@ const CrudTurnosEspeciales = () => {
 
   const { msg } = alerta;
 
+  // Función para manejar la exportación a Excel
+  const handleExportToExcel = () => {
+    exportToExcel([], turnoEspecialList); // Pasar [] si `turnoEspecial` está vacío
+  };
+
   return (
     <>
       <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
@@ -168,6 +175,13 @@ const CrudTurnosEspeciales = () => {
             <IoMdPersonAdd size={16} className="me-2" />
           )}
           {stateAddturnoEspecial ? "Ocultar" : "Agregar"}
+        </button>
+
+        <button
+          onClick={handleExportToExcel}
+          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
+        >
+          Exportar a Excel
         </button>
       </div>
       <div className="overflow-x-auto">

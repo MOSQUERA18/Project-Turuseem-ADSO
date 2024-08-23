@@ -3,10 +3,14 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
 
-import { CSVLink } from 'react-csv';
+// import { CSVLink } from 'react-csv';
+
+import { saveAs } from 'file-saver';
+import * as XLSX from 'xlsx';
+
+import Alerta from "../components/Alerta.jsx";
 
 import FormTalentoHumano from "./formTalentoHumano.jsx";
-// import Alerta from "../components/Alerta.jsx";
 import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
@@ -143,17 +147,39 @@ const CrudTalentoHumano = () => {
     setButtonForm(text);
   };
 
-  const csvData = (talentoHumano.length ? talentoHumano : talentoHumanoList).map(talentoHumano => ({
-    Documento: talentoHumano.Id_Talento_Humano,
-    Nombre: talentoHumano.Nom_Talento_Humano,
-    Apellido: talentoHumano.Ape_Talento_Humano,
-    Genero: talentoHumano.Genero_Talento_Humano,
-    Correo: talentoHumano.Cor_Talento_Humano,
-    Teléfono: talentoHumano.Tel_Talento_Humano,
-    Ficha: talentoHumano.fichas ? talentoHumano.fichas.Id_Ficha : "N/A",
-    Estado: talentoHumano.Estado,
-  }));
+  const { msg } = alerta;
 
+
+  
+
+    // Prepara los datos para Excel
+    const prepareDataForExcel = (talentoHumano,talentoHumanoList) => {
+      return (talentoHumano.length ? talentoHumano : talentoHumanoList).map(talentoHumano => ({
+        Documento: talentoHumano.Id_Talento_Humano,
+        Nombre: talentoHumano.Nom_Talento_Humano,
+        Apellido: talentoHumano.Ape_Talento_Humano,
+        Genero: talentoHumano.Genero_Talento_Humano,
+        Correo: talentoHumano.Cor_Talento_Humano,
+        Teléfono: talentoHumano.Tel_Talento_Humano,
+        Ficha: talentoHumano.fichas ? talentoHumano.fichas.Id_Ficha : "N/A",
+        Estado: talentoHumano.Estado,
+      }));
+    };
+  
+    // Función para manejar la exportación a Excel
+    const handleExportToExcel = (talentoHumano,talentoHumanoList) => {
+      const data = prepareDataForExcel(talentoHumano,talentoHumanoList);
+      const ws = XLSX.utils.json_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Talento Humano');
+      const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'Talento_Humano.xlsx');
+    };
+  
+
+    const handleExport = () => {
+      handleExportToExcel(talentoHumano, talentoHumanoList);
+    };
   return (
     <>
       <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
@@ -175,28 +201,36 @@ const CrudTalentoHumano = () => {
           {stateAddTalentoHumano ? "Ocultar" : "Agregar"}
         </button>
 
-        <CSVLink
-          data={csvData}
-          filename={"Talento_Humano.csv"}
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-        >
-          Exportar a Excel
-        </CSVLink>
+      <button
+        onClick={handleExport}
+        className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
+      >
+        Exportar a Excel
+      </button>
       </div>
-
-      <DataTableTalentoHumano
+      <div className="overflow-x-auto">
+        <hr />
+        {msg && <Alerta alerta={alerta} />}
+        <hr />
+        <DataTableTalentoHumano
         talentoHumanoList={talentoHumanoList}
         getTalentoHumano={getTalentoHumano}
         deleteTalentoHumano={deleteTalentoHumano}
         setStateAddTalentoHumano={setStateAddTalentoHumano}
       />
-      <FormTalentoHumano
-        buttonForm={buttonForm}
-        talentoHumano={talentoHumano}
-        updateTextButton={updateTextButton}
-        setTalentoHumano={setTalentoHumano}
-        getAllTalentoHumano={getAllTalentoHumano}
-      />
+      </div>
+
+      {
+        stateAddTalentoHumano ? (
+          <FormTalentoHumano
+            buttonForm={buttonForm}
+            talentoHumano={talentoHumano}
+            updateTextButton={updateTextButton}
+            setTalentoHumano={setTalentoHumano}
+            getAllTalentoHumano={getAllTalentoHumano}
+          />
+        ) : null
+      }
 
       <hr />
 

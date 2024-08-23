@@ -9,8 +9,6 @@ import "datatables.net-responsive-dt";
 // import "datatables.net-dt/css/dataTables.dataTables.min.css";
 
 
-import { CSVLink } from 'react-csv';
-
 import FormUnidades from "./formUnidades.jsx";
 import Alerta from "../components/Alerta.jsx";
 import DataTableUnit from "./dataTableUnit.jsx";
@@ -20,6 +18,8 @@ import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 
 const URI = "unidades";
+
+import { exportToExcel } from './ExportExcel.js'; 
 
 const CrudUnidades = () => {
   const [unidadList, setUnidadList] = useState([]);
@@ -149,15 +149,10 @@ const CrudUnidades = () => {
   const { msg } = alerta;
 
 
-  const csvData = (unidad.length ? unidad : unidadList).map(unidad => ({
-    ID: unidad.Id_Unidad,
-    Nombre: unidad.Nom_Unidad,
-    HoraApertura: unidad.Hor_Apertura,
-    HoraCierre: unidad.Hor_Cierre,
-    Estado: unidad.Estado,
-    Area: unidad.areas ? unidad.areas.Nom_Area : "N/A", // Asume que tienes el nombre del área
-  }));
 
+  const handleExportToExcel = () => {
+    exportToExcel([], unidadList); // Pasar [] si `unidad` está vacío
+  };
 
   return (
     <>
@@ -178,10 +173,12 @@ const CrudUnidades = () => {
           )}
           {stateAddUnidad ? "Ocultar" : "Agregar"}
         </button>
-
-        <CSVLink data={csvData} filename={"Unidades.csv"} className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800">
-                Exportar a excel
-              </CSVLink>
+        <button
+          onClick={handleExportToExcel}
+          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
+        >
+          Exportar a Excel
+        </button>
       </div>
       <div className="overflow-x-auto">
         <hr />

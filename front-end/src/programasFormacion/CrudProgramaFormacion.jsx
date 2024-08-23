@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
 
-import { CSVLink } from 'react-csv';
+// import { CSVLink } from 'react-csv';
 
 import FormProgramaFormacion from "./formProgramaFormacion.jsx";
 import Alerta from "../components/Alerta.jsx";
@@ -12,6 +12,7 @@ import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 import DataTableProgramaFormacion from "./dataTableProgramaFormacion.jsx"
 
+import { exportToExcel } from './exportExcel.js'; 
 const URI = "programa";
 
 const CrudPrograma = () => {
@@ -142,15 +143,12 @@ const CrudPrograma = () => {
 
   const { msg } = alerta;
 
+  const handleExportToExcel = () => {
+    exportToExcel([], programaList); // Pasar [] si `programa` está vacío
+  };
 
 
-        // Preparar los datos para CSV
-        const csvData = (programa.length ? programa : programaList).map(programa => ({
-          ID: programa.Id_ProgramaFormacion,
-          Nombre_Programa: programa.Nom_ProgramaFormacion,
-          Tipo_Programa: programa.Tip_ProgramaFormacion,
-          Area: programa.areas ? programa.areas.Nom_Area : "N/A", // Asume que tienes el nombre del área
-        }));
+
   return (
     <>
     <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase"> Gestionar Informacion de los Programas de Formacion</h1>
@@ -169,9 +167,13 @@ const CrudPrograma = () => {
           {stateAddPrograma ? "Ocultar" : "Agregar"}
         </button>
 
-        <CSVLink data={csvData} filename={"Programas.csv"} className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800">
-                Exportar a excel
-              </CSVLink>
+        <button
+          onClick={handleExportToExcel}
+          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
+        >
+          Exportar a Excel
+        </button>
+
       </div>
       <div className="overflow-x-auto">
         <hr />

@@ -18,11 +18,11 @@ export const getAllApprentices = async (req, res) => {
         },
         {
           model: cityModel,
-          as: "ciudades", // Alias para la relación con Ciudad
+          as: "ciudad", // Alias para la relación con Ciudad
         },
       ],
     });
-    if(apprentices.length>0){
+    if(apprentices){
       res.status(200).json(apprentices);
       return
     }
@@ -42,11 +42,11 @@ export const getApprentice = async (req, res) => {
         },
         {
           model: cityModel,
-          as: "ciudades", // Alias para la relación con Ciudad
+          as: "ciudad", // Alias para la relación con Ciudad
         },
       ],
     });
-    if (apprentice.length>0) {
+    if (apprentice) {
       res.status(200).json(apprentice);
       return
     } else {

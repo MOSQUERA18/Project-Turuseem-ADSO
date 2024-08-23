@@ -3,9 +3,7 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
 
-
-import { CSVLink } from 'react-csv';
-
+import { exportToExcel } from './ExportExcel.js'
 
 import FormFichas from "./formFichas.jsx";
 import Alerta from "../components/Alerta.jsx";
@@ -145,22 +143,15 @@ const CrudFichas = () => {
 
   const { msg } = alerta;
 
-  const csvData = (fichas.length ? fichas : fichasList).map(fichas => ({
-    Numero_de_Ficha: fichas.Id_Ficha,
-    Fecha_Inicio_Etapa_Lectiva: fichas.Fec_InicioEtapaLectiva,
-    Fec_Fin_Etapa_Lectiva : fichas.Fec_FinEtapaLectiva,
-    Cantidad_Aprendices: fichas.Can_Aprendices,
-    Nombre_Programa_Formacion: fichas.programasFormacion ? fichas.programasFormacion.Nom_ProgramaFormacion : "N/A", 
-    Estado: fichas.Estado,
-
-  }));
-
+  // Función para manejar la exportación a Excel
+  const handleExportToExcel = () => {
+    exportToExcel([], fichasList); // Pasar [] si `fichas` está vacío
+  };
   return (
     <>
-
-    <br />
-    <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">Gestionar Informacion de las Fichas</h1>
-
+      <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
+      Gestionar Informacion de las Fichas
+      </h1>
       <div className="flex justify-end pb-3">
         <button
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
@@ -175,74 +166,16 @@ const CrudFichas = () => {
           )}
           {stateAddFichas ? "Ocultar" : "Agregar"}
         </button>
-
-        <CSVLink data={csvData} filename={"Fichas.csv"} className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800">
-                Exportar a excel
-              </CSVLink>
+        <button
+          onClick={handleExportToExcel}
+          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
+        >
+          Exportar a Excel
+        </button>
       </div>
       <div className="overflow-x-auto">
         <hr />
         {msg && <Alerta alerta={alerta} />}
-
-        <table className="min-w-full bg-white text-center text-sm">
-          <thead className="text-white bg-green-700">
-            <tr className="">
-              <th className="py-2 px-4 border-2 border-b-gray-500">Numero de Ficha</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Fecha Inicio Etapa Lectiva</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Fecha Fin Etapa Lectiva</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Cantidad De Aprendices</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Nombre del Programa de Formacion</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Estado De la Ficha</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-
-                  <tr
-                    key={fichas.Id_Ficha}
-                    className={`${fichas.Estado === 'Inactivo' ? 'bg-red-600 text-white' : ''}`}
-                    // onDoubleClick={() => [
-                    //   // setOnDoubleClickUnidad(unidad),
-                    //   setModalDialog(true),
-                    // ]}
-                  >
-                    <td className="py-2 px-4 border-b">
-                      {fichas.Id_Ficha} 
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {fichas.Fec_InicioEtapaLectiva}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {fichas.Fec_FinEtapaLectiva}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {fichas.Can_Aprendices}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {fichas.programasFormacion.Nom_ProgramaFormacion} 
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                    {fichas.Estado === 'Inactivo' ? 'Inactiva' : 'Activa'}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      <button
-                        onClick={() => [
-                          getFicha(fichas.Id_Ficha),
-                          setStateAddFichas(true),
-                        ]}
-                        className="text-white-500 hover:text-white-700 hover:border hover:border-white-500 mr-3 p-1 rounded"
-                      >
-
-                      </button>
-                    </td>
-                  </tr>
-                ) : (
-                  
-                )
-            
-          </tbody>
-        </table>
-
         <hr />
         <DataTableFichas
           fichasList={fichasList}
@@ -250,7 +183,6 @@ const CrudFichas = () => {
           deleteFichas={deleteFichas}
           setStateAddFichas={setStateAddFichas}
         />
-
       </div>
       <hr />
       {stateAddFichas ? (
