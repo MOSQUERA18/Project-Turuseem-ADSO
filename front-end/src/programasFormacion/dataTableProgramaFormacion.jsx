@@ -9,33 +9,36 @@ import "datatables.net-responsive-dt/css/responsive.dataTables.min.css";
 import { MdDeleteOutline } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 
-const DataTableUnit = ({
-  unidadList,
-  getUnidad,
-  deleteUnidad,
-  setStateAddUnidad,
+const DataTableProgramaFormacion = ({
+  programaList,
+  getPrograma,
+  deletePrograma,
+  setStateAddPrograma,
 }) => {
   const tableRef = useRef(null);
   const tableInstance = useRef(null);
 
   useEffect(() => {
-    if (unidadList.length > 0) {
+    if (programaList.length > 0) {
       const tableElement = $(tableRef.current);
 
       if (!tableInstance.current) {
         tableInstance.current = tableElement.DataTable({
           responsive: true,
           language: {
-            search: "Buscar:", // Cambia el texto de búsqueda aquí
+            search: "Buscar:",
             lengthMenu: "Mostrar _MENU_ registros por página",
             zeroRecords: "No se encontraron resultados",
             info: "Mostrando página _PAGE_ de _PAGES_",
             infoEmpty: "No hay registros disponibles",
-            infoFiltered: "(filtrado de _MAX_ registros totales)"
-          }
+            infoFiltered: "(filtrado de _MAX_ registros totales)",
+          },
+          drawCallback: () => {
+            $("select").addClass("w-16");
+          },
         });
       } else {
-        tableInstance.current.clear().rows.add(unidadList).draw();
+        tableInstance.current.clear().rows.add(programaList).draw();
       }
     }
 
@@ -45,47 +48,51 @@ const DataTableUnit = ({
         tableInstance.current = null;
       }
     };
-  }, [unidadList]);
+  }, [programaList]);
 
   return (
     <div>
       <table
         ref={tableRef}
-        id="tablaUnidad"
+        id="tablaPrograma"
         className="display responsive nowrap text-center"
       >
         <thead className="text-white bg-green-700">
-          <tr>
+          <tr className="">
             <th className="py-2 px-4 border-2 border-b-gray-500">ID</th>
             <th className="py-2 px-4 border-2 border-b-gray-500">Nombre</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Hora Apertura</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Hora Cierre</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Estado</th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">
+              Tipo ProgramaFormacion
+            </th>
             <th className="py-2 px-4 border-2 border-b-gray-500">Área</th>
             <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {unidadList.map((unidad) => (
-            <tr key={unidad.Id_Unidad}>
-              <td className="py-2 px-4 border-b">{unidad.Id_Unidad}</td>
-              <td className="py-2 px-4 border-b">{unidad.Nom_Unidad}</td>
-              <td className="py-2 px-4 border-b">{unidad.Hor_Apertura}</td>
-              <td className="py-2 px-4 border-b">{unidad.Hor_Cierre}</td>
-              <td className="py-2 px-4 border-b">{unidad.Estado}</td>
-              <td className="py-2 px-4 border-b">{unidad.areas?.Nom_Area}</td>
+          {programaList.map((programa) => (
+            <tr key={programa.Id_ProgramaFormacion}>
+              <td className="py-2 px-4 border-b">
+                {programa.Id_ProgramaFormacion}
+              </td>
+              <td className="py-2 px-4 border-b">
+                {programa.Nom_ProgramaFormacion}
+              </td>
+              <td className="py-2 px-4 border-b">
+                {programa.Tip_ProgramaFormacion}
+              </td>
+              <td className="py-2 px-4 border-b">{programa.areas?.Nom_Area}</td>
               <td className="py-2 px-4 border-b">
                 <button
                   onClick={() => [
-                    getUnidad(unidad.Id_Unidad),
-                    setStateAddUnidad(true),
+                    getPrograma(programa.Id_ProgramaFormacion),
+                    setStateAddPrograma(true),
                   ]}
                   className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
                 >
                   <FaRegEdit />
                 </button>
                 <button
-                  onClick={() => deleteUnidad(unidad.Id_Unidad)}
+                  onClick={() => deletePrograma(programa.Id_ProgramaFormacion)}
                   className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
                 >
                   <MdDeleteOutline />
@@ -99,4 +106,4 @@ const DataTableUnit = ({
   );
 };
 
-export default DataTableUnit;
+export default DataTableProgramaFormacion;
