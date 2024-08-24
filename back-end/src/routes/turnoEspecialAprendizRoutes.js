@@ -6,18 +6,18 @@ import {
   updateTurnoEspecialAprendiz,
   deleteTurnoEspecialAprendiz,
 } from "../controller/turnoEspecialAprendizController.js";
-import verifyAuth from "../middleware/authMiddleware.js";
+import checkAuth from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router
   .route("/")
-  .get(verifyAuth, getAllTurnosEspecialesAprendices)
-  .post(verifyAuth, createTurnoEspecialAprendiz);
+  .get(checkAuth, getAllTurnosEspecialesAprendices)
+  .post(checkAuth, createTurnoEspecialAprendiz);
 router
   .route("/:Id_TurnoEspecialAprendiz")
-  .get(verifyAuth, getTurnoEspecialAprendiz)
-  .put(verifyAuth, updateTurnoEspecialAprendiz)
-  .delete(verifyAuth, deleteTurnoEspecialAprendiz);
+  .get(checkAuth, getTurnoEspecialAprendiz)
+  .put(checkAuth, updateTurnoEspecialAprendiz)
+  .delete(checkAuth, deleteTurnoEspecialAprendiz);
 
 export default router;

@@ -15,11 +15,11 @@ const DataTableTurnosEspeciales = ({
   getTurnoEspecial,
   deleteTurnoEspecial,
   setStateAddturnoEspecial,
-  URI_FOTOS
+  URI_FOTOS,
 }) => {
   const tableRef = useRef(null);
   const tableInstance = useRef(null);
-  const URI_AXIOS = import.meta.env.VITE_BACKEND_URL
+  const URI_AXIOS = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
     if (turnoEspecialList.length > 0) {
       const tableElement = $(tableRef.current);
@@ -94,13 +94,19 @@ const DataTableTurnosEspeciales = ({
               </td>
               <td className="py-2 px-4 border-b">{turnoEspecial.Hor_Inicio}</td>
               <td className="py-2 px-4 border-b">{turnoEspecial.Hor_Fin}</td>
-              <td className="py-2 px-4 border-b">{turnoEspecial.Obs_TurnoEspecial}</td>
-              <td className="py-2 px-4 border-b">{turnoEspecial.Tot_AprendicesAsistieron}</td>
               <td className="py-2 px-4 border-b">
-                {turnoEspecial.Id_Ficha}
+                {turnoEspecial.Obs_TurnoEspecial}
               </td>
               <td className="py-2 px-4 border-b">
-                <img width='80px' src={URI_AXIOS + URI_FOTOS+turnoEspecial.Img_Asistencia} alt="No Foto"></img>
+                {turnoEspecial.Tot_AprendicesAsistieron}
+              </td>
+              <td className="py-2 px-4 border-b">{turnoEspecial.Id_Ficha}</td>
+              <td className="py-2 px-4 border-b">
+                <img
+                  width="80px"
+                  src={URI_AXIOS + URI_FOTOS + turnoEspecial.Img_Asistencia}
+                  alt="No Foto"
+                ></img>
                 {/* {turnoEspecial.Img_Asistencia} */}
               </td>
               <td className="py-2 px-4 border-b">
@@ -115,7 +121,7 @@ const DataTableTurnosEspeciales = ({
                     getTurnoEspecial(turnoEspecial.Id_TurnoEspecial),
                     setStateAddturnoEspecial(true),
                   ]}
-                  className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
+                  className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded edit-btn"
                 >
                   <FaRegEdit />
                 </button>

@@ -7,19 +7,19 @@ import {
   deleteFicha,
   getQueryFicha
 } from "../controller/fichasController.js";
-import verifyAuth from "../middleware/authMiddleware.js";
+import checkAuth from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router
   .route("/")
-  .get(verifyAuth, getAllFichas)
-  .post(verifyAuth, createFicha);
+  .get(checkAuth, getAllFichas)
+  .post(checkAuth, createFicha);
 router
   .route("/:Id_Ficha")
-  .get(verifyAuth, getFicha)
-  .put(verifyAuth, updateFicha)
-  .delete(verifyAuth, deleteFicha);
-router.get("/codFicha/:Id_Ficha",verifyAuth, getQueryFicha)
+  .get(checkAuth, getFicha)
+  .put(checkAuth, updateFicha)
+  .delete(checkAuth, deleteFicha);
+router.get("/codFicha/:Id_Ficha",checkAuth, getQueryFicha)
 
 export default router;
