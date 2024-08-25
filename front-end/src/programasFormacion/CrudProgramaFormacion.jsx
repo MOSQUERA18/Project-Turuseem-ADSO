@@ -180,11 +180,11 @@ const CrudPrograma = () => {
         {msg && <Alerta alerta={alerta} />}
         <hr />
         <DataTableProgramaFormacion
-          programaList={programaList}
-          getPrograma={getPrograma}
-          deletePrograma={deletePrograma}
-          setStateAddUnidad={setStateAddPrograma}
-        />
+        programaList={programaList}
+        getPrograma={getPrograma}
+        deletePrograma={deletePrograma}
+        setStateAddPrograma={setStateAddPrograma}
+  />
       </div>
       <hr />
       {stateAddPrograma ? (

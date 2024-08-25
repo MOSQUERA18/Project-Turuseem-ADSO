@@ -15,7 +15,7 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 
-const URI = "/funcionarios";
+const URI = "funcionarios";
 
 const CrudFuncionarios = () => {
   const [funcionarioList, setFuncionarioList] = useState([]);
@@ -74,10 +74,7 @@ const CrudFuncionarios = () => {
       },
     };
     try {
-
-      const respuestApi = await clienteAxios(`${URI}/${Id_Funcionario}`, config);
-
-
+      const respuestApi = await clienteAxios.get(`/${URI}/${Id_Funcionario}`, config);
       if (respuestApi.status === 200) {
         setFuncionario({
           ...respuestApi.data,
@@ -96,6 +93,7 @@ const CrudFuncionarios = () => {
       console.error(error);
     }
   };
+  
 
   const deleteFuncionario = (Id_Funcionario) => {
     Swal.fire({
