@@ -36,7 +36,7 @@ const checkAuth = async (req, res, next) => {
     } catch (error) {
       // Maneja errores de token, como expiración o firma inválida
       logger.error("Token no válido o expirado", error);
-      return res.status(403).json({ msg: "Token no válido o expirado" });
+      return res.status(403).json({ msg: "Token no valido o expirado" });
     }
   }
   // Si no hay token, devuelve un error

@@ -7,19 +7,19 @@ import {
   deletePrograma,
   getQueryNom_Programa
 } from "../controller/programaController.js";
-import verifyAuth from "../middleware/authMiddleware.js";
+import checkAuth from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router
   .route("/")
-  .get(verifyAuth, getAllProgramas)
-  .post(verifyAuth, createPrograma);
+  .get(checkAuth, getAllProgramas)
+  .post(checkAuth, createPrograma);
 router
   .route("/:Id_ProgramaFormacion")
-  .get(verifyAuth, getPrograma)
-  .put(verifyAuth, updatePrograma)
-  .delete(verifyAuth, deletePrograma);
-router.get('/nombre/:Nom_ProgramaFormacion',verifyAuth, getQueryNom_Programa);
+  .get(checkAuth, getPrograma)
+  .put(checkAuth, updatePrograma)
+  .delete(checkAuth, deletePrograma);
+router.get('/nombre/:Nom_ProgramaFormacion',checkAuth, getQueryNom_Programa);
 
 export default router;

@@ -28,7 +28,7 @@ const upload = multer({ storage })
 router
   .route('/')
   .get( checkAuth, getAllTurnosEspeciales )
-  .post( checkAuth, upload.single( 'Img_Asistencia' ), createTurnoEspecial );
+  .post( upload.single( 'Img_Asistencia' ), createTurnoEspecial );
 
 router
   .route( '/:Id_TurnoEspecial' )

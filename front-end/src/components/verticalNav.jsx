@@ -3,6 +3,11 @@ import logoTuruseem from "../assets/LOGOTURUSEEM.png";
 import { Link } from "react-router-dom";
 import { ReactSession } from "react-client-session";
 
+
+import { useContext } from "react";
+import AuthContext from "../context/authProvider.jsx"; 
+
+
 //Icons
 import { BsFillPeopleFill } from "react-icons/bs";
 import { IoDocumentText, IoSettings } from "react-icons/io5";
@@ -15,6 +20,10 @@ import clienteAxios from "../config/axios.jsx";
 const VerticalNav = () => {
   const [show, setShow] = useState(true);
   const [user, setUser] = useState(null); // Inicializa el estado del usuario como null
+
+
+  const { cerrarSesion } = useContext(AuthContext); // Uso el contexto para acceder a la función cerrarSesion
+
   
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -49,6 +58,8 @@ const VerticalNav = () => {
       }
     };
 
+
+
     fetchUserProfile();
   }, []);
 
@@ -57,7 +68,7 @@ const VerticalNav = () => {
     return <div>Cargando...</div>;
   }
   return (
-    <div>
+    <div className="min-h-screen">
       <div className=" bg-green-500 xl:hidden flex justify-between w-full p-6 items-center">
         <div className="flex justify-between  items-center space-x-3">
           <img src={logoTuruseem} className="w-12 drop-shadow-2xl" />
@@ -140,7 +151,7 @@ const VerticalNav = () => {
         id="Main"
         className={`${
           show ? "translate-x-0" : "-translate-x-full"
-        } xl:rounded-r transform  xl:translate-x-0  ease-in-out transition duration-500 flex justify-center items-start h-full  w-full sm:w-64 bg-green-500 flex-col`}
+        } transform  xl:translate-x-0  ease-in-out transition duration-500 flex justify-center items-start h-full  w-full sm:w-64 bg-green-500 flex-col`}
       >
         <div className="hidden xl:flex justify-start p-6 items-center space-x-3">
           <img src={logoTuruseem} className="w-12 drop-shadow-2xl" />
@@ -151,7 +162,7 @@ const VerticalNav = () => {
             <BsFillPeopleFill size={22} />
             <Link
               to="aprendices"
-              className="text-white text-base uppercase font-bold"
+              className="text-white text-sm uppercase font-bold"
             >
               Aprendices
             </Link>
@@ -160,7 +171,7 @@ const VerticalNav = () => {
             <MdAssignmentTurnedIn size={22} />
             <Link
               to="turnos-especiales"
-              className="text-white text-base uppercase font-bold"
+              className="text-white text-sm uppercase font-bold"
             >
               Turnos Especiales
             </Link>
@@ -169,7 +180,7 @@ const VerticalNav = () => {
             <IoDocumentText size={22} />
             <Link
               to="memorandos"
-              className="text-white text-base uppercase font-bold"
+              className="text-white text-sm uppercase font-bold"
             >
               Memorandos
             </Link>
@@ -178,7 +189,7 @@ const VerticalNav = () => {
             <PiNotebookFill size={22} />
             <Link
               to="programa-formacion"
-              className="text-white text-base uppercase font-bold"
+              className="text-white text-sm uppercase font-bold"
             >
               Programa
             </Link>
@@ -187,7 +198,7 @@ const VerticalNav = () => {
             <SiHomeassistantcommunitystore size={22} />
             <Link
               to="unidades"
-              className="text-white text-base uppercase font-bold"
+              className="text-white text-sm uppercase font-bold"
             >
               Unidades
             </Link>
@@ -196,7 +207,7 @@ const VerticalNav = () => {
             <FaClipboardCheck size={22} />
             <Link
               to="fichas"
-              className="text-white text-base uppercase font-bold"
+              className="text-white text-sm uppercase font-bold"
             >
               Fichas
             </Link>
@@ -205,7 +216,7 @@ const VerticalNav = () => {
             <FaPeopleGroup size={22} />
             <Link
               to="funcionarios"
-              className="text-white text-base uppercase font-bold"
+              className="text-white text-sm uppercase font-bold"
             >
               Funcionarios
             </Link>
@@ -215,7 +226,7 @@ const VerticalNav = () => {
             <FaPeopleGroup size={22} />
             <Link
               to="talentohumano"
-              className="text-white text-base uppercase font-bold"
+              className="text-white text-sm uppercase font-bold"
             >
               Talento Humano
             </Link>
@@ -227,21 +238,29 @@ const VerticalNav = () => {
               <div>
                 <img
                   className="rounded-full"
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTN9fV4_xpG-p-D2DIb5JQe7OqzM6tL2DDGHw&s"
+                  src={logoTuruseem}
                   alt="avatar"
                 />
               </div>
               <div className="flex justify-start flex-col items-start">
                 <p className="cursor-pointer text-sm leading-5 text-white">
-                  {user.usuario.Nom_User}
+                  {(user.usuario.Nom_User).split(' ')[1]}
                 </p>
                 <p className="cursor-pointer text-xs leading-3 text-gray-300">
-                  {user.usuario.Cor_User}
+                  {(user.usuario.Cor_User).split('.')[0]}
                 </p>
               </div>
+              
             </div>
             <IoSettings size={45} className="text-white" />
           </div>
+          {/* Botón de Cerrar Sesión */}
+          <button
+          onClick={cerrarSesion}
+          className="mt-4 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition duration-300"
+          >
+            Cerrar Sesión
+          </button>
         </div>
       </div>
     </div>

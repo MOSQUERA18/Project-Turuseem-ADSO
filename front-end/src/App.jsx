@@ -1,8 +1,25 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import AuthLayout from "./layout/authLayout";
-import RutaProtegida from "./layout/RutaProtegida";
-// import 'datatables.net-responsive-dt';
+// import AuthLayout from "./layout/authLayout";
 
+//Rutas Protegidas
+import RutaProtegida from "./layout/RutaProtegida.jsx";
+import Dashboard from "./Dashboard/Dashboard.jsx";
+import CrudApprentices from "./apprentice/crudApprentices.jsx";
+import ImportarCSV from "./apprentice/importarCSV";
+import CrudTurnosEspeciales from "./turnosEspeciales/CrudTurnosEspeciales.jsx";
+import CrudMemorandum from "./memorandum/crudMemorandum.jsx";
+import CrudUnidades from "./unit/CrudUnidad.jsx";
+import CrudFichas from "./fichas/CrudFichas.jsx";
+import CrudFuncionarios from "./funcionarios/CrudFuncionarios.jsx";
+import CrudPrograma from "./programasFormacion/CrudProgramaFormacion.jsx";
+import CrudTalentoHumano from "./talentoHumano/CrudTalentoHumano.jsx";
+
+//Rutas Publicas
+import RutaPublica from "./layout/RutaPublica.jsx";
+import Home from "./home/home.jsx"
+import Contacto from "./home/Contacto.jsx"
+import ConsultarTurno from "./home/ConsultarTurno.jsx"
+import Manual from "./home/Manual.jsx";
 import LoginForm from "./users/LoginUser";
 import UserForm from "./users/CreateAccount";
 import OlvidePassword from "./users/OlvidePassword";
@@ -11,19 +28,7 @@ import CambiarPassword from "./users/CambiarPassword";
 
 import { AuthProvider } from "./context/authProvider";
 
-//AQUI VAN LOS CRUD (FORMULARIOS)
-import Home from "./home/home";
 import VerPdf from "./memorandum/verPDF";
-
-import CrudApprentices from "./apprentice/crudApprentices.jsx";
-import ImportarCSV from "./apprentice/importarCSV";
-import CrudTurnosEspeciales from "./turnosEspeciales/CrudTurnosEspeciales.jsx";
-import CrudMemorandum from "./memorandum/crudMemorandum.jsx";
-import CrudUnidades from "./unit/CrudUnidad.jsx";
-import CrudFichas from "./fichas/CrudFichas.jsx"
-import CrudFuncionarios from "./funcionarios/CrudFuncionarios.jsx";
-import CrudPrograma from "./programasFormacion/CrudProgramaFormacion.jsx";
-import CrudTalentoHumano from "./talentoHumano/CrudTalentoHumano.jsx";
 
 function App() {
   return (
@@ -31,8 +36,12 @@ function App() {
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route path="/" element={<AuthLayout />}>
-              <Route index element={<LoginForm />} />
+            <Route path="/" element={<RutaPublica />}>
+              <Route index element={<Home />} />
+              <Route path="contacto" element={<Contacto />} />
+              <Route path="consultarturno" element={<ConsultarTurno />} />
+              <Route path="manual" element={<Manual />} />
+              <Route path="login" element={<LoginForm />} />
               <Route path="registrar" element={<UserForm />} />
               <Route path="olvide-password" element={<OlvidePassword />} />
               <Route
@@ -43,18 +52,20 @@ function App() {
             </Route>
 
             <Route path="/admin" element={<RutaProtegida />}>
-              <Route index element={<Home />} />
+              <Route index element={<Dashboard />} />
               <Route path="aprendices/" element={<CrudApprentices />}>
                 <Route path="importCSV" element={<ImportarCSV />} />
               </Route>
-              <Route path="turnos-especiales" element={<CrudTurnosEspeciales />}/>
+              <Route
+                path="turnos-especiales"
+                element={<CrudTurnosEspeciales />}
+              />
               <Route path="memorandos" element={<CrudMemorandum />} />
               <Route path="unidades" element={<CrudUnidades />} />
               <Route path="fichas" element={<CrudFichas />} />
               <Route path="funcionarios" element={<CrudFuncionarios />} />
               <Route path="programa-formacion" element={<CrudPrograma />} />
               <Route path="talentohumano" element={<CrudTalentoHumano />} />
-            
 
               {/* <Route path='/perfil' element={<MemorandumPDF/>}/> */}
               <Route path="PdfView" element={<VerPdf />} />
