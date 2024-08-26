@@ -271,7 +271,7 @@ const CrudApprentices = () => {
                         <td className="py-2 px-4 border-b">{apprentice.Ape_Aprendiz}</td>
                         <td className="py-2 px-4 border-b">{apprentice.Id_Ficha}</td>
                         <td className="py-2 px-4 border-b">{apprentice.Fec_Nacimiento}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.ciudades.Nom_Ciudad}</td>
+                        <td className="py-2 px-4 border-b">{apprentice.ciudad.Nom_Ciudad}</td>
                         <td className="py-2 px-4 border-b">{apprentice.Lugar_Residencia}</td>
                         <td className="py-2 px-4 border-b">{apprentice.Edad}</td>
                         <td className="py-2 px-4 border-b">{apprentice.Hijos}</td>

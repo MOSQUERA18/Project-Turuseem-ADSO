@@ -1,8 +1,7 @@
-import fs from 'fs';
+
 import express from "express";
 
 import multer from "multer";
-import path from 'path'
 
 import {
   createApprentice,
@@ -18,64 +17,26 @@ import checkAuth from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// Configura multer para manejar el almacenamiento de archivos
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//   console.log("desinatario")
 
-//   console.log(req)
-
-
-//       cb(null, 'public/uploads/');
-//   },
-//   filename: (req, file, cb) => {
-//   console.log("filename")
-
-//   console.log(req)
-
-//       cb(null, Date.now() + path.extname(file.originalname));
-//   }
-// });
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadPath = 'public/uploads/';
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
+const upload = multer({ 
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'public/uploads/') // Asegúrate de que este directorio exista
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + '-' + file.originalname)
     }
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
+  })
 });
-
-
-// const upload = multer({
-//   storage: storage,
-//   limits: { fileSize: 5 * 1024 * 1024 } // Limita a 5MB, por ejemplo
-// });
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 10 * 1024 * 1024 } // 10MB
-});
-
-  
-
-// const upload = multer();
-
 
 router
   .route("/")
   .get(checkAuth, getAllApprentices)
-  .post(checkAuth,async (req,res, next)=>{
-    console.log(req)
-    next()
-  },upload.single('Foto_Aprendiz'), createApprentice);
+  .post(checkAuth,upload.single('Foto_Aprendiz'), createApprentice);
 router
   .route("/:Id_Aprendiz")
   .get(checkAuth, getApprentice)
-  .put(checkAuth,upload.single('Foto_Aprendiz'), updateApprentice)
+  .put(upload.single('Foto_Aprendiz'), updateApprentice)
   .delete(checkAuth, deleteApprentice);
 router.get("/documento/:Id_Aprendiz", checkAuth, getQueryApprentice);
 router.get("/nombre/:Nom_Aprendiz", checkAuth, getQueryNom_Apprentice);

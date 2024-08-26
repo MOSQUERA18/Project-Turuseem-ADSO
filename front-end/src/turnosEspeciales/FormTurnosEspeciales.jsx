@@ -12,151 +12,169 @@ const FormTurnosEspeciales = ({
   updateTextButton,
   getAllTurnosEspeciales,
 }) => {
-  const [Id_TurnoEspecial, setId_TurnoEspecial] = useState("");
-  const [Fec_TurnoEspecial, setFec_TurnoEspecial] = useState("");
-  const [Hor_Inicio, setHor_Inicio] = useState("");
-  const [Hor_Fin, setHor_Fin] = useState("");
-  const [Obs_TurnoEspecial, setObs_TurnoEspecial] = useState("");
-  const [Tot_AprendicesAsistieron, setTot_AprendicesAsistieron] = useState("");
-  const [Id_Ficha, setId_Ficha] = useState("");
-  const [Img_Asistencia, setImg_Asistencia] = useState(null);
-  const [Id_Funcionario, setId_Funcionario] = useState("");
-  const [Id_Unidad, setId_Unidad] = useState("");
+  
+const [Id_TurnoEspecial, setId_TurnoEspecial] = useState("");
+const [Fec_TurnoEspecial, setFec_TurnoEspecial] = useState("");
+const [Hor_Inicio, setHor_Inicio] = useState("");
+const [Hor_Fin, setHor_Fin] = useState("");
+const [Obs_TurnoEspecial, setObs_TurnoEspecial] = useState("");
+const [Tot_AprendicesAsistieron, setTot_AprendicesAsistieron] = useState("");
+const [Id_Ficha, setId_Ficha] = useState("");
+const [Img_Asistencia, setImg_Asistencia] = useState(null);
+const [Id_Funcionario, setId_Funcionario] = useState("");
+const [Id_Unidad, setId_Unidad] = useState("");
 
-  const [selectedFicha, setSelectedFicha] = useState(null);
-  const [selectedFuncionario, setSelectedFuncionario] = useState(null);
-  const [selectedUnidad, setSelectedUnidad] = useState(null);
+const [selectedFicha, setSelectedFicha] = useState(null);
+const [selectedFuncionario, setSelectedFuncionario] = useState(null);
+const [selectedUnidad, setSelectedUnidad] = useState(null);
 
-  const [Fichas, setFichas] = useState([]);
-  const [Funcionarios, setFuncionarios] = useState([]);
-  const [Unidades, setUnidades] = useState([]);
-  const [alerta, setAlerta] = useState({});
+const [Fichas, setFichas] = useState([]);
+const [Funcionarios, setFuncionarios] = useState([]);
+const [Unidades, setUnidades] = useState([]);
+const [alerta, setAlerta] = useState({});
+
+useEffect(() => {
+  const getAllFichas = async () => {
+    try {
+      const token = ReactSession.get("token");
+      const responseFichas = await clienteAxios("/fichas", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (responseFichas.status == 200) {
+        setFichas(responseFichas.data);
+      }
+    } catch (error) {
+      console.error("Error fetching areas:", error);
+    }
+  };
+  getAllFichas();
+  const getAllFuncionarios = async () => {
+    try {
+      const token = ReactSession.get("token");
+      const responseFuncionarios = await clienteAxios("/funcionarios", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (responseFuncionarios.status == 200) {
+        setFuncionarios(responseFuncionarios.data);
+      }
+    } catch (error) {
+      console.error("Error fetching areas:", error);
+    }
+  };
+  getAllFuncionarios();
+  const getAllUnidades = async () => {
+    try {
+      const token = ReactSession.get("token");
+      const responseUnidades = await clienteAxios("/unidades", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (responseUnidades.status == 200) {
+        setUnidades(responseUnidades.data);
+      }
+    } catch (error) {
+      console.error("Error fetching areas:", error);
+    }
+  };
+  getAllUnidades();
+}, []);
+
+
+
+
+
+  const token = ReactSession.get("token");
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      authorization: `Bearer ${token}`
+    },
+  };
 
   useEffect(() => {
-    const getAllFichas = async () => {
+    const fetchData = async () => {
       try {
-        const token = ReactSession.get("token");
-        const responseFichas = await clienteAxios("/fichas", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (responseFichas.status == 200) {
-          setFichas(responseFichas.data);
-        }
+        const [fichasRes, funcionariosRes, unidadesRes] = await Promise.all([
+          clienteAxios.get("/fichas", config),
+          clienteAxios.get("/funcionarios", config),
+          clienteAxios.get("/unidades", config)
+        ]);
+
+        setFichas(fichasRes.data);
+        setFuncionarios(funcionariosRes.data);
+        setUnidades(unidadesRes.data);
       } catch (error) {
-        console.error("Error fetching areas:", error);
+        console.error("Error fetching data:", error);
+        setAlerta({
+          msg: "Error al cargar los datos",
+          error: true
+        });
       }
     };
-    getAllFichas();
-    const getAllFuncionarios = async () => {
-      try {
-        const token = ReactSession.get("token");
-        const responseFuncionarios = await clienteAxios("/funcionarios", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (responseFuncionarios.status == 200) {
-          setFuncionarios(responseFuncionarios.data);
-        }
-      } catch (error) {
-        console.error("Error fetching areas:", error);
-      }
-    };
-    getAllFuncionarios();
-    const getAllUnidades = async () => {
-      try {
-        const token = ReactSession.get("token");
-        const responseUnidades = await clienteAxios("/unidades", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (responseUnidades.status == 200) {
-          setUnidades(responseUnidades.data);
-        }
-      } catch (error) {
-        console.error("Error fetching areas:", error);
-      }
-    };
-    getAllUnidades();
+
+    fetchData();
   }, []);
 
   const sendForm = async (e) => {
     e.preventDefault();
-    const token = ReactSession.get("token");
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
 
     try {
+      const formData = new FormData();
+
+      // Añadir campos al FormData
+      formData.append('Fec_TurnoEspecial', Fec_TurnoEspecial);
+      formData.append('Hor_Inicio', Hor_Inicio);
+      formData.append('Hor_Fin', Hor_Fin);
+      formData.append('Obs_TurnoEspecial', Obs_TurnoEspecial);
+      formData.append('Tot_AprendicesAsistieron', Tot_AprendicesAsistieron);
+      formData.append('Id_Ficha', Id_Ficha);
+      formData.append('Id_Funcionario', Id_Funcionario);
+      formData.append('Id_Unidad', Id_Unidad);
+      formData.append('Img_Asistencia', Img_Asistencia);
+
+      
+
       let respuestApi;
       if (buttonForm === "Actualizar") {
         respuestApi = await clienteAxios.put(
           `/turnoespecial/${Id_TurnoEspecial}`,
-          {
-            Fec_TurnoEspecial,
-            Hor_Inicio,
-            Hor_Fin,
-            Obs_TurnoEspecial,
-            Tot_AprendicesAsistieron,
-            Id_Ficha,
-            Img_Asistencia,
-            Id_Funcionario,
-            Id_Unidad
-          },{
-            headers: { "Content-Type": "multipart/form-data" },
-          },
+          formData,
           config
         );
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
           `/turnoespecial`,
-          {
-            Fec_TurnoEspecial,
-            Hor_Inicio,
-            Hor_Fin,
-            Obs_TurnoEspecial,
-            Tot_AprendicesAsistieron,
-            Id_Ficha,
-            Img_Asistencia,
-            Id_Funcionario,
-            Id_Unidad,
-          },{
-            headers: { "Content-Type": "multipart/form-data" },
-          },
+          formData,
           config
         );
       }
-      console.log(respuestApi.status);
-      console.log(Id_TurnoEspecial)
-      
-      if (respuestApi.status === 201 || respuestApi.status === 200) {
+
+      if (respuestApi.status === 200 || respuestApi.status === 201) {
         setAlerta({
-          msg: `Registro exitoso!`,
+          msg: "Turno Especial Actualizaco correctamente!",
           error: false,
         });
         clearForm();
         getAllTurnosEspeciales();
         updateTextButton("Enviar");
       } else {
-        setAlerta({
-          msg: respuestApi.error.message || `Error al crear el Turno!`,
-          error: true,
-        });
+        throw new Error(respuestApi.data.message || "Error al crear el Turno!");
       }
     } catch (error) {
+      console.error("Error en la solicitud:", error);
       setAlerta({
-        msg: "Ocurrio un error! Intente de nuevo.",
+        msg: error.response?.data?.message || "Ocurrió un error! Intente de nuevo.",
         error: true,
       });
     }
   };
-  
+
+
 
   const clearForm = () => {
     // setId_TurnoEspecial("");
@@ -181,7 +199,7 @@ const FormTurnosEspeciales = ({
     setObs_TurnoEspecial(turnoEspecial.Obs_TurnoEspecial);
     setTot_AprendicesAsistieron(turnoEspecial.Tot_AprendicesAsistieron);
     setId_Ficha(turnoEspecial.Id_Ficha || "");
-    setImg_Asistencia(turnoEspecial.Img_Asistencia);
+    setImg_Asistencia(turnoEspecial.Img_Asistencia || null);
     setId_Funcionario(turnoEspecial.Id_Funcionario || "");
     setId_Unidad(turnoEspecial.Id_Unidad || "");
     const selectedFic = Fichas.find(ficha => ficha.Id_Ficha === turnoEspecial.Id_Ficha);
@@ -292,25 +310,6 @@ const FormTurnosEspeciales = ({
             </select>
           </div>
 
-          {/* <div className="mb-3">
-            <label className="text-gray-700 uppercase font-bold">
-              Área Perteneciente: 
-            </label>
-            <select
-              id="id_area"
-              value={Id_Area}
-              onChange={(e) => setId_Area(e.target.value)}
-              className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-            >
-              <option value="">Seleccione un Área:</option>
-              {Areas.map((area) => (
-                <option key={area.Id_Area} value={area.Id_Area}>
-                  {area.Nom_Area}
-                </option>
-              ))}
-            </select>
-          </div> */}
-
           <div className="mb-3">
             <label className="text-gray-700 uppercase font-bold">
               Funcionario
@@ -349,15 +348,16 @@ const FormTurnosEspeciales = ({
             </select>
           </div>
           <div className="mb-3">
-            <label className="text-gray-700 uppercase font-bold">
-              Imagen Asistencia
-            </label>
-            <input
-              type="file"
-              id="imagen_asistencia"
-              onChange={(e) => setImg_Asistencia(e.target.files[0])}
-              className="w-full p-2 border rounded"
-            />
+
+              <label className="text-gray-700 uppercase font-bold">Asistencia</label>
+              <input
+                type="file"
+                id="img_asistencia"
+                onChange={(e) => setImg_Asistencia(e.target.files[0])}
+                className="w-full p-2 border rounded"
+              />
+
+
           </div>
           <div className="flex justify-around">
             <input

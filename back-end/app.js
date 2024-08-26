@@ -37,6 +37,7 @@ import AbsenceModel from "./src/models/absenceModel.js";
 import TurnoEspecialAprendizModel from "./src/models/turnoEspeciales_Aprendices.js";
 import TurnoEspecialModel from "./src/models/turnoEspecialModel.js";
 import OfficialModel from "./src/models/officialModel.js";
+import TurnosRutinariosModel from "./src/models/turnoRutinarioModel.js";
 
 // const createWindow = () => {
 //   const win = new BrowserWindow({
@@ -113,6 +114,7 @@ FichasModel.hasMany(ApprenticeModel,{foreignKey:'Id_Ficha' , as : 'aprendices'})
 ApprenticeModel.belongsTo(FichasModel,{foreignKey:'Id_Ficha', as:'fichas'})
 
 
+
 //Aprendiz con Ciudad
 cityModel.hasMany(ApprenticeModel,{foreignKey:'Id_Ciudad', as:'aprendices'})
 ApprenticeModel.belongsTo(cityModel,{foreignKey:'Id_Ciudad',as:'ciudad'})
@@ -137,4 +139,14 @@ TurnoEspecialModel.belongsTo(OfficialModel,{foreignKey:"Id_Funcionario",as:"func
 
 //Funcionario No esta relacionado con ninguno sino hasta con Turno Especial....
 
-export { AreaModel, UnitModel, ProgramaModel,FichasModel,TalentoHumanoModel,cityModel,ApprenticeModel } 
+
+
+// RELACIONES PARA TURNOS RUTINARIOS
+ApprenticeModel.hasMany(TurnosRutinariosModel, { foreignKey: 'Id_Aprendiz', as: "turnosrutinarios" })
+TurnosRutinariosModel.belongsTo(ApprenticeModel, { foreignKey: 'Id_Aprendiz', as: 'aprendiz' })
+
+UnitModel.hasMany(TurnosRutinariosModel, { foreignKey: 'Id_Unidad', as: 'turnosrutinarios' })
+TurnosRutinariosModel.belongsTo(UnitModel, { foreignKey: 'Id_Unidad', as: 'unidad' })
+
+
+export { AreaModel, UnitModel, ProgramaModel,FichasModel,TalentoHumanoModel,cityModel,ApprenticeModel,TurnosRutinariosModel} 

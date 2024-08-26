@@ -10,16 +10,16 @@ export const getAllTurnosRutinarios = async (req, res) => {
       include: [
         {
           model: ApprenticeModel,
-          as: "aprendiz", // Alias usado para la relación
+          as: "aprendiz",
         },
         {
           model: UnitModel,
-          as: "unidad", // Alias usado para la relación
+          as: "unidad",
         },
       ],
     });
-    if(turnosRutinarios.length > 0){
-    res.status(200).json(turnosRutinarios);
+    if (turnosRutinarios) {
+      res.status(200).json(turnosRutinarios);
     }
   } catch (error) {
     res.status(500).json({ message: error.message });

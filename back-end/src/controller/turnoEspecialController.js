@@ -11,7 +11,7 @@ export const getAllTurnosEspeciales = async (req, res) => {
       include: [
         {
           model: FichasModel,
-          as: "ficha", // Alias usado para la relación
+          as: "fichas", // Alias usado para la relación
         },
         {
           model: UnitModel,
@@ -41,7 +41,7 @@ export const getTurnoEspecial = async (req, res) => {
         include: [
           {
             model: FichasModel,
-            as: "ficha", // Alias usado para la relación
+            as: "fichas", // Alias usado para la relación
           },
           {
             model: UnitModel,
@@ -78,8 +78,8 @@ export const createTurnoEspecial = async (req, res) => {
       Id_Funcionario,
       Id_Unidad,
     } = req.body;
-    const Img_Asistencia = req.file?.filename || null;
-    console.log(Img_Asistencia);
+    const Img_Asistencia = req.file ? req.file.filename : null;
+
     
 
     const newTurnoEspecial = await TurnoEspecialModel.create({
@@ -173,7 +173,7 @@ export const getQueryTurnoEspecial = async (req, res) => {
       include: [
         {
           model: FichasModel,
-          as: "ficha", // Alias usado para la relación
+          as: "fichas", // Alias usado para la relación
         },
         {
           model: UnitModel,

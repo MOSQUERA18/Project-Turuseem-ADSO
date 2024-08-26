@@ -8,7 +8,7 @@ import { ReactSession } from 'react-client-session';
 const URI = "/ciudades/"
 const UriFichas = "/fichas/"
 
-const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
+const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAprentices }) => {
   const [Id_Aprendiz, setId_Aprendiz] = useState("");
   const [Nom_Aprendiz, setNom_Aprendiz] = useState("");
   const [Ape_Aprendiz, setApe_Aprendiz] = useState("");
@@ -45,8 +45,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
   const token = ReactSession.get("token");
   const config = {
     headers: {
-      Authorization: `Bearer ${token}`,
       'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${token}`,
     },
   };
 
@@ -132,11 +132,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
       formData.append('Estado', Estado);
       formData.append('Nom_Empresa', Nom_Empresa);
       formData.append('CentroConvivencia', CentroConvivencia);
-  
-      if (Foto_Aprendiz) {
-        formData.append('Foto_Aprendiz', Foto_Aprendiz); // Asegúrate de que Foto_Aprendiz sea un archivo
-        formData.append('file', Foto_Aprendiz); // Asegúrate de que Foto_Aprendiz sea un archivo
-      }
+      formData.append('Foto_Aprendiz', Foto_Aprendiz);
+
     
     
   
@@ -170,6 +167,12 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);
+      if (error.response) {
+        console.error("Respuesta del servidor:", error.response.data);
+        alert(`Error: ${error.response.data.message || 'Ocurrió un error al procesar la solicitud'}`);
+      } else {
+        alert('Error de red o servidor no disponible');
+      }
     }
   };
 
@@ -195,7 +198,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
     setNom_Empresa(""); // Limpiar Nombre de la Empresa
     setCentroConvivencia("");
     setFoto_Aprendiz(null); // Limpiar URL de la Foto
-    inputFoto.current.value = ''
+    // inputFoto.current.value = ''
   };
 
   const setData = () => {
@@ -219,7 +222,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
     setEstado(apprentice.Estado);
     setNom_Empresa(apprentice.Nom_Empresa);
     setCentroConvivencia(apprentice.CentroConvivencia);
-    // setFoto_Aprendiz(apprentice.Foto_Aprendiz);
+    setFoto_Aprendiz(apprentice.Foto_Aprendiz);
     const selectedFicha = fichas.find(ficha=> ficha.Id_Ficha === apprentice.Id_Ficha);
     setSelectedFicha(selectedFicha || null)
 
@@ -526,8 +529,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
     <label htmlFor="Foto_Aprendiz" className="text-gray-700 uppercase font-bold">Foto Del Aprendiz</label>
     <input
       type="file"
-      id="photo"
-      onChange={(e) => setFoto_Aprendiz(e.target.files[0])} ref={inputFoto}
+      id="Foto_Aprendiz"
+      onChange={(e) => setFoto_Aprendiz(e.target.files[0])}
       className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
     />
   </div>
@@ -554,3 +557,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
 };
 
 export default FormApprentices;
+
+
+
+
+
