@@ -8,23 +8,25 @@ const RutaProtegida = () => {
 
   if (cargando) {
     return (
-      <>
-        <h1 className="uppercase text-center font-bold">Cargando Pagina....</h1>
-      </>
+      <h1 className="uppercase text-center font-bold">Cargando Pagina....</h1>
     );
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <div className="flex flex-grow">
+    <div className="flex min-h-screen">
+      {/* Sidebar */}
+      <div className="w-72 bg-green-500 text-white fixed h-full overflow-y-auto z-10">
         <VerticalNav />
-        <div className="w-full">
-          <main className="flex-grow mx-10">
+      </div>
+
+      {/* Main content area */}
+      <div className="flex flex-col flex-grow ml-72 overflow-hidden">
+        <div className="flex-grow overflow-auto p-10">
+          <main>
             {auth?.usuario?.Id_User || auth?.Id_User ? (
               <>
-                <h1 className="text-stone-400 font-black text-4xl text-center mt-10">
-                  Bienvenidos a{" "}
-                  <span className="text-green-600">TURUSEEM</span>
+                <h1 className="text-stone-400 font-black text-4xl text-center">
+                  Bienvenidos a <span className="text-green-600">TURUSEEM</span>
                 </h1>
                 <Outlet />
               </>
@@ -33,8 +35,8 @@ const RutaProtegida = () => {
             )}
           </main>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 };

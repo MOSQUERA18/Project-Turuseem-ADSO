@@ -3,14 +3,12 @@ import logoTuruseem from "../assets/LOGOTURUSEEM.png";
 import { Link } from "react-router-dom";
 import { ReactSession } from "react-client-session";
 
-
 import { useContext } from "react";
-import AuthContext from "../context/authProvider.jsx"; 
-
+import AuthContext from "../context/authProvider.jsx";
 
 //Icons
 import { BsFillPeopleFill } from "react-icons/bs";
-import { IoDocumentText, IoSettings } from "react-icons/io5";
+import { IoDocumentText, IoSettings, IoLogOut } from "react-icons/io5";
 import { PiNotebookFill } from "react-icons/pi";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { FaClipboardCheck, FaPeopleGroup } from "react-icons/fa6";
@@ -21,10 +19,8 @@ const VerticalNav = () => {
   const [show, setShow] = useState(true);
   const [user, setUser] = useState(null); // Inicializa el estado del usuario como null
 
-
   const { cerrarSesion } = useContext(AuthContext); // Uso el contexto para acceder a la función cerrarSesion
 
-  
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -57,8 +53,6 @@ const VerticalNav = () => {
         );
       }
     };
-
-
 
     fetchUserProfile();
   }, []);
@@ -157,7 +151,7 @@ const VerticalNav = () => {
           <img src={logoTuruseem} className="w-12 drop-shadow-2xl" />
           <p className="text-2xl leading-6 text-white font-bold">TURUSEEM</p>
         </div>
-        <div className="mt-6 flex flex-col justify-end items-center  pl-4 w-full border-gray-600 border-b space-y-3 p-5 ">
+        <div className="flex flex-col justify-end items-center  pl-4 w-full border-gray-600 border-b space-y-3 p-5 ">
           <button className="flex jusitfy-start items-center space-x-4 pl-3 w-full  focus:outline-none  focus:text-indigo-400  text-white border-y py-2 border-white rounded">
             <BsFillPeopleFill size={22} />
             <Link
@@ -174,6 +168,15 @@ const VerticalNav = () => {
               className="text-white text-sm uppercase font-bold"
             >
               Turnos Especiales
+            </Link>
+          </button>
+          <button className="flex jusitfy-start items-center w-full  space-x-4 pl-3 focus:outline-none text-white focus:text-indigo-400 rounded border-y py-2 border-white ">
+            <MdAssignmentTurnedIn size={22} />
+            <Link
+              to="turnos-rutinarios"
+              className="text-white text-sm uppercase font-bold"
+            >
+              Turnos Rutinarios
             </Link>
           </button>
           <button className="flex jusitfy-start items-center w-full  space-x-4 pl-3 focus:outline-none text-white focus:text-indigo-400 rounded border-y py-2 border-white">
@@ -232,34 +235,34 @@ const VerticalNav = () => {
             </Link>
           </button>
         </div>
-        <div className="flex flex-col justify-between items-center h-full pb-6   px-6  w-full  space-y-15 ">
+        <div className="flex flex-col justify-between items-center h-full pb-6   px-6  w-full  space-y-15 mt-3">
           <div className=" flex justify-between items-center w-full">
             <div className="flex justify-center items-center  space-x-2">
               <div>
-                <img
-                  className="rounded-full"
-                  src={logoTuruseem}
-                  alt="avatar"
-                />
+                <img className="rounded-full" src={logoTuruseem} alt="avatar" />
               </div>
               <div className="flex justify-start flex-col items-start">
                 <p className="cursor-pointer text-sm leading-5 text-white">
-                  {(user.usuario.Nom_User).split(' ')[1]}
+                  {user.usuario.Nom_User.split(" ")[1]}
                 </p>
                 <p className="cursor-pointer text-xs leading-3 text-gray-300">
-                  {(user.usuario.Cor_User).split('.')[0]}
+                  {user.usuario.Cor_User.split(".")[0]}
                 </p>
               </div>
-              
             </div>
             <IoSettings size={45} className="text-white" />
           </div>
           {/* Botón de Cerrar Sesión */}
-          <button
+          <button 
           onClick={cerrarSesion}
-          className="mt-4 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition duration-300"
-          >
-            Cerrar Sesión
+          className="flex jusitfy-start items-center w-full  space-x-4 pl-3 focus:outline-none text-white focus:text-indigo-400 rounded border-y py-2 border-white hover:bg-green-6 mt-8">
+            <IoLogOut size={22} />
+            <Link
+              to="talentohumano"
+              className="text-white text-sm uppercase font-bold"
+            >
+              Cerrar Sesion
+            </Link>
           </button>
         </div>
       </div>

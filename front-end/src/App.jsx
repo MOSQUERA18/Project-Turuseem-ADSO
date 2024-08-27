@@ -7,6 +7,7 @@ import Dashboard from "./Dashboard/Dashboard.jsx";
 import CrudApprentices from "./apprentice/crudApprentices.jsx";
 import ImportarCSV from "./apprentice/importarCSV";
 import CrudTurnosEspeciales from "./turnosEspeciales/CrudTurnosEspeciales.jsx";
+import CrudTurnosRutinarios from "./turnosRutinarios/CrudTurnosRutinarios.jsx";
 import CrudMemorandum from "./memorandum/crudMemorandum.jsx";
 import CrudUnidades from "./unit/CrudUnidad.jsx";
 import CrudFichas from "./fichas/CrudFichas.jsx";
@@ -16,10 +17,10 @@ import CrudTalentoHumano from "./talentoHumano/CrudTalentoHumano.jsx";
 
 //Rutas Publicas
 import RutaPublica from "./layout/RutaPublica.jsx";
-import Home from "./home/home.jsx"
-import Contacto from "./home/Contacto.jsx"
-import ConsultarTurno from "./home/ConsultarTurno.jsx"
-import Manual from "./home/Manual.jsx";
+import Home from "./Home/Home.jsx"
+import Contacto from "./Home/Contacto.jsx"
+import ConsultarTurno from "./Home/ConsultarTurno.jsx"
+import Manual from "./Home/Manual.jsx";
 import LoginForm from "./users/LoginUser";
 import UserForm from "./users/CreateAccount";
 import OlvidePassword from "./users/OlvidePassword";
@@ -59,6 +60,10 @@ function App() {
               <Route
                 path="turnos-especiales"
                 element={<CrudTurnosEspeciales />}
+              />
+              <Route
+                path="turnos-rutinarios"
+                element={<CrudTurnosRutinarios />}
               />
               <Route path="memorandos" element={<CrudMemorandum />} />
               <Route path="unidades" element={<CrudUnidades />} />

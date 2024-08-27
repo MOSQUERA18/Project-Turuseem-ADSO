@@ -10,19 +10,17 @@ import "datatables.net-responsive-dt/css/responsive.dataTables.min.css";
 import { MdDeleteOutline } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 
-const DataTableTurnosEspeciales = ({
-  turnoEspecialList,
-  getTurnoEspecial,
-  deleteTurnoEspecial,
-  setStateAddturnoEspecial,
-  URI_FOTOS
+const DataTableTurnosRutinarios = ({
+  turnoRutinarioList,
+  getTurnoRutinario,
+  deleteTurnoRutinario,
+  setStateAddturnoRutinario,
 }) => {
   const tableRef = useRef(null);
   const tableInstance = useRef(null);
-  const URI_AXIOS = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
-    if (turnoEspecialList.length > 0) {
+    if (turnoRutinarioList.length > 0) {
       const tableElement = $(tableRef.current);
 
       if (!tableInstance.current) {
@@ -30,14 +28,14 @@ const DataTableTurnosEspeciales = ({
           responsive: {
             details: {
               display: $.fn.dataTable.Responsive.display.childRowImmediate,
-              type: 'none',
-              target: ''
-            }
+              type: "none",
+              target: "",
+            },
           },
           columnDefs: [
-            { responsivePriority: 1, targets: 0 }, // Fecha Turno
+            { responsivePriority: 1, targets: 0 }, // Fecha Inicio Turno
             { responsivePriority: 2, targets: -1 }, // Acciones
-            { responsivePriority: 3, targets: 4 }, // Total Aprendices
+            { responsivePriority: 3, targets: 4 }, // Observacion Del Turno
           ],
           language: {
             search: "Buscar:",
@@ -53,13 +51,13 @@ const DataTableTurnosEspeciales = ({
         });
 
         // Evento para manejar la visualización responsiva
-        tableElement.on('responsive-display', function (e, datatable, row, showHide) {
+        tableElement.on("responsive-display", function (e, datatable, row, showHide) {
           if (showHide) {
             const rowData = row.data();
             const $rowEl = $(row.node());
-            const $responsiveWrapper = $rowEl.next('.child');
+            const $responsiveWrapper = $rowEl.next(".child");
 
-            if ($responsiveWrapper.find('.action-buttons').length === 0) {
+            if ($responsiveWrapper.find(".action-buttons").length === 0) {
               $responsiveWrapper.append(
                 `<div class="action-buttons">
                   <button class="update-btn text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded">
@@ -71,19 +69,19 @@ const DataTableTurnosEspeciales = ({
                 </div>`
               );
 
-              $responsiveWrapper.find('.update-btn').on('click', () => {
-                getTurnoEspecial(rowData.Id_TurnoEspecial);
-                setStateAddturnoEspecial(true);
+              $responsiveWrapper.find(".update-btn").on("click", () => {
+                getTurnoRutinario(rowData.Id_TurnoRutinario);
+                setStateAddturnoRutinario(true);
               });
 
-              $responsiveWrapper.find('.delete-btn').on('click', () => {
-                deleteTurnoEspecial(rowData.Id_TurnoEspecial);
+              $responsiveWrapper.find(".delete-btn").on("click", () => {
+                deleteTurnoRutinario(rowData.Id_TurnoRutinario);
               });
             }
           }
         });
       } else {
-        tableInstance.current.clear().rows.add(turnoEspecialList).draw();
+        tableInstance.current.clear().rows.add(turnoRutinarioList).draw();
       }
     }
 
@@ -93,55 +91,85 @@ const DataTableTurnosEspeciales = ({
         tableInstance.current = null;
       }
     };
-  }, [turnoEspecialList]);
+  }, [turnoRutinarioList]);
 
   return (
     <div className="overflow-x-auto">
       <table
         ref={tableRef}
-        id="tablaturnoEspecial"
+        id="tablaturnoRutinario"
         className="display responsive nowrap text-center w-full"
       >
         <thead className="text-white bg-green-700">
           <tr>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Fecha Turno</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Hora Inicio</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Hora Fin</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Observaciones</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Total Aprendices</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Ficha</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Imagen Asistencia</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Funcionario</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Unidad</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">
+              Fecha Inicio
+            </th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">
+              Fecha Fin
+            </th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">
+              Hora Inicio
+            </th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">
+              Hora Fin
+            </th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">
+              Observaciones
+            </th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">
+              Asistencia
+            </th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">
+              Aprendiz
+            </th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">
+              Unidad
+            </th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">
+              Acciones
+            </th>
           </tr>
         </thead>
         <tbody>
-          {turnoEspecialList.map((turnoEspecial) => (
-            <tr key={turnoEspecial.Id_TurnoEspecial}>
-              <td className="py-2 px-4 border-b">{turnoEspecial.Fec_TurnoEspecial}</td>
-              <td className="py-2 px-4 border-b">{turnoEspecial.Hor_Inicio}</td>
-              <td className="py-2 px-4 border-b">{turnoEspecial.Hor_Fin}</td>
-              <td className="py-2 px-4 border-b">{turnoEspecial.Obs_TurnoEspecial}</td>
-              <td className="py-2 px-4 border-b">{turnoEspecial.Tot_AprendicesAsistieron}</td>
-              <td className="py-2 px-4 border-b">{turnoEspecial.Id_Ficha}</td>
+          {turnoRutinarioList.map((turnoRutinario) => (
+            <tr key={turnoRutinario.Id_TurnoRutinario}>
               <td className="py-2 px-4 border-b">
-                <img width='80px' src={URI_AXIOS + URI_FOTOS + turnoEspecial.Img_Asistencia} alt="No Foto" />
+                {turnoRutinario.Fec_InicioTurno}
               </td>
-              <td className="py-2 px-4 border-b">{turnoEspecial.funcionario?.Nom_Funcionario}</td>
-              <td className="py-2 px-4 border-b">{turnoEspecial.unidad?.Nom_Unidad}</td>
+              <td className="py-2 px-4 border-b">
+                {turnoRutinario.Fec_FinTurno}
+              </td>
+              <td className="py-2 px-4 border-b">
+                {turnoRutinario.Hor_InicioTurno}
+              </td>
+              <td className="py-2 px-4 border-b">
+                {turnoRutinario.Hor_FinTurno}
+              </td>
+              <td className="py-2 px-4 border-b">
+                {turnoRutinario.Obs_TurnoRutinario}
+              </td>
+              <td className="py-2 px-4 border-b">
+                {turnoRutinario.Ind_Asistencia}
+              </td>
+              <td className="py-2 px-4 border-b">
+                {turnoRutinario.aprendiz?.Nom_Aprendiz}
+              </td>
+              <td className="py-2 px-4 border-b">
+                {turnoRutinario.unidad?.Nom_Unidad}
+              </td>
               <td className="py-2 px-4 border-b">
                 <button
                   onClick={() => [
-                    getTurnoEspecial(turnoEspecial.Id_TurnoEspecial),
-                    setStateAddturnoEspecial(true),
+                    getTurnoRutinario(turnoRutinario.Id_TurnoRutinario),
+                    setStateAddturnoRutinario(true),
                   ]}
                   className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
                 >
                   <FaRegEdit />
                 </button>
                 <button
-                  onClick={() => deleteTurnoEspecial(turnoEspecial.Id_TurnoEspecial)}
+                  onClick={() => deleteTurnoRutinario(turnoRutinario.Id_TurnoRutinario)}
                   className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
                 >
                   <MdDeleteOutline />
@@ -155,4 +183,4 @@ const DataTableTurnosEspeciales = ({
   );
 };
 
-export default DataTableTurnosEspeciales;
+export default DataTableTurnosRutinarios;
