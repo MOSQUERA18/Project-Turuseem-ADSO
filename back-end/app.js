@@ -35,6 +35,7 @@ import ProgramaModel from "./src/models/programaModel.js";
 import FichasModel from "./src/models/fichasModel.js";
 import AbsenceModel from "./src/models/absenceModel.js";
 import TurnoEspecialAprendizModel from "./src/models/turnoEspeciales_Aprendices.js";
+import TurnoRutinarioAprendizModel from "./src/models/turnoRutinarioAprendices.js";
 import TurnoEspecialModel from "./src/models/turnoEspecialModel.js";
 import OfficialModel from "./src/models/officialModel.js";
 import TurnosRutinariosModel from "./src/models/turnoRutinarioModel.js";
@@ -120,9 +121,9 @@ cityModel.hasMany(ApprenticeModel,{foreignKey:'Id_Ciudad', as:'aprendices'})
 ApprenticeModel.belongsTo(cityModel,{foreignKey:'Id_Ciudad',as:'ciudad'})
 
 
-//Inasistencias
-AbsenceModel.belongsTo(TurnoEspecialAprendizModel,{foreignKey:"Id_TurnoEspecialAprendiz", as:"turnoespecialaprendiz"})
-TurnoEspecialAprendizModel.hasMany(AbsenceModel,{foreignKey:"Id_TurnoEspecialAprendiz",as:"inasistencias"})
+// //Inasistencias
+// AbsenceModel.belongsTo(TurnoEspecialAprendizModel,{foreignKey:"Id_TurnoEspecialAprendiz", as:"turnoespecialaprendiz"})
+// TurnoEspecialAprendizModel.hasMany(AbsenceModel,{foreignKey:"Id_TurnoEspecialAprendiz",as:"inasistencias"})
 
 
 //Turno Especial - Fichas
@@ -147,6 +148,12 @@ TurnosRutinariosModel.belongsTo(ApprenticeModel, { foreignKey: 'Id_Aprendiz', as
 
 UnitModel.hasMany(TurnosRutinariosModel, { foreignKey: 'Id_Unidad', as: 'turnosrutinarios' })
 TurnosRutinariosModel.belongsTo(UnitModel, { foreignKey: 'Id_Unidad', as: 'unidad' })
+
+AbsenceModel.belongsTo(TurnoRutinarioAprendizModel, { foreignKey: 'Id_TurnoRutinario_Aprendiz', as: 'turnoRutinarioAprendiz' })
+TurnoRutinarioAprendizModel.hasMany(AbsenceModel, { foreignKey: 'Id_TurnoRutinario_Aprendiz', as: 'inasistencias' })
+
+AbsenceModel.belongsTo(TurnoEspecialAprendizModel, { foreignKey: 'Id_TurnoEspecial_Aprendiz', as: 'turnoEspecialAprendiz' })
+TurnoEspecialAprendizModel.hasMany(AbsenceModel, { foreignKey: 'Id_TurnoEspecial_Aprendiz', as: 'inasistencias' })
 
 
 export { AreaModel, UnitModel, ProgramaModel,FichasModel,TalentoHumanoModel,cityModel,ApprenticeModel,TurnosRutinariosModel} 

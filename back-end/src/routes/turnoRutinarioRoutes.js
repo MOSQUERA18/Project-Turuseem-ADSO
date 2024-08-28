@@ -5,6 +5,7 @@ import {
   createTurnoRutinario,
   updateTurnoRutinario,
   deleteTurnoRutinario,
+  getTurnoRutinariosForAprendiz,
 } from "../controller/turnoRutinarioController.js";
 import checkAuth from "../middleware/authMiddleware.js";
 
@@ -19,5 +20,6 @@ router
   .get(checkAuth, getTurnoRutinario)
   .put(checkAuth, updateTurnoRutinario)
   .delete(checkAuth, deleteTurnoRutinario);
+router.get('/consulta/:Id_Aprendiz', getTurnoRutinariosForAprendiz)
 
 export default router;

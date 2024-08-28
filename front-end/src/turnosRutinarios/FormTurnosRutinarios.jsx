@@ -42,7 +42,7 @@ const FormTurnoRutinario = ({
           setAprendiz(responseAprendiz.data);
         }
       } catch (error) {
-        console.error("Error fetching areas:", error) ;
+        console.error("Error fetching areas:", error);
       }
     };
     getAllAprendiz();
@@ -62,7 +62,7 @@ const FormTurnoRutinario = ({
       }
     };
     getAllUnidad();
-  },[]);
+  }, []);
 
   const sendForm = async (e) => {
     e.preventDefault();
@@ -91,7 +91,7 @@ const FormTurnoRutinario = ({
           },
           config
         );
-        console.log(respuestApi)
+        console.log(respuestApi);
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
           `/turnoRutinario`,
@@ -104,7 +104,6 @@ const FormTurnoRutinario = ({
             Ind_Asistencia,
             Id_Aprendiz,
             Id_Unidad,
-            
           },
           config
         );
@@ -112,7 +111,7 @@ const FormTurnoRutinario = ({
 
       if (respuestApi.status === 201 || respuestApi.status === 200) {
         setAlerta({
-          msg: `Registro exitoso!`
+          msg: `Registro exitoso!`,
         });
         clearForm();
         getAllTurnosRutinarios();
@@ -145,18 +144,22 @@ const FormTurnoRutinario = ({
   };
 
   const setData = () => {
-    setId_TurnoRutinario(turnoRutinario.Id_TurnoRutinario)
+    setId_TurnoRutinario(turnoRutinario.Id_TurnoRutinario);
     setFec_InicioTurno(turnoRutinario.Fec_InicioTurno);
     setFec_FinTurno(turnoRutinario.Fec_FinTurno_);
     setHor_InicioTurno(turnoRutinario.Hor_InicioTurno);
-    setHor_FinTurno(turnoRutinario.Hor_FinTurno)
+    setHor_FinTurno(turnoRutinario.Hor_FinTurno);
     setObs_TurnoRutinario(turnoRutinario.Obs_TurnoRutinario);
     setInd_Asistencia(turnoRutinario.Ind_Asistencia);
     setId_Aprendiz(turnoRutinario.Id_Aprendiz || "");
     setId_Unidad(turnoRutinario.Id_Unidad || "");
-    const selectedFic = Aprendiz.find(Aprendiz => Aprendiz.Id_Aprendiz === turnoRutinario.Id_Aprendiz);
+    const selectedFic = Aprendiz.find(
+      (Aprendiz) => Aprendiz.Id_Aprendiz === turnoRutinario.Id_Aprendiz
+    );
     setSelectedAprendiz(selectedFic || null);
-    const selectedUni = Unidad.find(unidad => unidad.Id_Unidad === turnoRutinario.Id_Unidad);
+    const selectedUni = Unidad.find(
+      (unidad) => unidad.Id_Unidad === turnoRutinario.Id_Unidad
+    );
     setSelectedUnidad(selectedUni || null);
   };
 
@@ -173,7 +176,7 @@ const FormTurnoRutinario = ({
           onSubmit={sendForm}
           className="bg-white shadow-2xl rounded-2xl px-14 pt-6 pb-8 mb-4 max-w-3xl w-full mt-10"
         >
-          {msg && <Alerta alerta={alerta} />}
+          {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
           <h1 className="font-bold text-green-600 text-3xl uppercase text-center my-5">
             Crear Turnos Rutinarios
           </h1>
@@ -246,18 +249,22 @@ const FormTurnoRutinario = ({
             <label className="text-gray-700 uppercase font-bold">
               Indicador De Asistencia
             </label>
-            <input
-              type="text"
-              id="asistencia"
-              placeholder="Total Aprendices Asistieron"
+            <select
+              id="ind_Asistencia"
               value={Ind_Asistencia}
               onChange={(e) => setInd_Asistencia(e.target.value)}
-              className="w-full p-2 border rounded"
-            />
+              className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+            >
+              <option value="">Seleccione un Aprendiz:</option>
+              <option value="Si">Si</option>
+              <option value="No">No</option>
+            </select>
           </div>
 
           <div className="mb-3">
-            <label className="text-gray-700 uppercase font-bold">Aprendiz</label>
+            <label className="text-gray-700 uppercase font-bold">
+              Aprendiz
+            </label>
             <select
               id="Aprendiz"
               value={Id_Aprendiz}
@@ -289,7 +296,7 @@ const FormTurnoRutinario = ({
               ))}
             </select>
           </div>
-       
+
           <div className="flex justify-around">
             <input
               type="submit"

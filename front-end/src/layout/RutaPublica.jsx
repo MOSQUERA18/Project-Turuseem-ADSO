@@ -1,13 +1,16 @@
 import { Outlet } from "react-router-dom";
 import HeaderPublic from "../components/HeaderPublic.jsx";
+import Footer from "../components/Footer.jsx";
+
 const RutaPublica = () => {
   return (
     <>
-      <div className="flex w-full flex-col">
+      <div className="flex w-full flex-col min-h-screen bg-gray-100">
         <HeaderPublic />
-        <div className="mt-5">
+        <div className="flex-grow px-4 py-6 sm:px-6 lg:px-8">
           <Outlet />
         </div>
+        <Footer />
       </div>
     </>
   );

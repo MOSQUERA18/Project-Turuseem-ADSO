@@ -42,7 +42,7 @@ const Contacto = () => {
       age: "18 Años",
       imageUrl: JuanLinares,
       whatsappLink: 'https://wa.me/573209455659',
-      socialLink: 'https://facebook.com/juanperez',
+      socialLink: 'https://facebook.com/Linares.Juan.5855',
     },
     {
       name: 'Marlon Kaleth Sarmiento Mosquera',
@@ -58,7 +58,7 @@ const Contacto = () => {
       age: "20 Años",
       imageUrl: Logo,
       whatsappLink: 'https://wa.me/3209455659',
-      socialLink: 'https://facebook.com/marialopez',
+      socialLink: 'https://facebook.com/',
     },
     {
       name: 'Kimberly Sharlot Hernadez Acosta',

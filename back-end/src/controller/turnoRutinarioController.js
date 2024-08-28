@@ -29,21 +29,24 @@ export const getAllTurnosRutinarios = async (req, res) => {
 
 export const getTurnoRutinario = async (req, res) => {
   try {
-    const turnoRutinario = await TurnosRutinariosModel.findByPk(req.params.Id_TurnoRutinario, {
-      include: [
-        {
-          model: ApprenticeModel,
-          as: "aprendiz", // Alias usado para la relación
-        },
-        {
-          model: UnitModel,
-          as: "unidad", // Alias usado para la relación
-        },
-      ],
-    });
+    const turnoRutinario = await TurnosRutinariosModel.findByPk(
+      req.params.Id_TurnoRutinario,
+      {
+        include: [
+          {
+            model: ApprenticeModel,
+            as: "aprendiz", // Alias usado para la relación
+          },
+          {
+            model: UnitModel,
+            as: "unidad", // Alias usado para la relación
+          },
+        ],
+      }
+    );
     if (turnoRutinario) {
       res.status(200).json(turnoRutinario);
-      return
+      return;
     } else {
       res.status(404).json({ message: "Turno rutinario no encontrado" });
     }
@@ -76,9 +79,9 @@ export const createTurnoRutinario = async (req, res) => {
       Id_Aprendiz,
       Id_Unidad,
     });
-    if(newTurnoRutinario){
+    if (newTurnoRutinario) {
       res.status(201).json(newTurnoRutinario);
-      return
+      return;
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -118,7 +121,7 @@ export const updateTurnoRutinario = async (req, res) => {
       res.status(404).json({ message: "Turno rutinario no encontrado" });
     } else {
       res.json({ message: "Turno rutinario actualizado correctamente" });
-      return
+      return;
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -135,7 +138,7 @@ export const deleteTurnoRutinario = async (req, res) => {
       res.status(404).json({ message: "Turno rutinario no encontrado" });
     } else {
       res.json({ message: "Turno rutinario eliminado correctamente" });
-      return
+      return;
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -162,11 +165,39 @@ export const getQueryTurnoRutinario = async (req, res) => {
         },
       ],
     });
-    if(turnosRutinarios){
-    res.status(200).json(turnosRutinarios);
+    if (turnosRutinarios) {
+      res.status(200).json(turnosRutinarios);
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al buscar el turno rutinario: ${error}`);
+  }
+};
+
+export const getTurnoRutinariosForAprendiz = async (req, res) => {
+  try {
+    const turnoRutinarioForAprendiz = await TurnosRutinariosModel.findAll({
+      where: { Id_Aprendiz: req.params.Id_Aprendiz },
+      include: [
+        {
+          model: ApprenticeModel,
+          as: "aprendiz",
+        },
+        {
+          model: UnitModel,
+          as: "unidad",
+        },
+      ],
+    });
+
+    if (turnoRutinarioForAprendiz.length === 0) {
+      res.status(404).json({ message: "No se encontraron turnos" });
+      return;
+    }
+
+    res.status(200).json(turnoRutinarioForAprendiz);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    logger.error(`Error al obtener el turno programado: ${error}`);
   }
 };
