@@ -100,7 +100,7 @@ const DataTableTurnosEspeciales = ({
       <table
         ref={tableRef}
         id="tablaturnoEspecial"
-        className="display responsive nowrap text-center w-full"
+        className="display responsive nowrap text-center w-full table-fixed"
       >
         <thead className="text-white bg-green-700">
           <tr>

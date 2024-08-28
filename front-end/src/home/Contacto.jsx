@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 
-
 const ContactCard = ({ name, info, age, imageUrl, whatsappLink, socialLink }) => {
   return (
     <div className="flex flex-col items-center bg-white shadow-md rounded-lg p-4">
@@ -54,7 +53,7 @@ const Contacto = () => {
       name: 'Natalia Torres Rodriguez',
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: "20 Años",
-      imageUrl: "Public/assets/LOGOSENAEMPRESA.png",
+      imageUrl: "Public/assets/Natalia.jpeg",
       whatsappLink: 'https://wa.me/3209455659',
       socialLink: 'https://facebook.com/',
     },
@@ -62,7 +61,7 @@ const Contacto = () => {
       name: 'Kimberly Sharlot Hernadez Acosta',
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: "20 Años",
-      imageUrl: "Public/assets/LOGOSENAEMPRESA.png",
+      imageUrl: "Public/assets/Kim.jpeg",
       whatsappLink: 'https://wa.me/3209455659',
       socialLink: 'https://facebook.com/marialopez',
     },
@@ -70,7 +69,7 @@ const Contacto = () => {
       name: 'Lina Julieth Carvajal Mendoza',
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: "26 Años",
-      imageUrl: "Public/assets/LOGOSENAEMPRESA.png",
+      imageUrl: "Public/assets/Lina.jpeg",
       whatsappLink: 'https://wa.me/3209455659',
       socialLink: 'https://facebook.com/marialopez',
     },
