@@ -2,6 +2,9 @@
 import Logo from '../assets/LOGOSENAEMPRESA.png';
 import JuanLinares from "../assets/JuanLinares.jpg"
 import mosquera from "../assets/mosquera.png"
+import Kim from "../assets/Kim.jpeg"
+import Natalia from "../assets/Natalia.jpeg"
+import Lina from "../assets/Lina.jpeg"
 
 const ContactCard = ({ name, info, age, imageUrl, whatsappLink, socialLink }) => {
   return (
@@ -56,7 +59,7 @@ const Contacto = () => {
       name: 'Natalia Torres Rodriguez',
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: "20 Años",
-      imageUrl: Logo,
+      imageUrl: Natalia,
       whatsappLink: 'https://wa.me/3209455659',
       socialLink: 'https://facebook.com/',
     },
@@ -64,7 +67,7 @@ const Contacto = () => {
       name: 'Kimberly Sharlot Hernadez Acosta',
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: "20 Años",
-      imageUrl: Logo,
+      imageUrl: Kim,
       whatsappLink: 'https://wa.me/3209455659',
       socialLink: 'https://facebook.com/marialopez',
     },
@@ -72,7 +75,7 @@ const Contacto = () => {
       name: 'Lina Julieth Carvajal Mendoza',
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: "26 Años",
-      imageUrl: Logo,
+      imageUrl: Lina,
       whatsappLink: 'https://wa.me/3209455659',
       socialLink: 'https://facebook.com/marialopez',
     },
