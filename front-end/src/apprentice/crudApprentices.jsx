@@ -1,4 +1,4 @@
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
@@ -18,6 +18,9 @@ import { Outlet } from "react-router-dom";
 
 const URI = "/aprendiz/";
 
+const URIFOTOS = "http://localhost:8000/public/uploads"
+
+
 const CrudApprentices = () => {
   const [apprenticeList, setApprenticeList] = useState([]);
   const [apprenticeQuery, setApprenticeQuery] = useState([]);
@@ -35,14 +38,25 @@ const CrudApprentices = () => {
     Ape_Aprendiz: "",
     Id_Ficha: "",
     Fec_Nacimiento: "",
+    Id_Ciudad:"",
+    Lugar_Residencia:"",
+    Edad:"",
+    Hijos:"",
+    Nom_Eps:"",
+    Tel_Padre:"",
     Gen_Aprendiz: "",
     Cor_Aprendiz: "",
     Tel_Aprendiz: "",
     Tot_Memorandos: "",
     Tot_Inasistencias: "",
     Patrocinio: "",
+    Estado:"",
+    Nom_Empresa:"",
     CentroConvivencia: "",
+    Foto_Aprendiz: null
   });
+
+  
 
   useEffect(() => {
     getAllApprentices();
@@ -57,7 +71,7 @@ const CrudApprentices = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios.get(`/aprendiz`, config);
+      const respuestApi = await clienteAxios.get(`/aprendiz`, config);
       if (respuestApi.status === 200) {
         setApprenticeList(respuestApi.data);
       } else {
@@ -85,7 +99,7 @@ const CrudApprentices = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(`/aprendiz/${Id_Aprendiz}`, config);
+      const respuestApi = await clienteAxios(`/aprendiz/${Id_Aprendiz}`, config);
       if (respuestApi.status === 200) {
         setApprentice({
           ...respuestApi.data,
@@ -125,7 +139,7 @@ const CrudApprentices = () => {
           },
         };
         try {
-          const respuestApi = await clieteAxios.delete(
+          const respuestApi = await clienteAxios.delete(
             `/aprendiz/${Id_Aprendiz}`,
             config
           );
@@ -136,6 +150,7 @@ const CrudApprentices = () => {
               text: "El registro ha sido borrado.",
               icon: "success",
             });
+            getAllApprentices();
           } else {
             alert(respuestApi.data.message);
           }
@@ -159,6 +174,7 @@ const CrudApprentices = () => {
 
   return (
     <>
+    <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">Aprendices</h1>
       <div className="flex justify-end pb-3">
         <button
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
@@ -207,13 +223,25 @@ const CrudApprentices = () => {
                 Documento
               </th>
               <th className="py-2 px-4 border-2 border-b-gray-500">Nombres</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">
-                Apellidos
-              </th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Apellidos</th>
               <th className="py-2 px-4 border-2 border-b-gray-500">Ficha</th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Fecha de Nacimiento </th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Ciudad </th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Lugar Residencia </th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Edad </th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Hijos </th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Nombre EPS </th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Telefono Padre </th>
               <th className="py-2 px-4 border-2 border-b-gray-500">Genero</th>
               <th className="py-2 px-4 border-2 border-b-gray-500">Correo</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Telefono</th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Telefono Aprendiz</th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Total Memorandos</th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Total Inasistencias</th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Patrocinio</th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Estado</th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Nombre Empresa</th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Centro Convivencia</th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Foto Aprendiz</th>
               <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
             </tr>
           </thead>
@@ -223,38 +251,45 @@ const CrudApprentices = () => {
                 indice >= desde && indice < hasta ? (
                   <tr
                     key={apprentice.Id_Aprendiz}
-                    className="odd:bg-white even:bg-gray-100 select-none"
+                    className={apprentice.Estado === "1" ? "bg-red-500" : ""}
                     onDoubleClick={() => [
                       setOnDoubleClickAppretice(apprentice),
                       setModalDialog(true),
                     ]}
                   >
-                    <td className="py-2 px-4 border-b">
-                      {apprentice.Id_Aprendiz}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {apprentice.Nom_Aprendiz}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {apprentice.Ape_Aprendiz}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {apprentice.Id_Ficha}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {apprentice.Gen_Aprendiz}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {apprentice.Cor_Aprendiz}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {apprentice.Tel_Aprendiz}
-                    </td>
+                    <td className="py-2 px-4 border-b">{apprentice.Id_Aprendiz}</td>
+                        <td className="py-2 px-4 border-b">{apprentice.Nom_Aprendiz}</td>
+                        <td className="py-2 px-4 border-b">{apprentice.Ape_Aprendiz}</td>
+                        <td className="py-2 px-4 border-b">{apprentice.Id_Ficha}</td>
+                        <td className="py-2 px-4 border-b">{apprentice.Fec_Nacimiento}</td>
+                        <td className="py-2 px-4 border-b">{apprentice.ciudades.Nom_Ciudad}</td>
+                        <td className="py-2 px-4 border-b">{apprentice.Lugar_Residencia}</td>
+                        <td className="py-2 px-4 border-b">{apprentice.Edad}</td>
+                        <td className="py-2 px-4 border-b">{apprentice.Hijos}</td>
+                        <td className="py-2 px-4 border-b">{apprentice.Nom_Eps}</td>
+                        <td className="py-2 px-4 border-b">{apprentice.Tel_Padre}</td>
+                        <td className="py-2 px-4 border-b">{apprentice.Gen_Aprendiz}</td>
+                        <td className="py-2 px-4 border-b">{apprentice.Cor_Aprendiz}</td>
+                        <td className="py-2 px-4 border-b">{apprentice.Tel_Aprendiz}</td>
+                        <td className="py-2 px-4 border-b">{apprentice.Tot_Memorandos}</td>
+                        <td className="py-2 px-4 border-b">{apprentice.Tot_Inasistencias}</td>
+                        <td className="py-2 px-4 border-b">{apprentice.Patrocinio}</td>
+                        <td className="py-2 px-4 border-b">{apprentice.Estado}</td>
+                        <td className="py-2 px-4 border-b">{apprentice.Nom_Empresa}</td>
+                        <td className="py-2 px-4 border-b">{apprentice.CentroConvivencia}</td>
+                        <td className="py-2 px-4 border-b">
+                                {apprentice.Foto_Aprendiz ? (
+                                    <img width="80px" src={`${URIFOTOS}/${apprentice.Foto_Aprendiz}`} alt="Imagen de el Aprendiz" />
+                                ) : (
+                                    <span>No Tiene IMG</span>
+                                )}
+                            </td>
+
                     <td className="py-2 px-4 border-b">
                       <button
                         onClick={() => [
                           getApprentice(apprentice.Id_Aprendiz),
-                          setStateAddApprentice(true),
+                          setStateAddApprentice(true)
                         ]}
                         className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
                       >

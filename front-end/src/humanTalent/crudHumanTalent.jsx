@@ -1,9 +1,11 @@
 import clieteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import { ReactSession } from 'react-client-session';
 
-import FormTalentoHumano from "./formTalentoHumano.jsx";
-import FormQueryTalentoHumano from "./formQueryTalentoHumano.jsx";
+
+import FormTalentoHumano from "./formTalentoHumano.jsx"
+import FormQueryTalentoHumano from "./formQueryTalentoHumano.jsx"
 // import ModalDialog from "./modalDialog.jsx";
 import Pagination from "../pagination.jsx";
 // import ImportarCSV from "./importarCSV.jsx";
@@ -29,14 +31,14 @@ const CrudTalentoHumano = () => {
   const [alerta, setAlerta] = useState({});
 
   const [talentoHumano, setTalentoHumano] = useState({
-    Id_TalentoHumano: "",
-    Nom_TalentoHumano: "",
-    Ape_TalentoHumano: "",
-    Gen_TalentoHumano: "",
-    Cor_TalentoHumano: "",
-    Tel_TalentoHumano: "",
+    Id_Talento_Humano: "",
+    Nom_Talento_Humano: "",
+    Ape_Talento_Humano: "",
+    Gen_Talento_Humano: "",
+    Cor_Talento_Humano: "",
+    Tel_Talento_Humano: "",
     Id_Ficha: "",
-    Est_TalentoHumano: "",
+    Est_Talento_Humano: "",
   });
 
   useEffect(() => {
@@ -45,7 +47,7 @@ const CrudTalentoHumano = () => {
   }, []);
 
   const getAllTalentoHumano = async () => {
-    const token = localStorage.getItem("token");
+    const token = ReactSession.get("token");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -74,9 +76,9 @@ const CrudTalentoHumano = () => {
     }
   };
 
-  const getTalentoHumano = async (Id_TalentoHumano) => {
+  const getTalentoHumano = async (Id_Talento_Humano) => {
     setButtonForm("Actualizar");
-    const token = localStorage.getItem("token");
+    const token = ReactSession.get("token");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -84,7 +86,7 @@ const CrudTalentoHumano = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(`${URI}/${Id_TalentoHumano}`, config);
+      const respuestApi = await clieteAxios(`${URI}/${Id_Talento_Humano}`, config);
       if (respuestApi.status === 200) {
         setTalentoHumano({
           ...respuestApi.data,
@@ -104,7 +106,7 @@ const CrudTalentoHumano = () => {
     }
   };
 
-  const deleteTalentoHumano = (Id_TalentoHumano) => {
+  const deleteTalentoHumano = (Id_Talento_Humano) => {
     Swal.fire({
       title: "¿Estas seguro?",
       text: "No podrás revertir esto!",
@@ -116,7 +118,7 @@ const CrudTalentoHumano = () => {
       cancelButtonText: "Cancelar",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const token = localStorage.getItem("token");
+        const token = ReactSession.get("token");
         const config = {
           headers: {
             "Content-Type": "application/json",
@@ -125,7 +127,7 @@ const CrudTalentoHumano = () => {
         };
         try {
           const respuestApi = await clieteAxios.delete(
-            `/${URI}/${Id_TalentoHumano}`,
+            `/${URI}/${Id_Talento_Humano}`,
             config
           );
           if (respuestApi.status === 200) {
@@ -158,6 +160,8 @@ const CrudTalentoHumano = () => {
 
   return (
     <>
+            <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">Gestionar Informacion de Talento Humano</h1>
+
       <div className="flex justify-end pb-3">
         <button
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
@@ -209,7 +213,7 @@ const CrudTalentoHumano = () => {
               (talentoHumano, indice) =>
                 indice >= desde && indice < hasta ? (
                   <tr
-                    key={talentoHumano.Id_talentoHumano}
+                    key={talentoHumano.Id_talento_Humano}
                     className="odd:bg-white even:bg-gray-100 select-none"
                     // onDoubleClick={() => [
                     //   // setOnDoubleClickUnidad(unidad),
@@ -217,30 +221,33 @@ const CrudTalentoHumano = () => {
                     // ]}
                   >
                     <td className="py-2 px-4 border-b">
-                      {talentoHumano.Id_TalentoHumano}
+                      {talentoHumano.Id_Talento_Humano}
                     </td>
                     <td className="py-2 px-4 border-b">
-                      {talentoHumano.Nom_TalentoHumano}
+                      {talentoHumano.Nom_Talento_Humano}
                     </td>
                     <td className="py-2 px-4 border-b">
-                      {talentoHumano.Ape_TalentoHumano}
+                      {talentoHumano.Ape_Talento_Humano}
                     </td>
                     <td className="py-2 px-4 border-b">
-                      {talentoHumano.Gen_TalentoHumano}
+                      {talentoHumano.Genero_Talento_Humano}
                     </td>
+                      <td className="py-2 px-4 border-b">
+                        {talentoHumano.Cor_Talento_Humano}
+                      </td>
                     <td className="py-2 px-4 border-b">
-                      {talentoHumano.Tel_TalentoHumano}
+                      {talentoHumano.Tel_Talento_Humano}
                     </td>
                     <td className="py-2 px-4 border-b">
                       {talentoHumano.Id_Ficha}
                     </td>
                     <td className="py-2 px-4 border-b">
-                      {talentoHumano.Est_TalentoHumano}
+                      {talentoHumano.Estado}
                     </td>
                     <td className="py-2 px-4 border-b">
                       <button
                         onClick={() => [
-                          getTalentoHumano(talentoHumano.Id_TalentoHumano),
+                          getTalentoHumano(talentoHumano.Id_Talento_Humano),
                           setStateAddTalentoHumano(true),
                         ]}
                         className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
@@ -248,7 +255,7 @@ const CrudTalentoHumano = () => {
                         <FaRegEdit />
                       </button>
                       <button
-                        onClick={() => deleteTalentoHumano(talentoHumano.Id_TalentoHumano)}
+                        onClick={() => deleteTalentoHumano(talentoHumano.Id_Talento_Humano)}
                         className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
                       >
                         <MdDeleteOutline />

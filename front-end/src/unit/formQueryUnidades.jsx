@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 // import axios from "axios";
 import { useEffect, useState } from "react";
-import clieteAxios from "../config/axios";
+import clienteAxios from "../config/axios";
 import { ReactSession } from 'react-client-session';
 
 const FormQueryUnidades = ({ buttonForm, setUnidadQuery }) => {
@@ -20,7 +20,7 @@ const FormQueryUnidades = ({ buttonForm, setUnidadQuery }) => {
 
       let URI = `/unidades/nombre/${query}`;
       try {
-        const respuesta = await clieteAxios(URI, config);
+        const respuesta = await clienteAxios(URI, config);
         if ( respuesta.status == 200 ) {
             setUnidadQuery(respuesta.data)
         } else {

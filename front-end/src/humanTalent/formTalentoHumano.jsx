@@ -5,29 +5,29 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import clieteAxios from "../config/axios";
 
+import { ReactSession } from 'react-client-session';
+
 const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAllTalentoHumano }) => {
-  const [Ficha, setFicha] = useState([]); // Añade esta línea al inicio del componente
-  const [Id_TalentoHumano, setId_TalentoHumano] = useState("");
-  const [Nom_TalentoHumano, setNom_TalentoHumano] = useState("");
-  const [Ape_TalentoHumano, setApe_TalentoHumano] = useState("");
-  const [Gen_TalentoHumano, setGen_TalentoHumano] = useState("");
-  const [Cor_TalentoHumano, setCor_TalentoHumano] = useState("");
-  const [Tel_TalentoHumano, setTel_TalentoHumano] = useState("");
+ 
+  const [Id_Talento_Humano, setId_Talento_Humano] = useState("");
+  const [Nom_Talento_Humano, setNom_Talento_Humano] = useState("");
+  const [Ape_Talento_Humano, setApe_Talento_Humano] = useState("");
+  const [Genero_Talento_Humano, setGen_Talento_Humano] = useState("");
+  const [Cor_Talento_Humano, setCor_Talento_Humano] = useState("");
+  const [Tel_Talento_Humano, setTel_Talento_Humano] = useState("");
   const [Id_Ficha, setId_Ficha] = useState("");
-  const [Est_TalentoHumano, setEst_TalentoHumano] = useState("");    
+  const [Estado, setEstado] = useState("");    
+  const [selectedFicha,setSelectedFicha] = useState(null);
+  const [Ficha, setFicha] = useState([]);
 
   // Estado para mensajes
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(""); // 'success' o 'error'
 
   useEffect(() => {
-    const fetchFicha = async () => {
+    const fetchFichas = async () => {
       try {
-        const token = localStorage.getItem("token")
-        // if (!token) 
-        //   console.error("No se encontró el token de autenticación.");
-        //   return;
-        // };
+        const token = ReactSession.get("token")
         const response = await clieteAxios.get('/fichas', {
           headers: {
             Authorization: `Bearer ${token}`
@@ -41,7 +41,7 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
       }
     };
   
-    fetchFicha();
+    fetchFichas();
   }, []);
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
 
   const sendForm = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
+    const token = ReactSession.get("token");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -69,16 +69,16 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
       let respuestApi;
       if (buttonForm === "Actualizar") {
         respuestApi = await clieteAxios.put(
-          `/talentoHumano/${talentoHumano.Id_TalentoHumano}`,
+          `/talentoHumano/${talentoHumano.Id_Talento_Humano}`,
           {
-            Id_TalentoHumano,
-            Nom_TalentoHumano,
-            Ape_TalentoHumano,
-            Gen_TalentoHumano,
-            Cor_TalentoHumano,
-            Tel_TalentoHumano,
+            Id_Talento_Humano,
+            Nom_Talento_Humano,
+            Ape_Talento_Humano,
+            Genero_Talento_Humano,
+            Cor_Talento_Humano,
+            Tel_Talento_Humano,
             Id_Ficha,
-            Est_TalentoHumano,
+            Estado,
           },
           config
         );
@@ -86,14 +86,14 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
         respuestApi = await clieteAxios.post(
           `/talentoHumano`,
           {
-            Id_TalentoHumano,
-            Nom_TalentoHumano,
-            Ape_TalentoHumano,
-            Gen_TalentoHumano,
-            Cor_TalentoHumano,
-            Tel_TalentoHumano,
+            Id_Talento_Humano,
+            Nom_Talento_Humano,
+            Ape_Talento_Humano,
+            Genero_Talento_Humano,
+            Cor_Talento_Humano,
+            Tel_Talento_Humano,
             Id_Ficha,
-            Est_TalentoHumano,
+            Estado,
           },
           config
         );
@@ -116,32 +116,30 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
   };
 
   const clearForm = () => {
-    setId_TalentoHumano(""),
-    setNom_TalentoHumano(""),
-    setApe_TalentoHumano(""),
-    setGen_TalentoHumano(""),
-    setCor_TalentoHumano(""),
-    setTel_TalentoHumano(""),
+    setId_Talento_Humano(""),
+    setNom_Talento_Humano(""),
+    setApe_Talento_Humano(""),
+    setGen_Talento_Humano(""),
+    setCor_Talento_Humano(""),
+    setTel_Talento_Humano(""),
     setId_Ficha(""),
-    setEst_TalentoHumano("")
+    setEstado("")
   };
 
   const setData = () => {
-    setId_TalentoHumano(talentoHumano.Id_TalentoHumano);
-    setNom_TalentoHumano(talentoHumano.Nom_TalentoHumano);
-    setApe_TalentoHumano(talentoHumano.Ape_TalentoHumano);
-    setGen_TalentoHumano(talentoHumano.Gen_TalentoHumano);
-    setCor_TalentoHumano(talentoHumano.Cor_TalentoHumano);
-    setTel_TalentoHumano(talentoHumano.Tel_TalentoHumano);
+    setId_Talento_Humano(talentoHumano.Id_Talento_Humano);
+    setNom_Talento_Humano(talentoHumano.Nom_Talento_Humano);
+    setApe_Talento_Humano(talentoHumano.Ape_Talento_Humano);
+    setGen_Talento_Humano(talentoHumano.Genero_Talento_Humano);
+    setCor_Talento_Humano(talentoHumano.Cor_Talento_Humano);
+    setTel_Talento_Humano(talentoHumano.Tel_Talento_Humano);
     setId_Ficha(talentoHumano.Id_Ficha);
-  
     // Verifica que Ficha esté disponible antes de buscar
-    if (Ficha.length > 0) {
-      const selected = Ficha.find(ficha => ficha.Id_TalentoHumano === talentoHumano.Id_TalentoHumano);
+      const selected = Ficha.find(ficha => ficha.Id_Ficha === talentoHumano.Id_Ficha);
       setSelectedFicha(selected || null);
-    }
     
-    setEst_TalentoHumano(talentoHumano.Est_TalentoHumano);
+    
+    setEstado(talentoHumano.Estado);
   };  
 
   useEffect(() => {
@@ -174,8 +172,8 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
               type="number"
               id="documento"
               placeholder="Documento"
-              value={Id_TalentoHumano}
-              onChange={(e) => setId_TalentoHumano(e.target.value)}
+              value={Id_Talento_Humano}
+              onChange={(e) => setId_Talento_Humano(e.target.value)}
               className="w-full p-2 border rounded"
             />
           </div>
@@ -188,8 +186,8 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
               type="text"
               id="nombre"
               placeholder="Nombre"
-              value={Nom_TalentoHumano}
-              onChange={(e) => setNom_TalentoHumano(e.target.value)}
+              value={Nom_Talento_Humano}
+              onChange={(e) => setNom_Talento_Humano(e.target.value)}
               className="w-full p-2 border rounded"
             />
           </div>
@@ -202,8 +200,8 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
               type="text"
               id="apellido"
               placeholder="Apellido"
-              value={Ape_TalentoHumano}
-              onChange={(e) => setApe_TalentoHumano(e.target.value)}
+              value={Ape_Talento_Humano}
+              onChange={(e) => setApe_Talento_Humano(e.target.value)}
               className="w-full p-2 border rounded"
             />
           </div>
@@ -214,13 +212,13 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
             </label>
             <select
               id="genero"
-              value={Gen_TalentoHumano}
-              onChange={(e) => setGen_TalentoHumano(e.target.value)}
+              value={Genero_Talento_Humano}
+              onChange={(e) => setGen_Talento_Humano(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             >
               <option value="">Seleccione un Genero:</option>
-              <option value="Femenino">Femenino</option>
               <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
               <option value="Otro">Otro</option>
             </select>
           </div>
@@ -233,8 +231,8 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
               type="email"
               id="correo"
               placeholder="Correo"
-              value={Cor_TalentoHumano}
-              onChange={(e) => setCor_TalentoHumano(e.target.value)}
+              value={Cor_Talento_Humano}
+              onChange={(e) => setCor_Talento_Humano(e.target.value)}
               className="w-full p-2 border rounded"
             />
           </div>
@@ -247,8 +245,8 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
               type="number"
               id="telefono"
               placeholder="Telefono"
-              value={Tel_TalentoHumano}
-              onChange={(e) => setTel_TalentoHumano(e.target.value)}
+              value={Tel_Talento_Humano}
+              onChange={(e) => setTel_Talento_Humano(e.target.value)}
               className="w-full p-2 border rounded"
             />
           </div>
@@ -264,9 +262,9 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             >
               <option value="">Seleccione una Ficha:</option>
-              {Ficha.map((ficha) => (
-                <option key={ficha.Id_Ficha} value={ficha.Id_Ficha}>
-                  {ficha.Nom_Ficha}
+              {Ficha.map((fichas) => (
+                <option key={fichas.Id_Ficha} value={fichas.Id_Ficha}>
+                  {fichas.Id_Ficha}
                 </option>
               ))}
             </select>
@@ -279,8 +277,8 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
             </label>
             <select
               id="estado"
-              value={Est_TalentoHumano}
-              onChange={(e) => setEst_TalentoHumano(e.target.value)}
+              value={Estado}
+              onChange={(e) => setEstado(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             >
               <option value="">Seleccione un Estado:</option>

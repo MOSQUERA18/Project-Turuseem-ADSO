@@ -33,6 +33,8 @@ import ProgramaModel from "./src/models/programaModel.js";
 import FichasModel from "./src/models/fichasModel.js";
 import AbsenceModel from "./src/models/absenceModel.js";
 import TurnoEspecialAprendizModel from "./src/models/turnoEspeciales_Aprendices.js";
+import TurnoEspecialModel from "./src/models/turnoEspecialModel.js";
+import OfficialModel from "./src/models/officialModel.js";
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -86,9 +88,21 @@ FichasModel.belongsTo(ProgramaModel,{foreignKey:"Id_ProgramaFormacion",as:"progr
 
 //TalentoHumano
 FichasModel.hasMany(TalentoHumanoModel,{foreignKey:"Id_Ficha",as:"talentoHumano"})
-TalentoHumanoModel.belongsTo(FichasModel,{foreignKey:"Id_Ficha",as:"ficha"})
+TalentoHumanoModel.belongsTo(FichasModel,{foreignKey:"Id_Ficha",as:"fichas"})
 // console.log("TalentoHumanoModel")
 // console.log(TalentoHumanoModel)
+
+//Turno Especial - Fichas
+FichasModel.hasMany(TurnoEspecialModel,{foreignKey:"Id_Ficha",as:"turnoEspecial"})
+TurnoEspecialModel.belongsTo(FichasModel,{foreignKey:"Id_Ficha",as:"ficha"})
+
+//Turno Especial - Unidades
+UnitModel.hasMany(TurnoEspecialModel,{foreignKey:"Id_Unidad",as:"turnoEspecial"})
+TurnoEspecialModel.belongsTo(UnitModel,{foreignKey:"Id_Unidad",as:"unidad"})
+
+//Turno Especial - Funcionarios
+OfficialModel.hasMany(TurnoEspecialModel,{foreignKey:"Id_Funcionario",as:"turnoEspecial"})
+TurnoEspecialModel.belongsTo(OfficialModel,{foreignKey:"Id_Funcionario",as:"funcionario"})
 
 
 //Inasistencias

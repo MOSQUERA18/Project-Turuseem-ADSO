@@ -51,7 +51,7 @@ export const getTurnoEspecial = async (req, res) => {
         },
       ],
     });
-    if (turnoEspecial.length > 0) {
+    if (turnoEspecial) {
       res.status(200).json(turnoEspecial);
       return
     } else {

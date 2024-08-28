@@ -1,4 +1,4 @@
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
@@ -48,7 +48,7 @@ const CrudFichas = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(URI, config);
+      const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setFichasList(respuestApi.data);
       } else {
@@ -76,23 +76,23 @@ const CrudFichas = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(`${URI}/${Id_Ficha}`, config);
+      const respuestApi = await clienteAxios(`${URI}/${Id_Ficha}`, config);
       if (respuestApi.status === 200) {
         setFichas({
           ...respuestApi.data,
         });
       } else {
         setAlerta({
-          msg: `Error al cargar los registros!`,
+          msg: respuestApi.data.message,
           error: true,
         });
       }
     } catch (error) {
       setAlerta({
-        msg: `Error al Tratar de Cargar Las Fichas al Form`,
+        msg: error.response.data.message,
         error: true,
       });
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -116,7 +116,7 @@ const CrudFichas = () => {
           },
         };
         try {
-          const respuestApi = await clieteAxios.delete(
+          const respuestApi = await clienteAxios.delete(
             `/${URI}/${Id_Ficha}`,
             config
           );
@@ -150,6 +150,7 @@ const CrudFichas = () => {
 
   return (
     <>
+    <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">Fichas</h1>
       <div className="flex justify-end pb-3">
         <button
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
@@ -209,7 +210,7 @@ const CrudFichas = () => {
                 indice >= desde && indice < hasta ? (
                   <tr
                     key={fichas.Id_Ficha}
-                    className="odd:bg-white even:bg-gray-100 select-none"
+                    className={`${fichas.Estado === 'Inactivo' ? 'bg-red-600 text-white' : ''}`}
                     // onDoubleClick={() => [
                     //   // setOnDoubleClickUnidad(unidad),
                     //   setModalDialog(true),
@@ -228,10 +229,10 @@ const CrudFichas = () => {
                       {fichas.Can_Aprendices}
                     </td>
                     <td className="py-2 px-4 border-b">
-                      {fichas.programasFormacion.Nom_ProgramaFormacion} {/* Puedes reemplazar esto por el nombre del área si lo tienes disponible */}
+                      {fichas.programasFormacion.Nom_ProgramaFormacion} 
                     </td>
                     <td className="py-2 px-4 border-b">
-                      {fichas.Estado}
+                    {fichas.Estado === 'Inactivo' ? 'Inactiva' : 'Activa'}
                     </td>
                     <td className="py-2 px-4 border-b">
                       <button
@@ -239,13 +240,13 @@ const CrudFichas = () => {
                           getFicha(fichas.Id_Ficha),
                           setStateAddFichas(true),
                         ]}
-                        className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
+                        className="text-white-500 hover:text-white-700 hover:border hover:border-white-500 mr-3 p-1 rounded"
                       >
                         <FaRegEdit />
                       </button>
                       <button
                         onClick={() => deleteFichas(fichas.Id_Ficha)}
-                        className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
+                        className="text-white-500 hover:text-white-700 hover:border hover:border-white-500 p-1 rounded"
                       >
                         <MdDeleteOutline />
                       </button>
