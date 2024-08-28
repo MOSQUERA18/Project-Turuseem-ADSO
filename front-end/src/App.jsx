@@ -17,10 +17,10 @@ import CrudTalentoHumano from "./talentoHumano/CrudTalentoHumano.jsx";
 
 //Rutas Publicas
 import RutaPublica from "./layout/RutaPublica.jsx";
-import Home from "./Home/Home.jsx"
-import Contacto from "./Home/Contacto.jsx"
-import ConsultarTurno from "./Home/ConsultarTurno.jsx"
-import Manual from "./Home/Manual.jsx";
+import Home from "./home/home.jsx"
+import Contacto from "./home/Contacto.jsx"
+import ConsultarTurno from "./home/ConsultarTurno.jsx"
+import Manual from "./home/Manual.jsx";
 import LoginForm from "./users/LoginUser";
 import UserForm from "./users/CreateAccount";
 import OlvidePassword from "./users/OlvidePassword";
