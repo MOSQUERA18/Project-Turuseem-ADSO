@@ -1,7 +1,5 @@
 /* eslint-disable react/prop-types */
-import Logo from '../assets/LOGOSENAEMPRESA.png';
-import JuanLinares from "../assets/JuanLinares.jpg"
-import mosquera from "../assets/mosquera.png"
+
 
 const ContactCard = ({ name, info, age, imageUrl, whatsappLink, socialLink }) => {
   return (
@@ -40,7 +38,7 @@ const Contacto = () => {
       name: 'Juan David Linares Barragán',
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: "18 Años",
-      imageUrl: JuanLinares,
+      imageUrl: "Public/assets/JuanLinares.jpg",
       whatsappLink: 'https://wa.me/573209455659',
       socialLink: 'https://facebook.com/Linares.Juan.5855',
     },
@@ -48,7 +46,7 @@ const Contacto = () => {
       name: 'Marlon Kaleth Sarmiento Mosquera',
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: "18 Años",
-      imageUrl: mosquera,
+      imageUrl: "Public/assets/mosquera.png",
       whatsappLink: 'https://wa.me/3209455659',
       socialLink: 'https://www.facebook.com/marlon.mosquera.5855',
     },
@@ -56,7 +54,7 @@ const Contacto = () => {
       name: 'Natalia Torres Rodriguez',
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: "20 Años",
-      imageUrl: Logo,
+      imageUrl: "Public/assets/LOGOSENAEMPRESA.png",
       whatsappLink: 'https://wa.me/3209455659',
       socialLink: 'https://facebook.com/',
     },
@@ -64,7 +62,7 @@ const Contacto = () => {
       name: 'Kimberly Sharlot Hernadez Acosta',
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: "20 Años",
-      imageUrl: Logo,
+      imageUrl: "Public/assets/LOGOSENAEMPRESA.png",
       whatsappLink: 'https://wa.me/3209455659',
       socialLink: 'https://facebook.com/marialopez',
     },
@@ -72,7 +70,7 @@ const Contacto = () => {
       name: 'Lina Julieth Carvajal Mendoza',
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: "26 Años",
-      imageUrl: Logo,
+      imageUrl: "Public/assets/LOGOSENAEMPRESA.png",
       whatsappLink: 'https://wa.me/3209455659',
       socialLink: 'https://facebook.com/marialopez',
     },
