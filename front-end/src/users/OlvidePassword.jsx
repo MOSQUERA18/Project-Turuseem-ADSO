@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Alerta from "../components/Alerta.jsx";
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 
 const OlvidePassword = () => {
   const [Cor_User, setCor_User] = useState("");
@@ -18,7 +18,7 @@ const OlvidePassword = () => {
     }
     try {
       const url = `/api/user/olvide-password`;
-      const { data } = await clieteAxios.post(url, {
+      const { data } = await clienteAxios.post(url, {
         Cor_User: Cor_User,
       });
       setAlerta({

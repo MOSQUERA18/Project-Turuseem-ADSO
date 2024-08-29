@@ -1,279 +1,104 @@
-import clieteAxios from "../config/axios.jsx";
-import { useState, useEffect } from "react";
-import Swal from "sweetalert2";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Alerta from "../components/Alerta";
+import clieteAxios from "../config/axios";
+import useAuth from "../hooks/useAuth";
+import { ReactSession } from "react-client-session";
 
-import FormPrograFormacion from "./formProgramaFormacion.jsx";
-import FormQueryProgramaFormacion from "./formQueryProgramaFormacion.jsx";
-// import ModalDialog from "./modalDialog.jsx";
-import Pagination from "../pagination.jsx";
-// import ImportarCSV from "./importarCSV.jsx";
-import Alerta from "../components/Alerta.jsx";
-
-import { MdDeleteOutline } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
-import { IoMdPersonAdd } from "react-icons/io";
-import { AiOutlineMinusCircle } from "react-icons/ai";
-import { Outlet } from "react-router-dom";
-
-const URI = "programa";
-
-const CrudPrograma = () => {
-  const [programaList, setProgramaList] = useState([]);
-  const [programaQuery, setProgramaQuery] = useState([]);
-  const [buttonForm, setButtonForm] = useState("Enviar");
-  const [stateAddPrograma, setStateAddPrograma] = useState(false);
-  
-  const [desde, setDesde] = useState(0);
-  const [hasta, setHasta] = useState(0);
+const LoginForm = () => {
+  const [Cor_User, setCor_User] = useState("");
+  const [password, setPassword] = useState("");
   const [alerta, setAlerta] = useState({});
+  const navigate = useNavigate();
+  const { setAuth } = useAuth();
 
-  const [programa, setPrograma] = useState({
-    
-    Nom_ProgramaFormacion: "",
-    Tip_ProgramaFormacion: "",
-    Id_Area: "",
-  });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  useEffect(() => {
-    getAllPrograma();
-    
-  }, []);
-
-  const getAllPrograma = async () => {
-    const token = localStorage.getItem("token");
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    try {
-      const respuestApi = await clieteAxios(URI, config);
-      if (respuestApi.status === 200) {
-        setProgramaList(respuestApi.data);
-      } else {
-        setAlerta({
-          msg: `Error al cargar los registros!`,
-          error: true,
-        });
-      }
-    } catch (error) {
+    if ([Cor_User, password].includes("")) {
       setAlerta({
-        msg: `Error al cargar los registros!`,
+        msg: "Todos los campos son obligatorios!",
         error: true,
       });
-      console.error(error);
+      return;
     }
-  };
-
-  const getPrograma = async (Id_ProgramaFormacion) => {
-    setButtonForm("Actualizar");
-    const token = localStorage.getItem("token");
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
     try {
-      const respuestApi = await clieteAxios(`${URI}/${Id_ProgramaFormacion}`, config);
-      if (respuestApi.status === 200) {
-        setPrograma({
-          ...respuestApi.data,
-        });
-      } else {
-        setAlerta({
-          msg: `Error al cargar los registros!`,
-          error: true,
-        });
-      }
+      const url = `/api/user/login`;
+      const { data } = await clieteAxios.post(url, {
+        Cor_User: Cor_User,
+        password: password,
+      });
+      ReactSession.set("token", data.token);
+
+      setAuth(data);
+      navigate("/admin");
     } catch (error) {
       setAlerta({
-        msg: `Error al cargar los registros!`,
+        msg: error.response.data.msg,
         error: true,
       });
-      console.error(error);
     }
-  };
-
-  const deletePrograma = (Id_ProgramaFormacion) => {
-    Swal.fire({
-      title: "¿Estas seguro?",
-      text: "No podrás revertir esto!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Sí, Borrar!",
-      cancelButtonText: "Cancelar",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const token = localStorage.getItem("token");
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        };
-        try {
-          const respuestApi = await clieteAxios.delete(
-            `/${URI}/${Id_Unidad}`,
-            config
-          );
-          if (respuestApi.status === 200) {
-            getAllPrograma();  // Refrescar la lista después de borrar
-            Swal.fire({
-              title: "Borrado!",
-              text: "El registro ha sido borrado.",
-              icon: "success",
-            });
-          } else {
-            alert(respuestApi.data.message);
-          }
-        } catch (error) {
-          Swal.fire({
-            title: "Error!",
-            text: "Hubo un problema al intentar borrar el registro.",
-            icon: "error",
-          });
-          console.error(error);
-        }
-      }
-    });
-  };
-
-  const updateTextButton = (text) => {
-    setButtonForm(text);
   };
 
   const { msg } = alerta;
-
   return (
     <>
-      <div className="flex justify-end pb-3">
-        <button
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-          onClick={() => {
-            setStateAddPrograma(!stateAddPrograma);
-          }}
-        >
-          {stateAddPrograma ? (
-            <AiOutlineMinusCircle size={16} className="me-2" />
-          ) : (
-            <IoMdPersonAdd size={16} className="me-2" />
-          )}
-          {stateAddPrograma ? "Ocultar" : "Agregar"}
-        </button>
+      <div>
+        <h1 className="text-stone-400 font-black text-5xl">
+          Inicia Sesion y Gestiona {""}
+          <span className="text-green-700">tus Turnos</span>
+        </h1>
       </div>
-      <div className="overflow-x-auto">
-        <div className="flex justify-between">
-          <div>
-            <h1 className="font-semibold text-lg text-gray-700">
-              Buscar Por Programa...
-            </h1>
-            <FormQueryProgramaFormacion
-              getPrograma={getPrograma}
-              deletePrograma={deletePrograma}
-              buttonForm={buttonForm}
-              programaQuery={programaQuery}
-              setProgramaQuery={setProgramaQuery}
+      <div className="mt-20 md:mt-5 shadow-2xl px-7 py-10 rounded-xl bg-white">
+        {msg && <Alerta alerta={alerta} />}
+        <form onSubmit={handleSubmit}>
+          <div className="my-5">
+            <label className="uppercase text-stone-600 font-bold block text-xl">
+              Correo:{" "}
+            </label>
+            <input
+              type="email"
+              className="border w-full p-2 mt-2 bg-gray-100 rounded-xl"
+              placeholder="Aquí su Correo"
+              value={Cor_User}
+              onChange={(e) => setCor_User(e.target.value)}
             />
           </div>
-          {/* <div>
-            <h1 className="font-semibold text-lg text-gray-700">
-              Subir Archivo CSV
-            </h1>
-            <ImportarCSV URI={URI} />
-          </div> */}
-        </div>
-        <hr />
-        {/* <h2 className="font-semibold mb-4 text-lg text-gray-700 mt-3">
-          Doble Click sobre la unidad para ver información detallada...
-        </h2> */}
-        {msg && <Alerta alerta={alerta} />}
-        <table className="min-w-full bg-white text-center text-sm">
-          <thead className="text-white bg-green-700">
-            <tr className="">
-              <th className="py-2 px-4 border-2 border-b-gray-500">Identificador de Programa</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Nombre</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Tipo</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Área</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
+          <div className="my-5">
+            <label className="uppercase text-stone-600 font-bold block text-xl">
+              Contraseña:
+            </label>
+            <input
+              type="password"
+              className="border w-full p-2 mt-2 bg-gray-100 rounded-xl"
+              placeholder="Aquí su Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
 
-            </tr>
-          </thead>
-          <tbody>
-            {(programaQuery.length ? programaQuery : programaList).map(
-              (programa, indice) =>
-                indice >= desde && indice < hasta ? (
-                  <tr
-                    key={programa.Id_ProgramaFormacion}
-                    className="odd:bg-white even:bg-gray-100 select-none"
-                    // onDoubleClick={() => [
-                    //   // setOnDoubleClickUnidad(unidad),
-                    //   setModalDialog(true),
-                    // ]}
-                  >
-                    <td className="py-2 px-4 border-b">
-                      {programa.Id_ProgramaFormacion}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {programa.Tip_ProgramaFormacion}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {programa.areas.Nom_Area} {/* Puedes reemplazar esto por el nombre del área si lo tienes disponible */}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      <button
-                        onClick={() => [
-                          getPrograma(programa.Id_ProgramaFormacion),
-                          setStateAddPrograma(true),
-                        ]}
-                        className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
-                      >
-                        <FaRegEdit />
-                      </button>
-                      <button
-                        onClick={() => deletePrograma(programa.Id_ProgramaFormacion)}
-                        className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
-                      >
-                        <MdDeleteOutline />
-                      </button>
-                    </td>
-                  </tr>
-                ) : (
-                  ""
-                )
-            )}
-          </tbody>
-        </table>
+          <input
+            type="submit"
+            value="Iniciar Sesion"
+            className="bg-green-800 w-full py-3 px-8 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-green-900 md:w-auto "
+          />
+        </form>
+        <nav className="mt-8 lg:flex lg:justify-between">
+          <Link
+            to="/registrar"
+            className="block text-center my-5 text-gray-500"
+          >
+            ¿No tienes una Cuenta? Registrate
+          </Link>
+          <Link
+            to="/olvide-password"
+            className="block text-center my-5 text-gray-500"
+          >
+            Olvide mi Contraseña
+          </Link>
+        </nav>
       </div>
-      <Pagination URI={URI} setDesde={setDesde} setHasta={setHasta} />
-      <hr />
-      {stateAddPrograma ? (
-        <FormPrograFormacion
-          buttonForm={buttonForm}
-          programa={programa}
-          updateTextButton={updateTextButton}
-          setPrograma={setPrograma}
-          getAllPrograma={getAllPrograma}
-        />
-      ) : null}
-      <hr />
-
-      {/* {modalDialog ? (
-        <ModalDialog
-          getUnidad={getUnidad}
-          deleteUnidad={deleteUnidad}
-          onDoubleClickUnidad={onDoubleClickUnidad}
-          setModalDialog={setModalDialog}
-          setStateAddUnidad={setStateAddUnidad}
-          setUnidad={setUnidad}
-        />
-      ) : null} */}
-      <Outlet />
     </>
   );
 };
-
-export default CrudPrograma;
+export default LoginForm;

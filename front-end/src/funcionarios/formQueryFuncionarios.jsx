@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-import clieteAxios from "../config/axios";
+import clienteAxios from "../config/axios";
 import { ReactSession } from 'react-client-session';
 
 const FormQueryFuncionarios = ({ buttonForm, setFuncionarioQuery }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const sendFormQuery = async (query) => {
-    if (query) {
+  const sendFormQuery = async (Id_Funcionario) => {
+    if (Id_Funcionario) {
       const token = ReactSession.get("token");
       const config = {
         headers: {
@@ -17,9 +17,11 @@ const FormQueryFuncionarios = ({ buttonForm, setFuncionarioQuery }) => {
         },
       };
 
-      let URI = `/funcionarios/${query}`;
+      let URI = `/funcionarios/document/${Id_Funcionario}`;
       try {
-        const respuesta = await clieteAxios(URI, config);
+        const respuesta = await clienteAxios(URI, config);
+        console.log(respuesta.status);
+        
         if ( respuesta.status == 200 ) {
             setFuncionarioQuery(respuesta.data)
         } else {

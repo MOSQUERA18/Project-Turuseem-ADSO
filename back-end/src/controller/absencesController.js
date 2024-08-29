@@ -1,5 +1,7 @@
 import AbsenceModel from "../models/absenceModel.js";
 import TurnoRutinarioModel from "../models/turnoRutinarioModel.js";
+import TurnoRutinarioAprendizModel from "../models/turnoRutinarioAprendices.js";
+import TurnoEspecialAprendizModel from "../models/turnoEspeciales_Aprendices.js";
 import TurnoEspecialModel from "../models/turnoEspecialModel.js";
 import { Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
@@ -9,12 +11,12 @@ export const getAllAbsences = async (req, res) => {
     const inasistencias = await AbsenceModel.findAll({
       include: [
         {
-          model: TurnoRutinarioModel,
-          as: "turnoRutinario", // Alias usado para la relación
+          model: TurnoRutinarioAprendizModel,
+          as: "turnoRutinarioAprendiz", // Alias usado para la relación
         },
         {
-          model: TurnoEspecialModel,
-          as: "turnoEspecial", // Alias usado para la relación
+          model: TurnoEspecialAprendizModel,
+          as: "turnoEspecialAprendiz", // Alias usado para la relación
         },
       ],
     });
@@ -39,8 +41,8 @@ export const getAbsence = async (req, res) => {
       {
         include: [
           {
-            model: TurnoRutinarioModel,
-            as: "turnoRutinario", // Alias usado para la relación
+            model: TurnoRutinarioAprendizModel,
+            as: "turnoRutinarioApreniz", // Alias usado para la relación
           },
           {
             model: TurnoEspecialModel,

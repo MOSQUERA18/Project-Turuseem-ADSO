@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import { ReactSession } from 'react-client-session';
 import { useEffect, useState } from "react";
-import clieteAxios from "../config/axios";
+import clienteAxios from "../config/axios";
 
 const FormQueryFichas = ({ buttonForm, setFichasQuery }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,7 +19,7 @@ const FormQueryFichas = ({ buttonForm, setFichasQuery }) => {
 
       let URI = `/fichas/codFicha/${query}`;
       try {
-        const respuesta = await clieteAxios.get(URI, config);
+        const respuesta = await clienteAxios.get(URI, config);
         if ( respuesta.status == 200 ) {
             setFichasQuery(respuesta.data)
         } else {

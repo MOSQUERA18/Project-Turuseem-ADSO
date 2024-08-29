@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Alerta from "../components/Alerta.jsx";
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 const UserForm = () => {
   const [Id_User, setId_User] = useState("");
   const [Nom_User, setNom_User] = useState("");
@@ -32,7 +32,7 @@ const UserForm = () => {
     // Crear el usuario en la Api
     try {
       const url = `/api/user/create`;
-      await clieteAxios.post(url, { Id_User, Nom_User, Cor_User, password });
+      await clienteAxios.post(url, { Id_User, Nom_User, Cor_User, password });
       setAlerta({
         msg: "Cuenta Creada Correctamente, Revisa tu correo!",
         error: false,

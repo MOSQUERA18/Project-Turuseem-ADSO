@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import clieteAxios from "../config/axios";
+import clienteAxios from "../config/axios";
 import { ReactSession } from 'react-client-session';
 
 const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
@@ -21,7 +21,7 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
     };
     try {
       if (buttonForm === "Actualizar") {
-        const respuestApi = await clieteAxios.put(`/memorando/${memorandum.Id_Memorando}`, 
+        const respuestApi = await clienteAxios.put(`/memorando/${memorandum.Id_Memorando}`, 
         {
           // Id_Memorando: Id_Memorando,
           Fec_Memorando: Fec_Memorando,
@@ -36,7 +36,7 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
         clearForm()
       }
       } else if (buttonForm === "Enviar") {
-        const respuestApi = await clieteAxios.post('/memorando', {
+        const respuestApi = await clienteAxios.post('/memorando', {
           // Id_Memorando: Id_Memorando,
           Fec_Memorando: Fec_Memorando,
           Mot_Memorando: Mot_Memorando,

@@ -1,9 +1,9 @@
 
 
-const ExportarPDF = () => {
-  return (
-    <div>Exportar PDF</div>
-  )
-}
+// const ExportarPDF = () => {
+//   return (
+//     <div>Exportar PDF</div>
+//   )
+// }
 
-export default ExportarPDF
+// export default ExportarPDF

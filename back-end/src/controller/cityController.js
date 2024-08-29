@@ -1,10 +1,10 @@
 import { logger } from "../middleware/logMiddleware.js";
-import AreaModel from "../models/cityModel.js";
+import cityModel from "../models/cityModel.js";
 
 export const getAllCities = async (req, res) => {
   try {
-    const cities = await AreaModel.findAll();
-    if (cities.length > 0) {
+    const cities = await cityModel.findAll();
+    if (cities) {
       res.status(200).json(cities);
       return
     } else {

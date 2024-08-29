@@ -4,7 +4,7 @@ import { ReactSession } from 'react-client-session';
 import FormMemorandum from "./formMemorandum.jsx";
 import FormQueryMemorandum from "./formQueryMemorandum.jsx";
 import Pagination from "../pagination.jsx";
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 import { useNavigate } from "react-router-dom";
 
 // Icons
@@ -45,7 +45,7 @@ const CrudMemorandum = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios("/memorando/", config);
+      const respuestApi = await clienteAxios("/memorando/", config);
       if (respuestApi.status == 200) {
         setMemorandumList(respuestApi.data);
       } else {
@@ -66,7 +66,7 @@ const CrudMemorandum = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(`/memorando/${Id_Memorando}`, config);
+      const respuestApi = await clienteAxios(`/memorando/${Id_Memorando}`, config);
       if (respuestApi.status === 200) {
         setMemorandum({
           ...respuestApi.data,
@@ -103,7 +103,7 @@ const CrudMemorandum = () => {
           },
         };
         try {
-          const respuestApi = await clieteAxios.delete(
+          const respuestApi = await clienteAxios.delete(
             `/memorando/${Id_Memorando}`,
             config
           );
@@ -129,6 +129,7 @@ const CrudMemorandum = () => {
 
   return (
     <>
+    <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">Memorandos</h1>
       <div className="flex justify-end pb-3">
         <button
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"

@@ -35,7 +35,7 @@ export const getPrograma = async (req, res) => {
         ],
       }
     );
-    if (Programa.length > 0 ) {
+    if (Programa) {
       res.status(200).json(Programa);
     } else {
       res.status(404).json({ message: "Programa no encontrado" });
@@ -48,14 +48,15 @@ export const getPrograma = async (req, res) => {
 
 export const createPrograma = async (req, res) => {
   try {
-    const { Nom_ProgramaFormacion, Tip_ProgramaFormacion, Id_Area } = req.body;
+    const {Id_ProgramaFormacion, Nom_ProgramaFormacion, Tip_ProgramaFormacion, Id_Area } = req.body;
     const NewPrograma = await ProgramaModel.create({
+      Id_ProgramaFormacion,
       Nom_ProgramaFormacion,
       Tip_ProgramaFormacion,
       Id_Area,
     });
     if(NewPrograma){
-      res.status(201).json(NewPrograma);
+      res.status(200).json(NewPrograma);
       return
     }
   } catch (error) {
@@ -66,9 +67,10 @@ export const createPrograma = async (req, res) => {
 
 export const updatePrograma = async (req, res) => {
   try {
-    const { Nom_ProgramaFormacion, Tip_ProgramaFormacion, Id_Area } = req.body;
+    const {Id_ProgramaFormacion, Nom_ProgramaFormacion, Tip_ProgramaFormacion, Id_Area } = req.body;
     const [updated] = await ProgramaModel.update(
       {
+        Id_ProgramaFormacion,
         Nom_ProgramaFormacion,
         Tip_ProgramaFormacion,
         Id_Area,
@@ -91,41 +93,58 @@ export const updatePrograma = async (req, res) => {
 
 export const deletePrograma = async (req, res) => {
   try {
-    const Result = await ProgramaModel.destroy({
+    const deleted = await ProgramaModel.destroy({
       where: { Id_ProgramaFormacion: req.params.Id_ProgramaFormacion },
     });
-    if (Result === 0) {
-      res.status(404).json({ message: "Programa no encontrado" });
-    } else {
-      res.json({ message: "Programa eliminado correctamente" });
+    if (deleted) {
+      res.json({
+        message: "Programa borrado correctamente!", //a todos los controllers toca agg esto para validar los datos
+      });
       return
+    } else {
+      res.status(404).json({
+        message: "Programa no encontrado.",
+      });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
-    logger.error(`Error al eliminar el programa: ${error}`);
+    logger.error("Error deleting Programa: ", error.message);
+    res.status(400).json({
+      message: "Error al borrar el Programa.",
+      error: error.message,
+    });
   }
 };
 
-export const getQueryPrograma = async (req, res) => {
+export const getQueryNom_Programa = async (req, res) => {
   try {
-    const Programas = await ProgramaModel.findAll({
+    const programas = await ProgramaModel.findAll({
       where: {
-        Id_ProgramaFormacion: {
-          [Op.like]: `%${req.params.Id_ProgramaFormacion}%`,
+        Nom_ProgramaFormacion: {
+          [Sequelize.Op.like]: `%${req.params.Nom_ProgramaFormacion}%`,
         },
       },
       include: [
         {
           model: AreaModel,
-          as: "areas", // Alias usado para la relación
+          as: "areas",
+          attributes: ["Nom_Area"], // Incluye el nombre del área
         },
       ],
     });
-    if(getQueryPrograma === 200){
-      res.json(Programas);
+
+    if (programas.length > 0) {
+      res.status(200).json(programas);
+      return
+    } else {
+      res.status(404).json({
+        message: "No se encontraron unidades que coincidan con la búsqueda.",
+      });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
-    logger.error(`Error al buscar el programa: ${error}`);
+    logger.error("Error searching programas: ", error.message);
+    console.log(error)
+    res.status(500).json({
+      message: "Error al buscar las programas.",
+    });
   }
 };

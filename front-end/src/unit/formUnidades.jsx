@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import clieteAxios from "../config/axios";
+import clienteAxios from "../config/axios";
 import Alerta from "../components/Alerta";
 import { ReactSession } from 'react-client-session';
 
@@ -24,7 +24,7 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
     const fetchAreas = async () => {
       try {
         const token = ReactSession.get("token");
-        const response = await clieteAxios.get('/areas', {
+        const response = await clienteAxios.get('/areas', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -64,7 +64,7 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
     try {
       let respuestApi;
       if (buttonForm === "Actualizar") {
-        respuestApi = await clieteAxios.put(
+        respuestApi = await clienteAxios.put(
           `/unidades/${unidad.Id_Unidad}`,
           {
             Nom_Unidad,
@@ -76,7 +76,7 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
           config
         );
       } else if (buttonForm === "Enviar") {
-        respuestApi = await clieteAxios.post(
+        respuestApi = await clienteAxios.post(
           `/unidades`,
           {
             Nom_Unidad,

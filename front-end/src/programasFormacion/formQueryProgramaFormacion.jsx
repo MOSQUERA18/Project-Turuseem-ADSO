@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import clieteAxios from "../config/axios";
+import { ReactSession } from 'react-client-session';
 
-const FormQueryProgramaFormacion = ({ buttonForm, setProgramaQuery }) => {
+const FormQueryPrograma = ({ buttonForm, setProgramaQuery }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const sendFormQuery = async (query) => {
     if (query) {
-      const token = localStorage.getItem("token");
+      const token = ReactSession.get("token");
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -16,7 +17,7 @@ const FormQueryProgramaFormacion = ({ buttonForm, setProgramaQuery }) => {
 
       let URI = `/programa/nombre/${query}`;
       try {
-        const respuesta = await clieteAxios(URI, config);
+        const respuesta = await clieteAxios.get(URI, config);
         if ( respuesta.status == 200 ) {
             setProgramaQuery(respuesta.data)
         } else {
@@ -33,7 +34,6 @@ const FormQueryProgramaFormacion = ({ buttonForm, setProgramaQuery }) => {
 
   useEffect(() => {
     setProgramaQuery([]);
-
     setSearchQuery("");
   }, [buttonForm]);
 
@@ -49,7 +49,7 @@ const FormQueryProgramaFormacion = ({ buttonForm, setProgramaQuery }) => {
             <input
               type="text"
               id="documentQuery"
-              placeholder="Buscar Aprendices..."
+              placeholder="Buscar Programa..."
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               value={searchQuery}
               onChange={(e) => {
@@ -64,4 +64,4 @@ const FormQueryProgramaFormacion = ({ buttonForm, setProgramaQuery }) => {
     </>
   );
 };
-export default FormQueryProgramaFormacion;
+export default FormQueryPrograma;

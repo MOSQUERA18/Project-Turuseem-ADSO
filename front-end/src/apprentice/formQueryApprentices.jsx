@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 // import axios from "axios";
 import { useEffect, useState } from "react";
-import clieteAxios from "../config/axios";
+import clienteAxios from "../config/axios";
 import { ReactSession } from 'react-client-session';
 
 const FormQueryApprentices = ({ buttonForm, setApprenticeQuery }) => {
@@ -25,7 +25,7 @@ const FormQueryApprentices = ({ buttonForm, setApprenticeQuery }) => {
         endpoint = `/aprendiz/nombre/${query}`;
       }
       try {
-        const respuesta = await clieteAxios(endpoint, config);
+        const respuesta = await clienteAxios(endpoint, config);
         if ( respuesta.status == 200 ) {
           setApprenticeQuery(respuesta.data)
         } else {
