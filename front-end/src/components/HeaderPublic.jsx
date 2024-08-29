@@ -26,7 +26,7 @@ export default function HeaderPublic() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full">  
       <div className="bg-green-500 shadow-lg py-5 px-7">
         <nav className="flex justify-between">
           <div className="flex items-center space-x-3 lg:pr-16 pr-6">

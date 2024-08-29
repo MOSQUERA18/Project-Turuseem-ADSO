@@ -39,7 +39,7 @@ const Contacto = () => {
       age: "18 Años",
       imageUrl: "Public/assets/JuanLinares.jpg",
       whatsappLink: 'https://wa.me/573209455659',
-      socialLink: 'https://facebook.com/Linares.Juan.5855',
+      socialLink: 'https://www.facebook.com/profile.php?id=100095190046582',
     },
     {
       name: 'Marlon Kaleth Sarmiento Mosquera',
@@ -55,7 +55,7 @@ const Contacto = () => {
       age: "20 Años",
       imageUrl: "Public/assets/Natalia.jpeg",
       whatsappLink: 'https://wa.me/3209455659',
-      socialLink: 'https://facebook.com/',
+      socialLink: 'https://www.facebook.com/profile.php?id=100024303797798',
     },
     {
       name: 'Kimberly Sharlot Hernadez Acosta',
@@ -63,7 +63,7 @@ const Contacto = () => {
       age: "20 Años",
       imageUrl: "Public/assets/Kim.jpeg",
       whatsappLink: 'https://wa.me/3209455659',
-      socialLink: 'https://facebook.com/marialopez',
+      socialLink: 'https://www.facebook.com/profile.php?id=100078628960697',
     },
     {
       name: 'Lina Julieth Carvajal Mendoza',
@@ -71,7 +71,7 @@ const Contacto = () => {
       age: "26 Años",
       imageUrl: "Public/assets/Lina.jpeg",
       whatsappLink: 'https://wa.me/3209455659',
-      socialLink: 'https://facebook.com/marialopez',
+      socialLink: 'https://www.facebook.com/LJCM97',
     },
     // Añadir más contactos según sea necesario
   ];

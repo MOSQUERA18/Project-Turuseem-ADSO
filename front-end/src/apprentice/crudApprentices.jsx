@@ -4,32 +4,23 @@ import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
 
 import FormApprentices from "./formApprentices.jsx";
-import FormQueryApprentices from "./formQueryApprentices.jsx";
-import ModalDialog from "./modalDialog.jsx";
-import Pagination from "../pagination.jsx";
 import ImportarCSV from "./importarCSV.jsx";
 import Alerta from "../components/Alerta.jsx";
 
-import { MdDeleteOutline } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
+import DataTableApprentices from "./dataTableApprentices.jsx";
 import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 
 const URI = "/aprendiz/";
 
-const URIFOTOS = "http://localhost:8000/public/uploads"
+const URIFOTOS = "/public/uploads/"
 
 
 const CrudApprentices = () => {
   const [apprenticeList, setApprenticeList] = useState([]);
-  const [apprenticeQuery, setApprenticeQuery] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddApprentice, setStateAddApprentice] = useState(false);
-  const [onDoubleClickAppretice, setOnDoubleClickAppretice] = useState({});
-  const [modalDialog, setModalDialog] = useState(false);
-  const [desde, setDesde] = useState(0);
-  const [hasta, setHasta] = useState(0);
   const [alerta, setAlerta] = useState({});
 
   const [apprentice, setApprentice] = useState({
@@ -53,7 +44,7 @@ const CrudApprentices = () => {
     Estado:"",
     Nom_Empresa:"",
     CentroConvivencia: "",
-    Foto_Aprendiz: null
+    Foto_Aprendiz: ""
   });
 
   
@@ -201,18 +192,7 @@ const CrudApprentices = () => {
       </div>
       <div className="overflow-x-auto">
         <div className="flex justify-between">
-          <div>
-            <h1 className="font-semibold text-lg text-gray-700">
-              Buscar Por Nombre o Documento...
-            </h1>
-            <FormQueryApprentices
-              getApprentice={getApprentice}
-              deleteApprentice={deleteApprentice}
-              buttonForm={buttonForm}
-              apprenticeQuery={apprenticeQuery}
-              setApprenticeQuery={setApprenticeQuery}
-            />
-          </div>
+
           <div>
             <h1 className="font-semibold text-lg text-gray-700">
               Subir Archivo CSV
@@ -221,105 +201,21 @@ const CrudApprentices = () => {
           </div>
         </div>
         <hr />
-        <h2 className="font-semibold mb-4 text-lg text-gray-700 mt-3">
-          Doble Click sobre el aprendiz para ver informacion detallada...
-        </h2>
-        {msg && <Alerta alerta={alerta} />}
-        <table className="min-w-full bg-white text-center text-sm">
-          <thead className="text-white bg-green-700">
-            <tr className="">
-              <th className="py-2 px-4 border-2 border-b-gray-500">
-                Documento
-              </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Nombres</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Apellidos</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Ficha</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Fecha de Nacimiento </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Ciudad </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Lugar Residencia </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Edad </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Hijos </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Nombre EPS </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Telefono Padre </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Genero</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Correo</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Telefono Aprendiz</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Total Memorandos</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Total Inasistencias</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Patrocinio</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Estado</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Nombre Empresa</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Centro Convivencia</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Foto Aprendiz</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(apprenticeQuery.length ? apprenticeQuery : apprenticeList).map(
-              (apprentice, indice) =>
-                indice >= desde && indice < hasta ? (
-                  <tr
-                    key={apprentice.Id_Aprendiz}
-                    className={apprentice.Estado === "1" ? "bg-red-500" : ""}
-                    onDoubleClick={() => [
-                      setOnDoubleClickAppretice(apprentice),
-                      setModalDialog(true),
-                    ]}
-                  >
-                    <td className="py-2 px-4 border-b">{apprentice.Id_Aprendiz}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Nom_Aprendiz}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Ape_Aprendiz}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Id_Ficha}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Fec_Nacimiento}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.ciudad.Nom_Ciudad}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Lugar_Residencia}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Edad}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Hijos}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Nom_Eps}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Tel_Padre}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Gen_Aprendiz}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Cor_Aprendiz}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Tel_Aprendiz}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Tot_Memorandos}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Tot_Inasistencias}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Patrocinio}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Estado}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Nom_Empresa}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.CentroConvivencia}</td>
-                        <td className="py-2 px-4 border-b">
-                                {apprentice.Foto_Aprendiz ? (
-                                    <img width="80px" src={`${URIFOTOS}/${apprentice.Foto_Aprendiz}`} alt="Imagen de el Aprendiz" />
-                                ) : (
-                                    <span>No Tiene IMG</span>
-                                )}
-                            </td>
 
-                    <td className="py-2 px-4 border-b">
-                      <button
-                        onClick={() => [
-                          getApprentice(apprentice.Id_Aprendiz),
-                          setStateAddApprentice(true)
-                        ]}
-                        className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
-                      >
-                        <FaRegEdit />
-                      </button>
-                      <button
-                        onClick={() => deleteApprentice(apprentice.Id_Aprendiz)}
-                        className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
-                      >
-                        <MdDeleteOutline />
-                      </button>
-                    </td>
-                  </tr>
-                ) : (
-                  ""
-                )
-            )}
-          </tbody>
-        </table>
+<br />
+        {msg && <Alerta alerta={alerta} />}
+        <hr />
+
+        <DataTableApprentices
+          apprenticeList={apprenticeList}
+          getApprentice={getApprentice}
+          deleteApprentice={deleteApprentice}
+          setStateAddApprentice={setStateAddApprentice}
+          URIFOTOS={URIFOTOS}
+        />
+
       </div>
-      <Pagination URI={URI} setDesde={setDesde} setHasta={setHasta} />
+
       <hr />
       {stateAddApprentice ? (
         <FormApprentices
@@ -330,17 +226,6 @@ const CrudApprentices = () => {
         />
       ) : null}
       <hr />
-
-      {modalDialog ? (
-        <ModalDialog
-          getApprentice={getApprentice}
-          deleteApprentice={deleteApprentice}
-          onDoubleClickAppretice={onDoubleClickAppretice}
-          setModalDialog={setModalDialog}
-          setStateAddApprentice={setStateAddApprentice}
-          setApprentice={setApprentice}
-        />
-      ) : null}
       <Outlet />
     </>
   );

@@ -37,7 +37,7 @@ function App() {
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route path="/" element={<RutaPublica />}>
+            <Route path="/" element={<RutaPublica />}>   {/*ESTA ES LA RUTA ANTES DE QUE SE AUTENTICA SOLO MUESTRA EL HEADER */}
               <Route index element={<Home />} />
               <Route path="contacto" element={<Contacto />} />
               <Route path="consultarturno" element={<ConsultarTurno />} />
@@ -45,26 +45,17 @@ function App() {
               <Route path="login" element={<LoginForm />} />
               <Route path="registrar" element={<UserForm />} />
               <Route path="olvide-password" element={<OlvidePassword />} />
-              <Route
-                path="olvide-password/:token"
-                element={<CambiarPassword />}
-              />
+              <Route path="olvide-password/:token" element={<CambiarPassword />} />
               <Route path="confirmar/:id" element={<ConfirmarCuenta />} />
             </Route>
 
-            <Route path="/admin" element={<RutaProtegida />}>
+            <Route path="/admin" element={<RutaProtegida />}>   {/*ESTA ES LA RUTA DESPUES DE QUE SE AUTENTICA LE MOSTRARA TODOS LOS CRUDS  */}
               <Route index element={<Dashboard />} />
               <Route path="aprendices/" element={<CrudApprentices />}>
                 <Route path="importCSV" element={<ImportarCSV />} />
               </Route>
-              <Route
-                path="turnos-especiales"
-                element={<CrudTurnosEspeciales />}
-              />
-              <Route
-                path="turnos-rutinarios"
-                element={<CrudTurnosRutinarios />}
-              />
+              <Route path="turnos-especiales" element={<CrudTurnosEspeciales />}/>
+              <Route path="turnos-rutinarios" element={<CrudTurnosRutinarios />}/>
               <Route path="memorandos" element={<CrudMemorandum />} />
               <Route path="unidades" element={<CrudUnidades />} />
               <Route path="fichas" element={<CrudFichas />} />
