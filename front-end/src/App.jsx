@@ -14,6 +14,10 @@ import CrudFichas from "./fichas/CrudFichas.jsx";
 import CrudFuncionarios from "./funcionarios/CrudFuncionarios.jsx";
 import CrudPrograma from "./programasFormacion/CrudProgramaFormacion.jsx";
 import CrudTalentoHumano from "./talentoHumano/CrudTalentoHumano.jsx";
+import CrudInasistencia from "./inasistencias/CrudInasistencia.jsx";
+
+
+
 
 //Rutas Publicas
 import RutaPublica from "./layout/RutaPublica.jsx";
@@ -62,6 +66,7 @@ function App() {
               <Route path="funcionarios" element={<CrudFuncionarios />} />
               <Route path="programa-formacion" element={<CrudPrograma />} />
               <Route path="talentohumano" element={<CrudTalentoHumano />} />
+              <Route path="inasistencias" element={<CrudInasistencia />} />
 
               {/* <Route path='/perfil' element={<MemorandumPDF/>}/> */}
               <Route path="PdfView" element={<VerPdf />} />

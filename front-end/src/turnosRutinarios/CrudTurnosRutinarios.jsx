@@ -118,12 +118,13 @@ const CrudTurnosRutinarios = () => {
             config
           );
           if (respuestApi.status === 200) {
-            getAllTurnosRutinarios(); // Refrescar la lista después de borrar
+            
             Swal.fire({
               title: "Borrado!",
               text: "El registro ha sido borrado.",
               icon: "success",
             });
+            getAllTurnosRutinarios(); // Refrescar la lista después de borrar
           } else {
             alert(respuestApi.data.message);
           }

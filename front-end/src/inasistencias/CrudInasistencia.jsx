@@ -1,61 +1,40 @@
 import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { ReactSession } from 'react-client-session';
+import { ReactSession } from "react-client-session";
+
+// import { exportToExcel } from './ExportExcel.js'; 
 
 
 
-import FormApprentices from "./formApprentices.jsx";
-import ImportarCSV from "./importarCSV.jsx";
 import Alerta from "../components/Alerta.jsx";
+import DataTableInasistencia from "./dataTableInasistencia.jsx";
 
-import DataTableApprentices from "./dataTableApprentices.jsx";
+
 import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 
-const URI = "/aprendiz/";
+const URI = "inasistencias";
 
-const URIFOTOS = "/public/uploads/"
-
-
-const CrudApprentices = () => {
-  const [apprenticeList, setApprenticeList] = useState([]);
-  const [buttonForm, setButtonForm] = useState("Enviar");
-  const [stateAddApprentice, setStateAddApprentice] = useState(false);
+const CrudFuncionarios = () => {
+  const [inasistenciaList, setInasistenciaList] = useState([]);
+  const [setButtonForm] = useState("Enviar");
+  const [stateAddInasistencia, setStateAddInasistencia] = useState(false);
   const [alerta, setAlerta] = useState({});
 
-  const [apprentice, setApprentice] = useState({
-    Id_Aprendiz: "",
-    Nom_Aprendiz: "",
-    Ape_Aprendiz: "",
-    Id_Ficha: "",
-    Fec_Nacimiento: "",
-    Id_Ciudad:"",
-    Lugar_Residencia:"",
-    Edad:"",
-    Hijos:"",
-    Nom_Eps:"",
-    Tel_Padre:"",
-    Gen_Aprendiz: "",
-    Cor_Aprendiz: "",
-    Tel_Aprendiz: "",
-    Tot_Memorandos: "",
-    Tot_Inasistencias: "",
-    Patrocinio: "",
-    Estado:"",
-    Nom_Empresa:"",
-    CentroConvivencia: "",
-    Foto_Aprendiz: ""
+  const [setInasistencia] = useState({
+    Id_Inasistencia: "",
+    Fec_Inasistencia: "",
+    Mot_Inasistencia: "",
+    Id_TurnoRutinario: ""
   });
 
-  
-
   useEffect(() => {
-    getAllApprentices();
+    getAllInasistencias();
   }, []);
 
-  const getAllApprentices = async () => {
+  const getAllInasistencias = async () => {
     const token = ReactSession.get("token");
     const config = {
       headers: {
@@ -64,9 +43,9 @@ const CrudApprentices = () => {
       },
     };
     try {
-      const respuestApi = await clienteAxios.get(`/aprendiz`, config);
+      const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
-        setApprenticeList(respuestApi.data);
+        setInasistenciaList(respuestApi.data);
       } else {
         setAlerta({
           msg: `Error al cargar los registros!`,
@@ -82,7 +61,7 @@ const CrudApprentices = () => {
     }
   };
 
-  const getApprentice = async (Id_Aprendiz) => {
+  const getInasistencia = async (Id_Inasistencia) => {
     setButtonForm("Actualizar");
     const token = ReactSession.get("token");
     const config = {
@@ -92,11 +71,10 @@ const CrudApprentices = () => {
       },
     };
     try {
-      const respuestApi = await clienteAxios(`/aprendiz/${Id_Aprendiz}`, config);
+      const respuestApi = await clienteAxios.get(`/${URI}/${Id_Inasistencia}`, config);
       if (respuestApi.status === 200) {
-        setApprentice({
+        setInasistencia({
           ...respuestApi.data,
-
         });
       } else {
         setAlerta({
@@ -112,16 +90,17 @@ const CrudApprentices = () => {
       console.error(error);
     }
   };
+  
 
-  const deleteApprentice = (Id_Aprendiz) => {
+  const deleteInasistencia = (Id_Inasistencia) => {
     Swal.fire({
       title: "¿Estas seguro?",
-      text: "No podras revertir esto!",
+      text: "No podrás revertir esto!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Si, Borrar!",
+      confirmButtonText: "Sí, Borrar!",
       cancelButtonText: "Cancelar",
     }).then(async (result) => {
       if (result.isConfirmed) {
@@ -134,17 +113,17 @@ const CrudApprentices = () => {
         };
         try {
           const respuestApi = await clienteAxios.delete(
-            `/aprendiz/${Id_Aprendiz}`,
+            `${URI}/${Id_Inasistencia}`,
             config
           );
+          console.log(respuestApi);
           if (respuestApi.status == 200) {
-            updateTextButton("Enviar");
+            getAllInasistencias();
             Swal.fire({
               title: "Borrado!",
               text: "El registro ha sido borrado.",
               icon: "success",
             });
-            getAllApprentices();
           } else {
             alert(respuestApi.data.message);
           }
@@ -160,78 +139,65 @@ const CrudApprentices = () => {
     });
   };
 
-  const updateTextButton = (text) => {
-    setButtonForm(text);
-  };
+  // const updateTextButton = (text) => {
+  //   setButtonForm(text);
+  // };
 
   const { msg } = alerta;
 
+  // const handleExportToExcel = () => {
+  //   exportToExcel([], inasistenciaList); // Pasar [] si `programa` está vacío
+  // };
+
+
+
   return (
     <>
-    <br />
-    <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">Gestionar Informacion de los Aprendices</h1>
+      <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
+      Gestionar Informacion de las Inasistencias
+      </h1>
       <div className="flex justify-end pb-3">
         <button
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
           onClick={() => {
-            setStateAddApprentice(!stateAddApprentice);
+            setStateAddInasistencia(!stateAddInasistencia);
           }}
         >
-          {stateAddApprentice ? (
+          {stateAddInasistencia ? (
             <AiOutlineMinusCircle size={16} className="me-2" />
           ) : (
             <IoMdPersonAdd size={16} className="me-2" />
           )}
-          {stateAddApprentice ? "Ocultar" : "Agregar"}
+          {stateAddInasistencia ? "Ocultar" : "Agregar"}
         </button>
 
-        <a
-          href="Public/Aprendiz.csv"
-          download="Aprendiz.csv"
+        {/* <button
+          onClick={handleExportToExcel}
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
         >
-          Descargar CSV
-        </a>  
+          Exportar a Excel 
+        </button> */}
+
+
+
       </div>
       <div className="overflow-x-auto">
-        <div className="flex justify-between">
-
-          <div>
-            <h1 className="font-semibold text-lg text-gray-700">
-              Subir Archivo CSV
-            </h1>
-            <ImportarCSV URI={URI} />
-          </div>
-        </div>
         <hr />
-
-<br />
         {msg && <Alerta alerta={alerta} />}
         <hr />
-
-        <DataTableApprentices
-          apprenticeList={apprenticeList}
-          getApprentice={getApprentice}
-          deleteApprentice={deleteApprentice}
-          setStateAddApprentice={setStateAddApprentice}
-          URIFOTOS={URIFOTOS}
+        <DataTableInasistencia
+          inasistenciaList={inasistenciaList}
+          getFuncionario={getInasistencia}
+          deleteFuncionario={deleteInasistencia}
+          setStateAddInasistencia={setStateAddInasistencia}
         />
-
       </div>
-
       <hr />
-      {stateAddApprentice ? (
-        <FormApprentices
-          buttonForm={buttonForm}
-          apprentice={apprentice}
-          updateTextButton={updateTextButton}
-          setApprentice={setApprentice}
-        />
-      ) : null}
       <hr />
       <Outlet />
     </>
   );
 };
 
-export default CrudApprentices;
+
+export default CrudFuncionarios;

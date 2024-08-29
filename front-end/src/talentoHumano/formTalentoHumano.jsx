@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import clienteAxios from "../config/axios";
 
+import Alerta from "../components/Alerta";
 import { ReactSession } from 'react-client-session';
 
 const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAllTalentoHumano }) => {
@@ -23,6 +24,7 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
   // Estado para mensajes
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(""); // 'success' o 'error'
+  const [alerta, setAlerta] = useState({});
 
   useEffect(() => {
     const fetchFichas = async () => {
@@ -106,12 +108,15 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
         getAllTalentoHumano();
         updateTextButton("Enviar");
       } else {
-        setMessage(respuestApi.data.message || "Error al registrar Talento Humano.");
+        setMessage(respuestApi.data.message || "Error al registrar Talento Humano .");
         setMessageType("error");
       }
     } catch (error) {
-      setMessage("Error al registrar Talento Humano.");
-      setMessageType("error");
+      setAlerta({
+        msg: "Todos los campos son obligatorios!",
+        error: true,
+      });
+
     }
   };
 
@@ -146,6 +151,8 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
     setData();
   }, [talentoHumano]);
 
+  const { msg } = alerta;
+
   return (
     <>
       <div className="flex justify-center items-center min-h-screen bg-gray-100 content-center w-full">
@@ -154,6 +161,7 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
           onSubmit={sendForm}
           className="bg-white shadow-2xl rounded-2xl px-14 pt-6 pb-8 mb-4 max-w-3xl w-full mt-10"
          >
+          {msg && <Alerta alerta={alerta} />}
           <h1 className="font-bold text-green-600 text-3xl uppercase text-center my-5">
             Registrar Talento Humano
           </h1>

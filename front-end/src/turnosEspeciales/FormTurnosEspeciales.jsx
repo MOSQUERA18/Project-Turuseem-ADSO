@@ -78,7 +78,10 @@ useEffect(() => {
         setUnidades(responseUnidades.data);
       }
     } catch (error) {
-      console.error("Error fetching areas:", error);
+      setAlerta({
+        msg: "Todos los campos son obligatorios!",
+        error: true,
+      });
     }
   };
   getAllUnidades();
@@ -168,7 +171,7 @@ useEffect(() => {
     } catch (error) {
       console.error("Error en la solicitud:", error);
       setAlerta({
-        msg: error.response?.data?.message || "Ocurrió un error! Intente de nuevo.",
+        msg: "Todos Los Campos Son Obligatorios!.",
         error: true,
       });
     }

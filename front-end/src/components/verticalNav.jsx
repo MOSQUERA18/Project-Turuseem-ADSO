@@ -6,6 +6,13 @@ import { ReactSession } from "react-client-session";
 import { useContext } from "react";
 import AuthContext from "../context/authProvider.jsx";
 
+//ICONO DE INASISTENCIAS
+import { GiNotebook } from "react-icons/gi";
+
+//ICONO DE TALENTO HUMANO
+import { GiHumanPyramid } from "react-icons/gi";
+
+
 //Icons
 import { BsFillPeopleFill } from "react-icons/bs";
 import { IoDocumentText, IoSettings, IoLogOut } from "react-icons/io5";
@@ -226,7 +233,7 @@ const VerticalNav = () => {
           </button>
 
           <button className="flex jusitfy-start items-center w-full  space-x-4 pl-3 focus:outline-none text-white focus:text-indigo-400 rounded border-y py-2 border-white">
-            <FaPeopleGroup size={22} />
+          <GiHumanPyramid size={28}/>
             <Link
               to="talentohumano"
               className="text-white text-sm uppercase font-bold"
@@ -234,6 +241,18 @@ const VerticalNav = () => {
               Talento Humano
             </Link>
           </button>
+
+          <button className="flex jusitfy-start items-center w-full  space-x-4 pl-3 focus:outline-none text-white focus:text-indigo-400 rounded border-y py-2 border-white">
+          <GiNotebook size={28}/>
+            <Link
+              to="inasistencias"
+              className="text-white text-sm uppercase font-bold"
+            >
+              Inasistencias
+            </Link>
+          </button>
+
+
         </div>
         <div className="flex flex-col justify-between items-center h-full pb-6   px-6  w-full  space-y-15 mt-3">
           <div className=" flex justify-between items-center w-full">

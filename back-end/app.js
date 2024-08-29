@@ -122,8 +122,10 @@ ApprenticeModel.belongsTo(cityModel,{foreignKey:'Id_Ciudad',as:'ciudad'})
 
 
 // //Inasistencias
-// AbsenceModel.belongsTo(TurnoEspecialAprendizModel,{foreignKey:"Id_TurnoEspecialAprendiz", as:"turnoespecialaprendiz"})
-// TurnoEspecialAprendizModel.hasMany(AbsenceModel,{foreignKey:"Id_TurnoEspecialAprendiz",as:"inasistencias"})
+TurnosRutinariosModel.hasMany(AbsenceModel,{foreignKey:"Id_TurnoRutinario",as:"inasistencias"})
+AbsenceModel.belongsTo(TurnosRutinariosModel,{foreignKey:"Id_TurnoRutinario", as:"turnorutinario"})
+ApprenticeModel.hasMany(AbsenceModel,{foreignKey:"Id_TurnoRutinario", as:"inasistencias"})
+AbsenceModel.belongsTo(ApprenticeModel,{foreignKey:"Id_TurnoRutinatio",as:"aprendiz"})
 
 
 //Turno Especial - Fichas
@@ -149,11 +151,13 @@ TurnosRutinariosModel.belongsTo(ApprenticeModel, { foreignKey: 'Id_Aprendiz', as
 UnitModel.hasMany(TurnosRutinariosModel, { foreignKey: 'Id_Unidad', as: 'turnosrutinarios' })
 TurnosRutinariosModel.belongsTo(UnitModel, { foreignKey: 'Id_Unidad', as: 'unidad' })
 
-AbsenceModel.belongsTo(TurnoRutinarioAprendizModel, { foreignKey: 'Id_TurnoRutinario_Aprendiz', as: 'turnoRutinarioAprendiz' })
-TurnoRutinarioAprendizModel.hasMany(AbsenceModel, { foreignKey: 'Id_TurnoRutinario_Aprendiz', as: 'inasistencias' })
 
-AbsenceModel.belongsTo(TurnoEspecialAprendizModel, { foreignKey: 'Id_TurnoEspecial_Aprendiz', as: 'turnoEspecialAprendiz' })
-TurnoEspecialAprendizModel.hasMany(AbsenceModel, { foreignKey: 'Id_TurnoEspecial_Aprendiz', as: 'inasistencias' })
+// // RELACIONES PARA INASISTENCIAS 
+// AbsenceModel.belongsTo(TurnoRutinarioAprendizModel, { foreignKey: 'Id_TurnoRutinario_Aprendiz', as: 'turnoRutinarioAprendiz' })
+// TurnoRutinarioAprenModel.hasMany(AbsenceModel, { foreignKey: 'Id_TurnoRutinario_Aprendiz', as: 'inasistencias' })
+
+// AbsenceModel.belongsTo(TurnoEspecialAprendizModel, { foreignKey: 'Id_TurnoEspecial_Aprendiz', as: 'turnoEspecialAprendiz' })
+// TurnoEspecialAprendizModel.hasMany(AbsenceModel, { foreignKey: 'Id_TurnoEspecial_Aprendiz', as: 'inasistencias' })
 
 
-export { AreaModel, UnitModel, ProgramaModel,FichasModel,TalentoHumanoModel,cityModel,ApprenticeModel,TurnosRutinariosModel} 
+export { AreaModel, UnitModel, ProgramaModel,FichasModel,TalentoHumanoModel,cityModel,ApprenticeModel,TurnosRutinariosModel,TurnoEspecialModel} 

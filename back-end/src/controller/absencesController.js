@@ -1,8 +1,5 @@
 import AbsenceModel from "../models/absenceModel.js";
 import TurnoRutinarioModel from "../models/turnoRutinarioModel.js";
-import TurnoRutinarioAprendizModel from "../models/turnoRutinarioAprendices.js";
-import TurnoEspecialAprendizModel from "../models/turnoEspeciales_Aprendices.js";
-import TurnoEspecialModel from "../models/turnoEspecialModel.js";
 import { Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 
@@ -11,17 +8,14 @@ export const getAllAbsences = async (req, res) => {
     const inasistencias = await AbsenceModel.findAll({
       include: [
         {
-          model: TurnoRutinarioAprendizModel,
-          as: "turnoRutinarioAprendiz", // Alias usado para la relación
-        },
-        {
-          model: TurnoEspecialAprendizModel,
-          as: "turnoEspecialAprendiz", // Alias usado para la relación
-        },
+          model: TurnoRutinarioModel,
+          as: "turnorutinario", // Alias usado para la relación
+        }
       ],
     });
-    if(inasistencias.length>0){
-      res.json(200).json(inasistencias); //a todos los controllers toca agg esto para validar los datos
+
+    if(inasistencias){
+      res.status(200).json(inasistencias); //a todos los controllers toca agg esto para validar los datos
       return
     }else {
       res.status(404).json({
@@ -41,17 +35,13 @@ export const getAbsence = async (req, res) => {
       {
         include: [
           {
-            model: TurnoRutinarioAprendizModel,
-            as: "turnoRutinarioApreniz", // Alias usado para la relación
-          },
-          {
-            model: TurnoEspecialModel,
-            as: "turnoEspecial", // Alias usado para la relación
-          },
+            model: TurnoRutinarioModel,
+            as: "turnorutinario", // Alias usado para la relación
+          }
         ],
       }
     );
-    if (inasistencia.length>0) {
+    if (inasistencia) {
       res.status(200).json(inasistencia);
       return
     } else {
@@ -68,15 +58,13 @@ export const createAbsence = async (req, res) => {
     const {
       Fec_Inasistencia,
       Mot_Inasistencia,
-      Id_TurnoRutinario_Aprendiz,
-      Id_TurnoEspecial_Aprendiz,
+      Id_TurnoRutinario,
     } = req.body;
 
     const newInasistencia = await AbsenceModel.create({
       Fec_Inasistencia,
       Mot_Inasistencia,
-      Id_TurnoRutinario_Aprendiz,
-      Id_TurnoEspecial_Aprendiz,
+      Id_TurnoRutinario,
     });
     if(newInasistencia){
       res.status(201).json(newInasistencia);
@@ -94,16 +82,14 @@ export const updateAbsence = async (req, res) => {
     const {
       Fec_Inasistencia,
       Mot_Inasistencia,
-      Id_TurnoRutinario_Aprendiz,
-      Id_TurnoEspecial_Aprendiz,
+      Id_TurnoRutinario,
     } = req.body;
 
     const [updated] = await AbsenceModel.update(
       {
         Fec_Inasistencia,
         Mot_Inasistencia,
-        Id_TurnoRutinario_Aprendiz,
-        Id_TurnoEspecial_Aprendiz,
+        Id_TurnoRutinario,
       },
       {
         where: { Id_Inasistencia: req.params.Id_Inasistencia },
@@ -150,15 +136,11 @@ export const getQueryInasistencia = async (req, res) => {
       include: [
         {
           model: TurnoRutinarioModel,
-          as: "turnoRutinario", // Alias usado para la relación
-        },
-        {
-          model: TurnoEspecialModel,
-          as: "turnoEspecial", // Alias usado para la relación
-        },
+          as: "turnorutinario", // Alias usado para la relación
+        }
       ],
     });
-    if(inasistencias.length > 0){
+    if(inasistencias){
       res.status(200).json(inasistencias);
       return
     }

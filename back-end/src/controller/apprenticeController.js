@@ -109,7 +109,7 @@ export const createApprentice = async (req, res) => {
       Foto_Aprendiz,
     });
     if(newApprentice){
-      res.status(201).json(newApprentice);
+      res.status(201).json(newApprentice ,"Aprendiz Registrado Correctamente");
       return
     }
     
