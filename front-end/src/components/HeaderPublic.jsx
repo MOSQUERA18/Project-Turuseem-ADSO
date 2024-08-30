@@ -3,11 +3,6 @@
 import { useState } from "react";
 import { IoLogIn } from "react-icons/io5";
 import { Link } from "react-router-dom";
-<<<<<<< HEAD
-
-=======
-import logoTuruseem from "../assets/LOGOTURUSEEM.png";
->>>>>>> ad7e3251c2c6ea7beb91b9e6c0acc1d30657d8ea
 
 export default function HeaderPublic() {
   let arr = [true, false, false, false, false, false];
@@ -34,11 +29,7 @@ export default function HeaderPublic() {
       <div className="bg-green-500 shadow-lg py-5 px-7">
         <nav className="flex justify-between">
           <div className="flex items-center space-x-3 lg:pr-16 pr-6">
-<<<<<<< HEAD
             <img src="Public/assets/LOGOTURUSEEM.png" className="w-11 drop-shadow-2xl" />
-=======
-            <img src={logoTuruseem} className="w-11 drop-shadow-2xl" />
->>>>>>> ad7e3251c2c6ea7beb91b9e6c0acc1d30657d8ea
             <h2 className="font-bold text-2xl leading-6 text-white ">
               TURUSEEM
             </h2>
@@ -50,11 +41,7 @@ export default function HeaderPublic() {
                 style[0]
                   ? "text-white bg-green-600"
                   : "text-white bg-green-500"
-<<<<<<< HEAD
-              } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 shadow-md rounded uppercase`}
-=======
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
->>>>>>> ad7e3251c2c6ea7beb91b9e6c0acc1d30657d8ea
             >
               Home
             </Link>
@@ -64,11 +51,7 @@ export default function HeaderPublic() {
                 style[1]
                   ? "text-white bg-green-600"
                   : "text-white bg-green-500"
-<<<<<<< HEAD
-              } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 shadow-md rounded uppercase`}
-=======
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
->>>>>>> ad7e3251c2c6ea7beb91b9e6c0acc1d30657d8ea
             >
               Contacto
             </Link>
@@ -78,11 +61,7 @@ export default function HeaderPublic() {
                 style[2]
                   ? "text-white bg-green-600"
                   : "text-white bg-green-500"
-<<<<<<< HEAD
-              } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 shadow-md rounded uppercase`}
-=======
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
->>>>>>> ad7e3251c2c6ea7beb91b9e6c0acc1d30657d8ea
             >
               Consultar Turno
             </Link>
@@ -92,11 +71,7 @@ export default function HeaderPublic() {
                 style[3]
                   ? "text-white bg-green-600"
                   : "text-white bg-green-500"
-<<<<<<< HEAD
-              } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 shadow-md rounded uppercase`}
-=======
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
->>>>>>> ad7e3251c2c6ea7beb91b9e6c0acc1d30657d8ea
             >
               Manual
             </Link>
