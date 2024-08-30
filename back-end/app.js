@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import cors from "cors";
-import { app, BrowserWindow } from "electron";
+// import { app, BrowserWindow } from "electron";
 
 import db from "./src/database/db.js";
 

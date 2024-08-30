@@ -20,7 +20,7 @@ import RutaPublica from "./layout/RutaPublica.jsx";
 import Home from "./home/home.jsx"
 import Contacto from "./home/Contacto.jsx"
 import ConsultarTurno from "./home/ConsultarTurno.jsx"
-import Manual from "./home/Manual.jsx";
+import Manual2 from "./home/Manual2.jsx";
 import LoginForm from "./users/LoginUser";
 import UserForm from "./users/CreateAccount";
 import OlvidePassword from "./users/OlvidePassword";
@@ -41,7 +41,7 @@ function App() {
               <Route index element={<Home />} />
               <Route path="contacto" element={<Contacto />} />
               <Route path="consultarturno" element={<ConsultarTurno />} />
-              <Route path="manual" element={<Manual />} />
+              <Route path="manual" element={<Manual2 />} />
               <Route path="login" element={<LoginForm />} />
               <Route path="registrar" element={<UserForm />} />
               <Route path="olvide-password" element={<OlvidePassword />} />

@@ -42,7 +42,7 @@ export default function HeaderPublic() {
                 style[0]
                   ? "text-white bg-green-600"
                   : "text-white bg-green-500"
-              } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 shadow-md rounded uppercase`}
+              } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
               Home
             </Link>
@@ -52,7 +52,7 @@ export default function HeaderPublic() {
                 style[1]
                   ? "text-white bg-green-600"
                   : "text-white bg-green-500"
-              } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 shadow-md rounded uppercase`}
+              } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
               Contacto
             </Link>
@@ -62,7 +62,7 @@ export default function HeaderPublic() {
                 style[2]
                   ? "text-white bg-green-600"
                   : "text-white bg-green-500"
-              } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 shadow-md rounded uppercase`}
+              } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
               Consultar Turno
             </Link>
@@ -72,7 +72,7 @@ export default function HeaderPublic() {
                 style[3]
                   ? "text-white bg-green-600"
                   : "text-white bg-green-500"
-              } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 shadow-md rounded uppercase`}
+              } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
               Manual
             </Link>
