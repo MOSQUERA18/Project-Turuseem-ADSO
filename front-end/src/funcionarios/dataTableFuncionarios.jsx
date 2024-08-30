@@ -154,4 +154,8 @@ const DataTableFuncionarios = ({
   );
 };
 
+<<<<<<< HEAD
 export default DataTableFuncionarios;
+=======
+export default DataTableFuncionarios;
+>>>>>>> ad7e3251c2c6ea7beb91b9e6c0acc1d30657d8ea

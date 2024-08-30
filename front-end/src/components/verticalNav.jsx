@@ -239,7 +239,11 @@ const VerticalNav = () => {
           <div className=" flex justify-between items-center w-full">
             <div className="flex justify-center items-center  space-x-2">
               <div>
+<<<<<<< HEAD
                 <img className="rounded-full" src="Public/assets/LOGOTURUSEEM.png" alt="avatar" />
+=======
+                <img className="rounded-full" src={logoTuruseem} alt="avatar" />
+>>>>>>> ad7e3251c2c6ea7beb91b9e6c0acc1d30657d8ea
               </div>
               <div className="flex justify-start flex-col items-start">
                 <p className="cursor-pointer text-sm leading-5 text-white">

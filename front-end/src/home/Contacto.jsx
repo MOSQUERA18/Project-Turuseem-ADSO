@@ -1,4 +1,13 @@
 /* eslint-disable react/prop-types */
+<<<<<<< HEAD
+=======
+import Logo from '../assets/LOGOSENAEMPRESA.png';
+import JuanLinares from "../assets/JuanLinares.jpg"
+import mosquera from "../assets/mosquera.png"
+import Kim from "../assets/Kim.jpeg"
+import Natalia from "../assets/Natalia.jpeg"
+import Lina from "../assets/Lina.jpeg"
+>>>>>>> ad7e3251c2c6ea7beb91b9e6c0acc1d30657d8ea
 
 const ContactCard = ({ name, info, age, imageUrl, whatsappLink, socialLink }) => {
   return (
@@ -37,7 +46,11 @@ const Contacto = () => {
       name: 'Juan David Linares Barragán',
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: "18 Años",
+<<<<<<< HEAD
       imageUrl: "Public/assets/JuanLinares.jpg",
+=======
+      imageUrl: JuanLinares,
+>>>>>>> ad7e3251c2c6ea7beb91b9e6c0acc1d30657d8ea
       whatsappLink: 'https://wa.me/573209455659',
       socialLink: 'https://facebook.com/Linares.Juan.5855',
     },
@@ -45,7 +58,11 @@ const Contacto = () => {
       name: 'Marlon Kaleth Sarmiento Mosquera',
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: "18 Años",
+<<<<<<< HEAD
       imageUrl: "Public/assets/mosquera.png",
+=======
+      imageUrl: mosquera,
+>>>>>>> ad7e3251c2c6ea7beb91b9e6c0acc1d30657d8ea
       whatsappLink: 'https://wa.me/3209455659',
       socialLink: 'https://www.facebook.com/marlon.mosquera.5855',
     },
@@ -53,7 +70,11 @@ const Contacto = () => {
       name: 'Natalia Torres Rodriguez',
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: "20 Años",
+<<<<<<< HEAD
       imageUrl: "Public/assets/Natalia.jpeg",
+=======
+      imageUrl: Natalia,
+>>>>>>> ad7e3251c2c6ea7beb91b9e6c0acc1d30657d8ea
       whatsappLink: 'https://wa.me/3209455659',
       socialLink: 'https://facebook.com/',
     },
@@ -61,7 +82,11 @@ const Contacto = () => {
       name: 'Kimberly Sharlot Hernadez Acosta',
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: "20 Años",
+<<<<<<< HEAD
       imageUrl: "Public/assets/Kim.jpeg",
+=======
+      imageUrl: Kim,
+>>>>>>> ad7e3251c2c6ea7beb91b9e6c0acc1d30657d8ea
       whatsappLink: 'https://wa.me/3209455659',
       socialLink: 'https://facebook.com/marialopez',
     },
@@ -69,7 +94,11 @@ const Contacto = () => {
       name: 'Lina Julieth Carvajal Mendoza',
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: "26 Años",
+<<<<<<< HEAD
       imageUrl: "Public/assets/Lina.jpeg",
+=======
+      imageUrl: Lina,
+>>>>>>> ad7e3251c2c6ea7beb91b9e6c0acc1d30657d8ea
       whatsappLink: 'https://wa.me/3209455659',
       socialLink: 'https://facebook.com/marialopez',
     },
