@@ -18,11 +18,11 @@ export const getAllApprentices = async (req, res) => {
         },
         {
           model: cityModel,
-          as: "ciudades", // Alias para la relación con Ciudad
+          as: "ciudad", // Alias para la relación con Ciudad
         },
       ],
     });
-    if(apprentices.length>0){
+    if(apprentices){
       res.status(200).json(apprentices);
       return
     }
@@ -42,11 +42,11 @@ export const getApprentice = async (req, res) => {
         },
         {
           model: cityModel,
-          as: "ciudades", // Alias para la relación con Ciudad
+          as: "ciudad", // Alias para la relación con Ciudad
         },
       ],
     });
-    if (apprentice.length>0) {
+    if (apprentice) {
       res.status(200).json(apprentice);
       return
     } else {
@@ -110,6 +110,7 @@ export const createApprentice = async (req, res) => {
     });
     if(newApprentice){
       res.status(201).json(newApprentice);
+      return
     }
     
   } catch (error) {
@@ -142,45 +143,37 @@ export const updateApprentice = async (req, res) => {
       Estado,
       Nom_Empresa,
       CentroConvivencia,
+      Foto_Aprendiz
     } = req.body;
-    
-    const Foto_Aprendiz = req.file ? req.file.filename : null;
 
-    if (!req.params.Id_Aprendiz) {
-      return res.status(400).json({ message: "ID del aprendiz no proporcionado" });
-    }
-
-    const updateData = {
-      Id_Aprendiz,
-      Nom_Aprendiz,
-      Ape_Aprendiz,
-      Id_Ficha,
-      Fec_Nacimiento,
-      Id_Ciudad,
-      Lugar_Residencia,
-      Edad,
-      Hijos,
-      Nom_Eps,
-      Tel_Padre,
-      Gen_Aprendiz,
-      Cor_Aprendiz,
-      Tel_Aprendiz,
-      Tot_Memorandos,
-      Tot_Inasistencias,
-      Patrocinio,
-      Estado,
-      Nom_Empresa,
-      CentroConvivencia,
-    };
-
-    // Solo agregar Foto_Aprendiz si está presente
-    // if (Foto_Aprendiz) {
-    //   updateData.Foto_Aprendiz = Foto_Aprendiz;
-    // }
-
-    const [updated] = await ApprenticeModel.update(updateData, {
-      where: { Id_Aprendiz: req.params.Id_Aprendiz },
-    });
+    const [updated] = await ApprenticeModel.update(
+      {
+        Id_Aprendiz,
+        Nom_Aprendiz,
+        Ape_Aprendiz,
+        Id_Ficha,
+        Fec_Nacimiento: new Date(Fec_Nacimiento).toISOString().split('T')[0],
+        Id_Ciudad,
+        Lugar_Residencia,
+        Edad,
+        Hijos,
+        Nom_Eps,
+        Tel_Padre,
+        Gen_Aprendiz,
+        Cor_Aprendiz,
+        Tel_Aprendiz,
+        Tot_Memorandos,
+        Tot_Inasistencias,
+        Patrocinio,
+        Estado,
+        Nom_Empresa,
+        CentroConvivencia,
+        Foto_Aprendiz,
+      },
+      {
+        where: { Id_Aprendiz: req.params.Id_Aprendiz },
+      }
+    );
 
     if (updated === 0) {
       res.status(404).json({ message: "Aprendiz no encontrado" });
@@ -192,6 +185,7 @@ export const updateApprentice = async (req, res) => {
     logger.error(`Error al actualizar el aprendiz: ${error}`);
   }
 };
+
 
 
 

@@ -17,12 +17,11 @@ export const getAllTalentoHumano = async (req, res) => {
       return;
     } else {
       res.status(404).json({
-        message: "No se encontró Registros En talento humano.",
+        message: "No se encontró talento humano.",
       });
     }
   } catch (error) {
-    console.log(error)
-    logger.error("Error fetching talento humano: ", error);
+    logger.error("Error fetching talento humano: ", error.message);
     res.status(500).json({
       message: "Error al recuperar el talento humano.",
     });
@@ -49,7 +48,7 @@ export const getTalentoHumano = async (req, res) => {
       });
     }
   } catch (error) {
-    logger.error("Error fetching talento humano: ", error);
+    logger.error("Error fetching talento humano: ", error.message);
     res.status(500).json({
       message: "Error al recuperar el talento humano.",
     });

@@ -5,19 +5,21 @@ import {
   createTurnoRutinario,
   updateTurnoRutinario,
   deleteTurnoRutinario,
+  getTurnoRutinariosForAprendiz,
 } from "../controller/turnoRutinarioController.js";
-import verifyAuth from "../middleware/authMiddleware.js";
+import checkAuth from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router
   .route("/")
-  .get(verifyAuth, getAllTurnosRutinarios)
-  .post(verifyAuth, createTurnoRutinario);
+  .get(checkAuth, getAllTurnosRutinarios)
+  .post(checkAuth, createTurnoRutinario);
 router
   .route("/:Id_TurnoRutinario")
-  .get(verifyAuth, getTurnoRutinario)
-  .put(verifyAuth, updateTurnoRutinario)
-  .delete(verifyAuth, deleteTurnoRutinario);
+  .get(checkAuth, getTurnoRutinario)
+  .put(checkAuth, updateTurnoRutinario)
+  .delete(checkAuth, deleteTurnoRutinario);
+router.get('/consulta/:Id_Aprendiz', getTurnoRutinariosForAprendiz)
 
 export default router;

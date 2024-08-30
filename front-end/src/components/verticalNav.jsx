@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import logoTuruseem from "../assets/LOGOTURUSEEM.png";
+
 import { Link } from "react-router-dom";
 import { ReactSession } from "react-client-session";
 
+import { useContext } from "react";
+import AuthContext from "../context/authProvider.jsx";
+
 //Icons
 import { BsFillPeopleFill } from "react-icons/bs";
-import { IoDocumentText, IoSettings } from "react-icons/io5";
+import { IoDocumentText, IoSettings, IoLogOut } from "react-icons/io5";
 import { PiNotebookFill } from "react-icons/pi";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { FaClipboardCheck, FaPeopleGroup } from "react-icons/fa6";
@@ -15,7 +18,9 @@ import clienteAxios from "../config/axios.jsx";
 const VerticalNav = () => {
   const [show, setShow] = useState(true);
   const [user, setUser] = useState(null); // Inicializa el estado del usuario como null
-  
+
+  const { cerrarSesion } = useContext(AuthContext); // Uso el contexto para acceder a la función cerrarSesion
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -57,10 +62,10 @@ const VerticalNav = () => {
     return <div>Cargando...</div>;
   }
   return (
-    <div>
+    <div className="min-h-screen">
       <div className=" bg-green-500 xl:hidden flex justify-between w-full p-6 items-center">
         <div className="flex justify-between  items-center space-x-3">
-          <img src={logoTuruseem} className="w-12 drop-shadow-2xl" />
+          <img src="Public/assets/LOGOTURUSEEM.png" className="w-12 drop-shadow-2xl" />
 
           <p className="text-2xl leading-6 text-white font-bold">TURUSEEM</p>
         </div>
@@ -140,18 +145,18 @@ const VerticalNav = () => {
         id="Main"
         className={`${
           show ? "translate-x-0" : "-translate-x-full"
-        } xl:rounded-r transform  xl:translate-x-0  ease-in-out transition duration-500 flex justify-center items-start h-full  w-full sm:w-64 bg-green-500 flex-col`}
+        } transform  xl:translate-x-0  ease-in-out transition duration-500 flex justify-center items-start h-full  w-full sm:w-64 bg-green-500 flex-col`}
       >
         <div className="hidden xl:flex justify-start p-6 items-center space-x-3">
-          <img src={logoTuruseem} className="w-12 drop-shadow-2xl" />
+          <img src="Public/assets/LOGOTURUSEEM.png"className="w-12 drop-shadow-2xl" />
           <p className="text-2xl leading-6 text-white font-bold">TURUSEEM</p>
         </div>
-        <div className="mt-6 flex flex-col justify-end items-center  pl-4 w-full border-gray-600 border-b space-y-3 p-5 ">
+        <div className="flex flex-col justify-end items-center  pl-4 w-full border-gray-600 border-b space-y-3 p-5 ">
           <button className="flex jusitfy-start items-center space-x-4 pl-3 w-full  focus:outline-none  focus:text-indigo-400  text-white border-y py-2 border-white rounded">
             <BsFillPeopleFill size={22} />
             <Link
               to="aprendices"
-              className="text-white text-base uppercase font-bold"
+              className="text-white text-sm uppercase font-bold"
             >
               Aprendices
             </Link>
@@ -160,16 +165,25 @@ const VerticalNav = () => {
             <MdAssignmentTurnedIn size={22} />
             <Link
               to="turnos-especiales"
-              className="text-white text-base uppercase font-bold"
+              className="text-white text-sm uppercase font-bold"
             >
               Turnos Especiales
+            </Link>
+          </button>
+          <button className="flex jusitfy-start items-center w-full  space-x-4 pl-3 focus:outline-none text-white focus:text-indigo-400 rounded border-y py-2 border-white ">
+            <MdAssignmentTurnedIn size={22} />
+            <Link
+              to="turnos-rutinarios"
+              className="text-white text-sm uppercase font-bold"
+            >
+              Turnos Rutinarios
             </Link>
           </button>
           <button className="flex jusitfy-start items-center w-full  space-x-4 pl-3 focus:outline-none text-white focus:text-indigo-400 rounded border-y py-2 border-white">
             <IoDocumentText size={22} />
             <Link
               to="memorandos"
-              className="text-white text-base uppercase font-bold"
+              className="text-white text-sm uppercase font-bold"
             >
               Memorandos
             </Link>
@@ -178,7 +192,7 @@ const VerticalNav = () => {
             <PiNotebookFill size={22} />
             <Link
               to="programa-formacion"
-              className="text-white text-base uppercase font-bold"
+              className="text-white text-sm uppercase font-bold"
             >
               Programa
             </Link>
@@ -187,7 +201,7 @@ const VerticalNav = () => {
             <SiHomeassistantcommunitystore size={22} />
             <Link
               to="unidades"
-              className="text-white text-base uppercase font-bold"
+              className="text-white text-sm uppercase font-bold"
             >
               Unidades
             </Link>
@@ -196,7 +210,7 @@ const VerticalNav = () => {
             <FaClipboardCheck size={22} />
             <Link
               to="fichas"
-              className="text-white text-base uppercase font-bold"
+              className="text-white text-sm uppercase font-bold"
             >
               Fichas
             </Link>
@@ -205,42 +219,51 @@ const VerticalNav = () => {
             <FaPeopleGroup size={22} />
             <Link
               to="funcionarios"
-              className="text-white text-base uppercase font-bold"
+              className="text-white text-sm uppercase font-bold"
             >
               Funcionarios
             </Link>
           </button>
 
-          <Link
+          <button className="flex jusitfy-start items-center w-full  space-x-4 pl-3 focus:outline-none text-white focus:text-indigo-400 rounded border-y py-2 border-white">
+            <FaPeopleGroup size={22} />
+            <Link
               to="talentohumano"
-              className="text-white text-base uppercase font-bold"
+              className="text-white text-sm uppercase font-bold"
             >
               Talento Humano
             </Link>
-
-
+          </button>
         </div>
-        <div className="flex flex-col justify-between items-center h-full pb-6   px-6  w-full  space-y-15 ">
+        <div className="flex flex-col justify-between items-center h-full pb-6   px-6  w-full  space-y-15 mt-3">
           <div className=" flex justify-between items-center w-full">
             <div className="flex justify-center items-center  space-x-2">
               <div>
-                <img
-                  className="rounded-full"
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTN9fV4_xpG-p-D2DIb5JQe7OqzM6tL2DDGHw&s"
-                  alt="avatar"
-                />
+                <img className="rounded-full" src="Public/assets/LOGOTURUSEEM.png" alt="avatar" />
               </div>
               <div className="flex justify-start flex-col items-start">
                 <p className="cursor-pointer text-sm leading-5 text-white">
-                  {user.usuario.Nom_User}
+                  {user.usuario.Nom_User.split(" ")[1]}
                 </p>
                 <p className="cursor-pointer text-xs leading-3 text-gray-300">
-                  {user.usuario.Cor_User}
+                  {user.usuario.Cor_User.split(".")[0]}
                 </p>
               </div>
             </div>
             <IoSettings size={45} className="text-white" />
           </div>
+          {/* Botón de Cerrar Sesión */}
+          <button 
+          onClick={cerrarSesion}
+          className="flex jusitfy-start items-center w-full  space-x-4 pl-3 focus:outline-none text-white focus:text-indigo-400 rounded border-y py-2 border-white hover:bg-green-6 mt-8">
+            <IoLogOut size={22} />
+            <Link
+              to="talentohumano"
+              className="text-white text-sm uppercase font-bold"
+            >
+              Cerrar Sesion
+            </Link>
+          </button>
         </div>
       </div>
     </div>

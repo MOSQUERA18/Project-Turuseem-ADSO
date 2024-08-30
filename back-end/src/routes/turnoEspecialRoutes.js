@@ -1,4 +1,7 @@
 import express from 'express';
+import multer from 'multer';
+
+
 import {
   getAllTurnosEspeciales,
   getTurnoEspecial,
@@ -11,16 +14,28 @@ import checkAuth from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router
-  .route('/')
-  .get(checkAuth, getAllTurnosEspeciales)
-  .post(checkAuth, createTurnoEspecial);
+const upload = multer({ 
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'public/uploads/') // Asegúrate de que este directorio exista
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + '-' + file.originalname)
+    }
+  })
+});
+
 
 router
-  .route('/:Id_TurnoEspecial')
-  .get(checkAuth, getTurnoEspecial)
-  .put(checkAuth, updateTurnoEspecial)
-  .delete(checkAuth, deleteTurnoEspecial);
+  .route('/')
+  .get( checkAuth, getAllTurnosEspeciales )
+  .post( checkAuth,upload.single( 'Img_Asistencia' ), createTurnoEspecial );
+
+router
+  .route( '/:Id_TurnoEspecial' )
+  .get( checkAuth, getTurnoEspecial )
+  .put(checkAuth,upload.single('Img_Asistencia' ), updateTurnoEspecial )
+  .delete(checkAuth, deleteTurnoEspecial );
 
 router
   .route('/query/:Id_TurnoEspecial')

@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 import UserModel from "../models/userModel.js";
 import { logger } from "./logMiddleware.js";
 
-
 const checkAuth = async (req, res, next) => {
   let token;
 
@@ -27,19 +26,6 @@ const checkAuth = async (req, res, next) => {
         attributes: { exclude: ["password", "Confirmado", "token"] },
       });
 
-
-//NO MUESTRA EL TOKEN CON ESTA INSTRUCCION
-      // const hashedId_User = await verificarJWT(token);
-
-      // // Busca el usuario en la base de datos usando el ID desencriptado
-      // const user = await UserModel.findOne({
-      //   where: { hashedId_User }, // Ajusta esto según tu modelo de datos
-      //   attributes: { exclude: ["password", "Confirmado", "token"] },
-      // });
-
-      console.log("User db", user);
-      
-
       // Verifica si el usuario existe y si el token coincide
       if (!user) {
         return res.status(403).json({ msg: "Usuario no encontrado" });
@@ -50,7 +36,7 @@ const checkAuth = async (req, res, next) => {
     } catch (error) {
       // Maneja errores de token, como expiración o firma inválida
       logger.error("Token no válido o expirado", error);
-      return res.status(403).json({ msg: "Token no válido o expirado" });
+      return res.status(403).json({ msg: "Token no valido o expirado" });
     }
   }
   // Si no hay token, devuelve un error
