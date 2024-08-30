@@ -3,7 +3,7 @@
 const Home = () => {
   return (
     <>
-      <h1 className="text-stone-400 font-black text-3xl sm:text-4xl text-center">
+      <h1 className="text-stone-900 font-black text-3xl sm:text-4xl text-center">
         Bienvenidos a <span className="text-green-600">TURUSEEM</span>
       </h1>
       <div className="flex flex-col sm:flex-row justify-evenly items-center mt-10 sm:mt-20">

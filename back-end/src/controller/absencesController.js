@@ -41,6 +41,7 @@ export const getAbsence = async (req, res) => {
         ],
       }
     );
+    // console.log(inasistencia)
     if (inasistencia) {
       res.status(200).json(inasistencia);
       return

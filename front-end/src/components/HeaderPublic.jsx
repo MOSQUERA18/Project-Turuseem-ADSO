@@ -64,7 +64,7 @@ export default function HeaderPublic() {
                   : "text-white bg-green-500"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 shadow-md rounded uppercase`}
             >
-              Consultar Turno
+              Consultar Turno Rutinario
             </Link>
             <Link to='manual'
               onClick={() => selected(3)}

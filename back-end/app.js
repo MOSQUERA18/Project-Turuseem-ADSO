@@ -125,7 +125,7 @@ ApprenticeModel.belongsTo(cityModel,{foreignKey:'Id_Ciudad',as:'ciudad'})
 TurnosRutinariosModel.hasMany(AbsenceModel,{foreignKey:"Id_TurnoRutinario",as:"inasistencias"})
 AbsenceModel.belongsTo(TurnosRutinariosModel,{foreignKey:"Id_TurnoRutinario", as:"turnorutinario"})
 ApprenticeModel.hasMany(AbsenceModel,{foreignKey:"Id_TurnoRutinario", as:"inasistencias"})
-AbsenceModel.belongsTo(ApprenticeModel,{foreignKey:"Id_TurnoRutinatio",as:"aprendiz"})
+AbsenceModel.belongsTo(ApprenticeModel,{foreignKey:"Id_TurnoRutinario",as:"aprendiz"})
 
 
 //Turno Especial - Fichas

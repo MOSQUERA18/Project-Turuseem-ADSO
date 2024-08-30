@@ -73,7 +73,7 @@ const FormTurnoRutinario = ({
         Authorization: `Bearer ${token}`,
       },
     };
-
+  
     try {
       let respuestApi;
       if (buttonForm === "Actualizar") {
@@ -91,7 +91,6 @@ const FormTurnoRutinario = ({
           },
           config
         );
-        console.log(respuestApi);
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
           `/turnoRutinario`,
@@ -108,14 +107,18 @@ const FormTurnoRutinario = ({
           config
         );
       }
-
+  
       if (respuestApi.status === 201 || respuestApi.status === 200) {
         setAlerta({
           msg: `Registro exitoso!`,
         });
+  
+        // Crear registro de inasistencia si Ind_Asistencia es "No"
         if (Ind_Asistencia === "No") {
-          await crearRegistroInasistencia();
+          const turnoRutinarioId = respuestApi.data.Id_TurnoRutinario || Id_TurnoRutinario;
+          await crearRegistroInasistencia(turnoRutinarioId);
         }
+  
         clearForm();
         getAllTurnosRutinarios();
         updateTextButton("Enviar");
@@ -133,8 +136,9 @@ const FormTurnoRutinario = ({
       });
     }
   };
+  
 
-  const crearRegistroInasistencia = async () => {
+  const crearRegistroInasistencia = async (Id_TurnoRutinario) => {
     try {
       const token = ReactSession.get("token");
       const config = {
@@ -143,21 +147,21 @@ const FormTurnoRutinario = ({
           Authorization: `Bearer ${token}`,
         },
       };
-
+  
       const aprendizSeleccionado = Aprendiz.find(a => a.Id_Aprendiz === Id_Aprendiz);
-      
+  
       const inasistenciaData = {
-        Id_Aprendiz,
-        Nom_Aprendiz: aprendizSeleccionado ? aprendizSeleccionado.Nom_Aprendiz : '',
-        Fec_Inasistencia: Fec_InicioTurno,
+        Fec_Inasistencia: Fec_InicioTurno,  // Usando la fecha de inicio del turno como la fecha de inasistencia
+        Mot_Inasistencia: Obs_TurnoRutinario, // Motivo de inasistencia
+        Id_TurnoRutinario: Id_TurnoRutinario, // Referencia al turno rutinario
       };
-
+  
       const respuestaInasistencia = await clienteAxios.post(
         '/inasistencias',
         inasistenciaData,
         config
       );
-
+  
       if (respuestaInasistencia.status === 201) {
         console.log('Registro de inasistencia creado exitosamente');
       }
@@ -165,10 +169,7 @@ const FormTurnoRutinario = ({
       console.error('Error al crear registro de inasistencia:', error);
     }
   };
-
-
-
-
+  
 
   const clearForm = () => {
     setId_TurnoRutinario("");

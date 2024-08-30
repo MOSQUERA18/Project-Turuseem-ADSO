@@ -100,7 +100,7 @@ const DataTableTurnosRutinarios = ({
         id="tablaturnoRutinario"
         className="display responsive nowrap text-center w-full"
       >
-        <thead className="text-white bg-green-700">
+        <thead className="text-white bg-green-800">
           <tr>
             <th className="py-2 px-4 border-2 border-b-gray-500">
               Fecha Inicio

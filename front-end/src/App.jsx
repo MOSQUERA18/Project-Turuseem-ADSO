@@ -17,8 +17,6 @@ import CrudTalentoHumano from "./talentoHumano/CrudTalentoHumano.jsx";
 import CrudInasistencia from "./inasistencias/CrudInasistencia.jsx";
 
 
-
-
 //Rutas Publicas
 import RutaPublica from "./layout/RutaPublica.jsx";
 import Home from "./home/home.jsx"

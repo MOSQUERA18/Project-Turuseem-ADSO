@@ -2,7 +2,9 @@
 
 const ContactCard = ({ name, info, age, imageUrl, whatsappLink, socialLink }) => {
   return (
+
     <div className="flex flex-col items-center bg-white shadow-md rounded-lg p-4">
+      
       <img
         src={imageUrl}
         alt={name}
@@ -28,6 +30,7 @@ const ContactCard = ({ name, info, age, imageUrl, whatsappLink, socialLink }) =>
         </a>
       </div>
     </div>
+    
   );
 };
 
@@ -77,11 +80,14 @@ const Contacto = () => {
   ];
 
   return (
+    <>
+    <h1 className="text-center text-3xl font-bold  apexcharts-legend-series ">EQUIPO DE DESARROLLO</h1>
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8">
       {contacts.map((contact, index) => (
         <ContactCard key={index} {...contact} />
       ))}
     </div>
+    </>
   );
 };
 

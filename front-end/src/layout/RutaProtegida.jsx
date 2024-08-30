@@ -25,7 +25,7 @@ const RutaProtegida = () => {
           <main>
             {auth?.usuario?.Id_User || auth?.Id_User ? (
               <>
-                <h1 className="text-stone-400 font-black text-4xl text-center">
+                <h1 className="text-stone-900 font-black text-4xl text-center">
                   Bienvenidos a <span className="text-green-600">TURUSEEM</span>
                 </h1>
                 <Outlet />

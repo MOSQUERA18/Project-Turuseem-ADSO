@@ -11,8 +11,7 @@ import Alerta from "../components/Alerta.jsx";
 import DataTableInasistencia from "./dataTableInasistencia.jsx";
 
 
-import { IoMdPersonAdd } from "react-icons/io";
-import { AiOutlineMinusCircle } from "react-icons/ai";
+
 import { Outlet } from "react-router-dom";
 
 const URI = "inasistencias";
@@ -20,7 +19,7 @@ const URI = "inasistencias";
 const CrudFuncionarios = () => {
   const [inasistenciaList, setInasistenciaList] = useState([]);
   const [setButtonForm] = useState("Enviar");
-  const [stateAddInasistencia, setStateAddInasistencia] = useState(false);
+  // const [stateAddInasistencia, setStateAddInasistencia] = useState(false);
   const [alerta, setAlerta] = useState({});
 
   const [setInasistencia] = useState({
@@ -156,31 +155,8 @@ const CrudFuncionarios = () => {
       <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
       Gestionar Informacion de las Inasistencias
       </h1>
-      <div className="flex justify-end pb-3">
-        <button
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-          onClick={() => {
-            setStateAddInasistencia(!stateAddInasistencia);
-          }}
-        >
-          {stateAddInasistencia ? (
-            <AiOutlineMinusCircle size={16} className="me-2" />
-          ) : (
-            <IoMdPersonAdd size={16} className="me-2" />
-          )}
-          {stateAddInasistencia ? "Ocultar" : "Agregar"}
-        </button>
-
-        {/* <button
-          onClick={handleExportToExcel}
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-        >
-          Exportar a Excel 
-        </button> */}
-
-
-
-      </div>
+<br />
+<br />
       <div className="overflow-x-auto">
         <hr />
         {msg && <Alerta alerta={alerta} />}
@@ -189,7 +165,7 @@ const CrudFuncionarios = () => {
           inasistenciaList={inasistenciaList}
           getFuncionario={getInasistencia}
           deleteFuncionario={deleteInasistencia}
-          setStateAddInasistencia={setStateAddInasistencia}
+          // setStateAddInasistencia={setStateAddInasistencia}
         />
       </div>
       <hr />
