@@ -60,6 +60,7 @@ CREATE TABLE `aprendices` (
 
 LOCK TABLES `aprendices` WRITE;
 /*!40000 ALTER TABLE `aprendices` DISABLE KEYS */;
+INSERT INTO `aprendices` VALUES ('123456789','Juan David Linares','mijoso','2671143','2090-12-12','1010','FLANDES',20,'Si','NUEVA EPS','1234567890','Masculino','juan.perez@gmail.com','3213554763',1,1,'Si','Activo','SENA LA GRANJA','Si','1724933939022-sapohp.jfif','2024-08-29 12:18:59','2024-08-29 14:10:47');
 /*!40000 ALTER TABLE `aprendices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,7 +142,7 @@ CREATE TABLE `fichas` (
 
 LOCK TABLES `fichas` WRITE;
 /*!40000 ALTER TABLE `fichas` DISABLE KEYS */;
-INSERT INTO `fichas` VALUES ('2671143','2023-01-24','2025-04-22',19,9,'Activo','2024-08-20 15:46:04','2024-08-22 18:57:25');
+INSERT INTO `fichas` VALUES ('1234','2024-08-01','2024-08-27',23,9,'Inactivo','2024-08-23 18:44:22','2024-08-26 20:11:33'),('2671143','2023-01-24','2025-04-22',19,9,'Activo','2024-08-20 15:46:04','2024-08-22 18:57:25');
 /*!40000 ALTER TABLE `fichas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -188,16 +189,13 @@ CREATE TABLE `inasistencias` (
   `Id_Inasistencia` int NOT NULL AUTO_INCREMENT,
   `Fec_Inasistencia` date NOT NULL,
   `Mot_Inasistencia` varchar(50) NOT NULL,
-  `Id_TurnoRutinario_Aprendiz` int DEFAULT NULL,
-  `Id_TurnoEspecial_Aprendiz` int DEFAULT NULL,
+  `Id_TurnoRutinario` int DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id_Inasistencia`),
-  KEY `Id_TurnoRutinario_Aprendiz` (`Id_TurnoRutinario_Aprendiz`),
-  KEY `Id_TurnoEspecial_Aprendiz` (`Id_TurnoEspecial_Aprendiz`),
-  CONSTRAINT `inasistencias_ibfk_1` FOREIGN KEY (`Id_TurnoRutinario_Aprendiz`) REFERENCES `turnosrutinarios_aprendices` (`Id_TurnoRutinario_Aprendiz`),
-  CONSTRAINT `inasistencias_ibfk_2` FOREIGN KEY (`Id_TurnoEspecial_Aprendiz`) REFERENCES `turnosespeciales_aprendices` (`Id_TurnoEspecial_Aprendiz`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fk_inasistencias_turnosrutinarios` (`Id_TurnoRutinario`),
+  CONSTRAINT `fk_inasistencias_turnosrutinarios` FOREIGN KEY (`Id_TurnoRutinario`) REFERENCES `turnosrutinarios` (`Id_TurnoRutinario`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -298,7 +296,7 @@ CREATE TABLE `talento_humano` (
 
 LOCK TABLES `talento_humano` WRITE;
 /*!40000 ALTER TABLE `talento_humano` DISABLE KEYS */;
-INSERT INTO `talento_humano` VALUES ('12344','veronica guzman','mosquera','Masculino','susana@gmail.com','89075','2671143','Inactivo','2024-08-21 17:26:15','2024-08-21 18:56:51');
+INSERT INTO `talento_humano` VALUES ('12344','veronica guzman','mosquera','Masculino','susana@gmail.com','89075','2671143','Activo','2024-08-21 17:26:15','2024-08-26 20:11:26');
 /*!40000 ALTER TABLE `talento_humano` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -329,7 +327,7 @@ CREATE TABLE `turnosespeciales` (
   CONSTRAINT `turnosespeciales_ibfk_1` FOREIGN KEY (`Id_Ficha`) REFERENCES `fichas` (`Id_Ficha`),
   CONSTRAINT `turnosespeciales_ibfk_2` FOREIGN KEY (`Id_Funcionario`) REFERENCES `funcionarios` (`Id_Funcionario`),
   CONSTRAINT `turnosespeciales_ibfk_3` FOREIGN KEY (`Id_Unidad`) REFERENCES `unidades` (`Id_Unidad`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -338,6 +336,7 @@ CREATE TABLE `turnosespeciales` (
 
 LOCK TABLES `turnosespeciales` WRITE;
 /*!40000 ALTER TABLE `turnosespeciales` DISABLE KEYS */;
+INSERT INTO `turnosespeciales` VALUES (3,'2024-08-08','14:22:00','17:18:00','erdfg','12','1234','1724699945849.jfif','1070593778',22,'2024-08-26 19:19:05','2024-08-26 19:19:05'),(4,'2024-10-16','20:40:00','16:40:00','quien sabe riki','199','2671143','1724701253339-sapohp.jfif','1070593778',22,'2024-08-26 19:40:53','2024-08-26 20:12:07');
 /*!40000 ALTER TABLE `turnosespeciales` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -350,16 +349,10 @@ DROP TABLE IF EXISTS `turnosespeciales_aprendices`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `turnosespeciales_aprendices` (
   `Id_TurnoEspecial_Aprendiz` int NOT NULL AUTO_INCREMENT,
-  `Id_TurnoEspecial` int NOT NULL,
-  `Id_Aprendiz` varchar(11) NOT NULL,
   `Ind_Asistencia` enum('Si','No') DEFAULT 'Si',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`Id_TurnoEspecial_Aprendiz`),
-  KEY `Id_TurnoEspecial` (`Id_TurnoEspecial`),
-  KEY `Id_Aprendiz` (`Id_Aprendiz`),
-  CONSTRAINT `turnosespeciales_aprendices_ibfk_1` FOREIGN KEY (`Id_TurnoEspecial`) REFERENCES `turnosespeciales` (`Id_TurnoEspecial`),
-  CONSTRAINT `turnosespeciales_aprendices_ibfk_2` FOREIGN KEY (`Id_Aprendiz`) REFERENCES `aprendices` (`Id_Aprendiz`)
+  PRIMARY KEY (`Id_TurnoEspecial_Aprendiz`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -396,7 +389,7 @@ CREATE TABLE `turnosrutinarios` (
   KEY `Id_Unidad` (`Id_Unidad`),
   CONSTRAINT `turnosrutinarios_ibfk_1` FOREIGN KEY (`Id_Aprendiz`) REFERENCES `aprendices` (`Id_Aprendiz`),
   CONSTRAINT `turnosrutinarios_ibfk_2` FOREIGN KEY (`Id_Unidad`) REFERENCES `unidades` (`Id_Unidad`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -405,6 +398,7 @@ CREATE TABLE `turnosrutinarios` (
 
 LOCK TABLES `turnosrutinarios` WRITE;
 /*!40000 ALTER TABLE `turnosrutinarios` DISABLE KEYS */;
+INSERT INTO `turnosrutinarios` VALUES (6,'2024-08-31','2024-10-12','01:58:00','04:58:00','ninguna','No','123456789',22,'2024-08-30 16:58:33','2024-08-30 17:06:51'),(8,'2024-08-29','2700-12-12','13:09:00','14:09:00','nosabemos','No','123456789',22,'2024-08-30 17:09:19','2024-08-30 17:14:01'),(9,'2024-08-09','2000-12-12','13:11:00','12:13:00','seder','Si','123456789',22,'2024-08-30 17:11:36','2024-08-30 17:14:30');
 /*!40000 ALTER TABLE `turnosrutinarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -417,16 +411,10 @@ DROP TABLE IF EXISTS `turnosrutinarios_aprendices`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `turnosrutinarios_aprendices` (
   `Id_TurnoRutinario_Aprendiz` int NOT NULL AUTO_INCREMENT,
-  `Id_TurnoRutinario` int DEFAULT NULL,
-  `Id_Aprendiz` varchar(11) NOT NULL,
   `Ind_Asistencia` enum('Si','No') DEFAULT 'Si',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`Id_TurnoRutinario_Aprendiz`),
-  KEY `Id_TurnoRutinario` (`Id_TurnoRutinario`),
-  KEY `Id_Aprendiz` (`Id_Aprendiz`),
-  CONSTRAINT `turnosrutinarios_aprendices_ibfk_1` FOREIGN KEY (`Id_TurnoRutinario`) REFERENCES `turnosrutinarios` (`Id_TurnoRutinario`),
-  CONSTRAINT `turnosrutinarios_aprendices_ibfk_2` FOREIGN KEY (`Id_Aprendiz`) REFERENCES `aprendices` (`Id_Aprendiz`)
+  PRIMARY KEY (`Id_TurnoRutinario_Aprendiz`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -467,7 +455,7 @@ CREATE TABLE `unidades` (
 
 LOCK TABLES `unidades` WRITE;
 /*!40000 ALTER TABLE `unidades` DISABLE KEYS */;
-INSERT INTO `unidades` VALUES (22,'lokas','11:36:00','03:35:00','Inactivo',3,'2024-08-22 16:35:07','2024-08-22 16:49:46');
+INSERT INTO `unidades` VALUES (22,'lokas','11:36:00','03:35:00','Inactivo',2,'2024-08-22 16:35:07','2024-08-26 20:11:19');
 /*!40000 ALTER TABLE `unidades` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -511,4 +499,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-22 15:23:50
+-- Dump completed on 2024-08-30 12:17:50
