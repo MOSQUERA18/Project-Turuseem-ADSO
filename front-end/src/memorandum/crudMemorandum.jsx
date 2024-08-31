@@ -1,29 +1,29 @@
+import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
 import FormMemorandum from "./formMemorandum.jsx";
-import FormQueryMemorandum from "./formQueryMemorandum.jsx";
-import Pagination from "../pagination.jsx";
-import clienteAxios from "../config/axios.jsx";
-import { useNavigate } from "react-router-dom";
+// import Pagination from "../pagination.jsx";
+// import { useNavigate } from "react-router-dom";
+import DataTableMemorandum from "./dataTableMemorandum.jsx";
 
 // Icons
-import { MdDeleteForever } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
-import { BsSendArrowUp } from "react-icons/bs";
-import { MdOutlinePreview } from "react-icons/md";
+// import { MdDeleteForever } from "react-icons/md";
+// import { FaRegEdit } from "react-icons/fa";
+// import { BsSendArrowUp } from "react-icons/bs";
+// import { MdOutlinePreview } from "react-icons/md";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { TiDocumentAdd } from "react-icons/ti";
+import Alerta from "../components/Alerta.jsx";
 
-const URI = "http://localhost:8000/memorando/";
+// const URI = "http://localhost:8000/memorando/";
 
 const CrudMemorandum = () => {
   const [memorandumList, setMemorandumList] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddMemorandum, setStateAddMemorandum] = useState(false);
-  const [desde, setDesde] = useState(0);
-  const [hasta, setHasta] = useState(0);
-  const navigate = useNavigate();
+  const [alerta, setAlerta] = useState({})
+  // const navigate = useNavigate();
 
   const [memorandum, setMemorandum] = useState({
     Id_Memorando: "",
@@ -123,9 +123,11 @@ const CrudMemorandum = () => {
       }
     });
   };
-  const mostrarPdf = () => {
-    navigate("/admin/PdfView");
-  };
+  // const mostrarPdf = () => {
+  //   navigate("/admin/PdfView");
+  // };
+  const { msg } = alerta;
+
 
   return (
     <>
@@ -146,17 +148,15 @@ const CrudMemorandum = () => {
         </button>
       </div>
       <div className="overflow-x-auto">
-        <div>
-          <h1 className="font-semibold text-lg text-gray-700">
-            Buscar Por Codigo o Fecha...
-          </h1>
-          <FormQueryMemorandum
-            getMemorandum={getMemorandum}
-            deleteMemorandum={deleteMemorandum}
-            buttonForm={buttonForm}
-          />
-        </div>
-        <table className="min-w-full bg-white text-center text-sm">
+        <hr/>
+        {msg && <Alerta alerta={alerta} setAlerta={setAlerta}/>}
+        <hr/>
+        <DataTableMemorandum
+        memorandumList={memorandumList}
+        getMemorandum={getMemorandum}
+        deleteMemorandum={deleteMemorandum}
+        setStateAddMemorandum={setStateAddMemorandum}/>
+        {/* <table className="min-w-full bg-white text-center text-sm">
           <thead className="text-white bg-green-700">
             <tr>
               <th className="py-2 px-4 border-2 border-b-gray-500">
@@ -175,8 +175,7 @@ const CrudMemorandum = () => {
             </tr>
           </thead>
           <tbody>
-            {memorandumList.map((memorandum, indice) =>
-              indice >= desde && indice < hasta ? (
+            {memorandumList.map((memorandum) =>(
                 <tr
                   key={memorandum.Id_Memorando}
                   className="odd:bg-white even:bg-gray-100"
@@ -223,9 +222,8 @@ const CrudMemorandum = () => {
               )
             )}
           </tbody>
-        </table>
+        </table> */}
       </div>
-      <Pagination URI={URI} setDesde={setDesde} setHasta={setHasta} />
       <hr />
       {stateAddMemorandum ? (
         <FormMemorandum

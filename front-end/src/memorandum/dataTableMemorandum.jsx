@@ -9,7 +9,7 @@ import "datatables.net-responsive-dt/css/responsive.dataTables.min.css";
 import { MdDeleteOutline } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 
-const DataTableUnit = ({
+const DataTableMemorandum = ({
   unidadList,
   getUnidad,
   deleteUnidad,
@@ -99,4 +99,4 @@ const DataTableUnit = ({
   );
 };
 
-export default DataTableUnit;
+export default DataTableMemorandum;

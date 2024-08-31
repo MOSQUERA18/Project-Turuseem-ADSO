@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-key */
-import React from 'react';
 /* eslint-disable react/prop-types */
 
 const ContactCard = ({
