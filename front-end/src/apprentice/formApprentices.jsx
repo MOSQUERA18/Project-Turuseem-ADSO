@@ -573,8 +573,3 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAprent
 };
 
 export default FormApprentices;
-
-
-
-
-

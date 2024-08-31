@@ -2,6 +2,7 @@ import AbsenceModel from "../models/absenceModel.js";
 import TurnoRutinarioModel from "../models/turnoRutinarioModel.js";
 import { Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
+import TurnosRutinariosModel from "../models/turnoRutinarioModel.js";
 
 export const getAllAbsences = async (req, res) => {
   try {
@@ -108,10 +109,12 @@ export const updateAbsence = async (req, res) => {
   }
 };
 
+const Id_TurnoRutinario = TurnosRutinariosModel.Id_TurnoRutinario;
+
 export const deleteAbsence = async (req, res) => {
   try {
     const result = await AbsenceModel.destroy({
-      where: { Id_Inasistencia: req.params.Id_Inasistencia },
+      where: { Id_TurnoRutinario: Id_TurnoRutinario }
     });
     if (result === 0) {
       res.status(404).json({ message: "Inasistencia no encontrada" });

@@ -5,6 +5,9 @@ import { Sequelize, Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 import AbsenceModel from "../models/absenceModel.js";
 
+
+
+
 export const getAllTurnosRutinarios = async (req, res) => {
   try {
     const turnosRutinarios = await TurnosRutinariosModel.findAll({
@@ -90,6 +93,8 @@ export const createTurnoRutinario = async (req, res) => {
   }
 };
 
+
+
 export const updateTurnoRutinario = async (req, res) => {
   try {
     const {
@@ -127,7 +132,7 @@ export const updateTurnoRutinario = async (req, res) => {
         await AbsenceModel.destroy({
           where: {
             Id_TurnoRutinario: req.params.Id_TurnoRutinario,
-            Id_Aprendiz: Id_Aprendiz, // Asegúrate de tener esta condición si es necesario
+            // Id_Aprendiz: Id_Aprendiz, // Asegúrate de tener esta condición si es necesario
           },
         });
       }
@@ -139,6 +144,7 @@ export const updateTurnoRutinario = async (req, res) => {
     logger.error(`Error al actualizar el turno rutinario: ${error}`);
   }
 };
+
 
 export const deleteTurnoRutinario = async (req, res) => {
   try {
