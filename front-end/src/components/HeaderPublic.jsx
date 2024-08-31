@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { IoLogIn } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import logoTuruseem from "../assets/LOGOTURUSEEM.png";
+
 
 export default function HeaderPublic() {
   let arr = [true, false, false, false, false, false];
@@ -26,11 +26,11 @@ export default function HeaderPublic() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full">  
       <div className="bg-green-500 shadow-lg py-5 px-7">
         <nav className="flex justify-between">
           <div className="flex items-center space-x-3 lg:pr-16 pr-6">
-            <img src={logoTuruseem} className="w-11 drop-shadow-2xl" />
+            <img src="Public/assets/LOGOTURUSEEM.png" className="w-11 drop-shadow-2xl" />
             <h2 className="font-bold text-2xl leading-6 text-white ">
               TURUSEEM
             </h2>
@@ -64,7 +64,7 @@ export default function HeaderPublic() {
                   : "text-white bg-green-500"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
-              Consultar Turno
+              Consultar Turno Rutinario
             </Link>
             <Link to='manual'
               onClick={() => selected(3)}

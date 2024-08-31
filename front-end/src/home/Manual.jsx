@@ -1,18 +1,16 @@
-import PDFViewer from "pdf-viewer-reactjs";
-
 function Manual() {
   return (
     <>
       <div className="flex flex-col w-full items-center">
-        <h1 className="font-extrabold text-4xl text-gray-500 uppercase mb-14">
-          Manual de Consulta <span className="text-green-500">Turnos Rutinarios</span>
+        <h1 className="font-extrabold text-3xl uppercase mb-5">
+          Manual de Consulta{" "}
+          <span className="text-green-500">Turnos Rutinarios</span>
         </h1>
-        <PDFViewer
-          document={{
-            url: `http://localhost:5173/PDFs/Manual-Consulta-TURUSEEM.pdf`,
-          }}
-          scale={1.5}
-        />
+        <iframe
+          src="Public/PDFs/Manual-Consulta-TURUSEEM.pdf"
+          height="700"
+          className="w-full"
+        ></iframe>
       </div>
     </>
   );

@@ -3,6 +3,7 @@ import ApprenticeModel from "../models/apprenticeModel.js";
 import UnitModel from "../models/unitModel.js";
 import { Sequelize, Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
+import AbsenceModel from "../models/absenceModel.js";
 
 export const getAllTurnosRutinarios = async (req, res) => {
   try {
@@ -117,10 +118,20 @@ export const updateTurnoRutinario = async (req, res) => {
         where: { Id_TurnoRutinario: req.params.Id_TurnoRutinario },
       }
     );
+
     if (updated === 0) {
       res.status(404).json({ message: "Turno rutinario no encontrado" });
     } else {
-      res.json({ message: "Turno rutinario actualizado correctamente" });
+      // Si `Ind_Asistencia` es "Sí", elimina la inasistencia correspondiente
+      if (Ind_Asistencia === "Si") {
+        await AbsenceModel.destroy({
+          where: {
+            Id_TurnoRutinario: req.params.Id_TurnoRutinario,
+            Id_Aprendiz: Id_Aprendiz, // Asegúrate de tener esta condición si es necesario
+          },
+        });
+      }
+      res.json({ message: "Turno rutinario actualizado correctamente y se eliminó la inasistencia si existía." });
       return;
     }
   } catch (error) {

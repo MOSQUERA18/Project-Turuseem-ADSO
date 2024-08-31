@@ -4,9 +4,11 @@
 import { useRef,useState, useEffect } from "react";
 import clienteAxios from "../config/axios";
 import { ReactSession } from 'react-client-session';
+import Alerta from "../components/Alerta";
 
 const URI = "/ciudades/"
 const UriFichas = "/fichas/"
+
 
 const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAprentices }) => {
   const [Id_Aprendiz, setId_Aprendiz] = useState("");
@@ -41,6 +43,9 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAprent
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
 
+  const [alerta, setAlerta] = useState({});
+
+
 
   const token = ReactSession.get("token");
   const config = {
@@ -49,6 +54,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAprent
       Authorization: `Bearer ${token}`,
     },
   };
+
 
 
 
@@ -158,21 +164,25 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAprent
         setMessage("Aprendiz Registrado correctamente!")
         setMessageType("success"),
         clearForm()
-        if (buttonForm === "Actualizar") {
-          updateTextButton("Enviar");
-        }
-        clearForm();
+        updateTextButton("Enviar");
+        
       } else {
-        alert(respuestApi.data.message);
+        setMessage(respuestApi.data.message || "Error al registrar Al Aprendiz .");
+        setMessageType("error");
       }
     } catch (error) {
-      console.error("Error en la solicitud:", error);
-      if (error.response) {
-        console.error("Respuesta del servidor:", error.response.data);
-        alert(`Error: ${error.response.data.message || 'Ocurrió un error al procesar la solicitud'}`);
-      } else {
-        alert('Error de red o servidor no disponible');
-      }
+
+      setAlerta({
+        msg: "Todos los campos son obligatorios!",
+        error: true,
+      });
+      // console.error("Error en la solicitud:", error);
+      // if (error.response) {
+      //   console.error("Respuesta del servidor:", error.response.data);
+      //   alert(`Error: ${error.response.data.message || 'Ocurrió un error al procesar la solicitud'}`);
+      // } else {
+      //   alert('Error de red o servidor no disponible');
+      // }
     }
   };
 
@@ -234,6 +244,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAprent
     setData();
   }, [apprentice]);
 
+  const { msg } = alerta;
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 content-center w-full">
       <form
@@ -242,6 +254,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAprent
   onSubmit={sendForm}
   className="bg-white shadow-2xl rounded-2xl px-14 pt-6 pb-8 mb-4 max-w-3xl w-full mt-10"
 >
+{msg && <Alerta alerta={alerta} />}
   <h1 className="font-bold text-green-600 text-3xl uppercase text-center my-5">
     Registrar Aprendices
   </h1>
@@ -536,10 +549,12 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAprent
   </div>
 
   <div className="flex justify-around">
+
     <input
       type="submit"
       id="button"
       value={buttonForm}
+      
       className="bg-green-600 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-700 md:w-auto"
     />
     <input
@@ -550,6 +565,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAprent
       
       className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-700 md:w-auto"
     />
+
   </div>
 </form>
     </div>

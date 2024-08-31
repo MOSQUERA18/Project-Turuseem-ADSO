@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
-import logoTuruseem from "../assets/LOGOTURUSEEM.png";
+
 import { Link } from "react-router-dom";
 import { ReactSession } from "react-client-session";
 
 import { useContext } from "react";
 import AuthContext from "../context/authProvider.jsx";
+
+//ICONO DE INASISTENCIAS
+import { GiNotebook } from "react-icons/gi";
+
+//ICONO DE TALENTO HUMANO
+import { GiHumanPyramid } from "react-icons/gi";
+
 
 //Icons
 import { BsFillPeopleFill } from "react-icons/bs";
@@ -65,7 +72,7 @@ const VerticalNav = () => {
     <div className="min-h-screen">
       <div className=" bg-green-500 xl:hidden flex justify-between w-full p-6 items-center">
         <div className="flex justify-between  items-center space-x-3">
-          <img src={logoTuruseem} className="w-12 drop-shadow-2xl" />
+          <img src="Public/assets/LOGOTURUSEEM.png" className="w-12 drop-shadow-2xl" />
 
           <p className="text-2xl leading-6 text-white font-bold">TURUSEEM</p>
         </div>
@@ -148,7 +155,7 @@ const VerticalNav = () => {
         } transform  xl:translate-x-0  ease-in-out transition duration-500 flex justify-center items-start h-full  w-full sm:w-64 bg-green-500 flex-col`}
       >
         <div className="hidden xl:flex justify-start p-6 items-center space-x-3">
-          <img src={logoTuruseem} className="w-12 drop-shadow-2xl" />
+          <img src="Public/assets/LOGOTURUSEEM.png"className="w-12 drop-shadow-2xl" />
           <p className="text-2xl leading-6 text-white font-bold">TURUSEEM</p>
         </div>
         <div className="flex flex-col justify-end items-center  pl-4 w-full border-gray-600 border-b space-y-3 p-5 ">
@@ -226,7 +233,7 @@ const VerticalNav = () => {
           </button>
 
           <button className="flex jusitfy-start items-center w-full  space-x-4 pl-3 focus:outline-none text-white focus:text-indigo-400 rounded border-y py-2 border-white">
-            <FaPeopleGroup size={22} />
+          <GiHumanPyramid size={28}/>
             <Link
               to="talentohumano"
               className="text-white text-sm uppercase font-bold"
@@ -234,12 +241,24 @@ const VerticalNav = () => {
               Talento Humano
             </Link>
           </button>
+
+          <button className="flex jusitfy-start items-center w-full  space-x-4 pl-3 focus:outline-none text-white focus:text-indigo-400 rounded border-y py-2 border-white">
+          <GiNotebook size={28}/>
+            <Link
+              to="inasistencias"
+              className="text-white text-sm uppercase font-bold"
+            >
+              Inasistencias
+            </Link>
+          </button>
+
+
         </div>
         <div className="flex flex-col justify-between items-center h-full pb-6   px-6  w-full  space-y-15 mt-3">
           <div className=" flex justify-between items-center w-full">
             <div className="flex justify-center items-center  space-x-2">
               <div>
-                <img className="rounded-full" src={logoTuruseem} alt="avatar" />
+                <img className="rounded-full" src="Public/assets/LOGOTURUSEEM.png" alt="avatar" />
               </div>
               <div className="flex justify-start flex-col items-start">
                 <p className="cursor-pointer text-sm leading-5 text-white">

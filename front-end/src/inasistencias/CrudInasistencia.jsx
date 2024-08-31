@@ -2,37 +2,34 @@ import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
-import FormTurnosRutinarios from "./FormTurnosRutinarios.jsx";
-import DataTableTurnosRutinarios from "./dataTableTurnosRutinarios.jsx";
+
+// import { exportToExcel } from './ExportExcel.js';
+
 import Alerta from "../components/Alerta.jsx";
-import { IoMdPersonAdd } from "react-icons/io";
-import { AiOutlineMinusCircle } from "react-icons/ai";
+import DataTableInasistencia from "./dataTableInasistencia.jsx";
+
 import { Outlet } from "react-router-dom";
 
-const URI = "/turnorutinario";
+const URI = "inasistencias";
 
-const CrudTurnosRutinarios = () => {
-  const [turnoRutinarioList, setTurnoRutinarioList] = useState([]);
-  const [buttonForm, setButtonForm] = useState("Enviar");
-  const [stateAddturnoRutinario, setStateAddturnoRutinario] = useState(false);
+const CrudFuncionarios = () => {
+  const [inasistenciaList, setInasistenciaList] = useState([]);
+  const [setButtonForm] = useState("Enviar");
+  // const [stateAddInasistencia, setStateAddInasistencia] = useState(false);
   const [alerta, setAlerta] = useState({});
 
-  const [turnoRutinario, setTurnoRutinario] = useState({
-    Fec_InicioTurno: "",
-    Fec_FinTurno: "",
-    Hor_InicioTurno: "",
-    Hor_FinTurno: "",
-    Obs_TurnoRutinario: "",
-    Ind_Asistencia: "",
-    Id_Aprendiz: "",
-    Id_Unidad: "",
+  const [setInasistencia] = useState({
+    Id_Inasistencia: "",
+    Fec_Inasistencia: "",
+    Mot_Inasistencia: "",
+    Id_TurnoRutinario: "",
   });
 
   useEffect(() => {
-    getAllTurnosRutinarios();
+    getAllInasistencias();
   }, []);
 
-  const getAllTurnosRutinarios = async () => {
+  const getAllInasistencias = async () => {
     const token = ReactSession.get("token");
     const config = {
       headers: {
@@ -43,24 +40,23 @@ const CrudTurnosRutinarios = () => {
     try {
       const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
-        setTurnoRutinarioList(respuestApi.data);
+        setInasistenciaList(respuestApi.data);
       } else {
         setAlerta({
           msg: `Error al cargar los registros!`,
           error: true,
         });
       }
-
-      
     } catch (error) {
       setAlerta({
-        msg: `Ocurrio un error!`,
+        msg: `Error al cargar los registros!`,
         error: true,
       });
       console.error(error);
     }
   };
-  const getTurnoRutinario = async (Id_TurnoRutinario) => {
+
+  const getInasistencia = async (Id_Inasistencia) => {
     setButtonForm("Actualizar");
     const token = ReactSession.get("token");
     const config = {
@@ -70,12 +66,12 @@ const CrudTurnosRutinarios = () => {
       },
     };
     try {
-      const respuestApi = await clienteAxios(
-        `${URI}/${Id_TurnoRutinario}`,
+      const respuestApi = await clienteAxios.get(
+        `/${URI}/${Id_Inasistencia}`,
         config
       );
       if (respuestApi.status === 200) {
-        setTurnoRutinario({
+        setInasistencia({
           ...respuestApi.data,
         });
       } else {
@@ -93,7 +89,7 @@ const CrudTurnosRutinarios = () => {
     }
   };
 
-  const deleteTurnoRutinario = (Id_TurnoRutinario) => {
+  const deleteInasistencia = (Id_Inasistencia) => {
     Swal.fire({
       title: "¿Estas seguro?",
       text: "No podrás revertir esto!",
@@ -114,17 +110,17 @@ const CrudTurnosRutinarios = () => {
         };
         try {
           const respuestApi = await clienteAxios.delete(
-            `${URI}/${Id_TurnoRutinario}`,
+            `${URI}/${Id_Inasistencia}`,
             config
           );
-          if (respuestApi.status === 200) {
-            
+          console.log(respuestApi);
+          if (respuestApi.status == 200) {
+            getAllInasistencias();
             Swal.fire({
               title: "Borrado!",
               text: "El registro ha sido borrado.",
               icon: "success",
             });
-            getAllTurnosRutinarios(); // Refrescar la lista después de borrar
           } else {
             alert(respuestApi.data.message);
           }
@@ -140,56 +136,39 @@ const CrudTurnosRutinarios = () => {
     });
   };
 
-  const updateTextButton = (text) => {
-    setButtonForm(text);
-  };
+  // const updateTextButton = (text) => {
+  //   setButtonForm(text);
+  // };
 
   const { msg } = alerta;
+
+  // const handleExportToExcel = () => {
+  //   exportToExcel([], inasistenciaList); // Pasar [] si `programa` está vacío
+  // };
 
   return (
     <>
       <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
-      Gestionar Informacion de los Turnos Rutinarios
+        Gestionar Informacion de las Inasistencias
       </h1>
-      <div className="flex justify-end pb-3">
-        <button
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-          onClick={() => {
-            setStateAddturnoRutinario(!stateAddturnoRutinario);
-          }}
-        >
-          {stateAddturnoRutinario ? (
-            <AiOutlineMinusCircle size={16} className="me-2" />
-          ) : (
-            <IoMdPersonAdd size={16} className="me-2" />
-          )}
-          {stateAddturnoRutinario ? "Ocultar" : "Agregar"}
-        </button>
-      </div>
+      <br />
+      <br />
       <div className="overflow-x-auto">
         <hr />
         {msg && <Alerta alerta={alerta} />}
         <hr />
-        <DataTableTurnosRutinarios
-          turnoRutinarioList={turnoRutinarioList}
-          getTurnoRutinario={getTurnoRutinario}
-          deleteTurnoRutinario={deleteTurnoRutinario}
-          setStateAddturnoRutinario={setStateAddturnoRutinario}
+        <DataTableInasistencia
+          inasistenciaList={inasistenciaList}
+          getFuncionario={getInasistencia}
+          deleteFuncionario={deleteInasistencia}
+          // setStateAddInasistencia={setStateAddInasistencia}
         />
       </div>
       <hr />
-      {stateAddturnoRutinario ? (
-        <FormTurnosRutinarios
-          buttonForm={buttonForm}
-          turnoRutinario={turnoRutinario}
-          updateTextButton={updateTextButton}
-          getAllTurnosRutinarios={getAllTurnosRutinarios}
-        />
-      ) : null}
       <hr />
       <Outlet />
     </>
   );
 };
 
-export default CrudTurnosRutinarios;
+export default CrudFuncionarios;

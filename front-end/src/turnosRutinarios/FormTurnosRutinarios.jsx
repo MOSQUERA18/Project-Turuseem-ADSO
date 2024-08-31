@@ -73,7 +73,7 @@ const FormTurnoRutinario = ({
         Authorization: `Bearer ${token}`,
       },
     };
-
+  
     try {
       let respuestApi;
       if (buttonForm === "Actualizar") {
@@ -91,7 +91,6 @@ const FormTurnoRutinario = ({
           },
           config
         );
-        console.log(respuestApi);
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
           `/turnoRutinario`,
@@ -108,11 +107,18 @@ const FormTurnoRutinario = ({
           config
         );
       }
-
+  
       if (respuestApi.status === 201 || respuestApi.status === 200) {
         setAlerta({
           msg: `Registro exitoso!`,
         });
+  
+        // Crear registro de inasistencia si Ind_Asistencia es "No"
+        if (Ind_Asistencia === "No") {
+          const turnoRutinarioId = respuestApi.data.Id_TurnoRutinario || Id_TurnoRutinario;
+          await crearRegistroInasistencia(turnoRutinarioId);
+        }
+  
         clearForm();
         getAllTurnosRutinarios();
         updateTextButton("Enviar");
@@ -125,11 +131,45 @@ const FormTurnoRutinario = ({
     } catch (error) {
       console.error("Error en la solicitud:", error);
       setAlerta({
-        msg: "Ocurrio un error!, Intente de nuevo.",
+        msg: "Todos Los Campos Son Obligatorios!.",
         error: true,
       });
     }
   };
+  
+
+  const crearRegistroInasistencia = async (Id_TurnoRutinario) => {
+    try {
+      const token = ReactSession.get("token");
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+  
+      const aprendizSeleccionado = Aprendiz.find(a => a.Id_Aprendiz === Id_Aprendiz);
+  
+      const inasistenciaData = {
+        Fec_Inasistencia: Fec_InicioTurno,  // Usando la fecha de inicio del turno como la fecha de inasistencia
+        Mot_Inasistencia: Obs_TurnoRutinario, // Motivo de inasistencia
+        Id_TurnoRutinario: Id_TurnoRutinario, // Referencia al turno rutinario
+      };
+  
+      const respuestaInasistencia = await clienteAxios.post(
+        '/inasistencias',
+        inasistenciaData,
+        config
+      );
+  
+      if (respuestaInasistencia.status === 201) {
+        console.log('Registro de inasistencia creado exitosamente');
+      }
+    } catch (error) {
+      console.error('Error al crear registro de inasistencia:', error);
+    }
+  };
+  
 
   const clearForm = () => {
     setId_TurnoRutinario("");
@@ -255,7 +295,7 @@ const FormTurnoRutinario = ({
               onChange={(e) => setInd_Asistencia(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             >
-              <option value="">Seleccione un Aprendiz:</option>
+              <option value="">Seleccione:</option>
               <option value="Si">Si</option>
               <option value="No">No</option>
             </select>

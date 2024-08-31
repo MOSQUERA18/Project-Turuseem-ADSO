@@ -104,7 +104,7 @@ const FormProgramaFormacion = ({
       }
     } catch (error) {
       setAlerta({
-        msg: "Ocurrio un error!",
+        msg: "Todos los campos son obligatorios!",
         error: true,
       });
       console.log(error);
