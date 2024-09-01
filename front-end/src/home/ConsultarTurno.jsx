@@ -51,7 +51,7 @@ const ConsultarTurno = () => {
           </h1>
           <div className="mb-3">
             <label className="text-gray-700 uppercase font-bold">
-              Documento
+              Ingrese Numero de Documento
             </label>
             <input
               type="number"

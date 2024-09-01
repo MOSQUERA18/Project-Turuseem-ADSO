@@ -74,7 +74,7 @@ export default function HeaderPublic() {
                   : "text-white bg-green-500"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
-              Manual
+              Manual Consulta Turno
             </Link>
           </ul>
           <div className=" flex space-x-5 justify-center items-center pl-2">
