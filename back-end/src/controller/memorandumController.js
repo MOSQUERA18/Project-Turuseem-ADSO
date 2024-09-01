@@ -2,6 +2,8 @@ import { logger } from "../middleware/logMiddleware.js";
 import MemorandumModel from "../models/memorandumModel.js";
 import { Sequelize } from "sequelize";
 import AbsenceModel from "../models/absenceModel.js";
+import fs from "fs";
+import pdf from "html-pdf";
 
 export const getAllMemorandum = async (req, res) => {
   try {
@@ -15,7 +17,7 @@ export const getAllMemorandum = async (req, res) => {
     });
     if (memorandums.length > 0) {
       res.status(200).json(memorandums);
-      return
+      return;
     } else {
       res.status(404).json({
         message: "No se encontraron memorandos.",
@@ -40,9 +42,9 @@ export const getMemorandum = async (req, res) => {
         },
       ],
     });
-    if (memorandum.length>0) {
+    if (memorandum.length > 0) {
       res.status(200).json(memorandum);
-      return
+      return;
     } else {
       res.status(404).json({
         message: "Memorando no encontrado.",
@@ -81,7 +83,7 @@ export const updateMemorandum = async (req, res) => {
       res.json({
         message: "Memorando actualizado correctamente!",
       });
-      return
+      return;
     } else {
       res.status(404).json({
         message: "Memorando no encontrado.",
@@ -105,7 +107,7 @@ export const deleteMemorandum = async (req, res) => {
       res.json({
         message: "Memorando borrado correctamente!",
       });
-      return
+      return;
     } else {
       res.status(404).json({
         message: "Memorando no encontrado.",
@@ -137,7 +139,7 @@ export const getQueryMemorandum = async (req, res) => {
     });
     if (memorandums.length > 0) {
       res.json(memorandums);
-      return
+      return;
     } else {
       res.status(404).json({
         message: "No se encontraron memorandos.",
@@ -150,4 +152,28 @@ export const getQueryMemorandum = async (req, res) => {
       error: error.message,
     });
   }
+};
+
+export const generateMemorandumPdf = (req, res) => {
+  const { nombre, fecha, contenido } = req.body;
+  const raiz = process.cwd() + "\\src";
+  console.log(raiz);
+
+  const htmlTemplate = fs.readFileSync(
+    `${raiz}/public/Plantillas/template.html`,
+    "utf-8"
+  );
+
+  const htmlContent = htmlTemplate
+    .replace("{{nombre}}", nombre)
+    .replace("{{fecha}}", fecha)
+    .replace("{{contenido}}", contenido);
+
+  pdf.create(htmlContent).toBuffer((err, buffer) => {
+    if (err) {
+      res.status(500).json({ err: err });
+    }
+    const base64 = buffer.toString("base64");
+    res.status(200).json({ Reporte: base64 });
+  });
 };

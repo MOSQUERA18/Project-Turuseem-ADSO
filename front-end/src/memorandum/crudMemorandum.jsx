@@ -4,14 +4,11 @@ import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
 import FormMemorandum from "./formMemorandum.jsx";
 // import Pagination from "../pagination.jsx";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DataTableMemorandum from "./dataTableMemorandum.jsx";
 
 // Icons
-// import { MdDeleteForever } from "react-icons/md";
 // import { FaRegEdit } from "react-icons/fa";
-// import { BsSendArrowUp } from "react-icons/bs";
-// import { MdOutlinePreview } from "react-icons/md";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { TiDocumentAdd } from "react-icons/ti";
 import Alerta from "../components/Alerta.jsx";
@@ -23,7 +20,7 @@ const CrudMemorandum = () => {
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddMemorandum, setStateAddMemorandum] = useState(false);
   const [alerta, setAlerta] = useState({})
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [memorandum, setMemorandum] = useState({
     Id_Memorando: "",
@@ -123,9 +120,9 @@ const CrudMemorandum = () => {
       }
     });
   };
-  // const mostrarPdf = () => {
-  //   navigate("/admin/PdfView");
-  // };
+  const mostrarPdf = () => {
+    navigate("/admin/PdfView");
+  };
   const { msg } = alerta;
 
 
@@ -155,7 +152,8 @@ const CrudMemorandum = () => {
         memorandumList={memorandumList}
         getMemorandum={getMemorandum}
         deleteMemorandum={deleteMemorandum}
-        setStateAddMemorandum={setStateAddMemorandum}/>
+        setStateAddMemorandum={setStateAddMemorandum}
+        mostrarPdf={mostrarPdf}/>
         {/* <table className="min-w-full bg-white text-center text-sm">
           <thead className="text-white bg-green-700">
             <tr>

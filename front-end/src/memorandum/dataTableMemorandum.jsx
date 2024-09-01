@@ -6,20 +6,27 @@ import "datatables.net-dt/css/dataTables.dataTables.min.css";
 import "datatables.net-responsive";
 import "datatables.net-responsive-dt/css/responsive.dataTables.min.css";
 
-import { MdDeleteOutline } from "react-icons/md";
+import { MdDeleteForever } from "react-icons/md";
+import { BsSendArrowUp } from "react-icons/bs";
+import { MdOutlinePreview } from "react-icons/md";
+
+
+
+// import { MdDeleteOutline } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 
 const DataTableMemorandum = ({
-  unidadList,
-  getUnidad,
-  deleteUnidad,
-  setStateAddUnidad,
+  memorandumList,
+  getMemorandum,
+  deleteMemorandum,
+  setStateAddMemorandum,
+  mostrarPdf
 }) => {
   const tableRef = useRef(null);
   const tableInstance = useRef(null);
 
   useEffect(() => {
-    if (unidadList.length > 0) {
+    if (memorandumList.length > 0) {
       const tableElement = $(tableRef.current);
 
       if (!tableInstance.current) {
@@ -35,7 +42,7 @@ const DataTableMemorandum = ({
           }
         });
       } else {
-        tableInstance.current.clear().rows.add(unidadList).draw();
+        tableInstance.current.clear().rows.add(memorandumList).draw();
       }
     }
 
@@ -45,7 +52,7 @@ const DataTableMemorandum = ({
         tableInstance.current = null;
       }
     };
-  }, [unidadList]);
+  }, [memorandumList]);
 
   return (
     <div>
@@ -55,43 +62,67 @@ const DataTableMemorandum = ({
         className="display responsive nowrap text-center"
       >
         <thead className="text-white bg-green-700">
-          <tr>
-            <th className="py-2 px-4 border-2 border-b-gray-500">ID</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Nombre</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Hora Apertura</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Hora Cierre</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Estado</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Área</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
-          </tr>
+        <tr>
+              <th className="py-2 px-4 border-2 border-b-gray-500">
+                Codigo Memorando
+              </th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">
+                Fecha Memorando
+              </th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">
+                Motivo Memorando
+              </th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">
+                Inasistencia
+              </th>
+              <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
+            </tr>
         </thead>
         <tbody>
-          {unidadList.map((unidad) => (
-            <tr key={unidad.Id_Unidad}>
-              <td className="py-2 px-4 border-b">{unidad.Id_Unidad}</td>
-              <td className="py-2 px-4 border-b">{unidad.Nom_Unidad}</td>
-              <td className="py-2 px-4 border-b">{unidad.Hor_Apertura}</td>
-              <td className="py-2 px-4 border-b">{unidad.Hor_Cierre}</td>
-              <td className="py-2 px-4 border-b">{unidad.Estado}</td>
-              <td className="py-2 px-4 border-b">{unidad.areas?.Nom_Area}</td>
-              <td className="py-2 px-4 border-b">
-                <button
-                  onClick={() => [
-                    getUnidad(unidad.Id_Unidad),
-                    setStateAddUnidad(true),
-                  ]}
-                  className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
+        {memorandumList.map((memorandum) =>(
+                <tr
+                  key={memorandum.Id_Memorando}
+                  className="odd:bg-white even:bg-gray-100"
                 >
-                  <FaRegEdit />
-                </button>
-                <button
-                  onClick={() => deleteUnidad(unidad.Id_Unidad)}
-                  className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
-                >
-                  <MdDeleteOutline />
-                </button>
-              </td>
-            </tr>
+                  <td className="py-2 px-4 border-b">
+                    {memorandum.Id_Memorando}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {memorandum.Fec_Memorando}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {memorandum.Mot_Memorando}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {memorandum.Id_Inasistencia}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    <button
+                      onClick={() => [getMemorandum(memorandum.Id_Memorando),
+                        setStateAddMemorandum(true)
+                      ]}
+                      className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
+                    >
+                      <FaRegEdit />
+                    </button>
+                    <button
+                      onClick={() => deleteMemorandum(memorandum.Id_Memorando)}
+                      className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded "
+                    >
+                      <MdDeleteForever />
+                    </button>
+                    <button className="text-indigo-500 hover:text-indigo-700 hover:border hover:border-indigo-500 p-1 rounded">
+                      <BsSendArrowUp />
+                    </button>
+                    <button
+                      className="text-gray-500 hover:text-gray-700 hover:border hover:border-gray-500 p-1 rounded mx-2"
+                      onClick={mostrarPdf}
+                    >
+                      <MdOutlinePreview />
+                      Ver
+                    </button>
+                  </td>
+                </tr>
           ))}
         </tbody>
       </table>
