@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
 
 import FormApprentices from "./formApprentices.jsx";
-import ImportarCSV from "./importarCSV.jsx";
+// import ImportarCSV from "./importarCSV.jsx";
 import Alerta from "../components/Alerta.jsx";
 
 import DataTableApprentices from "./dataTableApprentices.jsx";
@@ -12,7 +12,7 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 
-const URI = "/aprendiz/";
+// const URI = "/aprendiz/";
 
 const URIFOTOS = "/public/uploads/";
 
@@ -185,22 +185,41 @@ const CrudApprentices = () => {
         </button>
 
         <a
-          href="Public/Aprendiz.csv"
-          download="Aprendiz.csv"
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-        >
-          Descargar CSV
-        </a>
+  href="#"
+  onClick={async (e) => {
+    e.preventDefault();
+    
+    const filePath = "/Public/Aprendiz.csv";
+    try {
+      const response = await fetch(filePath, { method: 'HEAD' });
+      
+      if (response.ok) {
+        window.location.href = filePath;
+      } else {
+        alert('El archivo no está disponible en la ruta especificada.');
+      }
+    } catch (error) {
+      console.error('Error al intentar descargar el archivo:', error);
+      alert('Error al intentar descargar el archivo.');
+    }
+  }}
+  className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
+>
+  Descargar CSV
+</a>
+ 
       </div>
       <div className="overflow-x-auto">
-        {/* <div className="flex justify-between">
-          <div>
+        <div className="flex justify-between">
+
+          {/* <div>
             <h1 className="font-semibold text-lg text-gray-700">
               Subir Archivo CSV
             </h1>
             <ImportarCSV URI={URI} />
-          </div>
-        </div> */}
+          </div> */}
+        </div>
+        {/* <hr /> */}
 
         <br />
         {msg && <Alerta alerta={alerta} />}
