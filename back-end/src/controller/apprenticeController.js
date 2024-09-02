@@ -108,9 +108,12 @@ export const createApprentice = async (req, res) => {
       CentroConvivencia,
       Foto_Aprendiz,
     });
-    if(newApprentice){
-      res.status(201).json(newApprentice ,"Aprendiz Registrado Correctamente");
-      return
+    if (newApprentice) {
+      res.status(201).json({
+        apprentice: newApprentice,
+        message: "Aprendiz Registrado Correctamente"
+      });
+      return;
     }
     
   } catch (error) {

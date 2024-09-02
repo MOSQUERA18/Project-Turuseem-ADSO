@@ -10,7 +10,7 @@ const URI = "/ciudades/"
 const UriFichas = "/fichas/"
 
 
-const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAprentices }) => {
+const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllAprentices }) => {
   const [Id_Aprendiz, setId_Aprendiz] = useState("");
   const [Nom_Aprendiz, setNom_Aprendiz] = useState("");
   const [Ape_Aprendiz, setApe_Aprendiz] = useState("");
@@ -254,7 +254,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAprent
   onSubmit={sendForm}
   className="bg-white shadow-2xl rounded-2xl px-14 pt-6 pb-8 mb-4 max-w-3xl w-full mt-10"
 >
-{msg && <Alerta alerta={alerta} />}
+{msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
   <h1 className="font-bold text-green-600 text-3xl uppercase text-center my-5">
     Registrar Aprendices
   </h1>

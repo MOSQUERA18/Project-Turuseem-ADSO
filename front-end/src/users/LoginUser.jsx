@@ -93,15 +93,15 @@ const LoginForm = () => {
             />
           </form>
           <nav className="mt-8 lg:flex lg:justify-between">
-            <Link
+            {/* <Link
               to="/registrar"
               className="block text-center my-5 text-gray-500"
             >
               ¿No tienes una Cuenta? Registrate
-            </Link>
+            </Link> */}
             <Link
               to="/olvide-password"
-              className="block text-center my-5 text-gray-500"
+              className="block text-center my-5 text-gray-500 mx-2 hover:text-green-500 hover:scale-105 transition-transform duration-200 ease-in-out hover:rounded-md"
             >
               Olvide mi Contraseña
             </Link>

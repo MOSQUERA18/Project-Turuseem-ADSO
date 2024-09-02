@@ -66,7 +66,7 @@ const Contacto = () => {
       name: "Juan David Linares Barragán",
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: `${calcularEdad(fechaNacimientoLinares)} Años`,
-      imageUrl: "Public/assets/JuanLinares.jpg",
+      imageUrl: "Public/assets/JuanLinares.jpeg",
       whatsappLink: "https://wa.me/573209455659",
       socialLink: "https://www.facebook.com/profile.php?id=100095190046582",
     },
@@ -74,8 +74,8 @@ const Contacto = () => {
       name: "Marlon Kaleth Sarmiento Mosquera",
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: `${calcularEdad(fechaNacimientoKaleth)} Años`,
-      imageUrl: "Public/assets/mosquera.png",
-      whatsappLink: "https://wa.me/3209455659",
+      imageUrl: "Public/assets/Kaleth.jpeg",
+      whatsappLink: "https://wa.me/573213554763",
       socialLink: "https://www.facebook.com/marlon.mosquera.5855",
     },
     {
@@ -83,7 +83,7 @@ const Contacto = () => {
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: `${calcularEdad(fechaNacimientoNatalia)} Años`,
       imageUrl: "Public/assets/Natalia.jpeg",
-      whatsappLink: "https://wa.me/3209455659",
+      whatsappLink: "https://wa.me/573203453824",
       socialLink: "https://www.facebook.com/profile.php?id=100024303797798",
     },
     {
@@ -91,7 +91,7 @@ const Contacto = () => {
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: `${calcularEdad(fechaNacimientoKimberly)} Años`,
       imageUrl: "Public/assets/Kim.jpeg",
-      whatsappLink: "https://wa.me/3209455659",
+      whatsappLink: "https://wa.me/573173933137",
       socialLink: "https://www.facebook.com/profile.php?id=100078628960697",
     },
     {
@@ -99,7 +99,7 @@ const Contacto = () => {
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: `${calcularEdad(fechaNacimientoLina)} Años`,
       imageUrl: "Public/assets/Lina.jpeg",
-      whatsappLink: "https://wa.me/3209455659",
+      whatsappLink: "https://wa.me/573114620179",
       socialLink: "https://www.facebook.com/LJCM97",
     },
   ];

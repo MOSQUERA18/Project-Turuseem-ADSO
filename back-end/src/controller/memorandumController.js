@@ -140,9 +140,9 @@ export const createMemorandum = async (req, res) => {
       transaction,
     });
     console.log(fullMemorandum);
-    const totalMemorandums = await getTotalMemorandums();
+    // const totalMemorandums = await getTotalMemorandums();
 
-    await generateMemorandumPdf(fullMemorandum, totalMemorandums);
+    // await generateMemorandumPdf(fullMemorandum, totalMemorandums);
 
     await transaction.commit();
 
@@ -152,7 +152,7 @@ export const createMemorandum = async (req, res) => {
     });
   } catch (error) {
     await transaction.rollback();
-    logger.error("Error creating memorandum: ", error.message);
+    logger.error("Error creating memorandum: ", error);
     res.status(400).json({
       message: "Error al registrar el memorando.",
       error: error.message,
