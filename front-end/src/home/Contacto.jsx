@@ -42,6 +42,8 @@ const ContactCard = ({
 const Contacto = () => {
   function calcularEdad(fechaNacimiento) {
     const hoy = new Date();
+    console.log(hoy);
+    
     const nacimiento = new Date(fechaNacimiento);
     let edad = hoy.getFullYear() - nacimiento.getFullYear();
     const mes = hoy.getMonth() - nacimiento.getMonth();
@@ -58,9 +60,6 @@ const Contacto = () => {
   const fechaNacimientoNatalia = '2004-08-18';
   const fechaNacimientoKimberly = '2003-11-02';
   const fechaNacimientoLina = '1997-02-02';
-  console.log(
-    `La edad de la persona es: ${calcularEdad(fechaNacimientoLinares)} años.`
-  );
   
   const contacts = [
     {

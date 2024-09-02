@@ -3,6 +3,8 @@ import TurnoRutinarioModel from "../models/turnoRutinarioModel.js";
 import { Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 import TurnosRutinariosModel from "../models/turnoRutinarioModel.js";
+import ApprenticeModel from "../models/apprenticeModel.js";
+import UnitModel from "../models/unitModel.js";
 
 export const getAllAbsences = async (req, res) => {
   try {
@@ -11,14 +13,24 @@ export const getAllAbsences = async (req, res) => {
         {
           model: TurnoRutinarioModel,
           as: "turnorutinario", // Alias usado para la relación
-        }
+          include: [
+            {
+              model: ApprenticeModel,
+              as: "aprendiz", // Alias para la relación con Aprendiz
+            },
+            {
+              model: UnitModel,
+              as: "unidad", // Alias para la relación con Unidad
+            },
+          ],
+        },
       ],
     });
 
-    if(inasistencias){
+    if (inasistencias) {
       res.status(200).json(inasistencias); //a todos los controllers toca agg esto para validar los datos
-      return
-    }else {
+      return;
+    } else {
       res.status(404).json({
         message: "No se encontraron inasistencias.",
       });
@@ -38,14 +50,23 @@ export const getAbsence = async (req, res) => {
           {
             model: TurnoRutinarioModel,
             as: "turnorutinario", // Alias usado para la relación
-          }
+            include: [
+              {
+                model: ApprenticeModel,
+                as: "aprendiz", // Alias para la relación con Aprendiz
+              },
+              {
+                model: UnitModel,
+                as: "unidad", // Alias para la relación con Unidad
+              },
+            ],
+          },
         ],
       }
     );
-    // console.log(inasistencia)
+
     if (inasistencia) {
       res.status(200).json(inasistencia);
-      return
     } else {
       res.status(404).json({ message: "Inasistencia no encontrada" });
     }
@@ -57,22 +78,17 @@ export const getAbsence = async (req, res) => {
 
 export const createAbsence = async (req, res) => {
   try {
-    const {
-      Fec_Inasistencia,
-      Mot_Inasistencia,
-      Id_TurnoRutinario,
-    } = req.body;
+    const { Fec_Inasistencia, Mot_Inasistencia, Id_TurnoRutinario } = req.body;
 
     const newInasistencia = await AbsenceModel.create({
       Fec_Inasistencia,
       Mot_Inasistencia,
       Id_TurnoRutinario,
     });
-    if(newInasistencia){
+    if (newInasistencia) {
       res.status(201).json(newInasistencia);
-      return
+      return;
     }
-    
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al crear la inasistencia: ${error}`);
@@ -81,11 +97,7 @@ export const createAbsence = async (req, res) => {
 
 export const updateAbsence = async (req, res) => {
   try {
-    const {
-      Fec_Inasistencia,
-      Mot_Inasistencia,
-      Id_TurnoRutinario,
-    } = req.body;
+    const { Fec_Inasistencia, Mot_Inasistencia, Id_TurnoRutinario } = req.body;
 
     const [updated] = await AbsenceModel.update(
       {
@@ -101,7 +113,7 @@ export const updateAbsence = async (req, res) => {
       res.status(404).json({ message: "Inasistencia no encontrada" });
     } else {
       res.json({ message: "Inasistencia actualizada correctamente" });
-      return
+      return;
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -114,14 +126,13 @@ const Id_TurnoRutinario = TurnosRutinariosModel.Id_TurnoRutinario;
 export const deleteAbsence = async (req, res) => {
   try {
     const result = await AbsenceModel.destroy({
-      where: { Id_TurnoRutinario: Id_TurnoRutinario }
+      where: { Id_TurnoRutinario: Id_TurnoRutinario },
     });
     if (result === 0) {
       res.status(404).json({ message: "Inasistencia no encontrada" });
-      
     } else {
       res.json({ message: "Inasistencia eliminada correctamente" });
-      return
+      return;
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -141,12 +152,12 @@ export const getQueryInasistencia = async (req, res) => {
         {
           model: TurnoRutinarioModel,
           as: "turnorutinario", // Alias usado para la relación
-        }
+        },
       ],
     });
-    if(inasistencias){
+    if (inasistencias) {
       res.status(200).json(inasistencias);
-      return
+      return;
     }
   } catch (error) {
     res.status(500).json({ message: error.message });

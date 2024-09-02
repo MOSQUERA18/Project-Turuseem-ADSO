@@ -8,7 +8,7 @@ import "datatables.net-responsive-dt/css/responsive.dataTables.min.css";
 
 import { MdDeleteForever } from "react-icons/md";
 import { BsSendArrowUp } from "react-icons/bs";
-import { MdOutlinePreview } from "react-icons/md";
+// import { MdOutlinePreview } from "react-icons/md";
 
 
 
@@ -118,7 +118,7 @@ const DataTableMemorandum = ({
                       className="text-gray-500 hover:text-gray-700 hover:border hover:border-gray-500 p-1 rounded mx-2"
                       onClick={mostrarPdf}
                     >
-                      <MdOutlinePreview />
+                      {/* <MdOutlinePreview /> */}
                       Ver
                     </button>
                   </td>
