@@ -10,7 +10,7 @@ const URI = "/ciudades/"
 const UriFichas = "/fichas/"
 
 
-const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllAprentices }) => {
+const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAprentices}) => {
   const [Id_Aprendiz, setId_Aprendiz] = useState("");
   const [Nom_Aprendiz, setNom_Aprendiz] = useState("");
   const [Ape_Aprendiz, setApe_Aprendiz] = useState("");
@@ -95,7 +95,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllApren
     }
     fetchFichas();
     fetchCiudades();
-  }, []);
+  }, [token]);
 
 
 
@@ -113,6 +113,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllApren
 
   const sendForm = async (e) => {
     e.preventDefault();
+
 
     try {
       const formData = new FormData();
@@ -157,6 +158,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllApren
           formData,
           config,
         );
+        getAllAprentices();
       }
   
       if (respuestApi.status === 200 || respuestApi.status === 201) {
@@ -171,19 +173,25 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllApren
         setMessageType("error");
       }
     } catch (error) {
-
-      setAlerta({
-        msg: "Todos los campos son obligatorios!",
-        error: true,
-      });
-      // console.error("Error en la solicitud:", error);
-      // if (error.response) {
-      //   console.error("Respuesta del servidor:", error.response.data);
-      //   alert(`Error: ${error.response.data.message || 'Ocurrió un error al procesar la solicitud'}`);
-      // } else {
-      //   alert('Error de red o servidor no disponible');
-      // }
-    }
+      console.error('Error details:', error.response || error.request || error.message);
+      if (error.response) {
+          setAlerta({
+              msg: error.response.data.message || "Error en la solicitud",
+              error: true,
+          });
+      } else if (error.request) {
+          setAlerta({
+              msg: "No se recibió respuesta del servidor",
+              error: true,
+          });
+      } else {
+          setAlerta({
+              msg: "Error desconocido",
+              error: true,
+          });
+      }
+  }
+    
   };
 
   const clearForm = () => {
