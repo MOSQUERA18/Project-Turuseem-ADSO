@@ -142,7 +142,7 @@ const DataTableInasistencia = ({
                 {inasistencia.Mot_Inasistencia}
               </td>
               <td className="py-2 px-4 border-b">{inasistencia.turnorutinario.Id_Aprendiz}</td>
-              {/* <td className="py-2 px-4 border-b">{inasistencia.turnorutinario.Nom_Aprendiz}</td> */}
+              <td className="py-2 px-4 border-b">{inasistencia.turnorutinario?.aprendiz?.Nom_Aprendiz}</td>
 
 
 

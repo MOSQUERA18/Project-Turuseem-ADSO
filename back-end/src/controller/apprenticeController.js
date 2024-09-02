@@ -85,10 +85,10 @@ export const createApprentice = async (req, res) => {
 
     const Foto_Aprendiz = req.file ? req.file.filename : null;
 
-    // // Validación de campos obligatorios
-    // if (!Id_Aprendiz || !Nom_Aprendiz || !Ape_Aprendiz || !Id_Ficha || !Fec_Nacimiento || !Id_Ciudad || !Lugar_Residencia || !Edad || !Hijos || !Nom_Eps || !Tel_Padre || !Gen_Aprendiz || !Cor_Aprendiz || !Tel_Aprendiz || !Tot_Memorandos || !Tot_Inasistencias || !Patrocinio || !Estado || !Nom_Empresa || !CentroConvivencia) {
-    //   return res.status(400).json({ message: 'Todos los campos son obligatorios' });
-    // }
+    // Validación de campos obligatorios
+    if (!Id_Aprendiz || !Nom_Aprendiz || !Ape_Aprendiz || !Id_Ficha || !Fec_Nacimiento || !Id_Ciudad || !Lugar_Residencia || !Edad || !Hijos || !Nom_Eps || !Tel_Padre || !Gen_Aprendiz || !Cor_Aprendiz || !Tel_Aprendiz || !Tot_Memorandos || !Tot_Inasistencias|| !Estado || !CentroConvivencia) {
+      return res.status(400).json({ message: 'Todos los campos son obligatorios' });
+    }
 
     const newApprentice = await ApprenticeModel.create({
       Id_Aprendiz,
@@ -113,9 +113,11 @@ export const createApprentice = async (req, res) => {
       CentroConvivencia,
       Foto_Aprendiz,
     });
-
     if (newApprentice) {
-      res.status(201).json({ message: 'Aprendiz Registrado Correctamente', data: newApprentice });
+      res.status(201).json({
+        apprentice: newApprentice,
+        message: "Aprendiz Registrado Correctamente"
+      });
       return;
     }
 

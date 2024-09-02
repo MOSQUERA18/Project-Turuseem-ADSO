@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ReactSession } from "react-client-session";
-import { useContext } from "react";
-import AuthContext from "../context/authProvider.jsx";
 
 //ICONO DE INASISTENCIAS
 import { GiNotebook } from "react-icons/gi";
@@ -17,12 +15,13 @@ import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { FaClipboardCheck, FaPeopleGroup } from "react-icons/fa6";
 import { MdAssignmentTurnedIn } from "react-icons/md";
 import clienteAxios from "../config/axios.jsx";
+import useAuth from "../hooks/useAuth.jsx";
 
 const VerticalNav = () => {
   const [show, setShow] = useState(true);
   const [user, setUser] = useState(null); // Inicializa el estado del usuario como null
 
-  const { cerrarSesion } = useContext(AuthContext); // Uso el contexto para acceder a la función cerrarSesion
+  const { cerrarSesion } = useAuth() // Uso el contexto para acceder a la función cerrarSesion
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -68,7 +67,7 @@ const VerticalNav = () => {
     <div className="min-h-screen">
       <div className="bg-green-500 xl:hidden flex justify-between w-full p-6 items-center">
         <div className="flex justify-between items-center space-x-3">
-          <img src="Public/assets/LOGOTURUSEEM.png" className="w-12 drop-shadow-2xl" />
+          <img src="/Public/assets/LOGOTURUSEEM.png" className="w-12 drop-shadow-2xl" />
           <p className="text-2xl leading-6 text-white font-bold">TURUSEEM</p>
         </div>
         <div aria-label="toggler" className="flex justify-center items-center">
@@ -163,7 +162,7 @@ const VerticalNav = () => {
             { to: "inasistencias", label: "Inasistencias", Icon: GiNotebook },
           ].map(({ to, label, Icon }) => (
             <Link key={to} to={to} className="w-full">
-              <button className="flex justify-start items-center w-full space-x-4 pl-3 py-2 focus:outline-none text-white hover:bg-green-600 rounded border-y border-white">
+              <button className="flex justify-start items-center w-full space-x-4 pl-3 py-2 focus:bg-green-600 text-white hover:bg-green-600 rounded border-y border-white">
                 <Icon size={22} />
                 <span className="text-white text-sm uppercase font-bold">{label}</span>
               </button>
@@ -174,7 +173,7 @@ const VerticalNav = () => {
           <div className="flex justify-between items-center w-full">
             <div className="flex justify-center items-center space-x-2">
               <div>
-                <img className="rounded-full" src="Public/assets/LOGOTURUSEEM.png" alt="avatar" />
+                <img className="rounded-full" src="/Public/assets/LOGOTURUSEEM.png" alt="avatar" />
               </div>
               <div className="flex justify-start flex-col items-start">
                 <p className="cursor-pointer text-sm leading-5 text-white">

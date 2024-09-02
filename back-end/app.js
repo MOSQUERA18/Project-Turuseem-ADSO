@@ -34,11 +34,12 @@ import AreaModel from "./src/models/areaModel.js";
 import ProgramaModel from "./src/models/programaModel.js";
 import FichasModel from "./src/models/fichasModel.js";
 import AbsenceModel from "./src/models/absenceModel.js";
-import TurnoEspecialAprendizModel from "./src/models/turnoEspeciales_Aprendices.js";
-import TurnoRutinarioAprendizModel from "./src/models/turnoRutinarioAprendices.js";
+// import TurnoEspecialAprendizModel from "./src/models/turnoEspeciales_Aprendices.js";
+// import TurnoRutinarioAprendizModel from "./src/models/turnoRutinarioAprendices.js";
 import TurnoEspecialModel from "./src/models/turnoEspecialModel.js";
 import OfficialModel from "./src/models/officialModel.js";
 import TurnosRutinariosModel from "./src/models/turnoRutinarioModel.js";
+import MemorandumModel from "./src/models/memorandumModel.js";
 
 // const createWindow = () => {
 //   const win = new BrowserWindow({
@@ -124,8 +125,12 @@ ApprenticeModel.belongsTo(cityModel,{foreignKey:'Id_Ciudad',as:'ciudad'})
 // //Inasistencias
 TurnosRutinariosModel.hasMany(AbsenceModel,{foreignKey:"Id_TurnoRutinario",as:"inasistencias"})
 AbsenceModel.belongsTo(TurnosRutinariosModel,{foreignKey:"Id_TurnoRutinario", as:"turnorutinario"})
+
 ApprenticeModel.hasMany(AbsenceModel,{foreignKey:"Id_TurnoRutinario", as:"inasistencias"})
 AbsenceModel.belongsTo(ApprenticeModel,{foreignKey:"Id_TurnoRutinario",as:"aprendiz"})
+
+AbsenceModel.hasMany(MemorandumModel, { foreignKey: "Id_Inasistencia", as: "memorandos" });
+MemorandumModel.belongsTo(AbsenceModel, { foreignKey: "Id_Inasistencia", as: "inasistencia" });
 
 
 //Turno Especial - Fichas

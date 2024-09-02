@@ -4,9 +4,8 @@ import UnitModel from "../models/unitModel.js";
 import { Sequelize, Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 import AbsenceModel from "../models/absenceModel.js";
-
-
-
+import FichasModel from "../models/fichasModel.js";
+import ProgramaModel from "../models/programaModel.js";
 
 export const getAllTurnosRutinarios = async (req, res) => {
   try {
@@ -15,6 +14,18 @@ export const getAllTurnosRutinarios = async (req, res) => {
         {
           model: ApprenticeModel,
           as: "aprendiz",
+          include: [
+            {
+              model: FichasModel,
+              as: "fichas",
+              include: [
+                {
+                  model: ProgramaModel,
+                  as: "programasFormacion",
+                },
+              ],
+            },
+          ],
         },
         {
           model: UnitModel,
@@ -39,11 +50,23 @@ export const getTurnoRutinario = async (req, res) => {
         include: [
           {
             model: ApprenticeModel,
-            as: "aprendiz", // Alias usado para la relación
+            as: "aprendiz",
+            include: [
+              {
+                model: FichasModel,
+                as: "fichas",
+                include: [
+                  {
+                    model: ProgramaModel,
+                    as: "programasFormacion",
+                  },
+                ],
+              },
+            ],
           },
           {
             model: UnitModel,
-            as: "unidad", // Alias usado para la relación
+            as: "unidad",
           },
         ],
       }
@@ -93,8 +116,6 @@ export const createTurnoRutinario = async (req, res) => {
   }
 };
 
-
-
 export const updateTurnoRutinario = async (req, res) => {
   try {
     const {
@@ -136,7 +157,10 @@ export const updateTurnoRutinario = async (req, res) => {
           },
         });
       }
-      res.json({ message: "Turno rutinario actualizado correctamente y se eliminó la inasistencia si existía." });
+      res.json({
+        message:
+          "Turno rutinario actualizado correctamente y se eliminó la inasistencia si existía.",
+      });
       return;
     }
   } catch (error) {
@@ -144,7 +168,6 @@ export const updateTurnoRutinario = async (req, res) => {
     logger.error(`Error al actualizar el turno rutinario: ${error}`);
   }
 };
-
 
 export const deleteTurnoRutinario = async (req, res) => {
   try {

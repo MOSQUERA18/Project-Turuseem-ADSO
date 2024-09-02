@@ -1,9 +1,7 @@
 import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { ReactSession } from 'react-client-session';
-
-
+import { ReactSession } from "react-client-session";
 
 import FormApprentices from "./formApprentices.jsx";
 // import ImportarCSV from "./importarCSV.jsx";
@@ -16,8 +14,7 @@ import { Outlet } from "react-router-dom";
 
 // const URI = "/aprendiz/";
 
-const URIFOTOS = "/public/uploads/"
-
+const URIFOTOS = "/public/uploads/";
 
 const CrudApprentices = () => {
   const [apprenticeList, setApprenticeList] = useState([]);
@@ -31,25 +28,23 @@ const CrudApprentices = () => {
     Ape_Aprendiz: "",
     Id_Ficha: "",
     Fec_Nacimiento: "",
-    Id_Ciudad:"",
-    Lugar_Residencia:"",
-    Edad:"",
-    Hijos:"",
-    Nom_Eps:"",
-    Tel_Padre:"",
+    Id_Ciudad: "",
+    Lugar_Residencia: "",
+    Edad: "",
+    Hijos: "",
+    Nom_Eps: "",
+    Tel_Padre: "",
     Gen_Aprendiz: "",
     Cor_Aprendiz: "",
     Tel_Aprendiz: "",
     Tot_Memorandos: "",
     Tot_Inasistencias: "",
     Patrocinio: "",
-    Estado:"",
-    Nom_Empresa:"",
+    Estado: "",
+    Nom_Empresa: "",
     CentroConvivencia: "",
-    Foto_Aprendiz: ""
+    Foto_Aprendiz: "",
   });
-
-  
 
   useEffect(() => {
     getAllApprentices();
@@ -92,11 +87,13 @@ const CrudApprentices = () => {
       },
     };
     try {
-      const respuestApi = await clienteAxios(`/aprendiz/${Id_Aprendiz}`, config);
+      const respuestApi = await clienteAxios(
+        `/aprendiz/${Id_Aprendiz}`,
+        config
+      );
       if (respuestApi.status === 200) {
         setApprentice({
           ...respuestApi.data,
-
         });
       } else {
         setAlerta({
@@ -168,8 +165,10 @@ const CrudApprentices = () => {
 
   return (
     <>
-    <br />
-    <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">Gestionar Informacion de los Aprendices</h1>
+      <br />
+      <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
+        Gestionar Informacion de los Aprendices
+      </h1>
       <div className="flex justify-end pb-3">
         <button
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
@@ -222,7 +221,7 @@ const CrudApprentices = () => {
         </div>
         {/* <hr /> */}
 
-<br />
+        <br />
         {msg && <Alerta alerta={alerta} />}
         <hr />
 
@@ -233,7 +232,6 @@ const CrudApprentices = () => {
           setStateAddApprentice={setStateAddApprentice}
           URIFOTOS={URIFOTOS}
         />
-
       </div>
 
       <hr />

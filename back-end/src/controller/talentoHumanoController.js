@@ -35,7 +35,7 @@ export const getTalentoHumano = async (req, res) => {
       include: [
         { 
           model: FichasModel, 
-          as: "fichas" 
+          as: "fichas"
         }
       ],
     });

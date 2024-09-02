@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 //Rutas Protegidas
 import RutaProtegida from "./layout/RutaProtegida.jsx";
-import Dashboard from "./Dashboard/Dashboard.jsx";
+import HomePrivado from "./home/homePrivado.jsx";
 import CrudApprentices from "./apprentice/crudApprentices.jsx";
 import ImportarCSV from "./apprentice/importarCSV";
 import CrudTurnosEspeciales from "./turnosEspeciales/CrudTurnosEspeciales.jsx";
@@ -52,7 +52,7 @@ function App() {
             </Route>
 
             <Route path="/admin" element={<RutaProtegida />}>   {/*ESTA ES LA RUTA DESPUES DE QUE SE AUTENTICA LE MOSTRARA TODOS LOS CRUDS  */}
-              <Route index element={<Dashboard />} />
+              <Route index element={<HomePrivado />} />
               <Route path="aprendices/" element={<CrudApprentices />}>
                 <Route path="importCSV" element={<ImportarCSV />} />
               </Route>
