@@ -39,20 +39,22 @@ const ConfirmarCuenta = () => {
 
   return (
     <>
-      <div>
-        <h1 className="text-stone-400 font-black text-5xl">
-          Confirma tu Cuenta y Comienza a Gestionar {""}
-          <span className="text-green-700">tus Turnos</span>
-        </h1>
-      </div>
-      <div className="mt-20 md:mt-5 shadow-2xl px-7 py-10 rounded-xl bg-white">
-        {!cargando && <Alerta alerta={alerta} />}
+      <div className="container mx-auto md:grid md:grid-cols-2 gap-10 p-5 items-center">
+        <div>
+          <h1 className="text-stone-400 font-black text-5xl">
+            Confirma tu Cuenta y Comienza a Gestionar {""}
+            <span className="text-green-700">tus Turnos</span>
+          </h1>
+        </div>
+        <div className="mt-20 md:mt-5 shadow-2xl px-7 py-10 rounded-xl bg-white">
+          {!cargando && <Alerta alerta={alerta} />}
 
-        {cuentaConfirmada && (
-          <Link to="/" className="block text-center my-5 text-gray-500">
-            Iniciar Sesión
-          </Link>
-        )}
+          {cuentaConfirmada && (
+            <Link to="/" className="block text-center my-5 text-gray-500">
+              Iniciar Sesión
+            </Link>
+          )}
+        </div>
       </div>
     </>
   );

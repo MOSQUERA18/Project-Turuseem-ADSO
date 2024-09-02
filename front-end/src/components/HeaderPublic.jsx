@@ -25,7 +25,7 @@ export default function HeaderPublic() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full">  
       <div className="bg-green-500 shadow-lg py-5 px-7">
         <nav className="flex justify-between">
           <div className="flex items-center space-x-3 lg:pr-16 pr-6">
@@ -63,7 +63,7 @@ export default function HeaderPublic() {
                   : "text-white bg-green-500"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
-              Consultar Turno
+              Consultar Turno Rutinario
             </Link>
             <Link to='manual'
               onClick={() => selected(3)}
@@ -73,7 +73,7 @@ export default function HeaderPublic() {
                   : "text-white bg-green-500"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
-              Manual
+              Manual Consulta Turno
             </Link>
           </ul>
           <div className=" flex space-x-5 justify-center items-center pl-2">

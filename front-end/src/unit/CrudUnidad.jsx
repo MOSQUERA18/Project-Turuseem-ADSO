@@ -2,11 +2,7 @@ import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
-// import DataTable from "datatables.net-dt";
 import "datatables.net-responsive-dt";
-// import $ from "jquery";
-// import "datatables.net";
-// import "datatables.net-dt/css/dataTables.dataTables.min.css";
 
 
 import FormUnidades from "./formUnidades.jsx";

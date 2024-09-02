@@ -34,11 +34,12 @@ import AreaModel from "./src/models/areaModel.js";
 import ProgramaModel from "./src/models/programaModel.js";
 import FichasModel from "./src/models/fichasModel.js";
 import AbsenceModel from "./src/models/absenceModel.js";
-import TurnoEspecialAprendizModel from "./src/models/turnoEspeciales_Aprendices.js";
-import TurnoRutinarioAprendizModel from "./src/models/turnoRutinarioAprendices.js";
+// import TurnoEspecialAprendizModel from "./src/models/turnoEspeciales_Aprendices.js";
+// import TurnoRutinarioAprendizModel from "./src/models/turnoRutinarioAprendices.js";
 import TurnoEspecialModel from "./src/models/turnoEspecialModel.js";
 import OfficialModel from "./src/models/officialModel.js";
 import TurnosRutinariosModel from "./src/models/turnoRutinarioModel.js";
+import MemorandumModel from "./src/models/memorandumModel.js";
 
 
 const appExpress = express();
@@ -110,8 +111,14 @@ ApprenticeModel.belongsTo(cityModel,{foreignKey:'Id_Ciudad',as:'ciudad'})
 
 
 // //Inasistencias
-// AbsenceModel.belongsTo(TurnoEspecialAprendizModel,{foreignKey:"Id_TurnoEspecialAprendiz", as:"turnoespecialaprendiz"})
-// TurnoEspecialAprendizModel.hasMany(AbsenceModel,{foreignKey:"Id_TurnoEspecialAprendiz",as:"inasistencias"})
+TurnosRutinariosModel.hasMany(AbsenceModel,{foreignKey:"Id_TurnoRutinario",as:"inasistencias"})
+AbsenceModel.belongsTo(TurnosRutinariosModel,{foreignKey:"Id_TurnoRutinario", as:"turnorutinario"})
+
+ApprenticeModel.hasMany(AbsenceModel,{foreignKey:"Id_TurnoRutinario", as:"inasistencias"})
+AbsenceModel.belongsTo(ApprenticeModel,{foreignKey:"Id_TurnoRutinario",as:"aprendiz"})
+
+AbsenceModel.hasMany(MemorandumModel, { foreignKey: "Id_Inasistencia", as: "memorandos" });
+MemorandumModel.belongsTo(AbsenceModel, { foreignKey: "Id_Inasistencia", as: "inasistencia" });
 
 
 //Turno Especial - Fichas
@@ -137,11 +144,13 @@ TurnosRutinariosModel.belongsTo(ApprenticeModel, { foreignKey: 'Id_Aprendiz', as
 UnitModel.hasMany(TurnosRutinariosModel, { foreignKey: 'Id_Unidad', as: 'turnosrutinarios' })
 TurnosRutinariosModel.belongsTo(UnitModel, { foreignKey: 'Id_Unidad', as: 'unidad' })
 
-AbsenceModel.belongsTo(TurnoRutinarioAprendizModel, { foreignKey: 'Id_TurnoRutinario_Aprendiz', as: 'turnoRutinarioAprendiz' })
-TurnoRutinarioAprendizModel.hasMany(AbsenceModel, { foreignKey: 'Id_TurnoRutinario_Aprendiz', as: 'inasistencias' })
 
-AbsenceModel.belongsTo(TurnoEspecialAprendizModel, { foreignKey: 'Id_TurnoEspecial_Aprendiz', as: 'turnoEspecialAprendiz' })
-TurnoEspecialAprendizModel.hasMany(AbsenceModel, { foreignKey: 'Id_TurnoEspecial_Aprendiz', as: 'inasistencias' })
+// // RELACIONES PARA INASISTENCIAS 
+// AbsenceModel.belongsTo(TurnoRutinarioAprendizModel, { foreignKey: 'Id_TurnoRutinario_Aprendiz', as: 'turnoRutinarioAprendiz' })
+// TurnoRutinarioAprenModel.hasMany(AbsenceModel, { foreignKey: 'Id_TurnoRutinario_Aprendiz', as: 'inasistencias' })
+
+// AbsenceModel.belongsTo(TurnoEspecialAprendizModel, { foreignKey: 'Id_TurnoEspecial_Aprendiz', as: 'turnoEspecialAprendiz' })
+// TurnoEspecialAprendizModel.hasMany(AbsenceModel, { foreignKey: 'Id_TurnoEspecial_Aprendiz', as: 'inasistencias' })
 
 
-export { AreaModel, UnitModel, ProgramaModel,FichasModel,TalentoHumanoModel,cityModel,ApprenticeModel,TurnosRutinariosModel} 
+export { AreaModel, UnitModel, ProgramaModel,FichasModel,TalentoHumanoModel,cityModel,ApprenticeModel,TurnosRutinariosModel,TurnoEspecialModel} 

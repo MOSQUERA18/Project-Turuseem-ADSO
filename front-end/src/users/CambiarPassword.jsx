@@ -68,42 +68,44 @@ const CambiarPassword = () => {
   const { msg } = alerta;
   return (
     <>
-      <div>
-        <h1 className="text-stone-400 font-black text-5xl">
-          Reestablece tu Contraseña y no Pierdas Acceso a {""}
-          <span className="text-green-700">tus Turnos</span>
-        </h1>
-      </div>
-      <div className="mt-20 md:mt-5 shadow-2xl px-7 py-10 rounded-xl bg-white">
-        {msg && <Alerta alerta={alerta} />}
-        {tokenValido && (
-          <>
-            <form onSubmit={handleSubmit}>
-              <div className="my-4">
-                <label className="uppercase text-stone-600 font-bold block text-base">
-                  Nueva Contraseña:{" "}
-                </label>
+      <div className="container mx-auto md:grid md:grid-cols-2 gap-10 p-5 items-center">
+        <div>
+          <h1 className="text-stone-400 font-black text-5xl">
+            Reestablece tu Contraseña y no Pierdas Acceso a {""}
+            <span className="text-green-700">tus Turnos</span>
+          </h1>
+        </div>
+        <div className="mt-20 md:mt-5 shadow-2xl px-7 py-10 rounded-xl bg-white">
+          {msg && <Alerta alerta={alerta} />}
+          {tokenValido && (
+            <>
+              <form onSubmit={handleSubmit}>
+                <div className="my-4">
+                  <label className="uppercase text-stone-600 font-bold block text-base">
+                    Nueva Contraseña:{" "}
+                  </label>
+                  <input
+                    type="password"
+                    className="border w-full p-2 mt-2 bg-gray-100 rounded-xl"
+                    placeholder="Su Nueva Contraseña"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                  />
+                </div>
                 <input
-                  type="password"
-                  className="border w-full p-2 mt-2 bg-gray-100 rounded-xl"
-                  placeholder="Su Nueva Contraseña"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
+                  type="submit"
+                  value="Guardar Nueva Contraseña"
+                  className="bg-green-800 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-900 md:w-auto"
                 />
-              </div>
-              <input
-                type="submit"
-                value="Guardar Nueva Contraseña"
-                className="bg-green-800 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-900 md:w-auto"
-              />
-            </form>
-          </>
-        )}
-        {passwordModificado && (
-          <Link to="/" className="block text-center my-5 text-gray-500">
-            Iniciar Sesión
-          </Link>
-        )}
+              </form>
+            </>
+          )}
+          {passwordModificado && (
+            <Link to="/login" className="block text-center my-5 text-gray-500">
+              Iniciar Sesión
+            </Link>
+          )}
+        </div>
       </div>
     </>
   );

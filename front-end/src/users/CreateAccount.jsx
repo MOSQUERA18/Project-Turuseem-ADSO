@@ -56,93 +56,95 @@ const UserForm = () => {
 
   return (
     <>
-      <div>
-        <h1 className="text-stone-400 font-black text-5xl">
-          Crea una Cuenta y Gestiona {""}
-          <span className="text-green-700">tus Turnos</span>
-        </h1>
-      </div>
-      <div className="mt-20 md:mt-5 shadow-2xl px-7 py-10 rounded-xl bg-white">
-        {msg && <Alerta alerta={alerta} />}
+      <div className="container mx-auto md:grid md:grid-cols-2 gap-10 p-5 items-center">
+        <div>
+          <h1 className="text-stone-400 font-black text-5xl">
+            Crea una Cuenta y Gestiona {""}
+            <span className="text-green-700">tus Turnos</span>
+          </h1>
+        </div>
+        <div className="mt-20 md:mt-5 shadow-2xl px-7 py-10 rounded-xl bg-white">
+          {msg && <Alerta alerta={alerta} />}
 
-        <form onSubmit={handleSubmit}>
-          <div className="my-4">
-            <label className="uppercase text-stone-600 font-bold block text-base">
-              Documento:{" "}
-            </label>
+          <form onSubmit={handleSubmit}>
+            <div className="my-4">
+              <label className="uppercase text-stone-600 font-bold block text-base">
+                Documento:{" "}
+              </label>
+              <input
+                type="text"
+                className="border w-full p-2 mt-2 bg-gray-100 rounded-xl"
+                placeholder="Su Documento"
+                value={Id_User}
+                onChange={(e) => setId_User(e.target.value)}
+              />
+            </div>
+            <div className="my-4">
+              <label className="uppercase text-stone-600 font-bold block text-base">
+                Nombre:{" "}
+              </label>
+              <input
+                type="text"
+                className="border w-full p-2 mt-2 bg-gray-100 rounded-xl"
+                placeholder="Su Nombre"
+                value={Nom_User}
+                onChange={(e) => setNom_User(e.target.value)}
+              />
+            </div>
+            <div className="my-4">
+              <label className="uppercase text-stone-600 font-bold block text-base">
+                Correo:{" "}
+              </label>
+              <input
+                type="email"
+                className="border w-full p-2 mt-2 bg-gray-100 rounded-xl"
+                placeholder="Su Correo Ej: example@gmail.com"
+                value={Cor_User}
+                onChange={(e) => setCor_User(e.target.value)}
+              />
+            </div>
+            <div className="my-4">
+              <label className="uppercase text-stone-600 font-bold block text-base">
+                Contraseña:{" "}
+              </label>
+              <input
+                type="password"
+                className="border w-full p-2 mt-2 bg-gray-100 rounded-xl"
+                placeholder="Su Contraseña"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div className="my-4">
+              <label className="uppercase text-stone-600 font-bold block text-base">
+                Repetir Contraseña:{" "}
+              </label>
+              <input
+                type="password"
+                className="border w-full p-2 mt-2 bg-gray-100 rounded-xl"
+                placeholder="Repita Su Contraseña"
+                value={passwordRepeat}
+                onChange={(e) => setPasswordRepeat(e.target.value)}
+              />
+            </div>
             <input
-              type="text"
-              className="border w-full p-2 mt-2 bg-gray-100 rounded-xl"
-              placeholder="Su Documento"
-              value={Id_User}
-              onChange={(e) => setId_User(e.target.value)}
+              type="submit"
+              value="Crear Cuenta"
+              className="bg-green-800 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-900 md:w-auto"
             />
-          </div>
-          <div className="my-4">
-            <label className="uppercase text-stone-600 font-bold block text-base">
-              Nombre:{" "}
-            </label>
-            <input
-              type="text"
-              className="border w-full p-2 mt-2 bg-gray-100 rounded-xl"
-              placeholder="Su Nombre"
-              value={Nom_User}
-              onChange={(e) => setNom_User(e.target.value)}
-            />
-          </div>
-          <div className="my-4">
-            <label className="uppercase text-stone-600 font-bold block text-base">
-              Correo:{" "}
-            </label>
-            <input
-              type="email"
-              className="border w-full p-2 mt-2 bg-gray-100 rounded-xl"
-              placeholder="Su Correo Ej: example@gmail.com"
-              value={Cor_User}
-              onChange={(e) => setCor_User(e.target.value)}
-            />
-          </div>
-          <div className="my-4">
-            <label className="uppercase text-stone-600 font-bold block text-base">
-              Contraseña:{" "}
-            </label>
-            <input
-              type="password"
-              className="border w-full p-2 mt-2 bg-gray-100 rounded-xl"
-              placeholder="Su Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div className="my-4">
-            <label className="uppercase text-stone-600 font-bold block text-base">
-              Repetir Contraseña:{" "}
-            </label>
-            <input
-              type="password"
-              className="border w-full p-2 mt-2 bg-gray-100 rounded-xl"
-              placeholder="Repita Su Contraseña"
-              value={passwordRepeat}
-              onChange={(e) => setPasswordRepeat(e.target.value)}
-            />
-          </div>
-          <input
-            type="submit"
-            value="Crear Cuenta"
-            className="bg-green-800 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-900 md:w-auto"
-          />
-        </form>
-        <nav className="mt-6 lg:flex lg:justify-between">
-          <Link to="/" className="block text-center my-5 text-gray-500">
-            ¿Tienes una Cuenta? Inicia Sesion
-          </Link>
-          <Link
-            to="/olvide-password"
-            className="block text-center my-5 text-gray-500"
-          >
-            Olvide mi Contraseña
-          </Link>
-        </nav>
+          </form>
+          <nav className="mt-6 lg:flex lg:justify-between">
+            <Link to="/" className="block text-center my-5 text-gray-500">
+              ¿Tienes una Cuenta? Inicia Sesion
+            </Link>
+            <Link
+              to="/olvide-password"
+              className="block text-center my-5 text-gray-500"
+            >
+              Olvide mi Contraseña
+            </Link>
+          </nav>
+        </div>
       </div>
     </>
   );

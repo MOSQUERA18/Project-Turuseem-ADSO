@@ -1,29 +1,36 @@
 import AbsenceModel from "../models/absenceModel.js";
 import TurnoRutinarioModel from "../models/turnoRutinarioModel.js";
-import TurnoRutinarioAprendizModel from "../models/turnoRutinarioAprendices.js";
-import TurnoEspecialAprendizModel from "../models/turnoEspeciales_Aprendices.js";
-import TurnoEspecialModel from "../models/turnoEspecialModel.js";
 import { Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
+import TurnosRutinariosModel from "../models/turnoRutinarioModel.js";
+import ApprenticeModel from "../models/apprenticeModel.js";
+import UnitModel from "../models/unitModel.js";
 
 export const getAllAbsences = async (req, res) => {
   try {
     const inasistencias = await AbsenceModel.findAll({
       include: [
         {
-          model: TurnoRutinarioAprendizModel,
-          as: "turnoRutinarioAprendiz", // Alias usado para la relación
-        },
-        {
-          model: TurnoEspecialAprendizModel,
-          as: "turnoEspecialAprendiz", // Alias usado para la relación
+          model: TurnoRutinarioModel,
+          as: "turnorutinario", // Alias usado para la relación
+          include: [
+            {
+              model: ApprenticeModel,
+              as: "aprendiz", // Alias para la relación con Aprendiz
+            },
+            {
+              model: UnitModel,
+              as: "unidad", // Alias para la relación con Unidad
+            },
+          ],
         },
       ],
     });
-    if(inasistencias.length>0){
-      res.json(200).json(inasistencias); //a todos los controllers toca agg esto para validar los datos
-      return
-    }else {
+
+    if (inasistencias) {
+      res.status(200).json(inasistencias); //a todos los controllers toca agg esto para validar los datos
+      return;
+    } else {
       res.status(404).json({
         message: "No se encontraron inasistencias.",
       });
@@ -41,19 +48,25 @@ export const getAbsence = async (req, res) => {
       {
         include: [
           {
-            model: TurnoRutinarioAprendizModel,
-            as: "turnoRutinarioApreniz", // Alias usado para la relación
-          },
-          {
-            model: TurnoEspecialModel,
-            as: "turnoEspecial", // Alias usado para la relación
+            model: TurnoRutinarioModel,
+            as: "turnorutinario", // Alias usado para la relación
+            include: [
+              {
+                model: ApprenticeModel,
+                as: "aprendiz", // Alias para la relación con Aprendiz
+              },
+              {
+                model: UnitModel,
+                as: "unidad", // Alias para la relación con Unidad
+              },
+            ],
           },
         ],
       }
     );
-    if (inasistencia.length>0) {
+
+    if (inasistencia) {
       res.status(200).json(inasistencia);
-      return
     } else {
       res.status(404).json({ message: "Inasistencia no encontrada" });
     }
@@ -65,24 +78,17 @@ export const getAbsence = async (req, res) => {
 
 export const createAbsence = async (req, res) => {
   try {
-    const {
-      Fec_Inasistencia,
-      Mot_Inasistencia,
-      Id_TurnoRutinario_Aprendiz,
-      Id_TurnoEspecial_Aprendiz,
-    } = req.body;
+    const { Fec_Inasistencia, Mot_Inasistencia, Id_TurnoRutinario } = req.body;
 
     const newInasistencia = await AbsenceModel.create({
       Fec_Inasistencia,
       Mot_Inasistencia,
-      Id_TurnoRutinario_Aprendiz,
-      Id_TurnoEspecial_Aprendiz,
+      Id_TurnoRutinario,
     });
-    if(newInasistencia){
+    if (newInasistencia) {
       res.status(201).json(newInasistencia);
-      return
+      return;
     }
-    
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al crear la inasistencia: ${error}`);
@@ -91,19 +97,13 @@ export const createAbsence = async (req, res) => {
 
 export const updateAbsence = async (req, res) => {
   try {
-    const {
-      Fec_Inasistencia,
-      Mot_Inasistencia,
-      Id_TurnoRutinario_Aprendiz,
-      Id_TurnoEspecial_Aprendiz,
-    } = req.body;
+    const { Fec_Inasistencia, Mot_Inasistencia, Id_TurnoRutinario } = req.body;
 
     const [updated] = await AbsenceModel.update(
       {
         Fec_Inasistencia,
         Mot_Inasistencia,
-        Id_TurnoRutinario_Aprendiz,
-        Id_TurnoEspecial_Aprendiz,
+        Id_TurnoRutinario,
       },
       {
         where: { Id_Inasistencia: req.params.Id_Inasistencia },
@@ -113,7 +113,7 @@ export const updateAbsence = async (req, res) => {
       res.status(404).json({ message: "Inasistencia no encontrada" });
     } else {
       res.json({ message: "Inasistencia actualizada correctamente" });
-      return
+      return;
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -121,17 +121,18 @@ export const updateAbsence = async (req, res) => {
   }
 };
 
+const Id_TurnoRutinario = TurnosRutinariosModel.Id_TurnoRutinario;
+
 export const deleteAbsence = async (req, res) => {
   try {
     const result = await AbsenceModel.destroy({
-      where: { Id_Inasistencia: req.params.Id_Inasistencia },
+      where: { Id_TurnoRutinario: Id_TurnoRutinario },
     });
     if (result === 0) {
       res.status(404).json({ message: "Inasistencia no encontrada" });
-      
     } else {
       res.json({ message: "Inasistencia eliminada correctamente" });
-      return
+      return;
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -150,17 +151,13 @@ export const getQueryInasistencia = async (req, res) => {
       include: [
         {
           model: TurnoRutinarioModel,
-          as: "turnoRutinario", // Alias usado para la relación
-        },
-        {
-          model: TurnoEspecialModel,
-          as: "turnoEspecial", // Alias usado para la relación
+          as: "turnorutinario", // Alias usado para la relación
         },
       ],
     });
-    if(inasistencias.length > 0){
+    if (inasistencias) {
       res.status(200).json(inasistencias);
-      return
+      return;
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
