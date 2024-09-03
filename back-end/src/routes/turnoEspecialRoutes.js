@@ -8,7 +8,6 @@ import {
   createTurnoEspecial,
   updateTurnoEspecial,
   deleteTurnoEspecial,
-  getQueryTurnoEspecial
 } from '../controller/turnoEspecialController.js';
 import checkAuth from '../middleware/authMiddleware.js';
 
@@ -36,9 +35,5 @@ router
   .get( checkAuth, getTurnoEspecial )
   .put(checkAuth,upload.single('Img_Asistencia' ), updateTurnoEspecial )
   .delete(checkAuth, deleteTurnoEspecial );
-
-router
-  .route('/query/:Id_TurnoEspecial')
-  .get(checkAuth, getQueryTurnoEspecial);
 
 export default router;

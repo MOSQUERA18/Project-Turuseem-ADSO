@@ -5,7 +5,6 @@ import {
   createPrograma,
   updatePrograma,
   deletePrograma,
-  getQueryNom_Programa
 } from "../controller/programaController.js";
 import checkAuth from "../middleware/authMiddleware.js";
 
@@ -20,6 +19,5 @@ router
   .get(checkAuth, getPrograma)
   .put(checkAuth, updatePrograma)
   .delete(checkAuth, deletePrograma);
-router.get('/nombre/:Nom_ProgramaFormacion',checkAuth, getQueryNom_Programa);
 
 export default router;

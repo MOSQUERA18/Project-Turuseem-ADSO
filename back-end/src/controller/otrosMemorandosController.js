@@ -1,32 +1,27 @@
 import { logger } from "../middleware/logMiddleware.js";
-import MemorandumModel from "../models/memorandumModel.js";
-import AbsenceModel from "../models/absenceModel.js";
-import TurnoRutinarioModel from "../models/turnoRutinarioModel.js";
 import ApprenticeModel from "../models/apprenticeModel.js";
-import UnitModel from "../models/unitModel.js";
 import fs from "fs";
 import pdf from "html-pdf";
 import db from "../database/db.js";
+import OtrosMemorandumModel from "../models/Otros_MemorandosModel.js";
+import FichasModel from "../models/fichasModel.js";
+import ProgramaModel from "../models/programaModel.js";
 
 export const getAllMemorandum = async (req, res) => {
   try {
-    const memorandums = await MemorandumModel.findAll({
+    const memorandums = await OtrosMemorandumModel.findAll({
       include: [
         {
-          model: AbsenceModel,
-          as: "inasistencia",
+          model: ApprenticeModel,
+          as: "aprendiz",
           include: [
             {
-              model: TurnoRutinarioModel,
-              as: "turnorutinario", // Alias usado para la relación Turno Rutinario
+              model: FichasModel,
+              as: "fichas",
               include: [
                 {
-                  model: ApprenticeModel,
-                  as: "aprendiz", // Alias para la relación con Aprendiz
-                },
-                {
-                  model: UnitModel,
-                  as: "unidad", // Alias para la relación con Unidad
+                  model: ProgramaModel,
+                  as: "programasFormacion",
                 },
               ],
             },
@@ -52,24 +47,20 @@ export const getAllMemorandum = async (req, res) => {
 
 export const getMemorandum = async (req, res) => {
   try {
-    const memorandum = await MemorandumModel.findOne({
+    const memorandum = await OtrosMemorandumModel.findOne({
       where: { Id_Memorando: req.params.Id_Memorando },
       include: [
         {
-          model: AbsenceModel,
-          as: "inasistencia",
+          model: ApprenticeModel,
+          as: "aprendiz",
           include: [
             {
-              model: TurnoRutinarioModel,
-              as: "turnorutinario", // Alias usado para la relación Turno Rutinario
+              model: FichasModel,
+              as: "fichas",
               include: [
                 {
-                  model: ApprenticeModel,
-                  as: "aprendiz", // Alias para la relación con Aprendiz
-                },
-                {
-                  model: UnitModel,
-                  as: "unidad", // Alias para la relación con Unidad
+                  model: ProgramaModel,
+                  as: "programasFormacion",
                 },
               ],
             },
@@ -95,7 +86,7 @@ export const getMemorandum = async (req, res) => {
 
 export const getTotalMemorandums = async () => {
   try {
-    return await MemorandumModel.count();
+    return await OtrosMemorandumModel.count();
   } catch (error) {
     logger.error("Error obteniendo el total de memorandos: ", error.message);
     throw new Error("Error al obtener el total de memorandos.");
@@ -105,31 +96,27 @@ export const getTotalMemorandums = async () => {
 export const createMemorandum = async (req, res) => {
   const transaction = await db.transaction();
   try {
-    const newMemorandum = await MemorandumModel.create(req.body, {
+    const newMemorandum = await OtrosMemorandumModel.create(req.body, {
       transaction,
     });
 
     // Obtener el memorando recién creado junto con las relaciones necesarias
-    const fullMemorandum = await MemorandumModel.findOne({
+    const fullMemorandum = await OtrosMemorandumModel.findOne({
       where: {
         Id_Memorando: newMemorandum.Id_Memorando,
       },
       include: [
         {
-          model: AbsenceModel,
-          as: "inasistencia",
+          model: ApprenticeModel,
+          as: "aprendiz",
           include: [
             {
-              model: TurnoRutinarioModel,
-              as: "turnorutinario",
+              model: FichasModel,
+              as: "fichas",
               include: [
                 {
-                  model: ApprenticeModel,
-                  as: "aprendiz",
-                },
-                {
-                  model: UnitModel,
-                  as: "unidad",
+                  model: ProgramaModel,
+                  as: "programasFormacion",
                 },
               ],
             },
@@ -161,7 +148,7 @@ export const createMemorandum = async (req, res) => {
 
 export const updateMemorandum = async (req, res) => {
   try {
-    const [updated] = await MemorandumModel.update(req.body, {
+    const [updated] = await OtrosMemorandumModel.update(req.body, {
       where: { Id_Memorando: req.params.Id_Memorando },
     });
     if (updated) {
@@ -185,7 +172,7 @@ export const updateMemorandum = async (req, res) => {
 
 export const deleteMemorandum = async (req, res) => {
   try {
-    const deleted = await MemorandumModel.destroy({
+    const deleted = await OtrosMemorandumModel.destroy({
       where: { Id_Memorando: req.params.Id_Memorando },
     });
     if (deleted) {
@@ -228,11 +215,11 @@ export const generateMemorandumPdf = (memorandum, totalMemorandums) => {
   const htmlContent = plantillaHtml
     .replace("{{FechaActual}}", fechaActual)
     .replace("{{NumeroMemorando}}", totalMemorandums)
-    .replace("{{NombreAprendiz}}", aprendiz.Nom_Aprendiz )
+    .replace("{{NombreAprendiz}}", aprendiz.Nom_Aprendiz)
     .replace("{{ProgramaFormacion}}", aprendiz)
-    .replace("{{FichaNo}}", aprendiz )
-    .replace("{{UnidadAsignada}}", aprendiz )
-    .replace("{{FechaActual}}", aprendiz)
+    .replace("{{FichaNo}}", aprendiz)
+    .replace("{{UnidadAsignada}}", aprendiz)
+    .replace("{{FechaActual}}", aprendiz);
 
   pdf.create(htmlContent).toBuffer((err, buffer) => {
     if (err) {

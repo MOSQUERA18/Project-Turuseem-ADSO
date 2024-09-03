@@ -6,8 +6,6 @@ import "datatables.net-dt/css/dataTables.dataTables.min.css";
 import "datatables.net-responsive";
 import "datatables.net-responsive-dt/css/responsive.dataTables.min.css";
 
-
-
 const DataTableInasistencia = ({
   inasistenciaList,
   getInasistencia,
@@ -25,32 +23,33 @@ const DataTableInasistencia = ({
         tableInstance.current = tableElement.DataTable({
           data: inasistenciaList,
           columns: [
-            { data: 'Id_Inasistencia', title: 'N° Inasistencia' },
-            { data: 'Fec_Inasistencia', title: 'Fecha de la inasistencia' },
-            { data: 'Mot_Inasistencia', title: 'Motivo' },
-            { 
-              data: 'turnorutinario.Id_Aprendiz', 
-              title: 'Documento Aprendiz',
-              render: function(data, type, row) {
-                return row.turnorutinario ? row.turnorutinario.Id_Aprendiz : '';
-              }
+            { data: "Id_Inasistencia", title: "N° Inasistencia" },
+            { data: "Fec_Inasistencia", title: "Fecha de la inasistencia" },
+            { data: "Mot_Inasistencia", title: "Motivo" },
+            {
+              data: "turnorutinario.Id_Aprendiz",
+              title: "Documento Aprendiz",
+              render: function (data, type, row) {
+                return row.turnorutinario ? row.turnorutinario.Id_Aprendiz : "";
+              },
             },
-            { 
-              data: 'turnorutinario.aprendiz.Nom_Aprendiz', 
-              title: 'Nombre Aprendiz',
-              render: function(data, type, row) {
-                return row.turnorutinario && row.turnorutinario.aprendiz ? row.turnorutinario.aprendiz.Nom_Aprendiz : '';
-              }
-            }
+            {
+              data: "turnorutinario.aprendiz.Nom_Aprendiz",
+              title: "Nombre Aprendiz",
+              render: function (data, type, row) {
+                return row.turnorutinario && row.turnorutinario.aprendiz
+                  ? row.turnorutinario.aprendiz.Nom_Aprendiz
+                  : "";
+              },
+            },
           ],
-
 
           responsive: {
             details: {
               display: $.fn.dataTable.Responsive.display.childRowImmediate,
-              type: 'none',
-              target: ''
-            }
+              type: "none",
+              target: "",
+            },
           },
           columnDefs: [
             { responsivePriority: 1, targets: 0 }, // Documento
@@ -71,14 +70,16 @@ const DataTableInasistencia = ({
         });
 
         // Evento para manejar la visualización responsiva
-        tableElement.on('responsive-display', function (e, datatable, row, showHide) {
-          if (showHide) {
-            const rowData = row.data();
-            const $rowEl = $(row.node());
-            const $responsiveWrapper = $rowEl.next('.child');
+        tableElement.on(
+          "responsive-display",
+          function (e, datatable, row, showHide) {
+            if (showHide) {
+              const rowData = row.data();
+              const $rowEl = $(row.node());
+              const $responsiveWrapper = $rowEl.next(".child");
 
-            if ($responsiveWrapper.find('.action-buttons').length === 0) {
-              $responsiveWrapper.append(`
+              if ($responsiveWrapper.find(".action-buttons").length === 0) {
+                $responsiveWrapper.append(`
                 <div class="action-buttons">
                   <button class="update-btn text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded">
                     <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M7 17.013l4.413-.015 9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583v4.43zM18.045 4.458l1.589 1.583-1.597 1.582-1.586-1.585 1.594-1.58zM9 13.417l6.03-5.973 1.586 1.586-6.029 5.971L9 15.006v-1.589z"></path><path d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2z"></path></svg>
@@ -89,17 +90,18 @@ const DataTableInasistencia = ({
                 </div>
               `);
 
-              $responsiveWrapper.find('.update-btn').on('click', () => {
-                getInasistencia(rowData.Id_Inasistencia);
-                setStateAddInasistencia(true);
-              });
+                $responsiveWrapper.find(".update-btn").on("click", () => {
+                  getInasistencia(rowData.Id_Inasistencia);
+                  setStateAddInasistencia(true);
+                });
 
-              $responsiveWrapper.find('.delete-btn').on('click', () => {
-                deleteInasistencia(rowData.Id_Inasistencia);
-              });
+                $responsiveWrapper.find(".delete-btn").on("click", () => {
+                  deleteInasistencia(rowData.Id_Inasistencia);
+                });
+              }
             }
           }
-        });
+        );
       } else {
         tableInstance.current.clear().rows.add(inasistenciaList).draw();
       }
@@ -122,11 +124,19 @@ const DataTableInasistencia = ({
       >
         <thead className="text-white bg-green-700">
           <tr>
-            <th className="py-2 px-4 border-2 border-b-gray-500">N° Inasistencia</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Fecha de la inasistencia</th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">
+              N° Inasistencia
+            </th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">
+              Fecha de la inasistencia
+            </th>
             <th className="py-2 px-4 border-2 border-b-gray-500">Motivo</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Documento Aprendiz</th>
-            <th className="py-2 px-4 border-2 border-b-gray-500">Nombre Aprendiz</th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">
+              Documento Aprendiz
+            </th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">
+              Nombre Aprendiz
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -141,11 +151,12 @@ const DataTableInasistencia = ({
               <td className="py-2 px-4 border-b">
                 {inasistencia.Mot_Inasistencia}
               </td>
-              <td className="py-2 px-4 border-b">{inasistencia.turnorutinario.Id_Aprendiz}</td>
-              <td className="py-2 px-4 border-b">{inasistencia.turnorutinario?.aprendiz?.Nom_Aprendiz}</td>
-
-
-
+              <td className="py-2 px-4 border-b">
+                {inasistencia.turnorutinario.Id_Aprendiz}
+              </td>
+              <td className="py-2 px-4 border-b">
+                {inasistencia.turnorutinario?.aprendiz?.Nom_Aprendiz}
+              </td>
             </tr>
           ))}
         </tbody>

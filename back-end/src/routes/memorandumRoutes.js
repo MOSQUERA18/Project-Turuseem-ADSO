@@ -5,7 +5,6 @@ import {
   createMemorandum,
   updateMemorandum,
   deleteMemorandum,
-  getQueryMemorandum,
 } from "../controller/memorandumController.js";
 import checkAuth from "../middleware/authMiddleware.js";
 
@@ -20,6 +19,5 @@ router
   .get(checkAuth, getMemorandum)
   .put(checkAuth, updateMemorandum)
   .delete(checkAuth, deleteMemorandum);
-router.get("/query/:Id_Memorando", checkAuth, getQueryMemorandum);
 
 export default router;
