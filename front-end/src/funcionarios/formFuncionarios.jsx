@@ -42,6 +42,7 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
     };
 
     try {
+      let mensajeCRUD = "";
       let respuestApi;
       if (buttonForm === "Actualizar") {
         respuestApi = await clienteAxios.put(
@@ -56,6 +57,7 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
           },
           config
         );
+        mensajeCRUD = "Funcionario actualizado correctamente!";
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
           `/funcionarios`,
@@ -70,10 +72,11 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
           },
           config
         );
+        mensajeCRUD = "Funcionado Registrado correctamente!";
       }
 
       if (respuestApi.status === 201 || respuestApi.status === 200) {
-        setMessage("Funcionario registrado correctamente!");
+        setMessage(mensajeCRUD);
         setMessageType("success");
         clearForm();
         getAllFuncionarios();

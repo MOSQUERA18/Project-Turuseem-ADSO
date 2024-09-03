@@ -87,10 +87,6 @@ useEffect(() => {
   getAllUnidades();
 }, []);
 
-
-
-
-
   const token = ReactSession.get("token");
   const config = {
     headers: {
@@ -141,7 +137,7 @@ useEffect(() => {
       formData.append('Img_Asistencia', Img_Asistencia);
 
       
-
+      let mensajeCRUD = ""
       let respuestApi;
       if (buttonForm === "Actualizar") {
         respuestApi = await clienteAxios.put(
@@ -149,17 +145,19 @@ useEffect(() => {
           formData,
           config
         );
+        mensajeCRUD = "Turno especial Actualizado Exitosamente"
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
           `/turnoespecial`,
           formData,
           config
         );
+        mensajeCRUD = "Turno especial Registrado Exitosamente"
       }
 
       if (respuestApi.status === 200 || respuestApi.status === 201) {
         setAlerta({
-          msg: "Turno Especial Actualizaco correctamente!",
+          msg: mensajeCRUD,
           error: false,
         });
         clearForm();

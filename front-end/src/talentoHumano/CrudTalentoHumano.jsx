@@ -36,9 +36,7 @@ const CrudTalentoHumano = () => {
     Est_Talento_Humano: "",
   });
 
-  useEffect(() => {
-    getAllTalentoHumano();
-  }, []);
+
 
   const getAllTalentoHumano = async () => {
     const token = ReactSession.get("token");
@@ -122,12 +120,12 @@ const CrudTalentoHumano = () => {
             config
           );
           if (respuestApi.status === 200) {
-            getAllTalentoHumano();  // Refrescar la lista después de borrar
             Swal.fire({
               title: "Borrado!",
               text: "El registro ha sido borrado.",
               icon: "success",
             });
+            getAllTalentoHumano();
           } else {
             alert(respuestApi.data.message);
           }
@@ -148,10 +146,6 @@ const CrudTalentoHumano = () => {
   };
 
   const { msg } = alerta;
-
-
-  
-
     // Prepara los datos para Excel
     const prepareDataForExcel = (talentoHumano,talentoHumanoList) => {
       return (talentoHumano.length ? talentoHumano : talentoHumanoList).map(talentoHumano => ({
@@ -180,6 +174,10 @@ const CrudTalentoHumano = () => {
     const handleExport = () => {
       handleExportToExcel(talentoHumano, talentoHumanoList);
     };
+
+    useEffect(() => {
+      getAllTalentoHumano();
+    }, []);
   return (
     <>
       <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">

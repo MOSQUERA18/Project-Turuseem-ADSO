@@ -90,7 +90,7 @@ const DataTableFuncionarios = ({
         tableInstance.current = null;
       }
     };
-  }, [funcionarioList]);
+  }, );
 
   return (
     <div>

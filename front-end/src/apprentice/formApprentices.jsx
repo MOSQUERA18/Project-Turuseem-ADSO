@@ -305,7 +305,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
             setNom_Aprendiz(value);
           }
         }}
-        maxLength={30}
+        maxLength={60}
         className="w-full p-2 border rounded"
       />
     </div>

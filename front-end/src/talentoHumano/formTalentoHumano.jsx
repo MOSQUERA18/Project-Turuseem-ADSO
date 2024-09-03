@@ -57,6 +57,7 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
     }
   }, [message]);
 
+
   const sendForm = async (e) => {
     e.preventDefault();
     const token = ReactSession.get("token");
@@ -68,12 +69,13 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
     };
 
     try {
+      let successMessage = "";
       let respuestApi;
       if (buttonForm === "Actualizar") {
         respuestApi = await clienteAxios.put(
           `/talentoHumano/${talentoHumano.Id_Talento_Humano}`,
           {
-            Id_Talento_Humano,
+            // Id_Talento_Humano,
             Nom_Talento_Humano,
             Ape_Talento_Humano,
             Genero_Talento_Humano,
@@ -84,9 +86,10 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
           },
           config
         );
+        successMessage = "Talento Humano actualizado correctamente!";
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
-          `/talentoHumano`,
+          `/talentohumano`,
           {
             Id_Talento_Humano,
             Nom_Talento_Humano,
@@ -99,13 +102,14 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
           },
           config
         );
+        successMessage = "Talento Humano registrado correctamente!";
       }
 
       if (respuestApi.status === 201 || respuestApi.status === 200) {
-        setMessage("Talento Humano Actualizado correctamente!");
+        setMessage(successMessage);
         setMessageType("success");
+        getAllTalentoHumano()
         clearForm();
-        getAllTalentoHumano();
         updateTextButton("Enviar");
       } else {
         setMessage(respuestApi.data.message || "Error al registrar Talento Humano .");
@@ -113,7 +117,7 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
       }
     } catch (error) {
       setAlerta({
-        msg: "Todos los campos son obligatorios!",
+        msg: "Todos los campos son obligatorios o Documento Repetido!",
         error: true,
       });
 
@@ -181,7 +185,12 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
               id="documento"
               placeholder="Documento"
               value={Id_Talento_Humano}
-              onChange={(e) => setId_Talento_Humano(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value.length <= 10) {
+                  setId_Talento_Humano(value);
+                }
+              }}
               className="w-full p-2 border rounded"
             />
           </div>
@@ -195,7 +204,12 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
               id="nombre"
               placeholder="Nombre"
               value={Nom_Talento_Humano}
-              onChange={(e) => setNom_Talento_Humano(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value.length <= 30) {
+                  setNom_Talento_Humano(value);
+                }
+              }}
               className="w-full p-2 border rounded"
             />
           </div>
@@ -209,7 +223,12 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
               id="apellido"
               placeholder="Apellido"
               value={Ape_Talento_Humano}
-              onChange={(e) => setApe_Talento_Humano(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value.length <= 40) {
+                  setApe_Talento_Humano(value);
+                }
+              }}
               className="w-full p-2 border rounded"
             />
           </div>
@@ -240,7 +259,12 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
               id="correo"
               placeholder="Correo"
               value={Cor_Talento_Humano}
-              onChange={(e) => setCor_Talento_Humano(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value.length <= 60) {
+                  setCor_Talento_Humano(value);
+                }
+              }}
               className="w-full p-2 border rounded"
             />
           </div>
@@ -254,7 +278,12 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
               id="telefono"
               placeholder="Telefono"
               value={Tel_Talento_Humano}
-              onChange={(e) => setTel_Talento_Humano(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value.length <= 10) {
+                  setTel_Talento_Humano(value);
+                }
+              }}
               className="w-full p-2 border rounded"
             />
           </div>
