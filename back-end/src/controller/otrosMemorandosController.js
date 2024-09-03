@@ -7,7 +7,7 @@ import OtrosMemorandumModel from "../models/Otros_MemorandosModel.js";
 import FichasModel from "../models/fichasModel.js";
 import ProgramaModel from "../models/programaModel.js";
 
-export const getAllMemorandum = async (req, res) => {
+export const getAllOtrosMemorandum = async (req, res) => {
   try {
     const memorandums = await OtrosMemorandumModel.findAll({
       include: [
@@ -45,7 +45,7 @@ export const getAllMemorandum = async (req, res) => {
   }
 };
 
-export const getMemorandum = async (req, res) => {
+export const getOtroMemorandum = async (req, res) => {
   try {
     const memorandum = await OtrosMemorandumModel.findOne({
       where: { Id_Memorando: req.params.Id_Memorando },
@@ -84,7 +84,7 @@ export const getMemorandum = async (req, res) => {
   }
 };
 
-export const getTotalMemorandums = async () => {
+export const getTotalOtrosMemorandums = async () => {
   try {
     return await OtrosMemorandumModel.count();
   } catch (error) {
@@ -93,7 +93,7 @@ export const getTotalMemorandums = async () => {
   }
 };
 
-export const createMemorandum = async (req, res) => {
+export const createOtroMemorandum = async (req, res) => {
   const transaction = await db.transaction();
   try {
     const newMemorandum = await OtrosMemorandumModel.create(req.body, {
@@ -146,7 +146,7 @@ export const createMemorandum = async (req, res) => {
   }
 };
 
-export const updateMemorandum = async (req, res) => {
+export const updateOtroMemorandum = async (req, res) => {
   try {
     const [updated] = await OtrosMemorandumModel.update(req.body, {
       where: { Id_Memorando: req.params.Id_Memorando },
@@ -170,7 +170,7 @@ export const updateMemorandum = async (req, res) => {
   }
 };
 
-export const deleteMemorandum = async (req, res) => {
+export const deleteOtroMemorandum = async (req, res) => {
   try {
     const deleted = await OtrosMemorandumModel.destroy({
       where: { Id_Memorando: req.params.Id_Memorando },
@@ -194,8 +194,8 @@ export const deleteMemorandum = async (req, res) => {
   }
 };
 
-export const generateMemorandumPdf = (memorandum, totalMemorandums) => {
-  const { nombre, fecha, contenido } = memorandum;
+export const generateOtroMemorandumPdf = (memorandum, totalMemorandums) => {
+//   const { nombre, fecha, contenido } = memorandum;
   const { inasistencia } = memorandum;
   const { turnorutinario } = inasistencia;
   const { aprendiz, unidad } = turnorutinario;

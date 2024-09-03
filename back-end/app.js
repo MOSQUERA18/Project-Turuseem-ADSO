@@ -21,6 +21,7 @@ import turnoRutinarioAprendizRoutes from "./src/routes/turnoRutinarioAprendizRou
 import turnoRutinarioRoutes from "./src/routes/turnoRutinarioRoutes.js";
 import turnoEspecialRoutes from "./src/routes/turnoEspecialRoutes.js"
 import unitRoutes from './src/routes/unitRoutes.js'
+import OtrosMemorandumRoutes from "./src/routes/OtrosMemorandosRoutes.js"
 import userRouter from "./src/routes/UserRoutes.js";
 import { logger } from "./src/middleware/logMiddleware.js";
 // import routespdf from "./src/routes/routespdf.js";
@@ -64,6 +65,7 @@ appExpress.use("/aprendiz", apprenticeRoutes);
 appExpress.use("/areas", areaRoutes);
 appExpress.use("/fichas", fichasRoutes);
 appExpress.use("/memorando", memorandumRoutes);
+appExpress.use("/otrosmemorando", OtrosMemorandumRoutes);
 appExpress.use("/funcionarios", officialRoutes);
 appExpress.use("/programa", programaRoutes);
 appExpress.use("/talentohumano", talentoHumanoRoutes);

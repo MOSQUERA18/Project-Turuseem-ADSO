@@ -1,7 +1,5 @@
 import db from "../database/db.js";
-import db from "../database/db.js";
 import { DataTypes } from "sequelize";
-import AbsenceModel from "./absenceModel.js";
 import ApprenticeModel from "./apprenticeModel.js";
 
 const OtrosMemorandumModel = db.define(

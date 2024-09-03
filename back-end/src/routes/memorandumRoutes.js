@@ -5,7 +5,7 @@ import {
   createMemorandum,
   updateMemorandum,
   deleteMemorandum,
-} from "../controller/memorandumController.js";
+} from "../controller/memorandumController.js"
 import checkAuth from "../middleware/authMiddleware.js";
 
 const router = express.Router();
