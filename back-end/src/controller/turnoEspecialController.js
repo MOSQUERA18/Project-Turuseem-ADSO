@@ -2,7 +2,6 @@ import TurnoEspecialModel from "../models/turnoEspecialModel.js";
 import FichasModel from "../models/fichasModel.js";
 import UnitModel from "../models/unitModel.js";
 import OfficialModel from "../models/officialModel.js";
-import { Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 
 export const getAllTurnosEspeciales = async (req, res) => {
@@ -159,37 +158,5 @@ export const deleteTurnoEspecial = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al eliminar el turno especial: ${error}`);
-  }
-};
-
-export const getQueryTurnoEspecial = async (req, res) => {
-  try {
-    const turnosEspeciales = await TurnoEspecialModel.findAll({
-      where: {
-        Id_TurnoEspecial: {
-          [Op.like]: `%${req.params.Id_TurnoEspecial}%`,
-        },
-      },
-      include: [
-        {
-          model: FichasModel,
-          as: "fichas", // Alias usado para la relación
-        },
-        {
-          model: UnitModel,
-          as: "unidad", // Alias usado para la relación
-        },
-        {
-          model: OfficialModel,
-          as: "funcionario", // Alias usado para la relación
-        },
-      ],
-    });
-    if (turnosEspeciales > 0) {
-      res.status(200).json(turnosEspeciales);
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-    logger.error(`Error al buscar el turno especial: ${error}`);
   }
 };

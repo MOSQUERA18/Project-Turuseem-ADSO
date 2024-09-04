@@ -9,8 +9,6 @@ import {
   getAllApprentices,
   getApprentice,
   updateApprentice,
-  getQueryApprentice,
-  getQueryNom_Apprentice,
   importCSV,
 } from "../controller/apprenticeController.js";
 import checkAuth from "../middleware/authMiddleware.js";
@@ -38,8 +36,6 @@ router
   .get(checkAuth, getApprentice)
   .put(upload.single('Foto_Aprendiz'), updateApprentice)
   .delete(checkAuth, deleteApprentice);
-router.get("/documento/:Id_Aprendiz", checkAuth, getQueryApprentice);
-router.get("/nombre/:Nom_Aprendiz", checkAuth, getQueryNom_Apprentice);
 router.post("/import-csv", checkAuth, importCSV);
 
 export default router;

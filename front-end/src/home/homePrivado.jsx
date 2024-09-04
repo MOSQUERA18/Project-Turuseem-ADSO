@@ -2,7 +2,7 @@ const HomePrivado = () => {
   return (
     <div className=" flex flex-col items-center justify-center text-black p-4 bg-gray-50">
       <h1 className="text-black font-extrabold text-4xl md:text-5xl text-center mb-8">
-        Bienvenidos a <span className="text-green-500">TURUSEEM</span>
+        Bienvenidos a <span className="text-blue-700">TURUSEEM</span>
       </h1>
       <br />
 

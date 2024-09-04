@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
 
 import FormApprentices from "./formApprentices.jsx";
-// import ImportarCSV from "./importarCSV.jsx";
+import ImportarCSV from "./importarCSV.jsx";
 import Alerta from "../components/Alerta.jsx";
 
 import DataTableApprentices from "./dataTableApprentices.jsx";
@@ -12,7 +12,7 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 
-// const URI = "/aprendiz/";
+const URI = "/aprendiz/";
 
 const URIFOTOS = "/public/uploads/";
 
@@ -166,8 +166,9 @@ const CrudApprentices = () => {
   return (
     <>
       <br />
-      <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
-        Gestionar Informacion de los Aprendices
+      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+        Gestionar Informacion de los
+        <span className="text-blue-700"> Aprendices</span>
       </h1>
       <div className="flex justify-end pb-3">
         <button
@@ -212,12 +213,12 @@ const CrudApprentices = () => {
       <div className="overflow-x-auto">
         <div className="flex justify-between">
 
-          {/* <div>
+          <div>
             <h1 className="font-semibold text-lg text-gray-700">
               Subir Archivo CSV
             </h1>
             <ImportarCSV URI={URI} />
-          </div> */}
+          </div>
         </div>
         {/* <hr /> */}
 

@@ -1,7 +1,6 @@
 import TurnoEspecialAprendizModel from "../models/turnoEspeciales_Aprendices.js";
 import TurnoEspecialModel from "../models/turnoEspecialModel.js";
 import ApprenticeModel from "../models/apprenticeModel.js";
-import { Sequelize, Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 
 export const getAllTurnosEspecialesAprendices = async (req, res) => {
@@ -111,33 +110,5 @@ export const deleteTurnoEspecialAprendiz = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al eliminar el turno especial de aprendiz: ${error}`);
-  }
-};
-
-export const getQueryTurnoEspecialAprendiz = async (req, res) => {
-  try {
-    const turnosEspecialesAprendices = await TurnoEspecialAprendizModel.findAll({
-      where: {
-        Id_TurnoEspecialAprendiz: {
-          [Op.like]: `%${req.params.Id_TurnoEspecialAprendiz}%`,
-        },
-      },
-      include: [
-        {
-          model: TurnoEspecialModel,
-          as: "turnoEspecial", // Alias usado para la relación
-        },
-        {
-          model: ApprenticeModel,
-          as: "aprendiz", // Alias usado para la relación
-        },
-      ],
-    });
-    if(turnosEspecialesAprendices === 200){
-    res.json(turnosEspecialesAprendices);
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-    logger.error(`Error al buscar el turno especial de aprendiz: ${error}`);
   }
 };

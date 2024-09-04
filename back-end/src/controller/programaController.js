@@ -1,6 +1,5 @@
 import ProgramaModel from "../models/programaModel.js";
 import AreaModel from "../models/areaModel.js";
-import { Sequelize, Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 
 export const getAllProgramas = async (req, res) => {
@@ -111,40 +110,6 @@ export const deletePrograma = async (req, res) => {
     res.status(400).json({
       message: "Error al borrar el Programa.",
       error: error.message,
-    });
-  }
-};
-
-export const getQueryNom_Programa = async (req, res) => {
-  try {
-    const programas = await ProgramaModel.findAll({
-      where: {
-        Nom_ProgramaFormacion: {
-          [Sequelize.Op.like]: `%${req.params.Nom_ProgramaFormacion}%`,
-        },
-      },
-      include: [
-        {
-          model: AreaModel,
-          as: "areas",
-          attributes: ["Nom_Area"], // Incluye el nombre del área
-        },
-      ],
-    });
-
-    if (programas.length > 0) {
-      res.status(200).json(programas);
-      return
-    } else {
-      res.status(404).json({
-        message: "No se encontraron unidades que coincidan con la búsqueda.",
-      });
-    }
-  } catch (error) {
-    logger.error("Error searching programas: ", error.message);
-    console.log(error)
-    res.status(500).json({
-      message: "Error al buscar las programas.",
     });
   }
 };

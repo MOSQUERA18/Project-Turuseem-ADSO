@@ -1,14 +1,38 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import clienteAxios from "../config/axios";
-import { ReactSession } from 'react-client-session';
+import { ReactSession } from "react-client-session";
 
 const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
   // const [Id_Memorando, setId_Memorando] = useState("");
   const [Fec_Memorando, setFec_Memorando] = useState("");
   const [Mot_Memorando, setMot_Memorando] = useState("");
-  const [Id_Inasistencia, setId_Inasistencia] = useState("");
+  const [Id_Aprendiz, setId_Aprendiz] = useState("");
+  const [selectedAprenices, setSelectedAprendices] = useState(null);
+  const [aprendices, setAprendices] = useState([]);
+
+
+  useEffect(() => {
+    const fetcAprendiz = async () => {
+      try {
+        const token = ReactSession.get("token");
+        const response = await clienteAxios.get('/aprendiz', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        if(response.status ==200){
+          setAprendices(response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching apprentices:', error);
+      }
+    };
+
+    fetcAprendiz();
+  }, []);
 
   const sendForm = async (e) => {
     e.preventDefault();
@@ -21,35 +45,38 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
     };
     try {
       if (buttonForm === "Actualizar") {
-        const respuestApi = await clienteAxios.put(`/memorando/${memorandum.Id_Memorando}`, 
-        {
-          // Id_Memorando: Id_Memorando,
-          Fec_Memorando: Fec_Memorando,
-          Mot_Memorando: Mot_Memorando,
-          Id_Inasistencia: Id_Inasistencia,
-        },
-        config
-      );
-      if (respuestApi.status == 200) {
-        updateTextButton("Enviar");
-        alert(respuestApi.data.message);
-        clearForm()
-      }
+        const respuestApi = await clienteAxios.put(
+          `/otrosmemorandos/${memorandum.Id_OtroMemorando}`,
+          {
+            // Id_Memorando: Id_Memorando,
+            Fec_OtroMemorando: Fec_Memorando,
+            Mot_OtroMemorando: Mot_Memorando,
+            Id_Aprendiz: Id_Aprendiz,
+          },
+          config
+        );
+        if (respuestApi.status == 200) {
+          updateTextButton("Enviar");
+          alert(respuestApi.data.message);
+          clearForm();
+        }
       } else if (buttonForm === "Enviar") {
-        const respuestApi = await clienteAxios.post('/memorando', {
-          // Id_Memorando: Id_Memorando,
-          Fec_Memorando: Fec_Memorando,
-          Mot_Memorando: Mot_Memorando,
-          Id_Inasistencia: Id_Inasistencia,
-        },
-        config
-      );
-      if (respuestApi.status == 201) {
-        alert(respuestApi.data.message);
-        clearForm();
-      } else {
-        alert(respuestApi.data.message);
-      }
+        const respuestApi = await clienteAxios.post(
+          "/otrosmemorandos",
+          {
+            // Id_Memorando: Id_Memorando,
+            Fec_OtroMemorando: Fec_Memorando,
+            Mot_OtroMemorando: Mot_Memorando,
+            Id_Aprendiz: Id_Aprendiz,
+          },
+          config
+        );
+        if (respuestApi.status == 201) {
+          alert(respuestApi.data.message);
+          clearForm();
+        } else {
+          alert(respuestApi.data.message);
+        }
       }
       clearForm();
     } catch (error) {
@@ -61,14 +88,16 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
     // setId_Memorando("");
     setFec_Memorando("");
     setMot_Memorando("");
-    setId_Inasistencia("");
+    setId_Aprendiz("");
   };
 
   const setData = () => {
     // setId_Memorando(memorandum.Id_Memorando);
-    setFec_Memorando(memorandum.Fec_Memorando);
-    setMot_Memorando(memorandum.Mot_Memorando);
-    setId_Inasistencia(memorandum.Id_Inasistencia);
+    setFec_Memorando(memorandum.Fec_OtroMemorando);
+    setMot_Memorando(memorandum.Mot_OtroMemorando);
+    setId_Aprendiz(memorandum.Id_Aprendiz);
+    const selected = aprendices.find(aprendiz => aprendiz.Id_Aprendiz === memorandum.Id_Aprendiz);
+    setSelectedAprendices(selected || null);
   };
 
   useEffect(() => {
@@ -87,24 +116,6 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
           <h1 className="font-bold text-green-600 text-3xl uppercase text-center my-5">
             Registrar Memorandos
           </h1>
-
-          {/* <div className="mb-3">
-            <label
-              htmlFor="document"
-              className="text-gray-700 uppercase font-bold"
-            >
-              Codigo de Memorando
-            </label>
-            <input
-              type="number"
-              id="document"
-              placeholder="Codigo Memorando"
-              value={Id_Memorando}
-              onChange={(e) => setId_Memorando(e.target.value)}
-              className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-            />
-          </div> */}
-
           <div className="mb-3">
             <label
               htmlFor="dateMemorandum"
@@ -139,20 +150,22 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
           </div>
 
           <div className="mb-3">
-            <label
-              htmlFor="inasistencia"
-              className="text-gray-700 uppercase font-bold"
-            >
-              Inasistencia
+          <label className="text-gray-700 uppercase font-bold">
+              Área Perteneciente: 
             </label>
-            <input
-              type="text"
-              id="inasistencia"
-              placeholder="Codigo de Inasistencia"
-              value={Id_Inasistencia}
-              onChange={(e) => setId_Inasistencia(e.target.value)}
+            <select
+              id="id_area"
+              value={Id_Aprendiz}
+              onChange={(e) => setId_Aprendiz(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-            />
+            >
+              <option value="">Seleccione el Documento de Aprendiz:</option>
+              {aprendices.map((aprendiz) => (
+                <option key={aprendiz.Id_Aprendiz} value={aprendiz.Id_Aprendiz}>
+                  {aprendiz.Id_Aprendiz}
+                </option>
+              ))}
+            </select>
           </div>
 
           <input

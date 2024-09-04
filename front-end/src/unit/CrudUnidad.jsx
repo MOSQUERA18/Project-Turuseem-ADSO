@@ -4,10 +4,10 @@ import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
 import "datatables.net-responsive-dt";
 
-
 import FormUnidades from "./formUnidades.jsx";
 import Alerta from "../components/Alerta.jsx";
-import DataTableUnit from "./dataTableUnit.jsx";
+// import DataTableUnit from "./dataTableUnit.jsx";
+import WriteTable from "../Tables/Data-Tables.jsx";
 
 import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
@@ -15,7 +15,7 @@ import { Outlet } from "react-router-dom";
 
 const URI = "unidades";
 
-import { exportToExcel } from './ExportExcel.js'; 
+import { exportToExcel } from "./ExportExcel.js";
 
 const CrudUnidades = () => {
   const [unidadList, setUnidadList] = useState([]);
@@ -30,6 +30,24 @@ const CrudUnidades = () => {
     Estado: "",
     Id_Area: "",
   });
+  const titles = [
+    "ID",
+    "Nombre",
+    "Hora Apertura",
+    "Hora Cierre",
+    "Estado",
+    "Area",
+    "Acciones",
+  ];
+  const formattedData = unidadList.map((unidad) => [
+    unidad.Id_Unidad, // ID
+    unidad.Nom_Unidad, // Nombre
+    unidad.Hor_Apertura, // Hora Apertura
+    unidad.Hor_Cierre, // Hora Cierre
+    unidad.Estado, // Estado
+    unidad.areas?.Nom_Area || "N/A", // Area (usando "N/A" si areas o Nom_Area es undefined)
+    "Acción", // Puedes reemplazar esto con un botón o enlace para acciones
+  ]);
 
   useEffect(() => {
     getAllUnidades();
@@ -144,16 +162,14 @@ const CrudUnidades = () => {
 
   const { msg } = alerta;
 
-
-
   const handleExportToExcel = () => {
     exportToExcel([], unidadList); // Pasar [] si `unidad` está vacío
   };
 
   return (
     <>
-      <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
-      Gestionar Informacion de las Unidades
+      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+        Gestionar Informacion de las Unidades
       </h1>
       <div className="flex justify-end pb-3">
         <button
@@ -180,12 +196,7 @@ const CrudUnidades = () => {
         <hr />
         {msg && <Alerta alerta={alerta} />}
         <hr />
-        <DataTableUnit
-          unidadList={unidadList}
-          getUnidad={getUnidad}
-          deleteUnidad={deleteUnidad}
-          setStateAddUnidad={setStateAddUnidad}
-        />
+        <WriteTable titles={titles} data={formattedData}/>
       </div>
       <hr />
       {stateAddUnidad ? (

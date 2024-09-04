@@ -103,14 +103,11 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
           },
           config
         );
-        successMessage = "Talento Humano registrado correctamente!";
       }
 
-      if (respuestApi.status === 200 || respuestApi.status === 201) {
-        setAlerta({
-          msg: successMessage,
-          error:false
-        })
+      if (respuestApi.status === 201 || respuestApi.status === 200) {
+        setMessage("Talento Humano Actualizado correctamente!");
+        setMessageType("success");
         clearForm();
         updateTextButton("Enviar");
         getAllTalentoHumano();

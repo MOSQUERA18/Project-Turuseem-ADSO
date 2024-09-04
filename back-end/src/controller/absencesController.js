@@ -1,6 +1,5 @@
 import AbsenceModel from "../models/absenceModel.js";
 import TurnoRutinarioModel from "../models/turnoRutinarioModel.js";
-import { Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 import TurnosRutinariosModel from "../models/turnoRutinarioModel.js";
 import ApprenticeModel from "../models/apprenticeModel.js";
@@ -121,7 +120,7 @@ export const updateAbsence = async (req, res) => {
   }
 };
 
-const Id_TurnoRutinario = TurnosRutinariosModel.Id_TurnoRutinario;
+const {Id_TurnoRutinario} = TurnosRutinariosModel;
 
 export const deleteAbsence = async (req, res) => {
   try {
@@ -137,30 +136,5 @@ export const deleteAbsence = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al eliminar la inasistencia: ${error}`);
-  }
-};
-
-export const getQueryInasistencia = async (req, res) => {
-  try {
-    const inasistencias = await AbsenceModel.findAll({
-      where: {
-        Id_Inasistencia: {
-          [Op.like]: `%${req.params.Id_Inasistencia}%`,
-        },
-      },
-      include: [
-        {
-          model: TurnoRutinarioModel,
-          as: "turnorutinario", // Alias usado para la relación
-        },
-      ],
-    });
-    if (inasistencias) {
-      res.status(200).json(inasistencias);
-      return;
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-    logger.error(`Error al buscar la inasistencia: ${error}`);
   }
 };

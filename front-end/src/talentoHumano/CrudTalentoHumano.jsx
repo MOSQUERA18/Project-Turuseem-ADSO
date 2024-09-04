@@ -180,8 +180,10 @@ const CrudTalentoHumano = () => {
     }, []);
   return (
     <>
-      <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
-        Gestionar Información de Talento Humano
+      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+        Gestionar Información de 
+        <span className="text-blue-700"> Talento Humano</span>
+
       </h1>
 
       <div className="flex justify-end pb-3">
