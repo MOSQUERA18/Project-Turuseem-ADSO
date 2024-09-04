@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+import { useEffect } from "react";
 import $ from "jquery";
 import DataTable from "datatables.net-dt";
 import "datatables.net-responsive-dt";
@@ -23,27 +25,29 @@ function WriteTable({ titles, data }) {
 
   return (
     <>
-      <div className="container">
-        <table className="table table-responsive" id="TableDinamic">
-          <thead>
-            <tr>
-              {titles.map((titles) => (
-                <th scope="col">{titles}</th>
+    <div className="container">
+      <table className="table table-responsive" id="TableDinamic">
+        <thead>
+          <tr>
+            {titles.map((title, index) => (
+              <th scope="col" key={index}>
+                {title}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {row.map((cell, cellIndex) => (
+                <td key={cellIndex}>{cell}</td>
               ))}
             </tr>
-          </thead>
-          <tbody>
-            {data.map((row) => (
-              <tr>
-                {row.map((cell) => (
-                  <td>{cell}</td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </>
   );
 }
 

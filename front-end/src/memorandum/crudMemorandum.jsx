@@ -1,7 +1,7 @@
 import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { ReactSession } from 'react-client-session';
+import { ReactSession } from "react-client-session";
 import FormMemorandum from "./formMemorandum.jsx";
 import { useNavigate } from "react-router-dom";
 import DataTableMemorandum from "./dataTableMemorandum.jsx";
@@ -15,7 +15,7 @@ const CrudMemorandum = () => {
   const [memorandumList, setMemorandumList] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddMemorandum, setStateAddMemorandum] = useState(false);
-  const [alerta, setAlerta] = useState({})
+  const [alerta, setAlerta] = useState({});
   const navigate = useNavigate();
 
   const [memorandum, setMemorandum] = useState({
@@ -59,7 +59,10 @@ const CrudMemorandum = () => {
       },
     };
     try {
-      const respuestApi = await clienteAxios(`/otrosmemorandos/${Id_OtroMemorando}`, config);
+      const respuestApi = await clienteAxios(
+        `/otrosmemorandos/${Id_OtroMemorando}`,
+        config
+      );
       if (respuestApi.status === 200) {
         setMemorandum({
           ...respuestApi.data,
@@ -121,10 +124,12 @@ const CrudMemorandum = () => {
   };
   const { msg } = alerta;
 
-
   return (
     <>
-    <h1 className="text-center font-extrabold text-3xl uppercase">Gestionar informacion de los <span className="text-green-500">Memorandos</span></h1>
+      <h1 className="text-center font-extrabold text-3xl uppercase">
+        Gestionar informacion de los{" "}
+        <span className="text-green-500">Memorandos</span>
+      </h1>
       <div className="flex justify-end pb-3">
         <button
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
@@ -141,15 +146,16 @@ const CrudMemorandum = () => {
         </button>
       </div>
       <div className="overflow-x-auto">
-        <hr/>
-        {msg && <Alerta alerta={alerta} setAlerta={setAlerta}/>}
-        <hr/>
+        <hr />
+        {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
+        <hr />
         <DataTableMemorandum
-        memorandumList={memorandumList}
-        getMemorandum={getMemorandum}
-        deleteMemorandum={deleteMemorandum}
-        setStateAddMemorandum={setStateAddMemorandum}
-        mostrarPdf={mostrarPdf}/>
+          memorandumList={memorandumList}
+          getMemorandum={getMemorandum}
+          deleteMemorandum={deleteMemorandum}
+          setStateAddMemorandum={setStateAddMemorandum}
+          mostrarPdf={mostrarPdf}
+        />
       </div>
       <hr />
       {stateAddMemorandum ? (
