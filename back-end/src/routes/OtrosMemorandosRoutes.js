@@ -15,7 +15,7 @@ router
   .get(checkAuth, getAllOtrosMemorandum)
   .post(checkAuth, createOtroMemorandum);
 router
-  .route("/:Id_Memorando")
+  .route("/:Id_OtroMemorando")
   .get(checkAuth, getOtroMemorandum)
   .put(checkAuth, updateOtroMemorandum)
   .delete(checkAuth, deleteOtroMemorandum);
