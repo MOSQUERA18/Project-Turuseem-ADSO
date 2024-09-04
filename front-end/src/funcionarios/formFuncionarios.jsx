@@ -76,8 +76,10 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
       }
 
       if (respuestApi.status === 201 || respuestApi.status === 200) {
-        setMessage(mensajeCRUD);
-        setMessageType("success");
+        setAlerta({
+          msg: mensajeCRUD,
+          error:false
+        })
         clearForm();
         getAllFuncionarios();
         updateTextButton("Enviar");

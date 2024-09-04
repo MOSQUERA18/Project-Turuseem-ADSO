@@ -53,10 +53,10 @@ const CrudFichas = () => {
         });
       }
     } catch (error) {
-      setAlerta({
-        msg: `Error al cargar las Ficha!`,
-        error: true,
-      });
+      // setAlerta({
+      //   msg: `No Existen Fichas Registradas!`,
+      //   error: true,
+      // });
       console.error(error);
     }
   };

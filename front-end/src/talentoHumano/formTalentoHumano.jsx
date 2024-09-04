@@ -87,9 +87,10 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
           config
         );
         successMessage = "Talento Humano actualizado correctamente!";
+        updateTextButton("Enviar");
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
-          `/talentohumano`,
+          `/talentoHumano`,
           {
             Id_Talento_Humano,
             Nom_Talento_Humano,
@@ -105,12 +106,14 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
         successMessage = "Talento Humano registrado correctamente!";
       }
 
-      if (respuestApi.status === 201 || respuestApi.status === 200) {
-        setMessage(successMessage);
-        setMessageType("success");
-        getAllTalentoHumano()
+      if (respuestApi.status === 200 || respuestApi.status === 201) {
+        setAlerta({
+          msg: successMessage,
+          error:false
+        })
         clearForm();
         updateTextButton("Enviar");
+        getAllTalentoHumano();
       } else {
         setMessage(respuestApi.data.message || "Error al registrar Talento Humano .");
         setMessageType("error");
@@ -120,7 +123,6 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
         msg: "Todos los campos son obligatorios o Documento Repetido!",
         error: true,
       });
-
     }
   };
 
@@ -152,8 +154,22 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
   };  
 
   useEffect(() => {
-    setData();
+      setData();
+    
   }, [talentoHumano]);
+
+
+  useEffect(() => {
+    if(talentoHumano){
+      setId_Talento_Humano(talentoHumano.Id_Talento_Humano || '')
+      setNom_Talento_Humano(talentoHumano.Nom_Talento_Humano || '')
+      setApe_Talento_Humano(talentoHumano.Ape_Talento_Humano || '')
+      setCor_Talento_Humano(talentoHumano.Cor_Talento_Humano || '')
+      setTel_Talento_Humano(talentoHumano.Tel_Talento_Humano || '')
+      setId_Ficha(talentoHumano.Id_Ficha || '')
+    }
+  
+}, [talentoHumano]);
 
   const { msg } = alerta;
 

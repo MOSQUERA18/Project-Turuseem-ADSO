@@ -78,10 +78,11 @@ useEffect(() => {
         setUnidades(responseUnidades.data);
       }
     } catch (error) {
-      setAlerta({
-        msg: "Todos los campos son obligatorios!",
-        error: true,
-      });
+      // setAlerta({
+      //   msg: "Todos los campos son obligatorios!",
+      //   error: true,
+      // });
+      console.log(error)
     }
   };
   getAllUnidades();
@@ -109,10 +110,10 @@ useEffect(() => {
         setUnidades(unidadesRes.data);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setAlerta({
-          msg: "Error al cargar los datos",
-          error: true
-        });
+        // setAlerta({
+        //   msg: "Error al cargar los datos",
+        //   error: true
+        // });
       }
     };
 
@@ -168,10 +169,10 @@ useEffect(() => {
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);
-      setAlerta({
-        msg: "Todos Los Campos Son Obligatorios!.",
-        error: true,
-      });
+      // setAlerta({
+      //   msg: "Todos Los Campos Son Obligatorios!.",
+      //   error: true,
+      // });
     }
   };
 

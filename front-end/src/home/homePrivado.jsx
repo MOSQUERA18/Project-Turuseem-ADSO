@@ -1,37 +1,53 @@
 const HomePrivado = () => {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center text-black p-">
-        <h1 className="text-black font-extrabold text-5xl text-center mb-8">
-          Bienvenidos a <span className="text-green-500">TURUSEEM</span>
-        </h1>
-        <div className="flex flex-col items-center">
-          <img
-            src="/Public/assets/LOGOTURUSEEM.png"
-            alt="Logo Turuseem"
-            className="w-40 mb-8 drop-shadow-2xl"
-          />
-          <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-xl text-center">
-            <h2 className="text-2xl font-semibold mb-4">
-              En este aplicativo podrá encontrar módulos para la gestión de
-              información de los siguientes módulos:
-            </h2>
-            <ul className="text-lg text-black space-y-2">
-              <li>Aprendices</li>
-              <li>Turnos Especiales</li>
-              <li>Turnos Rutinarios</li>
-              <li>Memorandos</li>
-              <li>Programas de Formación</li>
-              <li>Unidades</li>
-              <li>Fichas</li>
-              <li>Funcionarios</li>
-              <li>Talento Humano</li>
-              <li>Inasistencias</li>
-            </ul>
+  return (
+    <div className=" flex flex-col items-center justify-center text-black p-4 bg-gray-50">
+      <h1 className="text-black font-extrabold text-4xl md:text-5xl text-center mb-8">
+        Bienvenidos a <span className="text-green-500">TURUSEEM</span>
+      </h1>
+      <br />
+
+        <div className="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-md md:max-w-2xl">
+          <h2 className="text-xl md:text-2xl font-semibold mb-6 text-center">
+            Módulos Disponibles
+          </h2>
+          <div className="overflow-x-auto">
+            <div className="flex flex-wrap gap-4">
+              <div className="bg-white p-4 rounded-lg shadow-lg min-w-max transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-gray-100">
+                <h3 className="text-center text-lg font-semibold">Aprendices</h3>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow-lg min-w-max transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-gray-100">
+                <h3 className="text-center text-lg font-semibold">Turnos Especiales</h3>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow-lg min-w-max transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-gray-100">
+                <h3 className="text-center text-lg font-semibold">Turnos Rutinarios</h3>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow-lg min-w-max transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-gray-100">
+                <h3 className="text-center text-lg font-semibold">Memorandos</h3>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow-lg min-w-max transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-gray-100">
+                <h3 className="text-center text-lg font-semibold">Programas de Formación</h3>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow-lg min-w-max transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-gray-100">
+                <h3 className="text-center text-lg font-semibold">Unidades</h3>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow-lg min-w-max transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-gray-100 ">
+                <h3 className="text-center text-lg font-semibold">Fichas</h3>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow-lg min-w-max transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-gray-100">
+                <h3 className="text-center text-lg font-semibold">Funcionarios</h3>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow-lg min-w-max transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-gray-100">
+                <h3 className="text-center text-lg font-semibold">Talento Humano</h3>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow-lg min-w-max transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-gray-100 ">
+                <h3 className="text-center text-lg font-semibold ">Inasistencias</h3>
+              </div>
+
           </div>
         </div>
       </div>
-    );
-  };
-  
-  export default HomePrivado;
-  
+    </div>
+  );
+};
+
+export default HomePrivado;

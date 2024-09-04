@@ -57,10 +57,10 @@ const CrudTalentoHumano = () => {
         });
       }
     } catch (error) {
-      setAlerta({
-        msg: `Error al cargar los registros!`,
-        error: true,
-      });
+      // setAlerta({
+      //   msg: `Error al cargar los registros!`,
+      //   error: true,
+      // });
       console.error(error);
     }
   };
@@ -88,7 +88,7 @@ const CrudTalentoHumano = () => {
       }
     } catch (error) {
       setAlerta({
-        msg: `Error al cargar los registros!`,
+        msg: `No Existen Registros de Talento Humano`,
         error: true,
       });
       console.error(error);
@@ -125,10 +125,10 @@ const CrudTalentoHumano = () => {
               text: "El registro ha sido borrado.",
               icon: "success",
             });
-            getAllTalentoHumano();
           } else {
             alert(respuestApi.data.message);
           }
+          getAllTalentoHumano();
         } catch (error) {
           Swal.fire({
             title: "Error!",
@@ -206,6 +206,10 @@ const CrudTalentoHumano = () => {
         Exportar a Excel
       </button>
       </div>
+
+      <hr />
+
+
       <div className="overflow-x-auto">
         <hr />
         {msg && <Alerta alerta={alerta} />}
@@ -218,6 +222,7 @@ const CrudTalentoHumano = () => {
       />
       </div>
 
+
       {
         stateAddTalentoHumano ? (
           <FormTalentoHumano
@@ -229,9 +234,6 @@ const CrudTalentoHumano = () => {
           />
         ) : null
       }
-
-      <hr />
-
       <Outlet />
     </>
   );

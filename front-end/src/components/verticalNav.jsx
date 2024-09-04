@@ -9,7 +9,7 @@ import { GiHumanPyramid } from "react-icons/gi";
 
 //Icons
 import { BsFillPeopleFill } from "react-icons/bs";
-import { IoDocumentText, IoSettings, IoLogOut } from "react-icons/io5";
+import { IoDocumentText, IoLogOut } from "react-icons/io5";
 import { PiNotebookFill } from "react-icons/pi";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { FaClipboardCheck, FaPeopleGroup } from "react-icons/fa6";
@@ -20,7 +20,6 @@ import useAuth from "../hooks/useAuth.jsx";
 const VerticalNav = () => {
   const [show, setShow] = useState(true);
   const [user, setUser] = useState(null); // Inicializa el estado del usuario como null
-
   const { cerrarSesion } = useAuth() // Uso el contexto para acceder a la función cerrarSesion
 
   useEffect(() => {
@@ -67,7 +66,7 @@ const VerticalNav = () => {
     <div className="min-h-screen">
       <div className="bg-green-500 xl:hidden flex justify-between w-full p-6 items-center">
         <div className="flex justify-between items-center space-x-3">
-          <img src="/Public/assets/LOGOTURUSEEM.png" className="w-12 drop-shadow-2xl" />
+          <img src="/Public/IMG/LOGOTURUSEEM.png" className="w-12 drop-shadow-2xl" />
           <p className="text-2xl leading-6 text-white font-bold">TURUSEEM</p>
         </div>
         <div aria-label="toggler" className="flex justify-center items-center">
@@ -145,7 +144,7 @@ const VerticalNav = () => {
         } transform xl:translate-x-0 ease-in-out transition duration-500 flex justify-center items-start h-full w-full sm:w-64 bg-green-500 flex-col`}
       >
         <div className="hidden xl:flex justify-start p-6 items-center space-x-3">
-          <img src="Public/assets/LOGOTURUSEEM.png" className="w-12 drop-shadow-2xl" />
+          <img src="Public/IMG/LOGOTURUSEEM.png" className="w-12 drop-shadow-2xl" />
           <p className="text-2xl leading-6 text-white font-bold">TURUSEEM</p>
         </div>
         <div className="flex flex-col justify-end items-center pl-4 w-full border-gray-700 border-b space-y-3 p-5">
@@ -170,24 +169,7 @@ const VerticalNav = () => {
           ))}
         </div>
         <div className="flex flex-col justify-between items-center h-full pb-6 px-6 w-full space-y-15 mt-3">
-          <div className="flex justify-between items-center w-full">
-            <div className="flex justify-center items-center space-x-2">
-              <div>
-                <img className="rounded-full" src="/Public/assets/LOGOTURUSEEM.png" alt="avatar" />
-              </div>
-              <div className="flex justify-start flex-col items-start">
-                <p className="cursor-pointer text-sm leading-5 text-white">
-                  {user.usuario.Nom_User.split(" ")[1]}
-                </p>
-                <p className="cursor-pointer text-xs leading-3 text-gray-300">
-                  {user.usuario.Cor_User.split(".")[0]}
-                </p>
-              </div>
-            </div>
-            <IoSettings size={45} className="text-white" />
-          </div>
           {/* Botón de Cerrar Sesión */}
-          <br />
           <br />
           <button
             onClick={cerrarSesion}

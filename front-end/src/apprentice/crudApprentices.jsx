@@ -70,7 +70,7 @@ const CrudApprentices = () => {
       }
     } catch (error) {
       setAlerta({
-        msg: `Error al cargar los registros!`,
+        msg: `Error Existen Aprendices Registrados!`,
         error: true,
       });
       console.error(error);
@@ -189,7 +189,7 @@ const CrudApprentices = () => {
   onClick={async (e) => {
     e.preventDefault();
     
-    const filePath = "/Public/Aprendiz.csv";
+    const filePath = "/Public/assets/Aprendiz.csv";
     try {
       const response = await fetch(filePath, { method: 'HEAD' });
       

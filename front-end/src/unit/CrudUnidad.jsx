@@ -48,16 +48,16 @@ const CrudUnidades = () => {
       if (respuestApi.status === 200) {
         setUnidadList(respuestApi.data);
       } else {
-        setAlerta({
-          msg: `Error al cargar los registros!`,
-          error: true,
-        });
+        // setAlerta({
+        //   msg: `Error al cargar los registros!`,
+        //   error: true,
+        // });
       }
     } catch (error) {
-      setAlerta({
-        msg: `Error al cargar los registros!`,
-        error: true,
-      });
+      // setAlerta({
+      //   msg: `Error al cargar los registros!`,
+      //   error: true,
+      // });
       console.error(error);
     }
   };
