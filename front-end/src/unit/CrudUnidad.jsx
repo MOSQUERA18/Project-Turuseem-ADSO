@@ -8,6 +8,7 @@ import FormUnidades from "./formUnidades.jsx";
 import Alerta from "../components/Alerta.jsx";
 // import DataTableUnit from "./dataTableUnit.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
+import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
 import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
@@ -173,19 +174,20 @@ const CrudUnidades = () => {
         Gestionar Informacion de las Unidades
       </h1>
       <div className="flex justify-end pb-3">
-        <button
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-          onClick={() => {
-            setStateAddUnidad(!stateAddUnidad);
-          }}
-        >
-          {stateAddUnidad ? (
-            <AiOutlineMinusCircle size={16} className="me-2" />
-          ) : (
-            <IoMdPersonAdd size={16} className="me-2" />
-          )}
-          {stateAddUnidad ? "Ocultar" : "Agregar"}
-        </button>
+        <ModalWindow
+          stateAddNewRow={stateAddUnidad}
+          setStateAddNewRow={setStateAddUnidad}
+          form={
+            <FormUnidades
+              buttonForm={buttonForm}
+              unidad={unidad}
+              updateTextButton={updateTextButton}
+              setUnidad={setUnidad}
+              getAllUnidades={getAllUnidades}
+            />
+          }
+        />
+
         <button
           onClick={handleExportToExcel}
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
@@ -207,18 +209,6 @@ const CrudUnidades = () => {
           />
         )}
       </div>
-      <hr />
-      {stateAddUnidad ? (
-        <FormUnidades
-          buttonForm={buttonForm}
-          unidad={unidad}
-          updateTextButton={updateTextButton}
-          setUnidad={setUnidad}
-          getAllUnidades={getAllUnidades}
-        />
-      ) : null}
-      <hr />
-      <Outlet />
     </>
   );
 };
