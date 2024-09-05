@@ -2,6 +2,8 @@ import clieteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
+import { FaFileExcel } from "react-icons/fa";
+
 
 // import { CSVLink } from 'react-csv';
 
@@ -171,7 +173,10 @@ const CrudPrograma = () => {
           onClick={handleExportToExcel}
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
         >
-          Exportar a Excel
+          Exportar a Excel {" "}
+
+          <FaFileExcel className="-green"/>
+
         </button>
 
       </div>

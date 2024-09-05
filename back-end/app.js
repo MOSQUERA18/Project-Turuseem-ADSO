@@ -4,6 +4,8 @@ import express from "express";
 import cors from "cors";
 // import { app, BrowserWindow } from "electron";
 
+// import path from 'path';
+
 import db from "./src/database/db.js";
 
 //Routes
@@ -24,6 +26,10 @@ import unitRoutes from "./src/routes/unitRoutes.js";
 import OtrosMemorandumRoutes from "./src/routes/OtrosMemorandosRoutes.js";
 import userRouter from "./src/routes/UserRoutes.js";
 import { logger } from "./src/middleware/logMiddleware.js";
+
+// import pdfRoutes from "./src/routes/pdfRoutes.js"
+// import excelRoutes from "./src/routes/excelRoutes.js"
+
 // import routespdf from "./src/routes/routespdf.js";
 
 //Models
@@ -59,6 +65,11 @@ import OtrosMemorandumModel from "./src/models/Otros_MemorandosModel.js";
 const appExpress = express();
 const PORT = process.env.PORT || 8080;
 
+// Middleware para servir archivos estáticos como los PDFs y Excels
+// appExpress.use('/output', express.static(path.join(__dirname, 'output')));
+
+
+
 appExpress.use(cors());
 appExpress.use(express.json());
 appExpress.use("/inasistencias", absenceRoutes);
@@ -76,10 +87,16 @@ appExpress.use("/turRutAprendiz", turnoRutinarioAprendizRoutes);
 appExpress.use("/turnoRutinario", turnoRutinarioRoutes);
 appExpress.use("/unidades", unitRoutes);
 appExpress.use("/ciudades", cityRoutes);
+// appExpress.use('/pdf', pdfRoutes);
+// appExpress.use('/excel', excelRoutes);
+
+
 
 appExpress.use("/public/uploads/", express.static("public/uploads"));
 
 appExpress.use("/api/user", userRouter);
+
+
 
 try {
   await db.authenticate().then(() => {

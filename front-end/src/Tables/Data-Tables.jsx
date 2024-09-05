@@ -9,6 +9,8 @@ import { FaRegEdit } from "react-icons/fa";
 
 //pidan de parametros los titulos y la data
 function WriteTable({ titles, data, deleteRow, getRow, setStateAddNewRow }) {
+
+
   //table
   useEffect(() => {
     // Verifica si el DataTable ya está inicializado
@@ -26,11 +28,15 @@ function WriteTable({ titles, data, deleteRow, getRow, setStateAddNewRow }) {
         },
       });
     }
+
   }, []);
 
   return (
     <>
       <div className="relative overflow-x-auto container">
+        <div className="overflow-x-auto">
+        <div className="inline-block min-w-full">
+          <div className="overflow-hidden">
         <table
           className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table table-responsive"
           id="TableDinamic"
@@ -72,6 +78,10 @@ function WriteTable({ titles, data, deleteRow, getRow, setStateAddNewRow }) {
             ))}
           </tbody>
         </table>
+        
+        </div>
+        </div>
+        </div>
       </div>
     </>
   );
