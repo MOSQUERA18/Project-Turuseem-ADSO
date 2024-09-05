@@ -7,11 +7,10 @@ import FormApprentices from "./formApprentices.jsx";
 import ImportarCSV from "./importarCSV.jsx";
 import Alerta from "../components/Alerta.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
-// import ModalWindow from "../ModalWindow/ModalWindow.jsx";
+import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
-
-import { IoMdPersonAdd } from "react-icons/io";
-import { AiOutlineMinusCircle } from "react-icons/ai";
+// import { IoMdPersonAdd } from "react-icons/io";
+// import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 
 const URI = "/aprendiz/";
@@ -19,14 +18,13 @@ const URI = "/aprendiz/";
 const URIFOTOS = "/public/uploads/";
 const URI_AXIOS = import.meta.env.VITE_BACKEND_URL;
 
-
 const CrudApprentices = () => {
   const [apprenticeList, setApprenticeList] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddApprentice, setStateAddApprentice] = useState(false);
   const [alerta, setAlerta] = useState({});
   const [crearDataTable, setCrearDataTable] = useState(false);
-  
+
   const [apprentice, setApprentice] = useState({
     Id_Aprendiz: "",
     Nom_Aprendiz: "",
@@ -50,7 +48,9 @@ const CrudApprentices = () => {
     CentroConvivencia: "",
     Foto_Aprendiz: "",
   });
-  const shouldShowPhoto = apprenticeList.some(row => row.Foto_Aprendiz !== undefined);
+  const shouldShowPhoto = apprenticeList.some(
+    (row) => row.Foto_Aprendiz !== undefined
+  );
   const titles = [
     "Documento",
     "Nombres",
@@ -73,8 +73,8 @@ const CrudApprentices = () => {
     "Nombre Empresa",
     "Centro Convivencia",
     shouldShowPhoto && "Foto Aprendiz",
-    "Acciones"
-  ].filter(Boolean)
+    "Acciones",
+  ].filter(Boolean);
 
   const formattedData = apprenticeList.map((apprentice) => {
     const rowData = [
@@ -109,9 +109,7 @@ const CrudApprentices = () => {
       );
     }
     return rowData;
-  })
-  
-  
+  });
 
   useEffect(() => {
     getAllApprentices();
@@ -239,44 +237,41 @@ const CrudApprentices = () => {
         <span className="text-blue-700"> Aprendices</span>
       </h1>
       <div className="flex justify-end pb-3">
-        <button
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-          onClick={() => {
-            setStateAddApprentice(!stateAddApprentice);
-          }}
-        >
-          {stateAddApprentice ? (
-            <AiOutlineMinusCircle size={16} className="me-2" />
-          ) : (
-            <IoMdPersonAdd size={16} className="me-2" />
-          )}
-          {stateAddApprentice ? "Ocultar" : "Agregar"}
-        </button>
-
+        <ModalWindow
+          stateAddNewRow={stateAddApprentice}
+          setStateAddNewRow={setStateAddApprentice}
+          form={
+            <FormApprentices
+              buttonForm={buttonForm}
+              apprentice={apprentice}
+              updateTextButton={updateTextButton}
+              setApprentice={setApprentice}
+            />
+          }
+        />
         <a
-  href="#"
-  onClick={async (e) => {
-    e.preventDefault();
-    
-    const filePath = "/Public/assets/Aprendiz.csv";
-    try {
-      const response = await fetch(filePath, { method: 'HEAD' });
-      
-      if (response.ok) {
-        window.location.href = filePath;
-      } else {
-        alert('El archivo no está disponible en la ruta especificada.');
-      }
-    } catch (error) {
-      console.error('Error al intentar descargar el archivo:', error);
-      alert('Error al intentar descargar el archivo.');
-    }
-  }}
-  className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
->
-  Descargar CSV
-</a>
- 
+          href="#"
+          onClick={async (e) => {
+            e.preventDefault();
+
+            const filePath = "/Public/assets/Aprendiz.csv";
+            try {
+              const response = await fetch(filePath, { method: "HEAD" });
+
+              if (response.ok) {
+                window.location.href = filePath;
+              } else {
+                alert("El archivo no está disponible en la ruta especificada.");
+              }
+            } catch (error) {
+              console.error("Error al intentar descargar el archivo:", error);
+              alert("Error al intentar descargar el archivo.");
+            }
+          }}
+          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
+        >
+          Descargar CSV
+        </a>
       </div>
       <div className="overflow-x-auto">
         <div className="flex justify-between">
@@ -303,16 +298,6 @@ const CrudApprentices = () => {
           />
         )}
       </div>
-
-      <hr />
-      {stateAddApprentice ? (
-        <FormApprentices
-          buttonForm={buttonForm}
-          apprentice={apprentice}
-          updateTextButton={updateTextButton}
-          setApprentice={setApprentice}
-        />
-      ) : null}
       <hr />
       <Outlet />
     </>

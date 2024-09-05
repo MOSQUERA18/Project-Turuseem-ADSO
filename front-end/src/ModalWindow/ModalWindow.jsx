@@ -1,22 +1,28 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineMinusCircle } from "react-icons/ai";
+import { IoMdPersonAdd } from "react-icons/io";
 
-function ModalWindow() {
+function ModalWindow({ stateAddNewRow, setStateAddNewRow, form}) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
-
   return (
     <>
       {/* Botón para abrir el modal */}
       <button
-        onClick={toggleModal}
+        onClick={() => [setStateAddNewRow(!stateAddNewRow), toggleModal()]}
         className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         type="button"
       >
-        Toggle modal
+        {stateAddNewRow ? (
+          <AiOutlineMinusCircle size={16} className="me-2" />
+        ) : (
+          <IoMdPersonAdd size={16} className="me-2" />
+        )}
+        {stateAddNewRow ? "Ocultar" : "Agregar"}
       </button>
 
       {/* Modal */}
@@ -33,7 +39,7 @@ function ModalWindow() {
               {/* Encabezado del modal */}
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Create New Product
+                  Create New
                 </h3>
                 <button
                   type="button"
@@ -44,8 +50,9 @@ function ModalWindow() {
                   <span className="sr-only">Close modal</span>
                 </button>
               </div>
+              {form}
               {/* Cuerpo del modal */}
-              <form className="p-4 md:p-5">
+              {/* <form className="p-4 md:p-5">
                 <div className="grid gap-4 mb-4 grid-cols-2">
                   <div className="col-span-2">
                     <label
@@ -130,7 +137,7 @@ function ModalWindow() {
                   </svg>
                   Add new product
                 </button>
-              </form>
+              </form> */}
             </div>
           </div>
         </div>
