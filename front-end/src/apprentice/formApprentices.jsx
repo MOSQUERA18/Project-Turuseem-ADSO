@@ -10,7 +10,7 @@ const URI = "/ciudades/"
 const UriFichas = "/fichas/"
 
 
-const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllAprentices }) => {
+const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
   const [Id_Aprendiz, setId_Aprendiz] = useState("");
   const [Nom_Aprendiz, setNom_Aprendiz] = useState("");
   const [Ape_Aprendiz, setApe_Aprendiz] = useState("");
@@ -40,9 +40,6 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllApren
   const [ciudades, setCiudades] = useState([]); 
   const inputFoto = useRef(null)
 
-  const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState("");
-
   const [alerta, setAlerta] = useState({});
 
 
@@ -55,6 +52,16 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllApren
     },
   };
 
+  
+  const getAllAprentices = async () => {
+    try {
+      const response = await clienteAxios.get('/aprendiz/', config);
+      setId_Aprendiz(response.data);
+    } catch (error) {
+      console.error('Error al obtener los aprendices:', error);
+    }
+  };
+  
 
 
 
@@ -99,16 +106,6 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllApren
 
 
 
-  useEffect(() => {
-    if (message) {
-      const timer = setTimeout(() => {
-        setMessage("");
-        setMessageType("");
-      }, 5000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [message]);
 
 
   const sendForm = async (e) => {
@@ -142,9 +139,6 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllApren
       formData.append('Foto_Aprendiz', Foto_Aprendiz);
 
     
-    
-  
-  
       let respuestApi;
       if (buttonForm === "Actualizar") {
         respuestApi = await clienteAxios.put(
@@ -152,6 +146,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllApren
           formData,
           config
         );
+        getAllAprentices();
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
           `/aprendiz`,
@@ -160,37 +155,41 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllApren
         );
         getAllAprentices();
       }
-  
       if (respuestApi.status === 200 || respuestApi.status === 201) {
-        alert(respuestApi.data.message);
-        setMessage("Aprendiz Registrado correctamente!")
-        setMessageType("success"),
-        clearForm()
-        updateTextButton("Enviar");
-        
+        console.log('Actualizando alerta con éxito'); // Log para depuración
+        getAllAprentices();
+        clearForm();
+        setAlerta({
+          msg: respuestApi.data.message ,
+          error: false,
+        });
+        console.log(respuestApi)
       } else {
-        setMessage(respuestApi.data.message || "Error al registrar Al Aprendiz .");
-        setMessageType("error");
+        console.log('Actualizando alerta con error'); // Log para depuración
+        setAlerta({
+          msg: respuestApi.data.message || "Error al registrar al Aprendiz.",
+          error: true,
+        });
       }
     } catch (error) {
       console.error('Error details:', error.response || error.request || error.message);
       if (error.response) {
-          setAlerta({
-              msg: error.response.data.message || "Error en la solicitud",
-              error: true,
-          });
+        setAlerta({
+          msg: error.response.data.message || "Error en la solicitud",
+          error: true,
+        });
       } else if (error.request) {
-          setAlerta({
-              msg: "No se recibió respuesta del servidor",
-              error: true,
-          });
+        setAlerta({
+          msg: "No se recibió respuesta del servidor",
+          error: true,
+        });
       } else {
-          setAlerta({
-              msg: "Error desconocido",
-              error: true,
-          });
+        setAlerta({
+          msg: "Error desconocido",
+          error: true,
+        });
       }
-  }
+    }
     
   };
 
@@ -223,9 +222,9 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllApren
     setId_Aprendiz(apprentice.Id_Aprendiz);
     setNom_Aprendiz(apprentice.Nom_Aprendiz);
     setApe_Aprendiz(apprentice.Ape_Aprendiz);
-    setId_Ficha(apprentice.Id_Ficha || '');
+    setId_Ficha(apprentice.Id_Ficha);
     setFec_Nacimiento(apprentice.Fec_Nacimiento);
-    setId_Ciudad(apprentice.Id_Ciudad || '');
+    setId_Ciudad(apprentice.Id_Ciudad);
     setLugarResidencia(apprentice.Lugar_Residencia);
     setEdad(apprentice.Edad);
     setHijos(apprentice.Hijos)
@@ -251,6 +250,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllApren
   useEffect(() => {
     setData();
   }, [apprentice]);
+
+
 
   const { msg } = alerta;
 
@@ -279,7 +280,13 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllApren
       id="document"
       placeholder="Documento del Aprendiz"
       value={Id_Aprendiz}
-      onChange={(e) => setId_Aprendiz(e.target.value)}
+      onChange={(e) => {
+        const value = e.target.value;
+        if (value.length <= 10) {
+          setId_Aprendiz(value);
+        }
+      }}
+      maxLength={10}  
       className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
     />
   </div>
@@ -292,7 +299,13 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllApren
         id="name"
         placeholder="Nombres"
         value={Nom_Aprendiz}
-        onChange={(e) => setNom_Aprendiz(e.target.value)}
+        onChange={(e) => {
+          const value = e.target.value;
+          if (value.length <= 60) {
+            setNom_Aprendiz(value);
+          }
+        }}
+        maxLength={30}
         className="w-full p-2 border rounded"
       />
     </div>
@@ -379,7 +392,13 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllApren
       id="age"
       placeholder="Edad"
       value={Edad}
-      onChange={(e) => setEdad(e.target.value)}
+      onChange={(e) => {
+        const value = e.target.value;
+        if (value.length <= 2) {
+          setEdad(value);
+        }
+      }}
+      maxLength={2}
       className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
     />
   </div>
@@ -417,7 +436,13 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllApren
       id="parentPhone"
       placeholder="Teléfono del Padre"
       value={Tel_Padre}
-      onChange={(e) => setTel_Padre(e.target.value)}
+      onChange={(e) => {
+        const value = e.target.value;
+        if (value.length <= 13) {
+          setTel_Padre(value);
+        }
+      }}
+      maxLength={13}
       className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
     />
   </div>
@@ -439,7 +464,13 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllApren
       id="email"
       placeholder="Correo"
       value={Cor_Aprendiz}
-      onChange={(e) => setCor_Aprendiz(e.target.value)}
+      onChange={(e) => {
+        const value = e.target.value;
+        if (value.length <= 60) {
+          setCor_Aprendiz(value);
+        }
+      }}
+      maxLength={60}
       className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
     />
   </div>
@@ -451,7 +482,13 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllApren
       id="phone"
       placeholder="Teléfono"
       value={Tel_Aprendiz}
-      onChange={(e) => setTel_Aprendiz(e.target.value)}
+      onChange={(e) => {
+        const value = e.target.value;
+        if (value.length <= 13) {
+          setTel_Aprendiz(value);
+        }
+      }}
+      maxLength={13}
       className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
     />
   </div>
@@ -463,7 +500,13 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllApren
       id="phone"
       placeholder="memorandos"
       value={Tot_Memorandos}
-      onChange={(e) => setTot_Memorandos(e.target.value)}
+      onChange={(e) => {
+        const value = e.target.value;
+        if (value.length <= 2) {
+          setTot_Memorandos(value);
+        }
+      }}
+      maxLength={2}
       className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
     />
   </div>
@@ -475,7 +518,13 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton, getAllApren
       id="phone"
       placeholder="Inasistencias"
       value={Tot_Inasistencias}
-      onChange={(e) => setTot_Inasistencias(e.target.value)}
+      onChange={(e) => {
+        const value = e.target.value;
+        if (value.length <= 2) {
+          setTot_Inasistencias(value);
+        }
+      }}
+      maxLength={2}
       className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
     />
   </div>

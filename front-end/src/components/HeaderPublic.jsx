@@ -39,7 +39,7 @@ export default function HeaderPublic() {
               onClick={() => selected(0)}
               className={`${
                 style[0]
-                  ? "text-white bg-green-600"
+                  ? "text-white border-b-4 border-b-green-600"
                   : "text-white bg-green-500"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
@@ -49,7 +49,7 @@ export default function HeaderPublic() {
               onClick={() => selected(1)}
               className={`${
                 style[1]
-                  ? "text-white bg-green-600"
+                  ? "text-white border-b-4 border-b-green-600"
                   : "text-white bg-green-500"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
@@ -59,7 +59,7 @@ export default function HeaderPublic() {
               onClick={() => selected(2)}
               className={`${
                 style[2]
-                  ? "text-white bg-green-600"
+                  ? "text-white border-b-4 border-b-green-600"
                   : "text-white bg-green-500"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
@@ -69,7 +69,7 @@ export default function HeaderPublic() {
               onClick={() => selected(3)}
               className={`${
                 style[3]
-                  ? "text-white bg-green-600"
+                  ? "text-white border-b-4 border-b-green-600"
                   : "text-white bg-green-500"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >

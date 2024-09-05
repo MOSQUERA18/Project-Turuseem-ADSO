@@ -60,7 +60,7 @@ const CrudApprentices = () => {
     };
     try {
       const respuestApi = await clienteAxios.get(`/aprendiz`, config);
-      if (respuestApi.status === 200) {
+      if (respuestApi.status === 200 || respuestApi.status === 204) {
         setApprenticeList(respuestApi.data);
       } else {
         setAlerta({
@@ -203,7 +203,7 @@ const CrudApprentices = () => {
       alert('Error al intentar descargar el archivo.');
     }
   }}
-  className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
+  className="bg-green-700 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
 >
   Descargar CSV
 </a>

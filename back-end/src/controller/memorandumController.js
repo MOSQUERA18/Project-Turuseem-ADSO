@@ -9,6 +9,7 @@ import fs from "fs";
 import pdf from "html-pdf";
 import db from "../database/db.js";
 
+// Controlador para obtener todos los memorandos
 export const getAllMemorandum = async (req, res) => {
   try {
     const memorandums = await MemorandumModel.findAll({
@@ -19,15 +20,15 @@ export const getAllMemorandum = async (req, res) => {
           include: [
             {
               model: TurnoRutinarioModel,
-              as: "turnorutinario", // Alias usado para la relación Turno Rutinario
+              as: "turnorutinario",
               include: [
                 {
                   model: ApprenticeModel,
-                  as: "aprendiz", // Alias para la relación con Aprendiz
+                  as: "aprendiz",
                 },
                 {
                   model: UnitModel,
-                  as: "unidad", // Alias para la relación con Unidad
+                  as: "unidad",
                 },
               ],
             },
@@ -35,22 +36,23 @@ export const getAllMemorandum = async (req, res) => {
         },
       ],
     });
+
     if (memorandums.length > 0) {
-      res.status(200).json(memorandums);
-      return;
+      return res.status(200).json(memorandums);
     } else {
-      res.status(404).json({
+      return res.status(404).json({
         message: "No se encontraron memorandos.",
       });
     }
   } catch (error) {
     logger.error("Error fetching memorandums: ", error.message);
-    res.status(500).json({
+    return res.status(500).json({
       message: "Error al recuperar los memorandos.",
     });
   }
 };
 
+// Controlador para obtener un memorando específico por ID
 export const getMemorandum = async (req, res) => {
   try {
     const memorandum = await MemorandumModel.findOne({
@@ -62,15 +64,15 @@ export const getMemorandum = async (req, res) => {
           include: [
             {
               model: TurnoRutinarioModel,
-              as: "turnorutinario", // Alias usado para la relación Turno Rutinario
+              as: "turnorutinario",
               include: [
                 {
                   model: ApprenticeModel,
-                  as: "aprendiz", // Alias para la relación con Aprendiz
+                  as: "aprendiz",
                 },
                 {
                   model: UnitModel,
-                  as: "unidad", // Alias para la relación con Unidad
+                  as: "unidad",
                 },
               ],
             },
@@ -78,22 +80,23 @@ export const getMemorandum = async (req, res) => {
         },
       ],
     });
+
     if (memorandum) {
-      res.status(200).json(memorandum);
-      return;
+      return res.status(200).json(memorandum);
     } else {
-      res.status(404).json({
+      return res.status(404).json({
         message: "Memorando no encontrado.",
       });
     }
   } catch (error) {
     logger.error("Error fetching memorandum: ", error.message);
-    res.status(500).json({
+    return res.status(500).json({
       message: "Error al recuperar el memorando.",
     });
   }
 };
 
+// Controlador para obtener el total de memorandos
 export const getTotalMemorandums = async () => {
   try {
     return await MemorandumModel.count();
@@ -103,6 +106,7 @@ export const getTotalMemorandums = async () => {
   }
 };
 
+// Controlador para crear un nuevo memorando
 export const createMemorandum = async (req, res) => {
   const transaction = await db.transaction();
   try {
@@ -110,11 +114,8 @@ export const createMemorandum = async (req, res) => {
       transaction,
     });
 
-    // Obtener el memorando recién creado junto con las relaciones necesarias
     const fullMemorandum = await MemorandumModel.findOne({
-      where: {
-        Id_Memorando: newMemorandum.Id_Memorando,
-      },
+      where: { Id_Memorando: newMemorandum.Id_Memorando },
       include: [
         {
           model: AbsenceModel,
@@ -139,75 +140,78 @@ export const createMemorandum = async (req, res) => {
       ],
       transaction,
     });
-    console.log(fullMemorandum);
-    // const totalMemorandums = await getTotalMemorandums();
 
+    // Si se desea generar un PDF después de crear el memorando, se debe descomentar el código
+    // const totalMemorandums = await getTotalMemorandums();
     // await generateMemorandumPdf(fullMemorandum, totalMemorandums);
 
     await transaction.commit();
 
-    res.status(201).json({
-      message: "Memorando registrado y PDF generado correctamente!",
+    return res.status(201).json({
+      message: "Memorando registrado correctamente!",
       data: newMemorandum,
     });
   } catch (error) {
     await transaction.rollback();
-    logger.error("Error creating memorandum: ", error);
-    res.status(400).json({
+    logger.error("Error creating memorandum: ", error.message);
+    return res.status(400).json({
       message: "Error al registrar el memorando.",
       error: error.message,
     });
   }
 };
 
+// Controlador para actualizar un memorando existente
 export const updateMemorandum = async (req, res) => {
   try {
     const [updated] = await MemorandumModel.update(req.body, {
       where: { Id_Memorando: req.params.Id_Memorando },
     });
+
     if (updated) {
-      res.json({
+      return res.json({
         message: "Memorando actualizado correctamente!",
       });
-      return;
     } else {
-      res.status(404).json({
+      return res.status(404).json({
         message: "Memorando no encontrado.",
       });
     }
   } catch (error) {
     logger.error("Error updating memorandum: ", error.message);
-    res.status(400).json({
+    return res.status(400).json({
       message: "Error al actualizar el memorando.",
       error: error.message,
     });
   }
 };
 
+// Controlador para eliminar un memorando existente
 export const deleteMemorandum = async (req, res) => {
   try {
     const deleted = await MemorandumModel.destroy({
       where: { Id_Memorando: req.params.Id_Memorando },
     });
+
     if (deleted) {
-      res.json({
+      return res.json({
         message: "Memorando borrado correctamente!",
       });
-      return;
     } else {
-      res.status(404).json({
+      return res.status(404).json({
         message: "Memorando no encontrado.",
       });
     }
   } catch (error) {
     logger.error("Error deleting memorandum: ", error.message);
-    res.status(400).json({
+    return res.status(400).json({
       message: "Error al borrar el memorando.",
       error: error.message,
     });
   }
 };
 
+// Controlador para buscar memorandos por ID usando un patrón de búsqueda
 export const getQueryMemorandum = async (req, res) => {
   try {
     const memorandums = await MemorandumModel.findAll({
@@ -219,59 +223,63 @@ export const getQueryMemorandum = async (req, res) => {
       include: [
         {
           model: AbsenceModel,
-          as: "inasistencia", // Asegúrate de que el alias aquí coincida con el definido en el modelo
+          as: "inasistencia",
         },
       ],
     });
+
     if (memorandums.length > 0) {
-      res.json(memorandums);
-      return;
+      return res.json(memorandums);
     } else {
-      res.status(404).json({
+      return res.status(404).json({
         message: "No se encontraron memorandos.",
       });
     }
   } catch (error) {
     logger.error("Error fetching memorandum: ", error.message);
-    res.status(500).json({
+    return res.status(500).json({
       message: "Error al consultar el memorando.",
       error: error.message,
     });
   }
 };
 
+// Función para generar un PDF de un memorando
 export const generateMemorandumPdf = (memorandum, totalMemorandums) => {
-  const { nombre, fecha, contenido } = memorandum;
-  const { inasistencia } = memorandum;
-  const { turnorutinario } = inasistencia;
-  const { aprendiz, unidad } = turnorutinario;
-  const raiz = process.cwd() + "\\src";
+  try {
+    const { nombre, fecha, contenido } = memorandum;
+    const { inasistencia } = memorandum;
+    const { turnorutinario } = inasistencia;
+    const { aprendiz, unidad } = turnorutinario;
+    const raiz = process.cwd() + "\\src";
 
-  const plantillaHtml = fs.readFileSync(
-    `${raiz}/public/plantillas/plantilla-memorando.html`,
-    "utf-8"
-  );
-  const hoy = new Date();
+    const plantillaHtml = fs.readFileSync(
+      `${raiz}/public/plantillas/plantilla-memorando.html`,
+      "utf-8"
+    );
+    const hoy = new Date();
+    const dia = hoy.getDate();
+    const mes = hoy.getMonth() + 1;
+    const año = hoy.getFullYear();
+    const fechaActual = `${dia}/${mes}/${año}`;
 
-  const dia = hoy.getDate(); // Obtiene el día (1-31)
-  const mes = hoy.getMonth() + 1; // Obtiene el mes (0-11). Sumar 1 para obtener el mes en formato 1-12
-  const año = hoy.getFullYear(); // Obtiene el año (ej. 2024)
+    const htmlContent = plantillaHtml
+      .replace("{{FechaActual}}", fechaActual)
+      .replace("{{NumeroMemorando}}", totalMemorandums)
+      .replace("{{NombreAprendiz}}", aprendiz.Nom_Aprendiz)
+      .replace("{{ProgramaFormacion}}", aprendiz.ProgramaFormacion)
+      .replace("{{FichaNo}}", aprendiz.FichaNo)
+      .replace("{{UnidadAsignada}}", unidad.NombreUnidad);
 
-  const fechaActual = `${dia}/${mes}/${año}`;
-  const htmlContent = plantillaHtml
-    .replace("{{FechaActual}}", fechaActual)
-    .replace("{{NumeroMemorando}}", totalMemorandums)
-    .replace("{{NombreAprendiz}}", aprendiz.Nom_Aprendiz )
-    .replace("{{ProgramaFormacion}}", aprendiz)
-    .replace("{{FichaNo}}", aprendiz )
-    .replace("{{UnidadAsignada}}", aprendiz )
-    .replace("{{FechaActual}}", aprendiz)
-
-  pdf.create(htmlContent).toBuffer((err, buffer) => {
-    if (err) {
-      res.status(500).json({ err: err });
-    }
-    const base64 = buffer.toString("base64");
-    res.status(200).json({ Reporte: base64 });
-  });
+    pdf.create(htmlContent).toBuffer((err, buffer) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      const base64 = buffer.toString("base64");
+      return res.status(200).json({ Reporte: base64 });
+    });
+  } catch (error) {
+    logger.error("Error generating PDF: ", error.message);
+    return res.status(500).json({ message: "Error al generar el PDF." });
+  }
 };
