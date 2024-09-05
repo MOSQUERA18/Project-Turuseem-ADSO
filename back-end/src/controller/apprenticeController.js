@@ -1,7 +1,6 @@
 import ApprenticeModel from "../models/apprenticeModel.js";
 import FichasModel from "../models/fichasModel.js";
 import cityModel from "../models/cityModel.js";
-import { Sequelize, Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 
 import csv from "csv-parser";
@@ -83,7 +82,12 @@ export const createApprentice = async (req, res) => {
       CentroConvivencia,
     } = req.body;
 
-    const Foto_Aprendiz = req.file ? req.file.filename : null
+    const Foto_Aprendiz = req.file ? req.file.filename : null;
+
+    // // Validación de campos obligatorios
+    // if (!Id_Aprendiz || !Nom_Aprendiz || !Ape_Aprendiz || !Id_Ficha || !Fec_Nacimiento || !Id_Ciudad || !Lugar_Residencia || !Edad || !Hijos || !Nom_Eps || !Tel_Padre || !Gen_Aprendiz || !Cor_Aprendiz || !Tel_Aprendiz || !Tot_Memorandos || !Tot_Inasistencias || !Patrocinio || !Estado || !Nom_Empresa || !CentroConvivencia) {
+    //   return res.status(400).json({ message: 'Todos los campos son obligatorios' });
+    // }
 
     const newApprentice = await ApprenticeModel.create({
       Id_Aprendiz,
@@ -108,14 +112,18 @@ export const createApprentice = async (req, res) => {
       CentroConvivencia,
       Foto_Aprendiz,
     });
-    if(newApprentice){
-      res.status(201).json(newApprentice);
-      return
+    if (newApprentice) {
+      res.status(201).json({
+        apprentice: newApprentice,
+        message: "Aprendiz Registrado Correctamente"
+      });
+      return;
     }
-    
+
+    res.status(500).json({ message: 'Error al crear el aprendiz' });
   } catch (error) {
-    res.status(500).json({ message: error.message });
-    logger.error(`Error al crear el aprendiz: ${error}`);
+    logger.error(`Error al crear el aprendiz: ${error.message}`);
+    res.status(500).json({ message: 'Error interno del servidor', error: error.message });
   }
 };
 
@@ -203,66 +211,6 @@ export const deleteApprentice = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al eliminar el aprendiz: ${error}`);
-  }
-};
-
-export const getQueryApprentice = async (req, res) => {
-  try {
-    const apprentices = await ApprenticeModel.findAll({
-      where: {
-        Id_Aprendiz: {
-          [Op.like]: `%${req.params.Id_Aprendiz}%`,
-        },
-      },
-      include: [
-        {
-          model: FichasModel,
-          as: "fichas", // Alias usado para la relación
-        },
-        {
-          model: cityModel,
-          as: "ciudades", // Alias para la relación con Ciudad
-        },
-      ],
-    });
-    if(apprentices > 0){
-      res.status(200).json(apprentices);
-      return
-    }
-    else{
-      res.status(404).json({
-        message: "No se encontraron aprendices con ese nombre.",
-      });
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-    logger.error(`Error al buscar el aprendiz: ${error}`);
-  }
-};
-
-export const getQueryNom_Apprentice = async (req, res) => {
-  try {
-    const apprentices = await ApprenticeModel.findAll({
-      where: {
-        Nom_Aprendiz: {
-          [Sequelize.Op.like]: `%${req.params.Nom_Aprendiz}%`,
-        },
-      },
-    });
-    if (apprentices.length > 0) {
-      res.status(200).json(apprentices);
-      return
-    } else {
-      res.status(404).json({
-        message: "No se encontraron aprendices con ese nombre.",
-      });
-    }
-  } catch (error) {
-    logger.error("Error fetching apprentices by name: ", error.message);
-    res.status(500).json({
-      message: "Error al buscar los aprendices por nombre.",
-      error: error.message,
-    });
   }
 };
 

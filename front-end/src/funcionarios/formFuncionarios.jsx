@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import clienteAxios from "../config/axios";
 import { ReactSession } from 'react-client-session';
+import Alerta from "../components/Alerta";
 
 const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFuncionarios }) => {
   const [Id_Funcionario, setId_Funcionario] = useState("");
@@ -16,6 +17,8 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
   // Estado para mensajes
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(""); // 'success' o 'error'
+
+  const [alerta, setAlerta] = useState({});
 
   useEffect(() => {
     if (message) {
@@ -80,8 +83,12 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
         setMessageType("error");
       }
     } catch (error) {
-      setMessage("Error al registrar el funcionario.");
-      setMessageType("error");
+      setAlerta({
+        msg: "Todos los campos son obligatorios!",
+        error: true,
+      });
+      // setMessage("Error al registrar el funcionario Por Falta de Informacion.");
+      // setMessageType("error");
     }
   };
 
@@ -109,6 +116,8 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
     setData();
   }, [funcionario]);
 
+  const { msg } = alerta;
+
   return (
     <>
       <div className="flex justify-center items-center min-h-screen bg-gray-100 content-center w-full">
@@ -117,6 +126,7 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
           onSubmit={sendForm}
           className="bg-white shadow-2xl rounded-2xl px-14 pt-6 pb-8 mb-4 max-w-3xl w-full mt-10"
         >
+          {msg && <Alerta alerta={alerta} />}
           <h1 className="font-bold text-green-600 text-3xl uppercase text-center my-5">
             Registrar Funcionario
           </h1>

@@ -93,11 +93,13 @@ const DataTableFichas = ({
   }, [fichasList]);
 
   return (
-    <div>
+    <div className="overflow-x-auto">
+    <div className="inline-block min-w-full">
+      <div className="overflow-hidden">
       <table
         ref={tableRef}
         id="tablaFichas"
-        className="display responsive nowrap text-center"
+        className="min-w-full"
       >
         <thead className="text-white bg-green-700 text-center">
           <tr>
@@ -161,6 +163,8 @@ const DataTableFichas = ({
           ))}
         </tbody>
       </table>
+    </div>
+    </div>
     </div>
   );
 };

@@ -5,7 +5,6 @@ import {
   createFuncionario,
   updateFuncionario,
   deleteFuncionario,
-  getQueryFuncionario
 } from "../controller/officialController.js";
 import checkAuth from "../middleware/authMiddleware.js";
 
@@ -20,7 +19,6 @@ router
   .get(checkAuth, getFuncionario)
   .put(checkAuth, updateFuncionario)
   .delete(checkAuth, deleteFuncionario);
-router.get("/document/:Id_Funcionario", checkAuth, getQueryFuncionario);
 
 
 export default router;

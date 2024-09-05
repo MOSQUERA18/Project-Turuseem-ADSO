@@ -50,16 +50,15 @@ const CrudTurnosRutinarios = () => {
           error: true,
         });
       }
-
-      
     } catch (error) {
       setAlerta({
-        msg: `Ocurrio un error!`,
+        msg: `Ocurrió un error!`,
         error: true,
       });
       console.error(error);
     }
   };
+
   const getTurnoRutinario = async (Id_TurnoRutinario) => {
     setButtonForm("Actualizar");
     const token = ReactSession.get("token");
@@ -75,9 +74,7 @@ const CrudTurnosRutinarios = () => {
         config
       );
       if (respuestApi.status === 200) {
-        setTurnoRutinario({
-          ...respuestApi.data,
-        });
+        setTurnoRutinario(respuestApi.data);
       } else {
         setAlerta({
           msg: `Error al cargar los registros!`,
@@ -95,8 +92,8 @@ const CrudTurnosRutinarios = () => {
 
   const deleteTurnoRutinario = (Id_TurnoRutinario) => {
     Swal.fire({
-      title: "¿Estas seguro?",
-      text: "No podrás revertir esto!",
+      title: "¿Estás seguro?",
+      text: "¡No podrás revertir esto!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -118,14 +115,19 @@ const CrudTurnosRutinarios = () => {
             config
           );
           if (respuestApi.status === 200) {
-            getAllTurnosRutinarios(); // Refrescar la lista después de borrar
+            // Actualiza el estado para eliminar el turno de la tabla
+            setTurnoRutinarioList(turnoRutinarioList.filter(turno => turno.id !== Id_TurnoRutinario));
             Swal.fire({
               title: "Borrado!",
               text: "El registro ha sido borrado.",
               icon: "success",
             });
           } else {
-            alert(respuestApi.data.message);
+            Swal.fire({
+              title: "Error!",
+              text: respuestApi.data.message,
+              icon: "error",
+            });
           }
         } catch (error) {
           Swal.fire({
@@ -148,14 +150,12 @@ const CrudTurnosRutinarios = () => {
   return (
     <>
       <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
-      Gestionar Informacion de los Turnos Rutinarios
+        Gestionar Información de los Turnos Rutinarios
       </h1>
       <div className="flex justify-end pb-3">
         <button
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-          onClick={() => {
-            setStateAddturnoRutinario(!stateAddturnoRutinario);
-          }}
+          onClick={() => setStateAddturnoRutinario(!stateAddturnoRutinario)}
         >
           {stateAddturnoRutinario ? (
             <AiOutlineMinusCircle size={16} className="me-2" />

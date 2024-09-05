@@ -1,8 +1,10 @@
 import TurnosRutinariosModel from "../models/turnoRutinarioModel.js";
 import ApprenticeModel from "../models/apprenticeModel.js";
 import UnitModel from "../models/unitModel.js";
-import { Sequelize, Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
+import AbsenceModel from "../models/absenceModel.js";
+import FichasModel from "../models/fichasModel.js";
+import ProgramaModel from "../models/programaModel.js";
 
 export const getAllTurnosRutinarios = async (req, res) => {
   try {
@@ -11,6 +13,18 @@ export const getAllTurnosRutinarios = async (req, res) => {
         {
           model: ApprenticeModel,
           as: "aprendiz",
+          include: [
+            {
+              model: FichasModel,
+              as: "fichas",
+              include: [
+                {
+                  model: ProgramaModel,
+                  as: "programasFormacion",
+                },
+              ],
+            },
+          ],
         },
         {
           model: UnitModel,
@@ -35,11 +49,23 @@ export const getTurnoRutinario = async (req, res) => {
         include: [
           {
             model: ApprenticeModel,
-            as: "aprendiz", // Alias usado para la relación
+            as: "aprendiz",
+            include: [
+              {
+                model: FichasModel,
+                as: "fichas",
+                include: [
+                  {
+                    model: ProgramaModel,
+                    as: "programasFormacion",
+                  },
+                ],
+              },
+            ],
           },
           {
             model: UnitModel,
-            as: "unidad", // Alias usado para la relación
+            as: "unidad",
           },
         ],
       }
@@ -117,10 +143,23 @@ export const updateTurnoRutinario = async (req, res) => {
         where: { Id_TurnoRutinario: req.params.Id_TurnoRutinario },
       }
     );
+
     if (updated === 0) {
       res.status(404).json({ message: "Turno rutinario no encontrado" });
     } else {
-      res.json({ message: "Turno rutinario actualizado correctamente" });
+      // Si `Ind_Asistencia` es "Sí", elimina la inasistencia correspondiente
+      if (Ind_Asistencia === "Si") {
+        await AbsenceModel.destroy({
+          where: {
+            Id_TurnoRutinario: req.params.Id_TurnoRutinario,
+            // Id_Aprendiz: Id_Aprendiz, // Asegúrate de tener esta condición si es necesario
+          },
+        });
+      }
+      res.json({
+        message:
+          "Turno rutinario actualizado correctamente y se eliminó la inasistencia si existía.",
+      });
       return;
     }
   } catch (error) {
@@ -143,34 +182,6 @@ export const deleteTurnoRutinario = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al eliminar el turno rutinario: ${error}`);
-  }
-};
-
-export const getQueryTurnoRutinario = async (req, res) => {
-  try {
-    const turnosRutinarios = await TurnosRutinariosModel.findAll({
-      where: {
-        Id_TurnoRutinario: {
-          [Op.like]: `%${req.params.Id_TurnoRutinario}%`,
-        },
-      },
-      include: [
-        {
-          model: ApprenticeModel,
-          as: "aprendiz", // Alias usado para la relación
-        },
-        {
-          model: UnitModel,
-          as: "unidad", // Alias usado para la relación
-        },
-      ],
-    });
-    if (turnosRutinarios) {
-      res.status(200).json(turnosRutinarios);
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-    logger.error(`Error al buscar el turno rutinario: ${error}`);
   }
 };
 
