@@ -80,6 +80,7 @@ const FormTurnoRutinario = ({
     };
 
     try {
+      let mensajeCRUD = ""
       let respuestApi;
       
       // Determinar si es actualización o creación
@@ -98,9 +99,7 @@ const FormTurnoRutinario = ({
           },
           config
         );
-        setAlerta({
-          msg: "Actualización Exitosa!",
-        });
+        mensajeCRUD = "Turno Rutinario Actualizado Exitosamente"
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
           `/turnoRutinario`,
@@ -116,14 +115,16 @@ const FormTurnoRutinario = ({
           },
           config
         );
-        setAlerta({
-          msg: "Registro Exitoso!",
-        });
+         mensajeCRUD = "Turno Rutinario Registrado Exitosamente"
         getAllTurnosRutinarios();  // Actualiza la lista de turnos rutinarios
       }
 
       // Manejo de respuesta exitosa
       if (respuestApi.status === 201 || respuestApi.status === 200) {
+        setAlerta({
+          msg: mensajeCRUD,
+          error:false
+        })
         // Crear o eliminar registro de inasistencia según Ind_Asistencia
         const turnoRutinarioId = respuestApi.data.Id_TurnoRutinario || Id_TurnoRutinario;
         if (Ind_Asistencia === "No") {

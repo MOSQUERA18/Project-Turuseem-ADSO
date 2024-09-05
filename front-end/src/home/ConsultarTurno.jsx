@@ -22,7 +22,7 @@ const ConsultarTurno = () => {
           error: true,
         });
       }
-    } catch (error) {
+    } catch (error) { 
       setTurnoRutinarioList({});
       setAlerta({
         msg: error.response.data.message,
@@ -39,11 +39,11 @@ const ConsultarTurno = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center mb-7 bg-gray-100 content-center w-full px-4 md:px-0">
+      <div className="flex justify-center items-center mb-7 content-center w-full px-4 md:px-0">
         <form
           id="turnoRutinarioForm"
           onSubmit={sendForm}
-          className="bg-white shadow-2xl rounded-2xl px-6 pt-6 pb-8 mb-4 w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-3xl mt-10"
+          className="bg-white shadow-lg rounded-2xl px-6 pt-6 pb-8 mb-4 w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-3xl mt-10"
         >
           {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
           <h1 className="font-bold text-green-600 text-2xl sm:text-3xl uppercase text-center my-5">

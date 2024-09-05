@@ -7,7 +7,7 @@ import FormApprentices from "./formApprentices.jsx";
 import ImportarCSV from "./importarCSV.jsx";
 import Alerta from "../components/Alerta.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
-import ModalWindow from "../ModalWindow/ModalWindow.jsx";
+// import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
 
 import { IoMdPersonAdd } from "react-icons/io";
@@ -138,7 +138,7 @@ const CrudApprentices = () => {
       }
     } catch (error) {
       setAlerta({
-        msg: `Error al cargar los registros!`,
+        msg: `Error Existen Aprendices Registrados!`,
         error: true,
       });
       console.error(error);
@@ -234,9 +234,9 @@ const CrudApprentices = () => {
   return (
     <>
       <br />
-      <ModalWindow/>
-      <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
-        Gestionar Informacion de los Aprendices
+      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+        Gestionar Informacion de los
+        <span className="text-blue-700"> Aprendices</span>
       </h1>
       <div className="flex justify-end pb-3">
         <button
@@ -254,28 +254,29 @@ const CrudApprentices = () => {
         </button>
 
         <a
-          href="#"
-          onClick={async (e) => {
-            e.preventDefault();
-
-            const filePath = "/Public/Aprendiz.csv";
-            try {
-              const response = await fetch(filePath, { method: "HEAD" });
-
-              if (response.ok) {
-                window.location.href = filePath;
-              } else {
-                alert("El archivo no está disponible en la ruta especificada.");
-              }
-            } catch (error) {
-              console.error("Error al intentar descargar el archivo:", error);
-              alert("Error al intentar descargar el archivo.");
-            }
-          }}
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-        >
-          Descargar CSV
-        </a>
+  href="#"
+  onClick={async (e) => {
+    e.preventDefault();
+    
+    const filePath = "/Public/assets/Aprendiz.csv";
+    try {
+      const response = await fetch(filePath, { method: 'HEAD' });
+      
+      if (response.ok) {
+        window.location.href = filePath;
+      } else {
+        alert('El archivo no está disponible en la ruta especificada.');
+      }
+    } catch (error) {
+      console.error('Error al intentar descargar el archivo:', error);
+      alert('Error al intentar descargar el archivo.');
+    }
+  }}
+  className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
+>
+  Descargar CSV
+</a>
+ 
       </div>
       <div className="overflow-x-auto">
         <div className="flex justify-between">

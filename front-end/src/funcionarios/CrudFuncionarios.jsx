@@ -156,8 +156,9 @@ const CrudFuncionarios = () => {
 
   return (
     <>
-      <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
-      Gestionar Informacion de los Funcionarios
+      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+      Gestionar Informacion de los 
+<span className="text-blue-700"> Funcionarios</span>
       </h1>
       <div className="flex justify-end pb-3">
         <button

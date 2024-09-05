@@ -67,16 +67,16 @@ const CrudUnidades = () => {
         setUnidadList(respuestApi.data);
         setCrearDataTable(true);
       } else {
-        setAlerta({
-          msg: `Error al cargar los registros!`,
-          error: true,
-        });
+        // setAlerta({
+        //   msg: `Error al cargar los registros!`,
+        //   error: true,
+        // });
       }
     } catch (error) {
-      setAlerta({
-        msg: `Error al cargar los registros!`,
-        error: true,
-      });
+      // setAlerta({
+      //   msg: `Error al cargar los registros!`,
+      //   error: true,
+      // });
       console.error(error);
     }
   };
@@ -169,7 +169,7 @@ const CrudUnidades = () => {
 
   return (
     <>
-      <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
+      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar Informacion de las Unidades
       </h1>
       <div className="flex justify-end pb-3">
