@@ -78,18 +78,15 @@ useEffect(() => {
         setUnidades(responseUnidades.data);
       }
     } catch (error) {
-      setAlerta({
-        msg: "Todos los campos son obligatorios!",
-        error: true,
-      });
+      // setAlerta({
+      //   msg: "Todos los campos son obligatorios!",
+      //   error: true,
+      // });
+      console.log(error)
     }
   };
   getAllUnidades();
 }, []);
-
-
-
-
 
   const token = ReactSession.get("token");
   const config = {
@@ -113,10 +110,10 @@ useEffect(() => {
         setUnidades(unidadesRes.data);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setAlerta({
-          msg: "Error al cargar los datos",
-          error: true
-        });
+        // setAlerta({
+        //   msg: "Error al cargar los datos",
+        //   error: true
+        // });
       }
     };
 
@@ -141,7 +138,7 @@ useEffect(() => {
       formData.append('Img_Asistencia', Img_Asistencia);
 
       
-
+      let mensajeCRUD = ""
       let respuestApi;
       if (buttonForm === "Actualizar") {
         respuestApi = await clienteAxios.put(
@@ -149,17 +146,19 @@ useEffect(() => {
           formData,
           config
         );
+        mensajeCRUD = "Turno especial Actualizado Exitosamente"
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
           `/turnoespecial`,
           formData,
           config
         );
+        mensajeCRUD = "Turno especial Registrado Exitosamente"
       }
 
       if (respuestApi.status === 200 || respuestApi.status === 201) {
         setAlerta({
-          msg: "Turno Especial Actualizaco correctamente!",
+          msg: mensajeCRUD,
           error: false,
         });
         clearForm();
@@ -170,10 +169,10 @@ useEffect(() => {
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);
-      setAlerta({
-        msg: "Todos Los Campos Son Obligatorios!.",
-        error: true,
-      });
+      // setAlerta({
+      //   msg: "Todos Los Campos Son Obligatorios!.",
+      //   error: true,
+      // });
     }
   };
 

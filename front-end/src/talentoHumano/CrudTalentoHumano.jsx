@@ -36,9 +36,7 @@ const CrudTalentoHumano = () => {
     Est_Talento_Humano: "",
   });
 
-  useEffect(() => {
-    getAllTalentoHumano();
-  }, []);
+
 
   const getAllTalentoHumano = async () => {
     const token = ReactSession.get("token");
@@ -59,10 +57,10 @@ const CrudTalentoHumano = () => {
         });
       }
     } catch (error) {
-      setAlerta({
-        msg: `Error al cargar los registros!`,
-        error: true,
-      });
+      // setAlerta({
+      //   msg: `Error al cargar los registros!`,
+      //   error: true,
+      // });
       console.error(error);
     }
   };
@@ -90,7 +88,7 @@ const CrudTalentoHumano = () => {
       }
     } catch (error) {
       setAlerta({
-        msg: `Error al cargar los registros!`,
+        msg: `No Existen Registros de Talento Humano`,
         error: true,
       });
       console.error(error);
@@ -122,7 +120,6 @@ const CrudTalentoHumano = () => {
             config
           );
           if (respuestApi.status === 200) {
-            getAllTalentoHumano();  // Refrescar la lista después de borrar
             Swal.fire({
               title: "Borrado!",
               text: "El registro ha sido borrado.",
@@ -131,6 +128,7 @@ const CrudTalentoHumano = () => {
           } else {
             alert(respuestApi.data.message);
           }
+          getAllTalentoHumano();
         } catch (error) {
           Swal.fire({
             title: "Error!",
@@ -148,10 +146,6 @@ const CrudTalentoHumano = () => {
   };
 
   const { msg } = alerta;
-
-
-  
-
     // Prepara los datos para Excel
     const prepareDataForExcel = (talentoHumano,talentoHumanoList) => {
       return (talentoHumano.length ? talentoHumano : talentoHumanoList).map(talentoHumano => ({
@@ -180,10 +174,16 @@ const CrudTalentoHumano = () => {
     const handleExport = () => {
       handleExportToExcel(talentoHumano, talentoHumanoList);
     };
+
+    useEffect(() => {
+      getAllTalentoHumano();
+    }, []);
   return (
     <>
-      <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
-        Gestionar Información de Talento Humano
+      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+        Gestionar Información de 
+        <span className="text-blue-700"> Talento Humano</span>
+
       </h1>
 
       <div className="flex justify-end pb-3">
@@ -208,6 +208,10 @@ const CrudTalentoHumano = () => {
         Exportar a Excel
       </button>
       </div>
+
+      <hr />
+
+
       <div className="overflow-x-auto">
         <hr />
         {msg && <Alerta alerta={alerta} />}
@@ -220,6 +224,7 @@ const CrudTalentoHumano = () => {
       />
       </div>
 
+
       {
         stateAddTalentoHumano ? (
           <FormTalentoHumano
@@ -231,9 +236,6 @@ const CrudTalentoHumano = () => {
           />
         ) : null
       }
-
-      <hr />
-
       <Outlet />
     </>
   );

@@ -159,7 +159,7 @@ const CrudTurnosEspeciales = () => {
 
   return (
     <>
-      <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
+      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
       Gestionar Informacion de los Turnos Especiales
       </h1>
       <div className="flex justify-end pb-3">

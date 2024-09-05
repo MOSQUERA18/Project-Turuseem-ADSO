@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: turuseem-project
+-- Host: localhost    Database: turuseem-project
 -- ------------------------------------------------------
 -- Server version	8.0.39
 
@@ -60,7 +60,7 @@ CREATE TABLE `aprendices` (
 
 LOCK TABLES `aprendices` WRITE;
 /*!40000 ALTER TABLE `aprendices` DISABLE KEYS */;
-INSERT INTO `aprendices` VALUES ('123456789','Juan David Linares','mijoso','2671143','2090-12-12','1010','FLANDES',20,'Si','NUEVA EPS','1234567890','Masculino','juan.perez@gmail.com','3213554763',1,1,'Si','Activo','SENA LA GRANJA','Si','1724933939022-sapohp.jfif','2024-08-29 12:18:59','2024-08-29 14:10:47');
+INSERT INTO `aprendices` VALUES ('1107008520','Juan David','Linares Barragán','2671143','2024-09-13','757','Cra 4 #12 - 63',16,'No','ASMED SALUD','3102392251','Masculino','juandavidlinares2005@gmail.com','3209455659',0,0,'No','Activo','','Si','1725249404979-JuanLinares.jpeg','2024-09-02 03:56:44','2024-09-02 03:56:44'),('123456789','Juan David Linares','mijoso','2671143','2090-12-12','1010','FLANDES',20,'Si','NUEVA EPS','1234567890','Masculino','juan.perez@gmail.com','3213554763',1,1,'Si','Activo','SENA LA GRANJA','Si','1724933939022-sapohp.jfif','2024-08-29 12:18:59','2024-09-03 21:54:57');
 /*!40000 ALTER TABLE `aprendices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -195,7 +195,7 @@ CREATE TABLE `inasistencias` (
   PRIMARY KEY (`Id_Inasistencia`),
   KEY `fk_inasistencias_turnosrutinarios` (`Id_TurnoRutinario`),
   CONSTRAINT `fk_inasistencias_turnosrutinarios` FOREIGN KEY (`Id_TurnoRutinario`) REFERENCES `turnosrutinarios` (`Id_TurnoRutinario`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -204,6 +204,7 @@ CREATE TABLE `inasistencias` (
 
 LOCK TABLES `inasistencias` WRITE;
 /*!40000 ALTER TABLE `inasistencias` DISABLE KEYS */;
+INSERT INTO `inasistencias` VALUES (14,'2024-09-02','Ser puntual.',10,'2024-09-02 13:05:02','2024-09-02 13:05:02'),(15,'2024-09-02','Puntualidad',11,'2024-09-02 14:06:57','2024-09-02 14:06:57');
 /*!40000 ALTER TABLE `inasistencias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -224,7 +225,7 @@ CREATE TABLE `memorandos` (
   PRIMARY KEY (`Id_Memorando`),
   KEY `Id_Inasistencia` (`Id_Inasistencia`),
   CONSTRAINT `memorandos_ibfk_1` FOREIGN KEY (`Id_Inasistencia`) REFERENCES `inasistencias` (`Id_Inasistencia`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -234,6 +235,36 @@ CREATE TABLE `memorandos` (
 LOCK TABLES `memorandos` WRITE;
 /*!40000 ALTER TABLE `memorandos` DISABLE KEYS */;
 /*!40000 ALTER TABLE `memorandos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `otros_memorandos`
+--
+
+DROP TABLE IF EXISTS `otros_memorandos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `otros_memorandos` (
+  `Id_OtroMemorando` int NOT NULL AUTO_INCREMENT,
+  `Fec_OtroMemorando` date NOT NULL,
+  `Mot_OtroMemorando` varchar(255) NOT NULL,
+  `Id_Aprendiz` varchar(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Id_OtroMemorando`),
+  KEY `Id_Aprendiz` (`Id_Aprendiz`),
+  CONSTRAINT `otros_memorandos_ibfk_1` FOREIGN KEY (`Id_Aprendiz`) REFERENCES `aprendices` (`Id_Aprendiz`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `otros_memorandos`
+--
+
+LOCK TABLES `otros_memorandos` WRITE;
+/*!40000 ALTER TABLE `otros_memorandos` DISABLE KEYS */;
+INSERT INTO `otros_memorandos` VALUES (6,'2024-09-03','No hizo nada en formacion','1107008520','2024-09-03 19:23:43','2024-09-03 21:58:33'),(7,'2024-09-03','No trabajo en el lote','1107008520','2024-09-03 19:23:45','2024-09-03 21:58:52'),(8,'2024-09-03','Evacion del centro','1107008520','2024-09-03 19:23:46','2024-09-03 21:59:09'),(9,'2024-09-03','Ausencia por enfermedad','1107008520','2024-09-03 19:23:47','2024-09-03 19:23:47'),(15,'2024-09-03','no trabajar en lote','1107008520','2024-09-03 22:29:53','2024-09-03 22:29:53'),(16,'2024-09-03','no trabajar en lote','1107008520','2024-09-03 22:40:50','2024-09-03 22:40:50');
+/*!40000 ALTER TABLE `otros_memorandos` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -253,7 +284,7 @@ CREATE TABLE `programasformacion` (
   PRIMARY KEY (`Id_ProgramaFormacion`),
   KEY `Id_Area` (`Id_Area`),
   CONSTRAINT `programasformacion_ibfk_1` FOREIGN KEY (`Id_Area`) REFERENCES `areas` (`Id_Area`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -262,7 +293,7 @@ CREATE TABLE `programasformacion` (
 
 LOCK TABLES `programasformacion` WRITE;
 /*!40000 ALTER TABLE `programasformacion` DISABLE KEYS */;
-INSERT INTO `programasformacion` VALUES (9,'ADSO','Tecnologo',3,'2024-08-20 15:45:25','2024-08-21 15:51:44');
+INSERT INTO `programasformacion` VALUES (9,'ADSO','Tecnologo',3,'2024-08-20 15:45:25','2024-08-21 15:51:44'),(18,'mojosos','Tecnologo',2,'2024-09-02 13:47:16','2024-09-02 13:47:16');
 /*!40000 ALTER TABLE `programasformacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -389,7 +420,7 @@ CREATE TABLE `turnosrutinarios` (
   KEY `Id_Unidad` (`Id_Unidad`),
   CONSTRAINT `turnosrutinarios_ibfk_1` FOREIGN KEY (`Id_Aprendiz`) REFERENCES `aprendices` (`Id_Aprendiz`),
   CONSTRAINT `turnosrutinarios_ibfk_2` FOREIGN KEY (`Id_Unidad`) REFERENCES `unidades` (`Id_Unidad`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -398,7 +429,7 @@ CREATE TABLE `turnosrutinarios` (
 
 LOCK TABLES `turnosrutinarios` WRITE;
 /*!40000 ALTER TABLE `turnosrutinarios` DISABLE KEYS */;
-INSERT INTO `turnosrutinarios` VALUES (6,'2024-08-31','2024-10-12','01:58:00','04:58:00','ninguna','No','123456789',22,'2024-08-30 16:58:33','2024-08-30 17:06:51'),(8,'2024-08-29','2700-12-12','13:09:00','14:09:00','nosabemos','No','123456789',22,'2024-08-30 17:09:19','2024-08-30 17:14:01'),(9,'2024-08-09','2000-12-12','13:11:00','12:13:00','seder','Si','123456789',22,'2024-08-30 17:11:36','2024-08-30 17:14:30');
+INSERT INTO `turnosrutinarios` VALUES (10,'2024-09-02','2024-09-06','07:00:00','09:00:00','Ser puntual.','No','123456789',23,'2024-09-02 01:39:59','2024-09-02 13:05:02'),(11,'2024-09-02','2024-09-06','11:06:00','11:06:00','Puntualidad','No','1107008520',23,'2024-09-02 14:06:39','2024-09-02 14:06:57');
 /*!40000 ALTER TABLE `turnosrutinarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -446,7 +477,7 @@ CREATE TABLE `unidades` (
   PRIMARY KEY (`Id_Unidad`),
   KEY `Id_Area` (`Id_Area`),
   CONSTRAINT `unidades_ibfk_1` FOREIGN KEY (`Id_Area`) REFERENCES `areas` (`Id_Area`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -455,7 +486,7 @@ CREATE TABLE `unidades` (
 
 LOCK TABLES `unidades` WRITE;
 /*!40000 ALTER TABLE `unidades` DISABLE KEYS */;
-INSERT INTO `unidades` VALUES (22,'lokas','11:36:00','03:35:00','Inactivo',2,'2024-08-22 16:35:07','2024-08-26 20:11:19');
+INSERT INTO `unidades` VALUES (22,'Cunicultura','11:36:00','03:35:00','Inactivo',2,'2024-08-22 16:35:07','2024-09-04 14:40:49'),(23,'Porcinos','07:00:00','16:00:00','Activo',2,'2024-09-02 01:38:35','2024-09-02 01:38:35');
 /*!40000 ALTER TABLE `unidades` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -499,4 +530,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-30 12:17:50
+-- Dump completed on 2024-09-04 10:31:11

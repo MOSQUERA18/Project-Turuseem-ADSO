@@ -62,6 +62,7 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
     };
 
     try {
+      let mensajeCRUD = "";
       let respuestApi;
       if (buttonForm === "Actualizar") {
         respuestApi = await clienteAxios.put(
@@ -75,6 +76,7 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
           },
           config
         );
+        mensajeCRUD = "Unidad Actualizada Exitosamente";
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
           `/unidades`,
@@ -87,11 +89,14 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
           },
           config
         );
+        mensajeCRUD = "Unidad Registrada Exitosamente";
       }
 
       if (respuestApi.status === 201 || respuestApi.status === 200) {
-        setMessage("Unidad registrada correctamente!");
-        setMessageType("success");
+        setAlerta({
+          msg: mensajeCRUD,
+          error:false
+        })
         clearForm();
         getAllUnidades();
         updateTextButton("Enviar");

@@ -12,7 +12,7 @@ export const getAllTalentoHumano = async (req, res) => {
         }
       ],
     });
-    if (talentoHumano) {
+    if (talentoHumano.length > 0){
       res.status(200).json(talentoHumano);
       return;
     } else {

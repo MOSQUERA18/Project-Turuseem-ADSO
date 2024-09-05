@@ -99,31 +99,31 @@
           id="tablaTalentoHumano"
           className="display responsive nowrap text-center"
         >
-          <thead className="text-white bg-green-700">
+          <thead className="text-white bg-green-600">
             <tr>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Documento</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Nombre</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Apellido</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Género</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Correo</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Teléfono</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Ficha</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Estado</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
+              <th className="py-2 px-4 border-2 ">Documento</th>
+              <th className="py-2 px-4 border-2 ">Nombre</th>
+              <th className="py-2 px-4 border-2 ">Apellido</th>
+              <th className="py-2 px-4 border-2 ">Género</th>
+              <th className="py-2 px-4 border-2 ">Correo</th>
+              <th className="py-2 px-4 border-2 ">Teléfono</th>
+              <th className="py-2 px-4 border-2 ">Ficha</th>
+              <th className="py-2 px-4 border-2 ">Estado</th>
+              <th className="py-2 px-4 border-2 ">Acciones</th>
             </tr>
           </thead>
           <tbody>
             {talentoHumanoList.map((talentoHumano) => (
               <tr key={talentoHumano.Id_Talento_Humano}>
-                <td className="py-2 px-4 border-b">{talentoHumano.Id_Talento_Humano}</td>
-                <td className="py-2 px-4 border-b">{talentoHumano.Nom_Talento_Humano}</td>
-                <td className="py-2 px-4 border-b">{talentoHumano.Ape_Talento_Humano}</td>
-                <td className="py-2 px-4 border-b">{talentoHumano.Genero_Talento_Humano}</td>
-                <td className="py-2 px-4 border-b">{talentoHumano.Cor_Talento_Humano}</td>
-                <td className="py-2 px-4 border-b">{talentoHumano.Tel_Talento_Humano}</td>
-                <td className="py-2 px-4 border-b">{talentoHumano.fichas ? talentoHumano.fichas.Id_Ficha : "N/A"}</td>
-                <td className="py-2 px-4 border-b">{talentoHumano.Estado}</td>
-                <td className="py-2 px-4 border-b">
+                <td className="py-2 px-4 border-b ">{talentoHumano.Id_Talento_Humano}</td>
+                <td className="py-2 px-4 border-b ">{talentoHumano.Nom_Talento_Humano}</td>
+                <td className="py-2 px-4 border-b ">{talentoHumano.Ape_Talento_Humano}</td>
+                <td className="py-2 px-4 border-b ">{talentoHumano.Genero_Talento_Humano}</td>
+                <td className="py-2 px-4 border-b ">{talentoHumano.Cor_Talento_Humano}</td>
+                <td className="py-2 px-4 border-b ">{talentoHumano.Tel_Talento_Humano}</td>
+                <td className="py-2 px-4 border-b ">{talentoHumano.fichas ? talentoHumano.fichas.Id_Ficha : "N/A"}</td>
+                <td className="py-2 px-4 border-b ">{talentoHumano.Estado}</td>
+                <td className="py-2 px-4 border-b ">
                   <button
                     onClick={() => [
                       getTalentoHumano(talentoHumano.Id_Talento_Humano),

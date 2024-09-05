@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import AuthLayout from "./layout/authLayout";
-import RutaProtegida from "./layout/RutaProtegida";
+// import AuthLayout from "./layout/authLayout";
 
 //Rutas Protegidas
 import RutaProtegida from "./layout/RutaProtegida.jsx";
@@ -32,16 +31,7 @@ import CambiarPassword from "./users/CambiarPassword";
 
 import { AuthProvider } from "./context/authProvider";
 
-//AQUI VAN LOS CRUD (FORMULARIOS)
-import Home from "./home/home";
 import VerPdf from "./memorandum/verPDF";
-
-import CrudApprentices from "./apprentice/crudApprentices.jsx";
-import CrudMemorandum from "./memorandum/crudMemorandum.jsx";
-import ImportarCSV from "./apprentice/importarCSV";
-import CrudUnidades from "./unit/CrudUnidad.jsx";
-import CrudFichas from "./fichas/CrudFichas.jsx"
-import CrudFuncionarios from "./funcionarios/CrudFuncionarios.jsx";
 
 function App() {
   return (
