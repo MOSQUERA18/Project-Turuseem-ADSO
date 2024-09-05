@@ -1,7 +1,6 @@
 import TurnosRutinariosModel from "../models/turnoRutinarioModel.js";
 import ApprenticeModel from "../models/apprenticeModel.js";
 import UnitModel from "../models/unitModel.js";
-import { Sequelize, Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 import AbsenceModel from "../models/absenceModel.js";
 import FichasModel from "../models/fichasModel.js";
@@ -221,44 +220,6 @@ export const deleteTurnoRutinario = async (req, res) => {
     logger.error(`Error al eliminar el turno rutinario: ${error.message}`);
     res.status(500).json({
       message: "Error al eliminar el turno rutinario.",
-    });
-  }
-};
-
-export const getQueryTurnoRutinario = async (req, res) => {
-  try {
-    // Intento de buscar turnos rutinarios que coincidan con el ID proporcionado.
-    const turnosRutinarios = await TurnosRutinariosModel.findAll({
-      where: {
-        Id_TurnoRutinario: {
-          [Op.like]: `%${req.params.Id_TurnoRutinario}%`,
-        },
-      },
-      include: [
-        {
-          model: ApprenticeModel,
-          as: "aprendiz",
-        },
-        {
-          model: UnitModel,
-          as: "unidad",
-        },
-      ],
-    });
-    // Verifico si se encontraron turnos rutinarios.
-    if (turnosRutinarios.length > 0) {
-      res.status(200).json(turnosRutinarios);
-      return; // Uso de return para salir de la función después de enviar la respuesta.
-    } else {
-      res.status(404).json({
-        message: "No se encontraron turnos rutinarios que coincidan con la búsqueda.",
-      });
-    }
-  } catch (error) {
-    // Capturo y manejo cualquier error ocurrido durante la búsqueda.
-    logger.error(`Error al buscar el turno rutinario: ${error.message}`);
-    res.status(500).json({
-      message: "Error al buscar el turno rutinario.",
     });
   }
 };

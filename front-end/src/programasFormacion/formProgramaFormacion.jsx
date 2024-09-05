@@ -65,6 +65,7 @@ const FormProgramaFormacion = ({
     };
 
     try {
+      let mensajeCRUD = "";
       let respuestApi;
       if (buttonForm === "Actualizar") {
         respuestApi = await clienteAxios.put(
@@ -76,6 +77,7 @@ const FormProgramaFormacion = ({
           },
           config
         );
+        mensajeCRUD = "Programa Actualizado Exitosamente";
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
           `/programa`,
@@ -86,11 +88,12 @@ const FormProgramaFormacion = ({
           },
           config
         );
+        mensajeCRUD = "Programa Actualizado Exitosamente";
       }
 
       if (respuestApi.status === 201 || respuestApi.status === 200) {
         setAlerta({
-          msg: "Registro Exitoso!",
+          msg: mensajeCRUD,
           error: false,
         });
         clearForm();
@@ -108,7 +111,6 @@ const FormProgramaFormacion = ({
         error: true,
       });
       console.log(error);
-      
     }
   };
 

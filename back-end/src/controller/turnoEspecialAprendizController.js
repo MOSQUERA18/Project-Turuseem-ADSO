@@ -1,7 +1,6 @@
 import TurnoEspecialAprendizModel from "../models/turnoEspeciales_Aprendices.js";
 import TurnoEspecialModel from "../models/turnoEspecialModel.js";
 import ApprenticeModel from "../models/apprenticeModel.js";
-import { Sequelize, Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 
 export const getAllTurnosEspecialesAprendices = async (req, res) => {
@@ -147,44 +146,6 @@ export const deleteTurnoEspecialAprendiz = async (req, res) => {
     logger.error(`Error al eliminar el turno especial de aprendiz: ${error.message}`);
     res.status(500).json({
       message: "Error al eliminar el turno especial de aprendiz.",
-    });
-  }
-};
-
-export const getQueryTurnoEspecialAprendiz = async (req, res) => {
-  try {
-    // Intento de buscar turnos especiales de aprendices que coincidan con el ID proporcionado.
-    const turnosEspecialesAprendices = await TurnoEspecialAprendizModel.findAll({
-      where: {
-        Id_TurnoEspecialAprendiz: {
-          [Op.like]: `%${req.params.Id_TurnoEspecialAprendiz}%`,
-        },
-      },
-      include: [
-        {
-          model: TurnoEspecialModel,
-          as: "turnoEspecial", // Alias usado para la relación
-        },
-        {
-          model: ApprenticeModel,
-          as: "aprendiz", // Alias usado para la relación
-        },
-      ],
-    });
-    // Verifico si se encontraron turnos especiales de aprendices.
-    if (turnosEspecialesAprendices.length > 0) {
-      res.status(200).json(turnosEspecialesAprendices);
-      return; // Uso de return para salir de la función después de enviar la respuesta.
-    } else {
-      res.status(404).json({
-        message: "No se encontraron turnos especiales de aprendices que coincidan con la búsqueda.",
-      });
-    }
-  } catch (error) {
-    // Capturo y manejo cualquier error ocurrido durante la búsqueda.
-    logger.error(`Error al buscar el turno especial de aprendiz: ${error.message}`);
-    res.status(500).json({
-      message: "Error al buscar el turno especial de aprendiz.",
     });
   }
 };

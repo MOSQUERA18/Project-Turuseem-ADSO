@@ -10,7 +10,6 @@ export default {
     extend: {
       colors: {
         green: {
-          // 200: "#d8e5ff",
           500: "#F3F4F6",
           600: "#1C75BC",
           700: "#1C75BC",

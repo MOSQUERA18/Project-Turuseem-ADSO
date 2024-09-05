@@ -1,6 +1,5 @@
 import { logger } from "../middleware/logMiddleware.js";
 import MemorandumModel from "../models/memorandumModel.js";
-import { Sequelize } from "sequelize";
 import AbsenceModel from "../models/absenceModel.js";
 import TurnoRutinarioModel from "../models/turnoRutinarioModel.js";
 import ApprenticeModel from "../models/apprenticeModel.js";
@@ -211,40 +210,6 @@ export const deleteMemorandum = async (req, res) => {
   }
 };
 
-// Controlador para buscar memorandos por ID usando un patrón de búsqueda
-export const getQueryMemorandum = async (req, res) => {
-  try {
-    const memorandums = await MemorandumModel.findAll({
-      where: {
-        Id_Memorando: {
-          [Sequelize.Op.like]: `%${req.params.Id_Memorando}%`,
-        },
-      },
-      include: [
-        {
-          model: AbsenceModel,
-          as: "inasistencia",
-        },
-      ],
-    });
-
-    if (memorandums.length > 0) {
-      return res.json(memorandums);
-    } else {
-      return res.status(404).json({
-        message: "No se encontraron memorandos.",
-      });
-    }
-  } catch (error) {
-    logger.error("Error fetching memorandum: ", error.message);
-    return res.status(500).json({
-      message: "Error al consultar el memorando.",
-      error: error.message,
-    });
-  }
-};
-
-// Función para generar un PDF de un memorando
 export const generateMemorandumPdf = (memorandum, totalMemorandums) => {
   try {
     const { nombre, fecha, contenido } = memorandum;

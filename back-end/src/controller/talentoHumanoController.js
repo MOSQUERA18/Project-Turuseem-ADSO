@@ -13,8 +13,7 @@ export const getAllTalentoHumano = async (req, res) => {
         }
       ],
     });
-    // Verifico si se encontraron registros.
-    if (talentoHumano.length > 0) {
+    if (talentoHumano.length > 0){
       res.status(200).json(talentoHumano);
       return; // Uso de return para salir de la función después de enviar la respuesta.
     } else {

@@ -1,6 +1,5 @@
 import FichasModel from "../models/fichasModel.js";
 import ProgramaModel from "../models/programaModel.js";
-import { Sequelize, Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 
 // Controlador para obtener todas las fichas
@@ -148,36 +147,5 @@ export const deleteFicha = async (req, res) => {
     // Registro del error y retorno de un código 500 con mensaje de error
     logger.error(`Error al eliminar la ficha: ${error.message}`);
     return res.status(500).json({ message: "Error al eliminar la ficha." });
-  }
-};
-
-// Controlador para buscar fichas por ID usando un patrón de búsqueda
-export const getQueryFicha = async (req, res) => {
-  try {
-    const Fichas = await FichasModel.findAll({
-      where: {
-        Id_Ficha: {
-          [Op.like]: `%${req.params.Id_Ficha}%`,
-        },
-      },
-      include: [
-        {
-          model: ProgramaModel,
-          as: "programasFormacion", // Asegúrate de que el alias coincida con tu modelo
-        },
-      ],
-    });
-
-    if (Fichas.length > 0) {
-      // Si se encontraron fichas, se devuelve un código 200 con los datos
-      return res.status(200).json(Fichas);
-    }
-
-    // Si no se encontraron fichas, se devuelve un código 404 con un mensaje
-    return res.status(404).json({ message: "No se encontraron fichas con el ID proporcionado." });
-  } catch (error) {
-    // Registro del error y retorno de un código 500 con mensaje de error
-    logger.error(`Error al buscar la ficha: ${error.message}`);
-    return res.status(500).json({ message: "Error al buscar la ficha." });
   }
 };

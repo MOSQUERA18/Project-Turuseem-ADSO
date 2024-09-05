@@ -1,7 +1,6 @@
 import TurnoRutinarioAprendizModel from "../models/turnoRutinarioAprendices.js";
 import TurnoRutinarioModel from "../models/turnoRutinarioModel.js";
 import ApprenticeModel from "../models/apprenticeModel.js";
-import { Sequelize, Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 
 export const getAllTurnosRutinariosAprendices = async (req, res) => {
@@ -151,44 +150,6 @@ export const deleteTurnoRutinarioAprendiz = async (req, res) => {
     logger.error(`Error al eliminar el turno rutinario de aprendiz: ${error.message}`);
     res.status(500).json({
       message: "Error al eliminar el turno rutinario de aprendiz.",
-    });
-  }
-};
-
-export const getQueryTurnoRutinarioAprendiz = async (req, res) => {
-  try {
-    // Intento de buscar turnos rutinarios de aprendices que coincidan con el ID proporcionado.
-    const turnosRutinariosAprendices = await TurnoRutinarioAprendizModel.findAll({
-      where: {
-        Id_TurnoRutinarioAprendiz: {
-          [Op.like]: `%${req.params.Id_TurnoRutinarioAprendiz}%`,
-        },
-      },
-      include: [
-        {
-          model: TurnoRutinarioModel,
-          as: "turnoRutinario", // Alias usado para la relación
-        },
-        {
-          model: ApprenticeModel,
-          as: "aprendiz", // Alias usado para la relación
-        },
-      ],
-    });
-    // Verifico si se encontraron turnos rutinarios de aprendices.
-    if (turnosRutinariosAprendices.length > 0) {
-      res.status(200).json(turnosRutinariosAprendices);
-      return; // Uso de return para salir de la función después de enviar la respuesta.
-    } else {
-      res.status(404).json({
-        message: "No se encontraron turnos rutinarios de aprendices que coincidan con la búsqueda.",
-      });
-    }
-  } catch (error) {
-    // Capturo y manejo cualquier error ocurrido durante la búsqueda.
-    logger.error(`Error al buscar el turno rutinario de aprendiz: ${error.message}`);
-    res.status(500).json({
-      message: "Error al buscar el turno rutinario de aprendiz.",
     });
   }
 };

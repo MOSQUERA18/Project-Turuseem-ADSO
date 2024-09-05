@@ -2,7 +2,6 @@ import TurnoEspecialModel from "../models/turnoEspecialModel.js";
 import FichasModel from "../models/fichasModel.js";
 import UnitModel from "../models/unitModel.js";
 import OfficialModel from "../models/officialModel.js";
-import { Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 
 export const getAllTurnosEspeciales = async (req, res) => {
@@ -198,48 +197,6 @@ export const deleteTurnoEspecial = async (req, res) => {
     logger.error(`Error al eliminar el turno especial: ${error.message}`);
     res.status(500).json({
       message: "Error al eliminar el turno especial.",
-    });
-  }
-};
-
-export const getQueryTurnoEspecial = async (req, res) => {
-  try {
-    // Intento de buscar turnos especiales que coincidan con el ID proporcionado.
-    const turnosEspeciales = await TurnoEspecialModel.findAll({
-      where: {
-        Id_TurnoEspecial: {
-          [Op.like]: `%${req.params.Id_TurnoEspecial}%`,
-        },
-      },
-      include: [
-        {
-          model: FichasModel,
-          as: "fichas", // Alias usado para la relación
-        },
-        {
-          model: UnitModel,
-          as: "unidad", // Alias usado para la relación
-        },
-        {
-          model: OfficialModel,
-          as: "funcionario", // Alias usado para la relación
-        },
-      ],
-    });
-    // Verifico si se encontraron turnos especiales.
-    if (turnosEspeciales.length > 0) {
-      res.status(200).json(turnosEspeciales);
-      return; // Uso de return para salir de la función después de enviar la respuesta.
-    } else {
-      res.status(404).json({
-        message: "No se encontraron turnos especiales que coincidan con la búsqueda.",
-      });
-    }
-  } catch (error) {
-    // Capturo y manejo cualquier error ocurrido durante la búsqueda.
-    logger.error(`Error al buscar el turno especial: ${error.message}`);
-    res.status(500).json({
-      message: "Error al buscar el turno especial.",
     });
   }
 };

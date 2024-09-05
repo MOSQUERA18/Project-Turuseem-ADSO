@@ -1,7 +1,7 @@
 import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { ReactSession } from 'react-client-session';
+import { ReactSession } from "react-client-session";
 
 // import { CSVLink } from 'react-csv';
 
@@ -10,17 +10,16 @@ import Alerta from "../components/Alerta.jsx";
 import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
-import DataTableProgramaFormacion from "./dataTableProgramaFormacion.jsx"
+import DataTableProgramaFormacion from "./dataTableProgramaFormacion.jsx";
 
-import { exportToExcel } from './exportExcel.js'; 
+import { exportToExcel } from "./exportExcel.js";
 const URI = "programa";
 
 const CrudPrograma = () => {
-  
   const [programaList, setProgramaList] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddPrograma, setStateAddPrograma] = useState(false);
-  
+
   const [alerta, setAlerta] = useState({});
 
   const [programa, setPrograma] = useState({
@@ -31,7 +30,6 @@ const CrudPrograma = () => {
 
   useEffect(() => {
     getAllProgramas();
-    
   }, []);
 
   const getAllProgramas = async () => {
@@ -71,7 +69,10 @@ const CrudPrograma = () => {
       },
     };
     try {
-      const respuestApi = await clienteAxios(`${URI}/${Id_ProgramaFormacion}`, config);
+      const respuestApi = await clienteAxios(
+        `${URI}/${Id_ProgramaFormacion}`,
+        config
+      );
       if (respuestApi.status === 200) {
         setPrograma({
           ...respuestApi.data,
@@ -116,7 +117,7 @@ const CrudPrograma = () => {
             config
           );
           if (respuestApi.status === 200) {
-            getAllProgramas();  // Refrescar la lista después de borrar
+            getAllProgramas(); // Refrescar la lista después de borrar
             Swal.fire({
               title: "Borrado!",
               text: "El programa ha sido borrado.",
@@ -147,11 +148,12 @@ const CrudPrograma = () => {
     exportToExcel([], programaList); // Pasar [] si `programa` está vacío
   };
 
-
-
   return (
     <>
-    <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase"> Gestionar Informacion de los Programas de Formacion</h1>
+      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+        {" "}
+        Gestionar Informacion de los Programas de Formacion
+      </h1>
       <div className="flex justify-end pb-3">
         <button
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
@@ -173,18 +175,17 @@ const CrudPrograma = () => {
         >
           Exportar a Excel
         </button>
-
       </div>
       <div className="overflow-x-auto">
         <hr />
         {msg && <Alerta alerta={alerta} />}
         <hr />
         <DataTableProgramaFormacion
-        programaList={programaList}
-        getPrograma={getPrograma}
-        deletePrograma={deletePrograma}
-        setStateAddPrograma={setStateAddPrograma}
-  />
+          programaList={programaList}
+          getPrograma={getPrograma}
+          deletePrograma={deletePrograma}
+          setStateAddPrograma={setStateAddPrograma}
+        />
       </div>
       <hr />
       {stateAddPrograma ? (

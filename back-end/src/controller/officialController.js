@@ -1,5 +1,4 @@
 import OfficialModel from "../models/officialModel.js";
-import { Sequelize, Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 
 // Controlador para obtener todos los funcionarios
@@ -118,27 +117,5 @@ export const deleteFuncionario = async (req, res) => {
   } catch (error) {
     logger.error(`Error al eliminar el funcionario: ${error.message}`);
     return res.status(500).json({ message: "Error al eliminar el funcionario." });
-  }
-};
-
-// Controlador para buscar funcionarios por ID usando un patrón de búsqueda
-export const getQueryFuncionario = async (req, res) => {
-  try {
-    const Funcionarios = await OfficialModel.findAll({
-      where: {
-        Id_Funcionario: {
-          [Op.like]: `%${req.params.Id_Funcionario}%`,
-        },
-      },
-    });
-
-    if (Funcionarios.length > 0) {
-      return res.status(200).json(Funcionarios);
-    } else {
-      return res.status(404).json({ message: "No se encontraron funcionarios." });
-    }
-  } catch (error) {
-    logger.error(`Error al buscar el funcionario: ${error.message}`);
-    return res.status(500).json({ message: "Error al buscar el funcionario." });
   }
 };

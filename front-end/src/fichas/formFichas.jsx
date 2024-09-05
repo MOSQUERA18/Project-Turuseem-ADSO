@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { ReactSession } from 'react-client-session';
 import clienteAxios from "../config/axios";
 import Alerta from "../components/Alerta";
+import { error } from "jquery";
 
 const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
   const [Id_Ficha, setId_Ficha] = useState("");
@@ -66,6 +67,7 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
     };
 
     try {
+      let mensajCRUD =""
       let respuestApi;
       if (buttonForm === "Actualizar") {
         respuestApi = await clienteAxios.put(
@@ -81,6 +83,7 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
           },
           config
         );
+        mensajCRUD = "Ficha Actualziada Exitosamente"
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
           `/fichas`,
@@ -94,12 +97,15 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
           },
           config
         );
+        mensajCRUD = "Ficha Registrada Exitosamente"
       }
       console.log(respuestApi.status);
       
       if (respuestApi.status === 201 || respuestApi.status === 200) {
-        setMessage("Ficha registrada correctamente!");
-        setMessageType("success");
+        setAlerta({
+          msg: mensajCRUD,
+          error: false
+        })
         clearForm();
         getAllFichas();
         updateTextButton("Enviar");

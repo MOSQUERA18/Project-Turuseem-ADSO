@@ -1,6 +1,5 @@
 import AbsenceModel from "../models/absenceModel.js";
 import TurnoRutinarioModel from "../models/turnoRutinarioModel.js";
-import { Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 import ApprenticeModel from "../models/apprenticeModel.js";
 import UnitModel from "../models/unitModel.js";
@@ -135,7 +134,8 @@ export const updateAbsence = async (req, res) => {
   }
 };
 
-// Eliminar una inasistencia por ID de TurnoRutinario
+const {Id_TurnoRutinario} = TurnoRutinarioModel;
+
 export const deleteAbsence = async (req, res) => {
   try {
     // Se intenta eliminar la inasistencia basada en el ID de TurnoRutinario
@@ -153,35 +153,6 @@ export const deleteAbsence = async (req, res) => {
   } catch (error) {
     // Manejo de errores y registro en logs
     logger.error(`Error al eliminar la inasistencia: ${error}`);
-    return res.status(500).json({ message: error.message });
-  }
-};
-
-// Buscar inasistencias por un parámetro de búsqueda
-export const getQueryInasistencia = async (req, res) => {
-  try {
-    // Se buscan inasistencias que coincidan con el ID proporcionado (usando like)
-    const inasistencias = await AbsenceModel.findAll({
-      where: {
-        Id_Inasistencia: {
-          [Op.like]: `%${req.params.Id_Inasistencia}%`,
-        },
-      },
-      include: [
-        {
-          model: TurnoRutinarioModel,
-          as: "turnorutinario",
-        },
-      ],
-    });
-
-    // Si se encuentran inasistencias, se retornan con un código 200
-    if (inasistencias) {
-      return res.status(200).json(inasistencias);
-    }
-  } catch (error) {
-    // Manejo de errores y registro en logs
-    logger.error(`Error al buscar la inasistencia: ${error}`);
     return res.status(500).json({ message: error.message });
   }
 };
