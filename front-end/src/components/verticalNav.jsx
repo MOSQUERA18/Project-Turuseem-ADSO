@@ -9,7 +9,7 @@ import { GiHumanPyramid } from "react-icons/gi";
 
 //Icons
 import { BsFillPeopleFill } from "react-icons/bs";
-import { IoDocumentText, IoSettings, IoLogOut } from "react-icons/io5";
+import { IoDocumentText, IoLogOut } from "react-icons/io5";
 import { PiNotebookFill } from "react-icons/pi";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { FaClipboardCheck, FaPeopleGroup } from "react-icons/fa6";
@@ -169,25 +169,8 @@ const VerticalNav = () => {
             </Link>
           ))}
         </div>
-        <div className="flex flex-col justify-between items-center h-full pb-6 px-6 w-full space-y-15 mt-3">
-          <div className="flex justify-between items-center w-full">
-            <div className="flex justify-center items-center space-x-2">
-              <div>
-                <img className="rounded-full" src="/Public/assets/LOGOTURUSEEM.png" alt="avatar" />
-              </div>
-              <div className="flex justify-start flex-col items-start">
-                <p className="cursor-pointer text-sm leading-5 text-white">
-                  {user.usuario.Nom_User.split(" ")[1]}
-                </p>
-                <p className="cursor-pointer text-xs leading-3 text-gray-300">
-                  {user.usuario.Cor_User.split(".")[0]}
-                </p>
-              </div>
-            </div>
-            <IoSettings size={45} className="text-white" />
-          </div>
+        <div className="flex flex-col justify-between items-center h-full pb-6 px-6 w-full mt-3">
           {/* Botón de Cerrar Sesión */}
-          <br />
           <br />
           <button
             onClick={cerrarSesion}

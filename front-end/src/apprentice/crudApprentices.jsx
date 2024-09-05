@@ -7,6 +7,8 @@ import FormApprentices from "./formApprentices.jsx";
 import ImportarCSV from "./importarCSV.jsx";
 import Alerta from "../components/Alerta.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
+import ModalWindow from "../ModalWindow/ModalWindow.jsx";
+
 
 import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
@@ -232,6 +234,7 @@ const CrudApprentices = () => {
   return (
     <>
       <br />
+      <ModalWindow/>
       <h1 className="text-center font-extrabold text-3xl text-green-700 uppercase">
         Gestionar Informacion de los Aprendices
       </h1>
