@@ -140,7 +140,7 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
 
   return (
     <>
-      <div className="flex justify-center items-center min-h-screen bg-gray-100 content-center w-full">
+      <div className="flex justify-center items-center min-h-screen content-center w-full">
         <form
           id="apprenticeForm"
           onSubmit={sendForm}
