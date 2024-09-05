@@ -10,10 +10,6 @@ import Alerta from "../components/Alerta.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
-import { IoMdPersonAdd } from "react-icons/io";
-import { AiOutlineMinusCircle } from "react-icons/ai";
-import { Outlet } from "react-router-dom";
-
 const URI = "unidades";
 
 import { exportToExcel } from "./ExportExcel.js";
