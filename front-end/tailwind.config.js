@@ -15,7 +15,7 @@ export default {
           700: "#1C75BC",
           800: "#1A5E99",
         },
-      },
+      },  
       textColor: {
         white: "#000000"
       },

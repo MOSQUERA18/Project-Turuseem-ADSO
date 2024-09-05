@@ -22,6 +22,7 @@ const CrudUnidades = () => {
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddUnidad, setStateAddUnidad] = useState(false);
   const [alerta, setAlerta] = useState({});
+  const [crearDataTable, setCrearDataTable] = useState(false);
 
   const [unidad, setUnidad] = useState({
     Nom_Unidad: "",
@@ -46,7 +47,6 @@ const CrudUnidades = () => {
     unidad.Hor_Cierre, // Hora Cierre
     unidad.Estado, // Estado
     unidad.areas?.Nom_Area || "N/A", // Area (usando "N/A" si areas o Nom_Area es undefined)
-    "Acción", // Puedes reemplazar esto con un botón o enlace para acciones
   ]);
 
   useEffect(() => {
@@ -65,6 +65,7 @@ const CrudUnidades = () => {
       const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setUnidadList(respuestApi.data);
+        setCrearDataTable(true);
       } else {
         setAlerta({
           msg: `Error al cargar los registros!`,
@@ -194,9 +195,17 @@ const CrudUnidades = () => {
       </div>
       <div className="overflow-x-auto">
         <hr />
-        {msg && <Alerta alerta={alerta} />}
+        {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
         <hr />
-        <WriteTable titles={titles} data={formattedData}/>
+        {crearDataTable && (
+          <WriteTable
+            titles={titles}
+            data={formattedData}
+            deleteRow={deleteUnidad}
+            getRow={getUnidad}
+            setStateAddNewRow={setStateAddUnidad}
+          />
+        )}
       </div>
       <hr />
       {stateAddUnidad ? (

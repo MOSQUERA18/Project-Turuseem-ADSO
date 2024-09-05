@@ -6,8 +6,8 @@ import { ReactSession } from "react-client-session";
 import FormApprentices from "./formApprentices.jsx";
 import ImportarCSV from "./importarCSV.jsx";
 import Alerta from "../components/Alerta.jsx";
+import WriteTable from "../Tables/Data-Tables.jsx";
 
-import DataTableApprentices from "./dataTableApprentices.jsx";
 import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
@@ -15,13 +15,16 @@ import { Outlet } from "react-router-dom";
 const URI = "/aprendiz/";
 
 const URIFOTOS = "/public/uploads/";
+const URI_AXIOS = import.meta.env.VITE_BACKEND_URL;
+
 
 const CrudApprentices = () => {
   const [apprenticeList, setApprenticeList] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddApprentice, setStateAddApprentice] = useState(false);
   const [alerta, setAlerta] = useState({});
-
+  const [crearDataTable, setCrearDataTable] = useState(false);
+  
   const [apprentice, setApprentice] = useState({
     Id_Aprendiz: "",
     Nom_Aprendiz: "",
@@ -45,6 +48,68 @@ const CrudApprentices = () => {
     CentroConvivencia: "",
     Foto_Aprendiz: "",
   });
+  const shouldShowPhoto = apprenticeList.some(row => row.Foto_Aprendiz !== undefined);
+  const titles = [
+    "Documento",
+    "Nombres",
+    "Apellidos",
+    "Ficha",
+    "Fecha de Nacimiento",
+    "Ciudad",
+    "Lugar Residencia",
+    "Edad",
+    "Hijos",
+    "Nombre EPS",
+    "Telefono Padre",
+    "Genero",
+    "Correo",
+    "Telefono Aprendiz",
+    "Total Memorandos",
+    "Total Inasistencias",
+    "Patrocinio",
+    "Estado",
+    "Nombre Empresa",
+    "Centro Convivencia",
+    shouldShowPhoto && "Foto Aprendiz",
+    "Acciones"
+  ].filter(Boolean)
+
+  const formattedData = apprenticeList.map((apprentice) => {
+    const rowData = [
+      apprentice.Id_Aprendiz,
+      apprentice.Nom_Aprendiz,
+      apprentice.Ape_Aprendiz,
+      apprentice.Id_Ficha,
+      apprentice.Fec_Nacimiento,
+      apprentice.ciudad?.Nom_Ciudad || "N/A",
+      apprentice.Lugar_Residencia,
+      apprentice.Edad,
+      apprentice.Hijos,
+      apprentice.Nom_Eps,
+      apprentice.Tel_Padre,
+      apprentice.Gen_Aprendiz,
+      apprentice.Cor_Aprendiz,
+      apprentice.Tel_Aprendiz,
+      apprentice.Tot_Memorandos,
+      apprentice.Tot_Inasistencias,
+      apprentice.Patrocinio,
+      apprentice.Estado,
+      apprentice.Nom_Empresa || "N/A",
+      apprentice.CentroConvivencia,
+    ];
+    if (shouldShowPhoto) {
+      rowData.push(
+        <img
+          width="80px"
+          src={`${URI_AXIOS}${URIFOTOS}${apprentice.Foto_Aprendiz}`}
+          alt="No Foto"
+        />
+      );
+    }
+    return rowData;
+  })
+  
+  
 
   useEffect(() => {
     getAllApprentices();
@@ -62,6 +127,7 @@ const CrudApprentices = () => {
       const respuestApi = await clienteAxios.get(`/aprendiz`, config);
       if (respuestApi.status === 200) {
         setApprenticeList(respuestApi.data);
+        setCrearDataTable(true);
       } else {
         setAlerta({
           msg: `Error al cargar los registros!`,
@@ -185,33 +251,31 @@ const CrudApprentices = () => {
         </button>
 
         <a
-  href="#"
-  onClick={async (e) => {
-    e.preventDefault();
-    
-    const filePath = "/Public/Aprendiz.csv";
-    try {
-      const response = await fetch(filePath, { method: 'HEAD' });
-      
-      if (response.ok) {
-        window.location.href = filePath;
-      } else {
-        alert('El archivo no está disponible en la ruta especificada.');
-      }
-    } catch (error) {
-      console.error('Error al intentar descargar el archivo:', error);
-      alert('Error al intentar descargar el archivo.');
-    }
-  }}
-  className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
->
-  Descargar CSV
-</a>
- 
+          href="#"
+          onClick={async (e) => {
+            e.preventDefault();
+
+            const filePath = "/Public/Aprendiz.csv";
+            try {
+              const response = await fetch(filePath, { method: "HEAD" });
+
+              if (response.ok) {
+                window.location.href = filePath;
+              } else {
+                alert("El archivo no está disponible en la ruta especificada.");
+              }
+            } catch (error) {
+              console.error("Error al intentar descargar el archivo:", error);
+              alert("Error al intentar descargar el archivo.");
+            }
+          }}
+          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
+        >
+          Descargar CSV
+        </a>
       </div>
       <div className="overflow-x-auto">
         <div className="flex justify-between">
-
           <div>
             <h1 className="font-semibold text-lg text-gray-700">
               Subir Archivo CSV
@@ -225,13 +289,15 @@ const CrudApprentices = () => {
         {msg && <Alerta alerta={alerta} />}
         <hr />
 
-        <DataTableApprentices
-          apprenticeList={apprenticeList}
-          getApprentice={getApprentice}
-          deleteApprentice={deleteApprentice}
-          setStateAddApprentice={setStateAddApprentice}
-          URIFOTOS={URIFOTOS}
-        />
+        {crearDataTable && (
+          <WriteTable
+            titles={titles}
+            data={formattedData}
+            deleteRow={deleteApprentice}
+            getRow={getApprentice}
+            setStateAddNewRow={setStateAddApprentice}
+          />
+        )}
       </div>
 
       <hr />
