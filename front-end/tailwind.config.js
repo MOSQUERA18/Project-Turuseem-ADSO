@@ -17,7 +17,7 @@ export default {
         },
       },  
       textColor: {
-        white: "#000000"
+        white: "#ffffff",
       },
       borderColor: {
         white: "#1C75BC"
