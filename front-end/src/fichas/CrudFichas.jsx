@@ -13,7 +13,7 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 
-const URI = "fichas";
+const URI = "/fichas/";
 
 const CrudFichas = () => {
   const [fichasList, setFichasList] = useState([]);

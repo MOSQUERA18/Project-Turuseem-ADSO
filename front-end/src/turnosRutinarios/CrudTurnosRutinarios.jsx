@@ -5,17 +5,20 @@ import { ReactSession } from "react-client-session";
 import FormTurnosRutinarios from "./FormTurnosRutinarios.jsx";
 import DataTableTurnosRutinarios from "./dataTableTurnosRutinarios.jsx";
 import Alerta from "../components/Alerta.jsx";
+import WriteTable from "../Tables/Data-Tables.jsx";
 import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 
 const URI = "/turnorutinario";
+// const URI_AXIOS = import.meta.env.VITE_BACKEND_URL;
 
 const CrudTurnosRutinarios = () => {
   const [turnoRutinarioList, setTurnoRutinarioList] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddturnoRutinario, setStateAddturnoRutinario] = useState(false);
   const [alerta, setAlerta] = useState({});
+  const [crearDataTable, setCrearDataTable] = useState(false);
 
   const [turnoRutinario, setTurnoRutinario] = useState({
     Fec_InicioTurno: "",
@@ -27,6 +30,42 @@ const CrudTurnosRutinarios = () => {
     Id_Aprendiz: "",
     Id_Unidad: "",
   });
+  // const shouldShowPhoto = apprenticeList.some(row => row.Foto_Aprendiz !== undefined);
+  const titles = [
+    "Fec_InicioTurno",
+    "Fec_FinTurno",
+    "Hor_InicioTurno",
+    "Hor_FinTurno",
+    "Obs_TurnoRutinario",
+    "Ind_Asistencia",
+    "Id_Aprendiz",
+    "Id_Unidad",
+    // shouldShowPhoto && "Foto Aprendiz",
+    "Acciones"
+  ].filter(Boolean)
+
+  const formattedData = turnoRutinarioList.map((turnoRutinario) => {
+    const rowData = [
+      turnoRutinario.Fec_InicioTurno,
+      turnoRutinario.Fec_FinTurno,
+      turnoRutinario.Hor_InicioTurno,
+      turnoRutinario.Hor_FinTurno,
+      turnoRutinario.Obs_TurnoRutinario,
+      turnoRutinario.Ind_Asistencia,
+      turnoRutinario.Id_Aprendiz,
+      turnoRutinario.Id_Unidad,
+    ];
+    // if (shouldShowPhoto) {
+    //   rowData.push(
+    //     <img
+    //       width="80px"
+    //       src={`${URI_AXIOS}${URIFOTOS}${apprentice.Foto_Aprendiz}`}
+    //       alt="No Foto"
+    //     />
+    //   );
+    // }
+    return rowData;
+  })
 
   useEffect(() => {
     getAllTurnosRutinarios();
@@ -44,6 +83,7 @@ const CrudTurnosRutinarios = () => {
       const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setTurnoRutinarioList(respuestApi.data);
+        setCrearDataTable(true);
       } else {
         setAlerta({
           msg: `Error al cargar los registros!`,
@@ -91,6 +131,10 @@ const CrudTurnosRutinarios = () => {
   };
 
   const deleteTurnoRutinario = (Id_TurnoRutinario) => {
+    // if (!Id_TurnoRutinario) {
+    //   console.error("El ID del turno rutinario no es válido");
+    //   return;
+    // }
     Swal.fire({
       title: "¿Estás seguro?",
       text: "¡No podrás revertir esto!",
@@ -169,13 +213,23 @@ const CrudTurnosRutinarios = () => {
         <hr />
         {msg && <Alerta alerta={alerta} />}
         <hr />
-        <DataTableTurnosRutinarios
+        {crearDataTable && (
+          <WriteTable
+            titles={titles}
+            data={formattedData}
+            deleteRow={deleteTurnoRutinario}
+            getRow={getTurnoRutinario}
+            setStateAddNewRow={setStateAddturnoRutinario}
+          />
+        )}
+        {/* <DataTableTurnosRutinarios
           turnoRutinarioList={turnoRutinarioList}
           getTurnoRutinario={getTurnoRutinario}
           deleteTurnoRutinario={deleteTurnoRutinario}
           setStateAddturnoRutinario={setStateAddturnoRutinario}
-        />
+        /> */}
       </div>
+
       <hr />
       {stateAddturnoRutinario ? (
         <FormTurnosRutinarios

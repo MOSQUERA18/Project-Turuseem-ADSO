@@ -6,6 +6,7 @@ import { ReactSession } from "react-client-session";
 import FormTurnosEspeciales from "./FormTurnosEspeciales.jsx";
 import DataTableTurnosEspeciales from "./dataTableTurnosEspeciales.jsx";
 import Alerta from "../components/Alerta.jsx";
+import WriteTable from "../Tables/Data-Tables.jsx";
 
 import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
@@ -15,12 +16,14 @@ import { exportToExcel } from './ExportExcel.js';
 
 const URI = "/turnoespecial";
 const URI_FOTOS = '/public/uploads/'
+const URI_AXIOS = import.meta.env.VITE_BACKEND_URL;
 
 const CrudTurnosEspeciales = () => {
   const [turnoEspecialList, setTurnoEspecialList] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddturnoEspecial, setStateAddturnoEspecial] = useState(false);
   const [alerta, setAlerta] = useState({});
+  const [crearDataTable, setCrearDataTable] = useState(false);
 
   const [turnoEspecial, setTurnoEspecial] = useState({
     // Id_TurnoEspecial: "",
@@ -34,6 +37,46 @@ const CrudTurnosEspeciales = () => {
     Id_Funcionario: "",
     Id_Unidad: "",
   });
+  const shouldShowPhoto = turnoEspecialList.some(row => row.Img_Asistencia !== undefined);
+  const titles = [
+    // "ID",
+    "Fecha Turno",
+    "Hora Inicio",
+    "Hora Fin",
+    "Observaciones",
+    "Total Aprendices",
+    "Ficha",
+    // "Imagen Asistencia",
+    "Funcionario",
+    "Unidad",
+    shouldShowPhoto && "Foto Asistencia",
+    "Acciones"
+  ].filter(Boolean)
+
+  const formattedData = turnoEspecialList.map((turnoEspecial) => {
+    const rowData = [
+      // turnoEspecial.Id_TurnoEspecial,
+      turnoEspecial.Fec_TurnoEspecial,
+      turnoEspecial.Hor_Inicio,
+      turnoEspecial.Hor_Fin,
+      turnoEspecial.Obs_TurnoEspecial,
+      turnoEspecial.Tot_AprendicesAsistieron,
+      turnoEspecial.Id_Ficha,
+      // turnoEspecial.Img_Asistencia,
+      turnoEspecial.Id_Funcionario,
+      turnoEspecial.Id_Unidad,
+    ];
+    if (shouldShowPhoto) {
+      rowData.push(
+        <img
+          width="80px"
+          src={`${URI_AXIOS}${URI_FOTOS}${turnoEspecial.Img_Asistencia}`}
+          alt="No Foto"
+        />
+      );
+    }
+    return rowData;
+  })
 
   useEffect(() => {
     getAllTurnosEspeciales();
@@ -51,6 +94,7 @@ const CrudTurnosEspeciales = () => {
       const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setTurnoEspecialList(respuestApi.data);
+        setCrearDataTable(true);
       } else {
         setAlerta({
           msg: `Error al cargar los registros!`,
@@ -188,13 +232,17 @@ const CrudTurnosEspeciales = () => {
         <hr />
         {msg && <Alerta alerta={alerta} />}
         <hr />
-        <DataTableTurnosEspeciales
-          turnoEspecialList={turnoEspecialList}
-          getTurnoEspecial={getTurnoEspecial}
-          deleteTurnoEspecial={deleteTurnoEspecial}
-          setStateAddturnoEspecial={setStateAddturnoEspecial}
-          URI_FOTOS={URI_FOTOS}
-        />
+
+
+        {crearDataTable && (
+          <WriteTable
+            titles={titles}
+            data={formattedData}
+            deleteRow={deleteTurnoEspecial}
+            getRow={getTurnoEspecial}
+            setStateAddNewRow={setStateAddturnoEspecial}
+          />
+        )}
       </div>
       <hr />
       {stateAddturnoEspecial ? (
@@ -202,12 +250,11 @@ const CrudTurnosEspeciales = () => {
           buttonForm={buttonForm}
           turnoEspecial={turnoEspecial}
           updateTextButton={updateTextButton}
-          // setTurnoEspecial={setTurnoEspecial}
-          getAllTurnosEspeciales={getAllTurnosEspeciales}
+          setTurnoEspecial={setTurnoEspecial}
         />
       ) : null}
       <hr />
-      <Outlet />
+      
     </>
   );
 };
