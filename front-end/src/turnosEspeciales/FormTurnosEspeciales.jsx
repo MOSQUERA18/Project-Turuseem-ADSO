@@ -219,18 +219,20 @@ useEffect(() => {
 
   return (
     <>
-      <div className="flex justify-center items-center min-h-screen bg-gray-100 content-center w-full">
+      <div className="flex justify-center items-center min-h-screen bg-gray-100">
         <form
           id="turnoEspecialForm"
           onSubmit={sendForm}
-          className="bg-white shadow-2xl rounded-2xl px-14 pt-6 pb-8 mb-4 max-w-3xl w-full mt-10"
+          className="bg-white shadow-xl rounded-lg p-10 max-w-4xl w-full"
         >
           {msg && <Alerta alerta={alerta} setAlerta={setAlerta}/>}
           <h1 className="font-bold text-green-600 text-3xl uppercase text-center my-5">
             Crear Turnos Especiales
           </h1>
-          <div className="mb-3">
-            <label className="text-gray-700 uppercase font-bold">
+<div className="grid grid-cols-2 gap-6">
+
+          <div className="space-y-2">
+            <label className="block text-lg font-semibold text-gray-700">
               Fecha Turno Especial
             </label>
             <input
@@ -238,13 +240,13 @@ useEffect(() => {
               id="nombre"
               value={Fec_TurnoEspecial}
               onChange={(e) => setFec_TurnoEspecial(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
           <div className="flex items-center mb-3 space-x-4">
             <div className="w-1/2">
-              <label className="text-gray-700 uppercase font-bold">
+              <label className="block text-lg font-semibold text-gray-700">
                 Hora Inicio
               </label>
               <input
@@ -252,12 +254,12 @@ useEffect(() => {
                 id="hora_inicio"
                 value={Hor_Inicio}
                 onChange={(e) => setHor_Inicio(e.target.value)}
-                className="w-full p-2 border rounded"
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             <div className="w-1/2">
-              <label className="text-gray-700 uppercase font-bold">
+              <label className="block text-lg font-semibold text-gray-700">
                 Hora Fin
               </label>
               <input
@@ -265,12 +267,12 @@ useEffect(() => {
                 id="hora_fin"
                 value={Hor_Fin}
                 onChange={(e) => setHor_Fin(e.target.value)}
-                className="w-full p-2 border rounded"
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
-          <div className="mb-3">
-            <label className="text-gray-700 uppercase font-bold">
+          <div className="space-y-2">
+            <label className="block text-lg font-semibold text-gray-700">
               Observaciones
             </label>
             <textarea
@@ -278,11 +280,11 @@ useEffect(() => {
               placeholder="Observaciones Turno Especial"
               value={Obs_TurnoEspecial}
               onChange={(e) => setObs_TurnoEspecial(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <div className="mb-3">
-            <label className="text-gray-700 uppercase font-bold">
+          <div className="space-y-2">
+            <label className="block text-lg font-semibold text-gray-700">
               Total Aprendices
             </label>
             <input
@@ -291,12 +293,12 @@ useEffect(() => {
               placeholder="Total Aprendices Asistieron"
               value={Tot_AprendicesAsistieron}
               onChange={(e) => setTot_AprendicesAsistieron(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
-          <div className="mb-3">
-            <label className="text-gray-700 uppercase font-bold">Ficha</label>
+          <div className="space-y-2">
+            <label className="block text-lg font-semibold text-gray-700">Ficha</label>
             <select
               id="ficha"
               value={Id_Ficha}
@@ -312,8 +314,8 @@ useEffect(() => {
             </select>
           </div>
 
-          <div className="mb-3">
-            <label className="text-gray-700 uppercase font-bold">
+          <div className="space-y-2">
+            <label className="block text-lg font-semibold text-gray-700">
               Funcionario
             </label>
             <select
@@ -333,8 +335,8 @@ useEffect(() => {
               ))}
             </select>
           </div>
-          <div className="mb-3">
-            <label className="text-gray-700 uppercase font-bold">Unidad</label>
+          <div className="space-y-2">
+            <label className="block text-lg font-semibold text-gray-700">Unidad</label>
             <select
               id="unidad"
               value={Id_Unidad}
@@ -349,35 +351,36 @@ useEffect(() => {
               ))}
             </select>
           </div>
-          <div className="mb-3">
+          <div className="space-y-2">
 
-              <label className="text-gray-700 uppercase font-bold">Asistencia</label>
+              <label className="block text-lg font-semibold text-gray-700">Asistencia</label>
               <input
                 type="file"
                 id="img_asistencia"
                 onChange={(e) => setImg_Asistencia(e.target.files[0])}
-                className="w-full p-2 border rounded"
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
 
 
           </div>
-          <div className="flex justify-around">
-            <input
-              type="submit"
-              id="button"
-              value={buttonForm}
-              className="bg-green-600 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-700 md:w-auto"
-            />
-            <input
-              type="button"
-              id="button"
-              value="Limpiar"
-              onClick={() => {
-                clearForm();
-              }}
-              className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-500 md:w-auto"
-              aria-label="Limpiar"
-            />
+          <div className="mt-6 flex justify-around">
+
+<input
+  type="submit"
+  id="button"
+  value={buttonForm}
+  
+  className="bg-green-600 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-700 md:w-auto"
+/>
+<input
+  type="button"
+  id="button"
+  value="Limpiar"
+  onClick={() => { clearForm(); updateTextButton("Enviar") }}
+  
+  className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-700 md:w-auto"
+/>
+</div>
           </div>
         </form>
       </div>

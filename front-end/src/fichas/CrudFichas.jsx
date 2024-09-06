@@ -3,14 +3,13 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
 
-import { exportToExcel } from './ExportExcel.js'
+// import { exportToExcel } from './ExportExcel.js'
 
 import FormFichas from "./formFichas.jsx";
 import Alerta from "../components/Alerta.jsx";
-import DataTableFichas from "./dataTableFichas.jsx";
 
-import { IoMdPersonAdd } from "react-icons/io";
-import { AiOutlineMinusCircle } from "react-icons/ai";
+import WriteTable from "../Tables/Data-Tables.jsx";
+import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 import { Outlet } from "react-router-dom";
 
 const URI = "fichas";
@@ -20,19 +19,58 @@ const CrudFichas = () => {
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddFichas, setStateAddFichas] = useState(false);
   const [alerta, setAlerta] = useState({});
+  const [crearDataTable, setCrearDataTable] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData,setFormData] = useState({});
+
+
+  const resetForm = () => {
+    setFichas({
+      Id_Ficha: "",
+      Fec_IniEtapaLectiva: "",
+      Fec_FinEtapaLectiva: "",
+      Can_Aprendices: "",
+      Id_ProgramaFormacion: "",
+      Estado: "",
+    })
+    setFormData({})
+  }
 
   const [fichas, setFichas] = useState({
     Id_Ficha: "",
-    Fec_IniEtapaLectiva: "",
+    Fec_InicioEtapaLectiva: "",
     Fec_FinEtapaLectiva: "",
     Can_Aprendices: "",
     Id_ProgramaFormacion: "",
     Estado: "",
   });
 
-  useEffect(() => {
-    getAllFichas();
-  }, []);
+  const titles = [
+    "Id_Ficha",
+    "Fecha Inicio Etapa Lectiva",
+    "Fecha Fin Etapa Lectiva",
+    "Cantidad Aprendices",
+    "Programa de Formación",
+    "Estado",
+    "Acciones",
+  ].filter(Boolean)
+
+  const formatteData = fichasList.map((fichas) => {
+    const rowData = [
+      fichas.Id_Ficha,
+      fichas.Fec_InicioEtapaLectiva,
+      fichas.Fec_FinEtapaLectiva,
+      fichas.Can_Aprendices,
+      fichas.Id_ProgramaFormacion,
+      fichas.Estado,
+    ];
+    return rowData;
+    })
+
+
+      useEffect(() => {
+        getAllFichas();
+      }, []);
 
   const getAllFichas = async () => {
     const token = ReactSession.get("token");
@@ -46,6 +84,7 @@ const CrudFichas = () => {
       const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setFichasList(respuestApi.data);
+        setCrearDataTable(true);
       } else {
         setAlerta({
           msg: `Error al cargar los registros!`,
@@ -144,9 +183,9 @@ const CrudFichas = () => {
   const { msg } = alerta;
 
   // Función para manejar la exportación a Excel
-  const handleExportToExcel = () => {
-    exportToExcel([], fichasList); // Pasar [] si `fichas` está vacío
-  };
+  // const handleExportToExcel = () => {
+  //   exportToExcel([], fichasList); // Pasar [] si `fichas` está vacío
+  // };
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
@@ -154,48 +193,57 @@ const CrudFichas = () => {
       <span className="text-blue-700"> Fichas</span>
       </h1>
       <div className="flex justify-end pb-3">
-        <button
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-          onClick={() => {
-            setStateAddFichas(!stateAddFichas);
-          }}
-        >
-          {stateAddFichas ? (
-            <AiOutlineMinusCircle size={16} className="me-2" />
-          ) : (
-            <IoMdPersonAdd size={16} className="me-2" />
-          )}
-          {stateAddFichas ? "Ocultar" : "Agregar"}
-        </button>
-        <button
+        
+        {/* <button
           onClick={handleExportToExcel}
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
         >
           Exportar a Excel
-        </button>
+        </button> */}
       </div>
-      <div className="overflow-x-auto">
-        <hr />
-        {msg && <Alerta alerta={alerta} />}
-        <hr />
-        <DataTableFichas
-          fichasList={fichasList}
-          getFicha={getFicha}
-          deleteFichas={deleteFichas}
-          setStateAddFichas={setStateAddFichas}
-        />
-      </div>
+      <div className="flex justify-end pb-3">
       <hr />
-      {stateAddFichas ? (
+      <ModalWindow
+          stateAddNewRow={stateAddFichas}
+          setStateAddNewRow={setStateAddFichas}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          resetForm={resetForm}
+          updateTextBottom={updateTextButton}
+form={
         <FormFichas
           buttonForm={buttonForm}
           fichas={fichas}
           updateTextButton={updateTextButton}
           setUnidad={setFichas}
           getAllFichas={getAllFichas}
+          formData={formData} 
+          setFormData={setFormData} 
         />
-      ) : null}
-      <hr />
+}
+/>
+
+</div>
+
+
+      <div className="overflow-x-auto">
+        <hr />
+        {msg && <Alerta alerta={alerta} />}
+        
+        {crearDataTable && (
+          <WriteTable
+          titles={titles}
+          data={formatteData}
+          deleteRow={deleteFichas}
+          getRow={getFicha}
+          setStateAddNewRow={setStateAddFichas}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          />
+        )}
+        </div>
+
+
       <Outlet />
     </>
   );
