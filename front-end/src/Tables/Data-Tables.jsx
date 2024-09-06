@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import $ from "jquery";
 import DataTable from "datatables.net-dt";
 import "datatables.net-responsive-dt";
@@ -9,6 +9,14 @@ import { FaRegEdit } from "react-icons/fa";
 
 //pidan de parametros los titulos y la data
 function WriteTable({ titles, data, deleteRow, getRow, setStateAddNewRow }) {
+  const tableRef = useRef(null);
+
+  const handleGetInnerHTML = () => {
+    // Acceder al innerHTML usando el ref
+    const innerHTML = tableRef.current?.innerHTML;
+    console.log(innerHTML);
+  };
+
   //table
   useEffect(() => {
     // Verifica si el DataTable ya está inicializado
@@ -31,9 +39,18 @@ function WriteTable({ titles, data, deleteRow, getRow, setStateAddNewRow }) {
   return (
     <>
       <div className="relative overflow-x-auto container">
+        <button
+          type="button"
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4"
+          onClick={handleGetInnerHTML}
+        >
+          Obtener
+        </button>
+
         <table
           className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table table-responsive"
           id="TableDinamic"
+          ref={tableRef}
         >
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
