@@ -10,7 +10,7 @@ const URI = "/ciudades/"
 const UriFichas = "/fichas/"
 
 
-const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
+const FormApprentices = ({ buttonForm, apprentice, updateTextButton,setApprentice,formData, setFormData }) => {
   const [Id_Aprendiz, setId_Aprendiz] = useState("");
   const [Nom_Aprendiz, setNom_Aprendiz] = useState("");
   const [Ape_Aprendiz, setApe_Aprendiz] = useState("");
@@ -106,8 +106,6 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
 
 
 
-
-
   const sendForm = async (e) => {
     e.preventDefault();
 
@@ -138,7 +136,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
       formData.append('CentroConvivencia', CentroConvivencia);
       formData.append('Foto_Aprendiz', Foto_Aprendiz);
 
-    
+      let mensajeCrud = ""
       let respuestApi;
       if (buttonForm === "Actualizar") {
         respuestApi = await clienteAxios.put(
@@ -146,24 +144,24 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
           formData,
           config
         );
-        getAllAprentices();
+        mensajeCrud = "Aprendiz actualizado Exitosamente"
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
           `/aprendiz`,
           formData,
           config,
         );
-        getAllAprentices();
+        mensajeCrud = "Aprendiz Registrado Exitosamente"
       }
       if (respuestApi.status === 200 || respuestApi.status === 201) {
         console.log('Actualizando alerta con éxito'); // Log para depuración
         getAllAprentices();
-        clearForm();
         setAlerta({
-          msg: respuestApi.data.message ,
+          msg: mensajeCrud,
           error: false,
         });
-        console.log(respuestApi)
+        clearForm();
+        updateTextButton("Enviar")
       } else {
         console.log('Actualizando alerta con error'); // Log para depuración
         setAlerta({
@@ -172,7 +170,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
         });
       }
     } catch (error) {
-      console.error('Error details:', error.response || error.request || error.message);
+      console.error('Error details o Documento Repetido!   : ', error.response || error.request || error.message);
       if (error.response) {
         setAlerta({
           msg: error.response.data.message || "Error en la solicitud",
@@ -252,26 +250,27 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
   }, [apprentice]);
 
 
-
   const { msg } = alerta;
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 content-center w-full">
+
+       <div className="flex justify-center items-center min-h-screen bg-gray-100"> 
       <form
   id="apprenticeForm"
   action=""
   onSubmit={sendForm}
-  className="bg-white shadow-2xl rounded-2xl px-14 pt-6 pb-8 mb-4 max-w-3xl w-full mt-10"
+  className="bg-white shadow-2xl rounded-2xl px-8 py-6 mb-4 w-full max-w-7xl"
 >
 {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
   <h1 className="font-bold text-green-600 text-3xl uppercase text-center my-5">
     Registrar Aprendices
   </h1>
 
-  <div className="mb-3">
+  <div className="grid grid-cols-4 gap-4">
+    <div className="space-y-2">
     <label
       htmlFor="document"
-      className="text-gray-700 uppercase font-bold"
+      className="block text-sm font-medium text-gray-700"
     >
       Documento
     </label>
@@ -285,15 +284,18 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
         if (value.length <= 10) {
           setId_Aprendiz(value);
         }
-      }}
+      }
+    }
       maxLength={10}  
       className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+      
     />
-  </div>
+    </div>
 
-  <div className="flex space-x-12 mb-3">
-    <div className="w-1/2">
-      <label className="text-gray-700 uppercase font-bold">Nombres</label>
+
+
+    <div className="space-y-2">
+      <label className="block text-sm font-medium text-gray-700">Nombres</label>
       <input
         type="text"
         id="name"
@@ -306,28 +308,28 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
           }
         }}
         maxLength={60}
-        className="w-full p-2 border rounded"
+        className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
       />
     </div>
 
-    <div className="w-1/2">
-      <label className="text-gray-700 uppercase font-bold">Apellidos</label>
+    <div className="space-y-2">
+      <label className="block text-sm font-medium text-gray-700">Apellidos</label>
       <input
         type="text"
         id="lastName"
         placeholder="Apellidos"
         value={Ape_Aprendiz}
         onChange={(e) => setApe_Aprendiz(e.target.value)}
-        className="w-full p-2 border rounded"
+        className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
       />
     </div>
-  </div>
 
-  <div className="mb-3">
+
+  <div className="space-y-2">
     <label className="text-gray-700 uppercase font-bold">Fichas:</label>
     <select name="" id="ficha" value={Id_Ficha} 
     onChange={(e) => setId_Ficha(e.target.value) }
-    className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md">
+    className="block text-sm font-medium text-gray-700">
 
       <option value="">Seleccione su Ficha: </option>
       {
@@ -342,8 +344,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
     </select>
   </div>
 
-  <div className="mb-3">
-    <label className="text-gray-700 uppercase font-bold">Fecha de Nacimiento</label>
+  <div className="space-y-2">
+    <label className="block text-sm font-medium text-gray-700">Fecha de Nacimiento</label>
     <input
       type="date"
       id="birthDate"
@@ -353,8 +355,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
     />
   </div>
 
-    <div className="mb-3">
-            <label className="text-gray-700 uppercase font-bold">
+    <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">
               Ciudad
             </label>
                   <select
@@ -372,8 +374,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
                   </select>
           </div>
 
-          <div className="mb-3">
-    <label className="text-gray-700 uppercase font-bold">Lugar Residencia</label>
+          <div className="space-y-2">
+    <label className="block text-sm font-medium text-gray-700">Lugar Residencia</label>
     <input
       type="text"
       id="lugar"
@@ -385,8 +387,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
   </div>
 
 
-  <div className="mb-3">
-    <label className="text-gray-700 uppercase font-bold">Edad</label>
+  <div className="space-y-2">
+    <label className="block text-sm font-medium text-gray-700">Edad</label>
     <input
       type="number"
       id="age"
@@ -403,7 +405,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
     />
   </div>
 
-  <div className="mb-3">
+  <div className="space-y-2">
     <label className="text-gray-700 uppercase font-bold">Hijos</label>
     <select
       id="children"
@@ -417,7 +419,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
     </select>
   </div>
 
-  <div className="mb-3">
+  <div className="space-y-2">
     <label className="text-gray-700 uppercase font-bold">EPS</label>
     <input
       type="text"
@@ -429,8 +431,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
     />
   </div>
 
-  <div className="mb-3">
-    <label className="text-gray-700 uppercase font-bold">Teléfono del Padre</label>
+  <div className="space-y-2">
+    <label className="block text-sm font-medium text-gray-700">Teléfono del Padre</label>
     <input
       type="text"
       id="parentPhone"
@@ -447,8 +449,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
     />
   </div>
 
-  <div className="mb-3">
-    <label className="text-gray-700 uppercase font-bold">Género</label>
+  <div className="space-y-2">
+    <label className="block text-sm font-medium text-gray-700">Género</label>
     <select name="" id="genero" value={Gen_Aprendiz} onChange={(e) => setGen_Aprendiz(e.target.value)} className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md">
       <option value="" className="">Selecione Uno</option>
       <option value="Masculino" className="">Masculino</option>
@@ -457,8 +459,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
     </select>
   </div>
 
-  <div className="mb-3">
-    <label className="text-gray-700 uppercase font-bold">Correo</label>
+  <div className="space-y-2">
+    <label className="block text-sm font-medium text-gray-700">Correo</label>
     <input
       type="email"
       id="email"
@@ -475,8 +477,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
     />
   </div>
 
-  <div className="mb-3">
-    <label className="text-gray-700 uppercase font-bold">Teléfono Aprendiz</label>
+  <div className="space-y-2">
+    <label className="block text-sm font-medium text-gray-700">Teléfono Aprendiz</label>
     <input
       type="text"
       id="phone"
@@ -493,8 +495,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
     />
   </div>
 
-  <div className="mb-3">
-    <label className="text-gray-700 uppercase font-bold">Total Memorandos</label>
+  <div className="space-y-2">
+    <label className="block text-sm font-medium text-gray-700">Total Memorandos</label>
     <input
       type="text"
       id="phone"
@@ -511,8 +513,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
     />
   </div>
 
-  <div className="mb-3">
-    <label className="text-gray-700 uppercase font-bold">Total Inasistencias</label>
+  <div className="space-y-2">
+    <label className="block text-sm font-medium text-gray-700">Total Inasistencias</label>
     <input
       type="text"
       id="phone"
@@ -532,12 +534,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
 
 
 
-
-
-
-
-  <div className="mb-3">
-    <label className="text-gray-700 uppercase font-bold">Patrocinio</label>
+  <div className="space-y-2">
+    <label className="block text-sm font-medium text-gray-700">Patrocinio</label>
     <select
       id="patrocinio"
       value={Patrocinio}
@@ -550,8 +548,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
     </select>
   </div>
 
-  <div className="mb-3">
-    <label className="text-gray-700 uppercase font-bold">Estado :</label>
+  <div className="space-y-2">
+    <label className="block text-sm font-medium text-gray-700">Estado :</label>
     <select
       id="patrocinio"
       value={Estado}
@@ -568,8 +566,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
 
 
   {Patrocinio === "si" && (
-    <div className="mb-3">
-      <label className="text-gray-700 uppercase font-bold">Nombre de la Empresa</label>
+    <div className="space-y-2">
+      <label className="block text-sm font-medium text-gray-700">Nombre de la Empresa</label>
       <input
         type="text"
         id="companyName"
@@ -581,8 +579,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
     </div>
   )}
 
-  <div className="mb-3">
-    <label className="text-gray-700 uppercase font-bold">Centro de Convivencia</label>
+  <div className="space-y-2">
+    <label className="block text-sm font-medium text-gray-700">Centro de Convivencia</label>
     <select
       id="centroConvivencia"
       value={CentroConvivencia}
@@ -595,8 +593,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
     </select>
   </div>
 
-  <div className="mb-3">
-    <label htmlFor="Foto_Aprendiz" className="text-gray-700 uppercase font-bold">Foto Del Aprendiz</label>
+  <div className="space-y-2">
+    <label htmlFor="Foto_Aprendiz" className="block text-sm font-medium text-gray-700">Foto Del Aprendiz</label>
     <input
       type="file"
       id="Foto_Aprendiz"
@@ -605,7 +603,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
     />
   </div>
 
-  <div className="flex justify-around">
+  <div className="mt-6 flex justify-around">
 
     <input
       type="submit"
@@ -622,9 +620,10 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,}) => {
       
       className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-700 md:w-auto"
     />
-
+  </div>
   </div>
 </form>
+
     </div>
   );
 };

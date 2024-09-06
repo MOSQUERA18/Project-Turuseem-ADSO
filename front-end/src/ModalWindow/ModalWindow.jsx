@@ -2,14 +2,34 @@
 import { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { IoMdPersonAdd } from "react-icons/io";
+import { useEffect } from "react";
 
-function ModalWindow({ stateAddNewRow, setStateAddNewRow, form }) {
+function ModalWindow({ stateAddNewRow, setStateAddNewRow, form, isModalOpen, setIsModalOpen, resetForm ,updateTextBottom}) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleModal = () => {
-    setIsOpen(!isOpen);
-  };
+  useEffect(() => {
+    if (isOpen !== isModalOpen) {
+      setIsOpen(isModalOpen);
+    }
+  
+    // Limpiar el formulario cuando el modal se cierra
+    if (!isModalOpen) {
+      resetForm();
+    }
+  }, [isModalOpen, isOpen, resetForm]);
 
+  const toggleModal = () => {
+    const newIsOpen = !isOpen;
+    setIsOpen(newIsOpen);
+    setIsModalOpen(newIsOpen);
+    updateTextBottom("Enviar")
+  
+    // Solo reinicia el formulario cuando el modal se está cerrando
+    if (!newIsOpen) {
+      resetForm();
+    }
+
+  };
   return (
     <>
       {/* Botón para abrir el modal */}

@@ -24,6 +24,35 @@ const CrudApprentices = () => {
   const [stateAddApprentice, setStateAddApprentice] = useState(false);
   const [alerta, setAlerta] = useState({});
   const [crearDataTable, setCrearDataTable] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData,setFormData] = useState({});
+
+  const resetForm = () => {
+    setApprentice({
+      Id_Aprendiz: "",
+      Nom_Aprendiz: "",
+      Ape_Aprendiz: "",
+      Id_Ficha: "",
+      Fec_Nacimiento: "",
+      Id_Ciudad: "",
+      Lugar_Residencia: "",
+      Edad: "",
+      Hijos: "",
+      Nom_Eps: "",
+      Tel_Padre: "",
+      Gen_Aprendiz: "",
+      Cor_Aprendiz: "",
+      Tel_Aprendiz: "",
+      Tot_Memorandos: "",
+      Tot_Inasistencias: "",
+      Patrocinio: "",
+      Estado: "",
+      Nom_Empresa: "",
+      CentroConvivencia: "",
+      Foto_Aprendiz: "",
+    });
+    setFormData({})
+  };
 
   const [apprentice, setApprentice] = useState({
     Id_Aprendiz: "",
@@ -111,9 +140,6 @@ const CrudApprentices = () => {
     return rowData;
   });
 
-  useEffect(() => {
-    getAllApprentices();
-  }, []);
 
   const getAllApprentices = async () => {
     const token = ReactSession.get("token");
@@ -229,6 +255,11 @@ const CrudApprentices = () => {
 
   const { msg } = alerta;
 
+  useEffect(() => {
+    getAllApprentices();
+  }, []);
+
+
   return (
     <>
       <br />
@@ -240,12 +271,18 @@ const CrudApprentices = () => {
         <ModalWindow
           stateAddNewRow={stateAddApprentice}
           setStateAddNewRow={setStateAddApprentice}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          resetForm={resetForm}
+          updateTextBottom={updateTextButton}
           form={
             <FormApprentices
               buttonForm={buttonForm}
               apprentice={apprentice}
               updateTextButton={updateTextButton}
               setApprentice={setApprentice}
+              formData={formData} 
+              setFormData={setFormData} 
             />
           }
         />
@@ -295,6 +332,8 @@ const CrudApprentices = () => {
             deleteRow={deleteApprentice}
             getRow={getApprentice}
             setStateAddNewRow={setStateAddApprentice}
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
           />
         )}
       </div>
