@@ -2,19 +2,16 @@ import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from 'react-client-session';
-
-// import { CSVLink } from 'react-csv';
-
 import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 
-import Alerta from "../components/Alerta.jsx";
-
 import FormTalentoHumano from "./formTalentoHumano.jsx";
-import { IoMdPersonAdd } from "react-icons/io";
-import { AiOutlineMinusCircle } from "react-icons/ai";
+
+import Alerta from "../components/Alerta.jsx";
+import WriteTable from "../Tables/Data-Tables.jsx";
+import ModalWindow from "../ModalWindow/ModalWindow.jsx";
+
 import { Outlet } from "react-router-dom";
-import DataTableTalentoHumano from "./dataTableTalentoHumano.jsx";
 
 const URI = "talentoHumano";
 
@@ -22,21 +19,58 @@ const CrudTalentoHumano = () => {
   const [talentoHumanoList, setTalentoHumanoList] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddTalentoHumano, setStateAddTalentoHumano] = useState(false);
-  
   const [alerta, setAlerta] = useState({});
+  const [crearDataTable, setCrearDataTable] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData,setFormData] = useState({});
+
+  const resetForm = ()=> {
+    setTalentoHumano({
+      Id_Talento_Humano: "",
+      Nom_Talento_Humano: "",
+      Ape_Talento_Humano: "",
+      Genero_Talento_Humano: "",
+      Cor_Talento_Humano: "",
+      Tel_Talento_Humano: "",
+      Id_Ficha: "",
+      Estado: "",
+    })
+    setFormData({})
+  }
 
   const [talentoHumano, setTalentoHumano] = useState({
     Id_Talento_Humano: "",
     Nom_Talento_Humano: "",
     Ape_Talento_Humano: "",
-    Gen_Talento_Humano: "",
+    Genero_Talento_Humano: "",
     Cor_Talento_Humano: "",
     Tel_Talento_Humano: "",
     Id_Ficha: "",
-    Est_Talento_Humano: "",
+    Estado: "",
   });
 
+  const titles = [
+    "Documento",
+    "Nombres",
+    "Apellidos",
+    "Género",
+    "Correo",
+    "Teléfono",
+    "Ficha",
+    "Estado",
+    "Acciones"
+  ];
 
+  const formattedData = talentoHumanoList.map((talento) => [
+    talento.Id_Talento_Humano,
+    talento.Nom_Talento_Humano,
+    talento.Ape_Talento_Humano,
+    talento.Genero_Talento_Humano,
+    talento.Cor_Talento_Humano,
+    talento.Tel_Talento_Humano,
+    talento.fichas ? talento.fichas.Id_Ficha : "N/A",
+    talento.Estado,
+  ]);
 
   const getAllTalentoHumano = async () => {
     const token = ReactSession.get("token");
@@ -50,17 +84,14 @@ const CrudTalentoHumano = () => {
       const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setTalentoHumanoList(respuestApi.data);
+        setCrearDataTable(true);
       } else {
         setAlerta({
-          msg: `Error al cargar los registros!`,
+          msg: "Error al cargar los registros!",
           error: true,
         });
       }
     } catch (error) {
-      // setAlerta({
-      //   msg: `Error al cargar los registros!`,
-      //   error: true,
-      // });
       console.error(error);
     }
   };
@@ -82,13 +113,13 @@ const CrudTalentoHumano = () => {
         });
       } else {
         setAlerta({
-          msg: `Error al cargar los registros!`,
+          msg: "Error al cargar los registros!",
           error: true,
         });
       }
     } catch (error) {
       setAlerta({
-        msg: `No Existen Registros de Talento Humano`,
+        msg: "No Existen Registros de Talento Humano",
         error: true,
       });
       console.error(error);
@@ -146,96 +177,91 @@ const CrudTalentoHumano = () => {
   };
 
   const { msg } = alerta;
-    // Prepara los datos para Excel
-    const prepareDataForExcel = (talentoHumano,talentoHumanoList) => {
-      return (talentoHumano.length ? talentoHumano : talentoHumanoList).map(talentoHumano => ({
-        Documento: talentoHumano.Id_Talento_Humano,
-        Nombre: talentoHumano.Nom_Talento_Humano,
-        Apellido: talentoHumano.Ape_Talento_Humano,
-        Genero: talentoHumano.Genero_Talento_Humano,
-        Correo: talentoHumano.Cor_Talento_Humano,
-        Teléfono: talentoHumano.Tel_Talento_Humano,
-        Ficha: talentoHumano.fichas ? talentoHumano.fichas.Id_Ficha : "N/A",
-        Estado: talentoHumano.Estado,
-      }));
-    };
-  
-    // Función para manejar la exportación a Excel
-    const handleExportToExcel = (talentoHumano,talentoHumanoList) => {
-      const data = prepareDataForExcel(talentoHumano,talentoHumanoList);
-      const ws = XLSX.utils.json_to_sheet(data);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Talento Humano');
-      const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-      saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'Talento_Humano.xlsx');
-    };
-  
 
-    const handleExport = () => {
-      handleExportToExcel(talentoHumano, talentoHumanoList);
-    };
+  const prepareDataForExcel = (talentoHumano, talentoHumanoList) => {
+    return (talentoHumano.length ? talentoHumano : talentoHumanoList).map(talentoHumano => ({
+      Documento: talentoHumano.Id_Talento_Humano,
+      Nombre: talentoHumano.Nom_Talento_Humano,
+      Apellido: talentoHumano.Ape_Talento_Humano,
+      Genero: talentoHumano.Gen_Talento_Humano,
+      Correo: talentoHumano.Cor_Talento_Humano,
+      Teléfono: talentoHumano.Tel_Talento_Humano,
+      Ficha: talentoHumano.fichas ? talentoHumano.fichas.Id_Ficha : "N/A",
+      Estado: talentoHumano.Est_Talento_Humano,
+    }));
+  };
 
-    useEffect(() => {
-      getAllTalentoHumano();
-    }, []);
+  const handleExportToExcel = (talentoHumano, talentoHumanoList) => {
+    const data = prepareDataForExcel(talentoHumano, talentoHumanoList);
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Talento Humano');
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'Talento_Humano.xlsx');
+  };
+
+  const handleExport = () => {
+    handleExportToExcel(talentoHumano, talentoHumanoList);
+  };
+
+  useEffect(() => {
+    getAllTalentoHumano();
+  }, []);
+
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar Información de 
         <span className="text-blue-700"> Talento Humano</span>
-
       </h1>
 
       <div className="flex justify-end pb-3">
-        <button
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-          onClick={() => {
-            setStateAddTalentoHumano(!stateAddTalentoHumano);
-          }}
-        >
-          {stateAddTalentoHumano ? (
-            <AiOutlineMinusCircle size={16} className="me-2" />
-          ) : (
-            <IoMdPersonAdd size={16} className="me-2" />
-          )}
-          {stateAddTalentoHumano ? "Ocultar" : "Agregar"}
-        </button>
+        <ModalWindow
+          stateAddNewRow={stateAddTalentoHumano}
+          setStateAddNewRow={setStateAddTalentoHumano}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          resetForm={resetForm}
+          updateTextBottom={updateTextButton}
+          form={
+            <FormTalentoHumano
+              buttonForm={buttonForm}
+              talentoHumano={talentoHumano}
+              updateTextButton={updateTextButton}
+              setTalentoHumano={setTalentoHumano}
+              getAllTalentoHumano={getAllTalentoHumano}
+              formData={formData}
+            />
+          }
+        />
 
-      <button
-        onClick={handleExport}
-        className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-      >
-        Exportar a Excel
-      </button>
+        <button
+          onClick={handleExport}
+          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
+        >
+          Exportar a Excel
+        </button>
       </div>
 
       <hr />
-
 
       <div className="overflow-x-auto">
         <hr />
         {msg && <Alerta alerta={alerta} />}
         <hr />
-        <DataTableTalentoHumano
-        talentoHumanoList={talentoHumanoList}
-        getTalentoHumano={getTalentoHumano}
-        deleteTalentoHumano={deleteTalentoHumano}
-        setStateAddTalentoHumano={setStateAddTalentoHumano}
-      />
+        {crearDataTable && (
+          <WriteTable
+            titles={titles}
+            data={formattedData}
+            deleteRow={deleteTalentoHumano}
+            getRow={getTalentoHumano}
+            setStateAddNewRow={setStateAddTalentoHumano}
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+          />
+        )}
       </div>
 
-
-      {
-        stateAddTalentoHumano ? (
-          <FormTalentoHumano
-            buttonForm={buttonForm}
-            talentoHumano={talentoHumano}
-            updateTextButton={updateTextButton}
-            setTalentoHumano={setTalentoHumano}
-            getAllTalentoHumano={getAllTalentoHumano}
-          />
-        ) : null
-      }
       <Outlet />
     </>
   );
