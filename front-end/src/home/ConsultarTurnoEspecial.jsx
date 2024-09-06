@@ -2,19 +2,19 @@ import { useState } from "react";
 import clienteAxios from "../config/axios";
 import Alerta from "../components/Alerta";
 
-const URI = "/turnorutinario/consulta";
+const URI = "/turnoespecial/consulta";
 
-const ConsultarTurno = () => {
+const ConsultarTurnoEspecial = () => {
   const [alerta, setAlerta] = useState({});
-  const [Id_Aprendiz, setId_Aprendiz] = useState("");
-  const [turnoRutinarioList, setTurnoRutinarioList] = useState([]);
+  const [Id_Ficha, setId_Ficha] = useState("");
+  const [turnoEspecialList, setTurnoEspecialList] = useState([]);
 
   const sendForm = async (e) => {
     e.preventDefault();
     try {
-      const respuestApi = await clienteAxios(`${URI}/${Id_Aprendiz}`);
+      const respuestApi = await clienteAxios(`${URI}/${Id_Ficha}`);
       if (respuestApi.status === 200) {
-        setTurnoRutinarioList(respuestApi.data);
+        setTurnoEspecialList(respuestApi.data);
         clearForm();
       } else {
         setAlerta({
@@ -23,7 +23,7 @@ const ConsultarTurno = () => {
         });
       }
     } catch (error) { 
-      setTurnoRutinarioList({});
+      setTurnoEspecialList({});
       setAlerta({
         msg: error.response.data.message,
         error: true,
@@ -32,7 +32,7 @@ const ConsultarTurno = () => {
   };
 
   const clearForm = () => {
-    setId_Aprendiz("");
+    setId_Ficha("");
   };
 
   const { msg } = alerta;
@@ -47,26 +47,24 @@ const ConsultarTurno = () => {
         >
           {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
           <h1 className="font-bold text-green-600 text-2xl sm:text-3xl uppercase text-center my-5">
-            Consultar Turnos Rutinarios
+            Consultar Turnos Especiales
           </h1>
           <div className="mb-3">
             <label className="text-gray-700 uppercase font-bold">
-              Ingrese Numero de Documento
+              Ingrese Numero de Ficha
             </label>
             <input
               type="number"
               id="document"
-              value={Id_Aprendiz}
-              
+              value={Id_Ficha}
               onChange={(e) => {
                 const value = e.target.value;
-                if (value.length <= 10) {
-                  setId_Aprendiz(value);
+                if (value.length <= 8) {
+                  setId_Ficha(value);
                 }
-              }
-            }
+              }}
               className="w-full p-2 border rounded"
-              maxLength={10}
+              maxLength={8}
             />
           </div>
           <div className="flex justify-around">
@@ -79,26 +77,17 @@ const ConsultarTurno = () => {
           </div>
         </form>
       </div>
-      {turnoRutinarioList.length > 0 ? (
+      {turnoEspecialList.length > 0 ? (
         <div className="px-4 sm:px-10 md:px-20">
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white text-center text-sm">
               <thead className="text-white bg-green-700">
                 <tr>
                   <th className="py-2 px-4 border-2 border-b-gray-500">
-                    Documento
+                    Numero Ficha
                   </th>
                   <th className="py-2 px-4 border-2 border-b-gray-500">
-                    Nombres
-                  </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
-                    Apellidos
-                  </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
-                    Fecha Inicio
-                  </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
-                    Fecha Fin
+                    Fecha Turno Especial
                   </th>
                   <th className="py-2 px-4 border-2 border-b-gray-500">
                     Hora Inicio
@@ -107,42 +96,45 @@ const ConsultarTurno = () => {
                     Hora Fin
                   </th>
                   <th className="py-2 px-4 border-2 border-b-gray-500">
-                    Unidad
+                    Documento de Instructor de Acompañamiento
                   </th>
-                  {/* <th className="py-2 px-4 border-2 border-b-gray-500">
-                    Observaciones
-                  </th> */}
+                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                    Nombre Instructor de Acompañamiento del Turno
+                  </th>
+                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                    Nombre Unidad
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {turnoRutinarioList.map((turnoRutinario) => (
+                {turnoEspecialList.map((turnoEspecial) => (
                   <tr
-                    key={turnoRutinario.Id_TurnoRutinario}
+                    key={turnoEspecial.Id_TurnoEspecial}
                     className="odd:bg-white even:bg-gray-100"
                   >
+                    {/* <td className="py-2 px-4 border-b">
+                      {turnoEspecial.Id_Aprendiz}
+                    </td> */}
                     <td className="py-2 px-4 border-b">
-                      {turnoRutinario.Id_Aprendiz}
+                      {turnoEspecial.Id_Ficha}
                     </td>
                     <td className="py-2 px-4 border-b">
-                      {turnoRutinario.aprendiz?.Nom_Aprendiz}
+                      {turnoEspecial.Fec_TurnoEspecial}
                     </td>
                     <td className="py-2 px-4 border-b">
-                      {turnoRutinario.aprendiz?.Ape_Aprendiz}
+                      {turnoEspecial.Hor_Inicio}
                     </td>
                     <td className="py-2 px-4 border-b">
-                      {turnoRutinario.Fec_InicioTurno}
+                      {turnoEspecial.Hor_Fin}
                     </td>
                     <td className="py-2 px-4 border-b">
-                      {turnoRutinario.Fec_FinTurno}
+                      {turnoEspecial.Id_Funcionario}
                     </td>
                     <td className="py-2 px-4 border-b">
-                      {turnoRutinario.Hor_InicioTurno}
+                      {turnoEspecial.funcionario.Nom_Funcionario}
                     </td>
                     <td className="py-2 px-4 border-b">
-                      {turnoRutinario.Hor_FinTurno}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {turnoRutinario.unidad?.Nom_Unidad}
+                      {turnoEspecial.unidad?.Nom_Unidad}
                     </td>
                     {/* <td className="py-2 px-4 border-b">
                       {turnoRutinario.Obs_TurnoRutinario}
@@ -158,4 +150,4 @@ const ConsultarTurno = () => {
   );
 };
 
-export default ConsultarTurno;
+export default ConsultarTurnoEspecial;
