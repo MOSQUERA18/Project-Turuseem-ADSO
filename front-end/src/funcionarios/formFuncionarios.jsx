@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import clieteAxios from "../config/axios";
+import clienteAxios from "../config/axios";
 import { ReactSession } from 'react-client-session';
+import Alerta from "../components/Alerta";
 
 const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFuncionarios }) => {
   const [Id_Funcionario, setId_Funcionario] = useState("");
@@ -16,6 +17,8 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
   // Estado para mensajes
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(""); // 'success' o 'error'
+
+  const [alerta, setAlerta] = useState({});
 
   useEffect(() => {
     if (message) {
@@ -39,9 +42,10 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
     };
 
     try {
+      let mensajeCRUD = "";
       let respuestApi;
       if (buttonForm === "Actualizar") {
-        respuestApi = await clieteAxios.put(
+        respuestApi = await clienteAxios.put(
           `/funcionarios/${funcionario.Id_Funcionario}`,
           {
             Nom_Funcionario,
@@ -53,8 +57,9 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
           },
           config
         );
+        mensajeCRUD = "Funcionario actualizado correctamente!";
       } else if (buttonForm === "Enviar") {
-        respuestApi = await clieteAxios.post(
+        respuestApi = await clienteAxios.post(
           `/funcionarios`,
           {
             Id_Funcionario,
@@ -67,11 +72,14 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
           },
           config
         );
+        mensajeCRUD = "Funcionado Registrado correctamente!";
       }
 
       if (respuestApi.status === 201 || respuestApi.status === 200) {
-        setMessage("Funcionario registrado correctamente!");
-        setMessageType("success");
+        setAlerta({
+          msg: mensajeCRUD,
+          error:false
+        })
         clearForm();
         getAllFuncionarios();
         updateTextButton("Enviar");
@@ -80,8 +88,12 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
         setMessageType("error");
       }
     } catch (error) {
-      setMessage("Error al registrar el funcionario.");
-      setMessageType("error");
+      setAlerta({
+        msg: "Todos los campos son obligatorios!",
+        error: true,
+      });
+      // setMessage("Error al registrar el funcionario Por Falta de Informacion.");
+      // setMessageType("error");
     }
   };
 
@@ -109,6 +121,8 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
     setData();
   }, [funcionario]);
 
+  const { msg } = alerta;
+
   return (
     <>
       <div className="flex justify-center items-center min-h-screen bg-gray-100 content-center w-full">
@@ -117,6 +131,7 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
           onSubmit={sendForm}
           className="bg-white shadow-2xl rounded-2xl px-14 pt-6 pb-8 mb-4 max-w-3xl w-full mt-10"
         >
+          {msg && <Alerta alerta={alerta} />}
           <h1 className="font-bold text-green-600 text-3xl uppercase text-center my-5">
             Registrar Funcionario
           </h1>
@@ -129,12 +144,12 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
 
           <div className="mb-3">
             <label className="text-gray-700 uppercase font-bold">
-              ID Funcionario
+              Documento
             </label>
             <input
               type="text"
               id="id_funcionario"
-              placeholder="ID Funcionario"
+              placeholder="Documento Funcionario"
               value={Id_Funcionario}
               onChange={(e) => setId_Funcionario(e.target.value)}
               className="w-full p-2 border rounded"
@@ -144,12 +159,12 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
 
           <div className="mb-3">
             <label className="text-gray-700 uppercase font-bold">
-              Nombre
+              Nombres
             </label>
             <input
               type="text"
               id="nombre"
-              placeholder="Nombre"
+              placeholder="Nombres"
               value={Nom_Funcionario}
               onChange={(e) => setNom_Funcionario(e.target.value)}
               className="w-full p-2 border rounded"
@@ -158,12 +173,12 @@ const FormFuncionarios = ({ buttonForm, funcionario, updateTextButton, getAllFun
 
           <div className="mb-3">
             <label className="text-gray-700 uppercase font-bold">
-              Apellido
+              Apellidos
             </label>
             <input
               type="text"
               id="apellido"
-              placeholder="Apellido"
+              placeholder="Apellidos"
               value={Ape_Funcionario}
               onChange={(e) => setApe_Funcionario(e.target.value)}
               className="w-full p-2 border rounded"

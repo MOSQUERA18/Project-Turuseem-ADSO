@@ -28,7 +28,7 @@
         type: DataTypes.STRING(100),
       },
       Ind_Asistencia: {
-        type: DataTypes.ENUM("Sí", "No"),
+        type: DataTypes.ENUM("Si", "No"),
       },
       Id_Aprendiz: {
         type: DataTypes.STRING(11),

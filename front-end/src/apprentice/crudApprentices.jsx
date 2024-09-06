@@ -1,33 +1,58 @@
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { ReactSession } from 'react-client-session';
+import { ReactSession } from "react-client-session";
 
 import FormApprentices from "./formApprentices.jsx";
-import FormQueryApprentices from "./formQueryApprentices.jsx";
-import ModalDialog from "./modalDialog.jsx";
-import Pagination from "../pagination.jsx";
 import ImportarCSV from "./importarCSV.jsx";
 import Alerta from "../components/Alerta.jsx";
+import WriteTable from "../Tables/Data-Tables.jsx";
+import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
-import { MdDeleteOutline } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
-import { IoMdPersonAdd } from "react-icons/io";
-import { AiOutlineMinusCircle } from "react-icons/ai";
+// import { IoMdPersonAdd } from "react-icons/io";
+// import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 
 const URI = "/aprendiz/";
 
+const URIFOTOS = "/public/uploads/";
+const URI_AXIOS = import.meta.env.VITE_BACKEND_URL;
+
 const CrudApprentices = () => {
   const [apprenticeList, setApprenticeList] = useState([]);
-  const [apprenticeQuery, setApprenticeQuery] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddApprentice, setStateAddApprentice] = useState(false);
-  const [onDoubleClickAppretice, setOnDoubleClickAppretice] = useState({});
-  const [modalDialog, setModalDialog] = useState(false);
-  const [desde, setDesde] = useState(0);
-  const [hasta, setHasta] = useState(0);
   const [alerta, setAlerta] = useState({});
+  const [crearDataTable, setCrearDataTable] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData,setFormData] = useState({});
+
+  const resetForm = () => {
+    setApprentice({
+      Id_Aprendiz: "",
+      Nom_Aprendiz: "",
+      Ape_Aprendiz: "",
+      Id_Ficha: "",
+      Fec_Nacimiento: "",
+      Id_Ciudad: "",
+      Lugar_Residencia: "",
+      Edad: "",
+      Hijos: "",
+      Nom_Eps: "",
+      Tel_Padre: "",
+      Gen_Aprendiz: "",
+      Cor_Aprendiz: "",
+      Tel_Aprendiz: "",
+      Tot_Memorandos: "",
+      Tot_Inasistencias: "",
+      Patrocinio: "",
+      Estado: "",
+      Nom_Empresa: "",
+      CentroConvivencia: "",
+      Foto_Aprendiz: "",
+    });
+    setFormData({})
+  };
 
   const [apprentice, setApprentice] = useState({
     Id_Aprendiz: "",
@@ -35,18 +60,86 @@ const CrudApprentices = () => {
     Ape_Aprendiz: "",
     Id_Ficha: "",
     Fec_Nacimiento: "",
+    Id_Ciudad: "",
+    Lugar_Residencia: "",
+    Edad: "",
+    Hijos: "",
+    Nom_Eps: "",
+    Tel_Padre: "",
     Gen_Aprendiz: "",
     Cor_Aprendiz: "",
     Tel_Aprendiz: "",
     Tot_Memorandos: "",
     Tot_Inasistencias: "",
     Patrocinio: "",
+    Estado: "",
+    Nom_Empresa: "",
     CentroConvivencia: "",
+    Foto_Aprendiz: "",
+  });
+  const shouldShowPhoto = apprenticeList.some(
+    (row) => row.Foto_Aprendiz !== undefined
+  );
+  const titles = [
+    "Documento",
+    "Nombres",
+    "Apellidos",
+    "Ficha",
+    "Fecha de Nacimiento",
+    "Ciudad",
+    "Lugar Residencia",
+    "Edad",
+    "Hijos",
+    "Nombre EPS",
+    "Telefono Padre",
+    "Genero",
+    "Correo",
+    "Telefono Aprendiz",
+    "Total Memorandos",
+    "Total Inasistencias",
+    "Patrocinio",
+    "Estado",
+    "Nombre Empresa",
+    "Centro Convivencia",
+    shouldShowPhoto && "Foto Aprendiz",
+    "Acciones",
+  ].filter(Boolean);
+
+  const formattedData = apprenticeList.map((apprentice) => {
+    const rowData = [
+      apprentice.Id_Aprendiz,
+      apprentice.Nom_Aprendiz,
+      apprentice.Ape_Aprendiz,
+      apprentice.Id_Ficha,
+      apprentice.Fec_Nacimiento,
+      apprentice.ciudad?.Nom_Ciudad || "N/A",
+      apprentice.Lugar_Residencia,
+      apprentice.Edad,
+      apprentice.Hijos,
+      apprentice.Nom_Eps,
+      apprentice.Tel_Padre,
+      apprentice.Gen_Aprendiz,
+      apprentice.Cor_Aprendiz,
+      apprentice.Tel_Aprendiz,
+      apprentice.Tot_Memorandos,
+      apprentice.Tot_Inasistencias,
+      apprentice.Patrocinio,
+      apprentice.Estado,
+      apprentice.Nom_Empresa || "N/A",
+      apprentice.CentroConvivencia,
+    ];
+    if (shouldShowPhoto) {
+      rowData.push(
+        <img
+          width="80px"
+          src={`${URI_AXIOS}${URIFOTOS}${apprentice.Foto_Aprendiz}`}
+          alt="No Foto"
+        />
+      );
+    }
+    return rowData;
   });
 
-  useEffect(() => {
-    getAllApprentices();
-  }, []);
 
   const getAllApprentices = async () => {
     const token = ReactSession.get("token");
@@ -57,9 +150,10 @@ const CrudApprentices = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios.get(`/aprendiz`, config);
+      const respuestApi = await clienteAxios.get(`/aprendiz`, config);
       if (respuestApi.status === 200) {
         setApprenticeList(respuestApi.data);
+        setCrearDataTable(true);
       } else {
         setAlerta({
           msg: `Error al cargar los registros!`,
@@ -68,7 +162,7 @@ const CrudApprentices = () => {
       }
     } catch (error) {
       setAlerta({
-        msg: `Error al cargar los registros!`,
+        msg: `Error Existen Aprendices Registrados!`,
         error: true,
       });
       console.error(error);
@@ -85,7 +179,10 @@ const CrudApprentices = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(`/aprendiz/${Id_Aprendiz}`, config);
+      const respuestApi = await clienteAxios(
+        `/aprendiz/${Id_Aprendiz}`,
+        config
+      );
       if (respuestApi.status === 200) {
         setApprentice({
           ...respuestApi.data,
@@ -125,7 +222,7 @@ const CrudApprentices = () => {
           },
         };
         try {
-          const respuestApi = await clieteAxios.delete(
+          const respuestApi = await clienteAxios.delete(
             `/aprendiz/${Id_Aprendiz}`,
             config
           );
@@ -136,6 +233,7 @@ const CrudApprentices = () => {
               text: "El registro ha sido borrado.",
               icon: "success",
             });
+            getAllApprentices();
           } else {
             alert(respuestApi.data.message);
           }
@@ -157,37 +255,63 @@ const CrudApprentices = () => {
 
   const { msg } = alerta;
 
+  useEffect(() => {
+    getAllApprentices();
+  }, []);
+
+
   return (
     <>
+      <br />
+      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+        Gestionar Informacion de los
+        <span className="text-blue-700"> Aprendices</span>
+      </h1>
       <div className="flex justify-end pb-3">
-        <button
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-          onClick={() => {
-            setStateAddApprentice(!stateAddApprentice);
+        <ModalWindow
+          stateAddNewRow={stateAddApprentice}
+          setStateAddNewRow={setStateAddApprentice}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          resetForm={resetForm}
+          updateTextBottom={updateTextButton}
+          form={
+            <FormApprentices
+              buttonForm={buttonForm}
+              apprentice={apprentice}
+              updateTextButton={updateTextButton}
+              setApprentice={setApprentice}
+              formData={formData} 
+              setFormData={setFormData} 
+            />
+          }
+        />
+        <a
+          href="#"
+          onClick={async (e) => {
+            e.preventDefault();
+
+            const filePath = "/Public/assets/Aprendiz.csv";
+            try {
+              const response = await fetch(filePath, { method: "HEAD" });
+
+              if (response.ok) {
+                window.location.href = filePath;
+              } else {
+                alert("El archivo no está disponible en la ruta especificada.");
+              }
+            } catch (error) {
+              console.error("Error al intentar descargar el archivo:", error);
+              alert("Error al intentar descargar el archivo.");
+            }
           }}
+          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
         >
-          {stateAddApprentice ? (
-            <AiOutlineMinusCircle size={16} className="me-2" />
-          ) : (
-            <IoMdPersonAdd size={16} className="me-2" />
-          )}
-          {stateAddApprentice ? "Ocultar" : "Agregar"}
-        </button>
+          Descargar CSV
+        </a>
       </div>
       <div className="overflow-x-auto">
         <div className="flex justify-between">
-          <div>
-            <h1 className="font-semibold text-lg text-gray-700">
-              Buscar Por Nombre o Documento...
-            </h1>
-            <FormQueryApprentices
-              getApprentice={getApprentice}
-              deleteApprentice={deleteApprentice}
-              buttonForm={buttonForm}
-              apprenticeQuery={apprenticeQuery}
-              setApprenticeQuery={setApprenticeQuery}
-            />
-          </div>
           <div>
             <h1 className="font-semibold text-lg text-gray-700">
               Subir Archivo CSV
@@ -195,108 +319,25 @@ const CrudApprentices = () => {
             <ImportarCSV URI={URI} />
           </div>
         </div>
-        <hr />
-        <h2 className="font-semibold mb-4 text-lg text-gray-700 mt-3">
-          Doble Click sobre el aprendiz para ver informacion detallada...
-        </h2>
-        {msg && <Alerta alerta={alerta} />}
-        <table className="min-w-full bg-white text-center text-sm">
-          <thead className="text-white bg-green-700">
-            <tr className="">
-              <th className="py-2 px-4 border-2 border-b-gray-500">
-                Documento
-              </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Nombres</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">
-                Apellidos
-              </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Ficha</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Genero</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Correo</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Telefono</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(apprenticeQuery.length ? apprenticeQuery : apprenticeList).map(
-              (apprentice, indice) =>
-                indice >= desde && indice < hasta ? (
-                  <tr
-                    key={apprentice.Id_Aprendiz}
-                    className="odd:bg-white even:bg-gray-100 select-none"
-                    onDoubleClick={() => [
-                      setOnDoubleClickAppretice(apprentice),
-                      setModalDialog(true),
-                    ]}
-                  >
-                    <td className="py-2 px-4 border-b">
-                      {apprentice.Id_Aprendiz}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {apprentice.Nom_Aprendiz}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {apprentice.Ape_Aprendiz}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {apprentice.Id_Ficha}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {apprentice.Gen_Aprendiz}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {apprentice.Cor_Aprendiz}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {apprentice.Tel_Aprendiz}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      <button
-                        onClick={() => [
-                          getApprentice(apprentice.Id_Aprendiz),
-                          setStateAddApprentice(true),
-                        ]}
-                        className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
-                      >
-                        <FaRegEdit />
-                      </button>
-                      <button
-                        onClick={() => deleteApprentice(apprentice.Id_Aprendiz)}
-                        className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
-                      >
-                        <MdDeleteOutline />
-                      </button>
-                    </td>
-                  </tr>
-                ) : (
-                  ""
-                )
-            )}
-          </tbody>
-        </table>
-      </div>
-      <Pagination URI={URI} setDesde={setDesde} setHasta={setHasta} />
-      <hr />
-      {stateAddApprentice ? (
-        <FormApprentices
-          buttonForm={buttonForm}
-          apprentice={apprentice}
-          updateTextButton={updateTextButton}
-          setApprentice={setApprentice}
-        />
-      ) : null}
-      <hr />
+        {/* <hr /> */}
 
-      {modalDialog ? (
-        <ModalDialog
-          getApprentice={getApprentice}
-          deleteApprentice={deleteApprentice}
-          onDoubleClickAppretice={onDoubleClickAppretice}
-          setModalDialog={setModalDialog}
-          setStateAddApprentice={setStateAddApprentice}
-          setApprentice={setApprentice}
-        />
-      ) : null}
+        <br />
+        {msg && <Alerta alerta={alerta} />}
+        <hr />
+
+        {crearDataTable && (
+          <WriteTable
+            titles={titles}
+            data={formattedData}
+            deleteRow={deleteApprentice}
+            getRow={getApprentice}
+            setStateAddNewRow={setStateAddApprentice}
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+          />
+        )}
+      </div>
+      <hr />
       <Outlet />
     </>
   );

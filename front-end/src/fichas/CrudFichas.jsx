@@ -1,43 +1,76 @@
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { ReactSession } from 'react-client-session';
+import { ReactSession } from "react-client-session";
+
+// import { exportToExcel } from './ExportExcel.js'
 
 import FormFichas from "./formFichas.jsx";
-import FormQueryFichas from "./formQueryFichas.jsx";
-import Pagination from "../pagination.jsx";
 import Alerta from "../components/Alerta.jsx";
 
-import { MdDeleteOutline } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
-import { IoMdPersonAdd } from "react-icons/io";
-import { AiOutlineMinusCircle } from "react-icons/ai";
+import WriteTable from "../Tables/Data-Tables.jsx";
+import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 import { Outlet } from "react-router-dom";
 
 const URI = "fichas";
 
 const CrudFichas = () => {
   const [fichasList, setFichasList] = useState([]);
-  const [fichasQuery, setFichasQuery] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddFichas, setStateAddFichas] = useState(false);
-  const [desde, setDesde] = useState(0);
-  const [hasta, setHasta] = useState(0);
   const [alerta, setAlerta] = useState({});
+  const [crearDataTable, setCrearDataTable] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData,setFormData] = useState({});
 
-  const [fichas,setFichas] = useState({
-    Id_Ficha :"",
-    Fec_IniEtapaLectiva:"",
-    Fec_FinEtapaLectiva:"",
-    Can_Aprendices:"",
-    Id_ProgramaFormacion:"",
-    Estado:"",
+
+  const resetForm = () => {
+    setFichas({
+      Id_Ficha: "",
+      Fec_IniEtapaLectiva: "",
+      Fec_FinEtapaLectiva: "",
+      Can_Aprendices: "",
+      Id_ProgramaFormacion: "",
+      Estado: "",
+    })
+    setFormData({})
+  }
+
+  const [fichas, setFichas] = useState({
+    Id_Ficha: "",
+    Fec_InicioEtapaLectiva: "",
+    Fec_FinEtapaLectiva: "",
+    Can_Aprendices: "",
+    Id_ProgramaFormacion: "",
+    Estado: "",
   });
 
-  useEffect(() => {
-    getAllFichas();
-    
-  }, []);
+  const titles = [
+    "Id_Ficha",
+    "Fecha Inicio Etapa Lectiva",
+    "Fecha Fin Etapa Lectiva",
+    "Cantidad Aprendices",
+    "Programa de Formación",
+    "Estado",
+    "Acciones",
+  ].filter(Boolean)
+
+  const formatteData = fichasList.map((fichas) => {
+    const rowData = [
+      fichas.Id_Ficha,
+      fichas.Fec_InicioEtapaLectiva,
+      fichas.Fec_FinEtapaLectiva,
+      fichas.Can_Aprendices,
+      fichas.Id_ProgramaFormacion,
+      fichas.Estado,
+    ];
+    return rowData;
+    })
+
+
+      useEffect(() => {
+        getAllFichas();
+      }, []);
 
   const getAllFichas = async () => {
     const token = ReactSession.get("token");
@@ -48,9 +81,10 @@ const CrudFichas = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(URI, config);
+      const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setFichasList(respuestApi.data);
+        setCrearDataTable(true);
       } else {
         setAlerta({
           msg: `Error al cargar los registros!`,
@@ -58,10 +92,10 @@ const CrudFichas = () => {
         });
       }
     } catch (error) {
-      setAlerta({
-        msg: `Error al cargar las Ficha!`,
-        error: true,
-      });
+      // setAlerta({
+      //   msg: `No Existen Fichas Registradas!`,
+      //   error: true,
+      // });
       console.error(error);
     }
   };
@@ -76,23 +110,23 @@ const CrudFichas = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(`${URI}/${Id_Ficha}`, config);
+      const respuestApi = await clienteAxios(`${URI}/${Id_Ficha}`, config);
       if (respuestApi.status === 200) {
         setFichas({
           ...respuestApi.data,
         });
       } else {
         setAlerta({
-          msg: `Error al cargar los registros!`,
+          msg: respuestApi.data.message,
           error: true,
         });
       }
     } catch (error) {
       setAlerta({
-        msg: `Error al Tratar de Cargar Las Fichas al Form`,
+        msg: error.response.data.message,
         error: true,
       });
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -116,12 +150,12 @@ const CrudFichas = () => {
           },
         };
         try {
-          const respuestApi = await clieteAxios.delete(
+          const respuestApi = await clienteAxios.delete(
             `/${URI}/${Id_Ficha}`,
             config
           );
           if (respuestApi.status === 200) {
-            getAllFichas();  // Refrescar la lista después de borrar
+            getAllFichas(); // Refrescar la lista después de borrar
             Swal.fire({
               title: "Borrado!",
               text: "El registro ha sido borrado.",
@@ -148,139 +182,68 @@ const CrudFichas = () => {
 
   const { msg } = alerta;
 
+  // Función para manejar la exportación a Excel
+  // const handleExportToExcel = () => {
+  //   exportToExcel([], fichasList); // Pasar [] si `fichas` está vacío
+  // };
   return (
     <>
+      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+      Gestionar Informacion de las 
+      <span className="text-blue-700"> Fichas</span>
+      </h1>
       <div className="flex justify-end pb-3">
-        <button
+        
+        {/* <button
+          onClick={handleExportToExcel}
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-          onClick={() => {
-            setStateAddFichas(!stateAddFichas);
-          }}
         >
-          {stateAddFichas ? (
-            <AiOutlineMinusCircle size={16} className="me-2" />
-          ) : (
-            <IoMdPersonAdd size={16} className="me-2" />
-          )}
-          {stateAddFichas ? "Ocultar" : "Agregar"}
-        </button>
+          Exportar a Excel
+        </button> */}
       </div>
-      <div className="overflow-x-auto">
-        <div className="flex justify-between">
-          <div>
-            <h1 className="font-semibold text-lg text-gray-700">
-              Buscar Por Numero de Ficha...
-            </h1>
-            <FormQueryFichas
-              getFicha={getFicha}
-              deleteFichas={deleteFichas}
-              buttonForm={buttonForm}
-              fichasQuery={fichasQuery}
-              setFichasQuery={setFichasQuery}
-            />
-          </div>
-          {/* <div>
-            <h1 className="font-semibold text-lg text-gray-700">
-              Subir Archivo CSV
-            </h1>
-            <ImportarCSV URI={URI} />
-          </div> */}
-        </div>
-        <hr />
-        {/* <h2 className="font-semibold mb-4 text-lg text-gray-700 mt-3">
-          Doble Click sobre la unidad para ver información detallada...
-        </h2> */}
-        {msg && <Alerta alerta={alerta} />}
-        <table className="min-w-full bg-white text-center text-sm">
-          <thead className="text-white bg-green-700">
-            <tr className="">
-              <th className="py-2 px-4 border-2 border-b-gray-500">Numero de Ficha</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Fecha Inicio Etapa Lectiva</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Fecha Fin Etapa Lectiva</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Cantidad De Aprendices</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Nombre del Programa de Formacion</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Estado De la Ficha</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(fichasQuery.length ? fichasQuery : fichasList).map(
-              (fichas, indice) =>
-                indice >= desde && indice < hasta ? (
-                  <tr
-                    key={fichas.Id_Ficha}
-                    className="odd:bg-white even:bg-gray-100 select-none"
-                    // onDoubleClick={() => [
-                    //   // setOnDoubleClickUnidad(unidad),
-                    //   setModalDialog(true),
-                    // ]}
-                  >
-                    <td className="py-2 px-4 border-b">
-                      {fichas.Id_Ficha} 
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {fichas.Fec_InicioEtapaLectiva}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {fichas.Fec_FinEtapaLectiva}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {fichas.Can_Aprendices}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {fichas.programasFormacion.Nom_ProgramaFormacion} {/* Puedes reemplazar esto por el nombre del área si lo tienes disponible */}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {fichas.Estado}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      <button
-                        onClick={() => [
-                          getFicha(fichas.Id_Ficha),
-                          setStateAddFichas(true),
-                        ]}
-                        className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
-                      >
-                        <FaRegEdit />
-                      </button>
-                      <button
-                        onClick={() => deleteFichas(fichas.Id_Ficha)}
-                        className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
-                      >
-                        <MdDeleteOutline />
-                      </button>
-                    </td>
-                  </tr>
-                ) : (
-                  ""
-                )
-            )}
-          </tbody>
-        </table>
-      </div>
-      <Pagination URI={URI} setDesde={setDesde} setHasta={setHasta} />
+      <div className="flex justify-end pb-3">
       <hr />
-      {stateAddFichas ? (
+      <ModalWindow
+          stateAddNewRow={stateAddFichas}
+          setStateAddNewRow={setStateAddFichas}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          resetForm={resetForm}
+          updateTextBottom={updateTextButton}
+form={
         <FormFichas
           buttonForm={buttonForm}
           fichas={fichas}
           updateTextButton={updateTextButton}
           setUnidad={setFichas}
           getAllFichas={getAllFichas}
+          formData={formData} 
+          setFormData={setFormData} 
         />
-      ) : null}
-      <hr />
+}
+/>
 
-      {/* {modalDialog ? (
-        <ModalDialog
-          getUnidad={getUnidad}
-          deleteUnidad={deleteUnidad}
-          onDoubleClickUnidad={onDoubleClickUnidad}
-          setModalDialog={setModalDialog}
-          setStateAddUnidad={setStateAddUnidad}
-          setUnidad={setUnidad}
-        />
-      ) : null} */}
+</div>
+
+
+      <div className="overflow-x-auto">
+        <hr />
+        {msg && <Alerta alerta={alerta} />}
+        
+        {crearDataTable && (
+          <WriteTable
+          titles={titles}
+          data={formatteData}
+          deleteRow={deleteFichas}
+          getRow={getFicha}
+          setStateAddNewRow={setStateAddFichas}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          />
+        )}
+        </div>
+
+
       <Outlet />
     </>
   );

@@ -1,7 +1,6 @@
 import TurnoRutinarioAprendizModel from "../models/turnoRutinarioAprendices.js";
 import TurnoRutinarioModel from "../models/turnoRutinarioModel.js";
 import ApprenticeModel from "../models/apprenticeModel.js";
-import { Sequelize, Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 
 export const getAllTurnosRutinariosAprendices = async (req, res) => {
@@ -104,31 +103,5 @@ export const deleteTurnoRutinarioAprendiz = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al eliminar el turno rutinario de aprendiz: ${error}`);
-  }
-};
-
-export const getQueryTurnoRutinarioAprendiz = async (req, res) => {
-  try {
-    const turnosRutinariosAprendices = await TurnoRutinarioAprendizModel.findAll({
-      where: {
-        Id_TurnoRutinarioAprendiz: {
-          [Op.like]: `%${req.params.Id_TurnoRutinarioAprendiz}%`,
-        },
-      },
-      include: [
-        {
-          model: TurnoRutinarioModel,
-          as: "turnoRutinario", // Alias usado para la relación
-        },
-        {
-          model: ApprenticeModel,
-          as: "aprendiz", // Alias usado para la relación
-        },
-      ],
-    });
-    res.json(turnosRutinariosAprendices);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-    logger.error(`Error al buscar el turno rutinario de aprendiz: ${error}`);
   }
 };

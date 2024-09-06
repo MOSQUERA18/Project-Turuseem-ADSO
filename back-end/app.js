@@ -2,16 +2,18 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import cors from "cors";
-import fileUpload from "express-fileupload";
+// import { app, BrowserWindow } from "electron";
+
+// import path from 'path';
 
 import db from "./src/database/db.js";
 
 //Routes
 import absenceRoutes from "./src/routes/absencesRoutes.js";
+import cityRoutes from "./src/routes/cityRoutes.js";
 import apprenticeRoutes from "./src/routes/ApprenticeRoutes.js";
 import areaRoutes from "./src/routes/areaRoutes.js";
 import fichasRoutes from "./src/routes/fichasRoutes.js";
-import fileCsvRoutes from "./src/routes/fileCsvRoutes.js";
 import memorandumRoutes from "./src/routes/memorandumRoutes.js";
 import officialRoutes from "./src/routes/officialRoutes.js";
 import programaRoutes from "./src/routes/programaRoutes.js";
@@ -19,44 +21,82 @@ import talentoHumanoRoutes from "./src/routes/talentoHumanoRoutes.js";
 import turnoEspecialAprendizRoutes from "./src/routes/turnoEspecialAprendizRoutes.js";
 import turnoRutinarioAprendizRoutes from "./src/routes/turnoRutinarioAprendizRoutes.js";
 import turnoRutinarioRoutes from "./src/routes/turnoRutinarioRoutes.js";
-import turnoEspecialRoutes from "./src/routes/turnoEspecialRoutes.js"
-import unitRoutes from './src/routes/unitRoutes.js'
+import turnoEspecialRoutes from "./src/routes/turnoEspecialRoutes.js";
+import unitRoutes from "./src/routes/unitRoutes.js";
+import OtrosMemorandumRoutes from "./src/routes/OtrosMemorandosRoutes.js";
 import userRouter from "./src/routes/UserRoutes.js";
 import { logger } from "./src/middleware/logMiddleware.js";
+
+// import pdfRoutes from "./src/routes/pdfRoutes.js"
+// import excelRoutes from "./src/routes/excelRoutes.js"
+
 // import routespdf from "./src/routes/routespdf.js";
 
 //Models
+import cityModel from "./src/models/cityModel.js";
+import ApprenticeModel from "./src/models/apprenticeModel.js";
 import TalentoHumanoModel from "./src/models/talentoHumano.js";
 import UnitModel from "./src/models/unitModel.js";
 import AreaModel from "./src/models/areaModel.js";
 import ProgramaModel from "./src/models/programaModel.js";
 import FichasModel from "./src/models/fichasModel.js";
 import AbsenceModel from "./src/models/absenceModel.js";
-import TurnoEspecialAprendizModel from "./src/models/turnoEspeciales_Aprendices.js";
+// import TurnoEspecialAprendizModel from "./src/models/turnoEspeciales_Aprendices.js";
+// import TurnoRutinarioAprendizModel from "./src/models/turnoRutinarioAprendices.js";
+import TurnoEspecialModel from "./src/models/turnoEspecialModel.js";
+import OfficialModel from "./src/models/officialModel.js";
+import TurnosRutinariosModel from "./src/models/turnoRutinarioModel.js";
+import MemorandumModel from "./src/models/memorandumModel.js";
+import OtrosMemorandumModel from "./src/models/Otros_MemorandosModel.js";
 
+// const createWindow = () => {
+//   const win = new BrowserWindow({
+//     width: 800,
+//     height: 600
+//   })
 
-const app = express();
+//   win.loadURL('http://localhost:5173/')
+// }
+
+// app.whenReady().then(() => {
+//   createWindow()
+// })
+
+const appExpress = express();
 const PORT = process.env.PORT || 8080;
 
-app.use(cors());
-app.use(express.json());
-app.use(fileUpload());
-app.use("/inasistencias", absenceRoutes);
-app.use("/aprendiz", apprenticeRoutes);
-app.use("/areas", areaRoutes);
-app.use("/fichas", fichasRoutes);
-app.use("/fileCsv", fileCsvRoutes);
-app.use("/memorando", memorandumRoutes);
-app.use("/funcionarios", officialRoutes);
-app.use("/programa", programaRoutes);
-app.use("/talentohumano", talentoHumanoRoutes);
-app.use("/turEspAprendiz", turnoEspecialAprendizRoutes);
-app.use("/turnoespecial",turnoEspecialRoutes)
-app.use("/turRutAprendiz", turnoRutinarioAprendizRoutes);
-app.use("/turnoRutinario", turnoRutinarioRoutes);
-app.use('/unidades', unitRoutes)
+// Middleware para servir archivos estáticos como los PDFs y Excels
+// appExpress.use('/output', express.static(path.join(__dirname, 'output')));
 
-app.use("/api/user", userRouter);
+
+
+appExpress.use(cors());
+appExpress.use(express.json());
+appExpress.use("/inasistencias", absenceRoutes);
+appExpress.use("/aprendiz", apprenticeRoutes);
+appExpress.use("/areas", areaRoutes);
+appExpress.use("/fichas", fichasRoutes);
+appExpress.use("/memorando", memorandumRoutes);
+appExpress.use("/otrosmemorandos", OtrosMemorandumRoutes);
+appExpress.use("/funcionarios", officialRoutes);
+appExpress.use("/programa", programaRoutes);
+appExpress.use("/talentohumano", talentoHumanoRoutes);
+appExpress.use("/turEspAprendiz", turnoEspecialAprendizRoutes);
+appExpress.use("/turnoespecial", turnoEspecialRoutes);
+appExpress.use("/turRutAprendiz", turnoRutinarioAprendizRoutes);
+appExpress.use("/turnoRutinario", turnoRutinarioRoutes);
+appExpress.use("/unidades", unitRoutes);
+appExpress.use("/ciudades", cityRoutes);
+// appExpress.use('/pdf', pdfRoutes);
+// appExpress.use('/excel', excelRoutes);
+
+
+
+appExpress.use("/public/uploads/", express.static("public/uploads"));
+
+appExpress.use("/api/user", userRouter);
+
+
 
 try {
   await db.authenticate().then(() => {
@@ -67,33 +107,163 @@ try {
   logger.error(error);
 }
 
-app.listen(PORT, () => {
+appExpress.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
 //Unidades
-AreaModel.hasMany(UnitModel, { foreignKey: "Id_Area", as: "unidades" })
-UnitModel.belongsTo(AreaModel, { foreignKey: "Id_Area", as: "areas" })
+AreaModel.hasMany(UnitModel, { foreignKey: "Id_Area", as: "unidades" });
+UnitModel.belongsTo(AreaModel, { foreignKey: "Id_Area", as: "areas" });
 
 //Programas de formacion
-AreaModel.hasMany(ProgramaModel, { foreignKey: "Id_Area", as: "programasformacion" })
-ProgramaModel.belongsTo(AreaModel, { foreignKey: "Id_Area", as: "areas"})
-
+AreaModel.hasMany(ProgramaModel, {
+  foreignKey: "Id_Area",
+  as: "programasFormacion",
+});
+ProgramaModel.belongsTo(AreaModel, { foreignKey: "Id_Area", as: "areas" });
 
 //Fichas
-ProgramaModel.hasMany(FichasModel, { foreignKey: "Id_ProgramaFormacion", as:"fichas" })
-FichasModel.belongsTo(ProgramaModel,{foreignKey:"Id_ProgramaFormacion",as:"programasFormacion"})
-
+ProgramaModel.hasMany(FichasModel, {
+  foreignKey: "Id_ProgramaFormacion",
+  as: "fichas",
+});
+FichasModel.belongsTo(ProgramaModel, {
+  foreignKey: "Id_ProgramaFormacion",
+  as: "programasFormacion",
+});
 
 //TalentoHumano
-FichasModel.hasMany(TalentoHumanoModel,{foreignKey:"Id_Ficha",as:"talentoHumano"})
-TalentoHumanoModel.belongsTo(FichasModel,{foreignKey:"Id_Ficha",as:"fichas"})
+FichasModel.hasMany(TalentoHumanoModel, {
+  foreignKey: "Id_Ficha",
+  as: "talentoHumano",
+});
+TalentoHumanoModel.belongsTo(FichasModel, {
+  foreignKey: "Id_Ficha",
+  as: "fichas",
+});
 
+//APRENDIZ CON FICHAS
+FichasModel.hasMany(ApprenticeModel, {
+  foreignKey: "Id_Ficha",
+  as: "aprendices",
+});
+ApprenticeModel.belongsTo(FichasModel, {
+  foreignKey: "Id_Ficha",
+  as: "fichas",
+});
 
-//Inasistencias
-AbsenceModel.belongsTo(TurnoEspecialAprendizModel,{foreignKey:"Id_TurnoEspecialAprendiz", as:"turnoespecialaprendiz"})
-TurnoEspecialAprendizModel.hasMany(AbsenceModel,{foreignKey:"Id_TurnoEspecialAprendiz",as:"inasistencias"})
+//Aprendiz con Ciudad
+cityModel.hasMany(ApprenticeModel, {
+  foreignKey: "Id_Ciudad",
+  as: "aprendices",
+});
+ApprenticeModel.belongsTo(cityModel, { foreignKey: "Id_Ciudad", as: "ciudad" });
+
+// //Inasistencias
+TurnosRutinariosModel.hasMany(AbsenceModel, {
+  foreignKey: "Id_TurnoRutinario",
+  as: "inasistencias",
+});
+AbsenceModel.belongsTo(TurnosRutinariosModel, {
+  foreignKey: "Id_TurnoRutinario",
+  as: "turnorutinario",
+});
+
+ApprenticeModel.hasMany(AbsenceModel, {
+  foreignKey: "Id_TurnoRutinario",
+  as: "inasistencias",
+});
+AbsenceModel.belongsTo(ApprenticeModel, {
+  foreignKey: "Id_TurnoRutinario",
+  as: "aprendiz",
+});
+
+AbsenceModel.hasMany(MemorandumModel, {
+  foreignKey: "Id_Inasistencia",
+  as: "memorandos",
+});
+MemorandumModel.belongsTo(AbsenceModel, {
+  foreignKey: "Id_Inasistencia",
+  as: "inasistencia",
+});
+
+//Turno Especial - Fichas
+FichasModel.hasMany(TurnoEspecialModel, {
+  foreignKey: "Id_Ficha",
+  as: "turnoEspecial",
+});
+TurnoEspecialModel.belongsTo(FichasModel, {
+  foreignKey: "Id_Ficha",
+  as: "fichas",
+});
+
+//Turno Especial - Unidades
+UnitModel.hasMany(TurnoEspecialModel, {
+  foreignKey: "Id_Unidad",
+  as: "turnoEspecial",
+});
+TurnoEspecialModel.belongsTo(UnitModel, {
+  foreignKey: "Id_Unidad",
+  as: "unidad",
+});
+
+//Turno Especial - Funcionarios
+OfficialModel.hasMany(TurnoEspecialModel, {
+  foreignKey: "Id_Funcionario",
+  as: "turnoEspecial",
+});
+TurnoEspecialModel.belongsTo(OfficialModel, {
+  foreignKey: "Id_Funcionario",
+  as: "funcionario",
+});
 
 //Funcionario No esta relacionado con ninguno sino hasta con Turno Especial....
 
-export { AreaModel, UnitModel, ProgramaModel,FichasModel,TalentoHumanoModel } 
+// RELACIONES PARA TURNOS RUTINARIOS
+ApprenticeModel.hasMany(TurnosRutinariosModel, {
+  foreignKey: "Id_Aprendiz",
+  as: "turnosrutinarios",
+});
+TurnosRutinariosModel.belongsTo(ApprenticeModel, {
+  foreignKey: "Id_Aprendiz",
+  as: "aprendiz",
+});
+
+UnitModel.hasMany(TurnosRutinariosModel, {
+  foreignKey: "Id_Unidad",
+  as: "turnosrutinarios",
+});
+TurnosRutinariosModel.belongsTo(UnitModel, {
+  foreignKey: "Id_Unidad",
+  as: "unidad",
+});
+
+ApprenticeModel.hasMany(OtrosMemorandumModel, {
+  foreignKey: "Id_Aprendiz", // Llave foránea en OtrosMemorandumModel
+  as: "otrosMemorandos", // Alias para la relación
+});
+
+// Un Otro Memorando pertenece a un Aprendiz
+OtrosMemorandumModel.belongsTo(ApprenticeModel, {
+  foreignKey: "Id_Aprendiz", // Llave foránea en OtrosMemorandumModel
+  as: "aprendiz", // Alias para la relación
+});
+
+// // RELACIONES PARA INASISTENCIAS
+// AbsenceModel.belongsTo(TurnoRutinarioAprendizModel, { foreignKey: 'Id_TurnoRutinario_Aprendiz', as: 'turnoRutinarioAprendiz' })
+// TurnoRutinarioAprenModel.hasMany(AbsenceModel, { foreignKey: 'Id_TurnoRutinario_Aprendiz', as: 'inasistencias' })
+
+// AbsenceModel.belongsTo(TurnoEspecialAprendizModel, { foreignKey: 'Id_TurnoEspecial_Aprendiz', as: 'turnoEspecialAprendiz' })
+// TurnoEspecialAprendizModel.hasMany(AbsenceModel, { foreignKey: 'Id_TurnoEspecial_Aprendiz', as: 'inasistencias' })
+
+export {
+  AreaModel,
+  UnitModel,
+  ProgramaModel,
+  FichasModel,
+  TalentoHumanoModel,
+  cityModel,
+  ApprenticeModel,
+  TurnosRutinariosModel,
+  TurnoEspecialModel,
+};

@@ -1,9 +1,7 @@
 import { Link } from "react-router-dom"
 import useAuth from "../hooks/useAuth"
-// import logoTuruseem from "../assets/LOGOTURUSEEM.png"
 import { IoLogOut,  IoHome  } from "react-icons/io5";
 // import { FaUserCircle } from "react-icons/fa";
-// import { useState } from "react"
 
 
 const Header = () => {

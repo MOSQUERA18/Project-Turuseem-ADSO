@@ -1,29 +1,41 @@
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { ReactSession } from 'react-client-session';
+import { ReactSession } from "react-client-session";
+
+import { exportToExcel } from './ExportExcel.js'; 
 
 import FormFuncionarios from "./formFuncionarios.jsx";
-import FormQueryFuncionarios from "./formQueryFuncionarios.jsx";
-import Pagination from "../pagination.jsx";
 import Alerta from "../components/Alerta.jsx";
+import WriteTable from "../Tables/Data-Tables.jsx";
+import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
-import { MdDeleteOutline } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
-import { IoMdPersonAdd } from "react-icons/io";
-import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 
 const URI = "funcionarios";
 
 const CrudFuncionarios = () => {
   const [funcionarioList, setFuncionarioList] = useState([]);
-  const [funcionarioQuery, setFuncionarioQuery] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddFuncionario, setStateAddFuncionario] = useState(false);
-  const [desde, setDesde] = useState(0);
-  const [hasta, setHasta] = useState(0);
   const [alerta, setAlerta] = useState({});
+  const [crearDataTable, setCrearDataTable] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData,setFormData] = useState({});
+
+
+  const resetForm =()=> {
+    setFuncionario({
+      Id_Funcionario: "",
+      Nom_Funcionario: "",
+      Ape_Funcionario: "",
+      Genero: "",
+      Tel_Funcionario: "",
+      Estado: "",
+      Cargo: "",
+    })
+    setFormData({})
+  }
 
   const [funcionario, setFuncionario] = useState({
     Id_Funcionario: "",
@@ -34,6 +46,27 @@ const CrudFuncionarios = () => {
     Estado: "",
     Cargo: "",
   });
+
+  const titles = [
+    "Documento",
+    "Nombres",
+    "Apellidos",
+    "Género",
+    "Teléfono",
+    "Estado",
+    "Cargo",
+    "Acciones"
+  ];
+
+  const formattedData = funcionarioList.map((funcionario) => [
+    funcionario.Id_Funcionario,
+    funcionario.Nom_Funcionario,
+    funcionario.Ape_Funcionario,
+    funcionario.Genero,
+    funcionario.Tel_Funcionario,
+    funcionario.Estado,
+    funcionario.Cargo
+  ]);
 
   useEffect(() => {
     getAllFuncionarios();
@@ -48,18 +81,19 @@ const CrudFuncionarios = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(URI, config);
+      const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setFuncionarioList(respuestApi.data);
+        setCrearDataTable(true);
       } else {
         setAlerta({
-          msg: `Error al cargar los registros!`,
+          msg: "Error al cargar los registros!",
           error: true,
         });
       }
     } catch (error) {
       setAlerta({
-        msg: `Error al cargar los registros!`,
+        msg: "Error al cargar los registros!",
         error: true,
       });
       console.error(error);
@@ -76,26 +110,26 @@ const CrudFuncionarios = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(`${URI}/${Id_Funcionario}`, config);
+      const respuestApi = await clienteAxios.get(`/${URI}/${Id_Funcionario}`, config);
       if (respuestApi.status === 200) {
         setFuncionario({
           ...respuestApi.data,
         });
       } else {
         setAlerta({
-          msg: `Error al cargar los registros!`,
+          msg: "Error al cargar los registros!",
           error: true,
         });
       }
     } catch (error) {
       setAlerta({
-        msg: `Error al cargar los registros!`,
+        msg: "Error al cargar los registros!",
         error: true,
       });
       console.error(error);
     }
   };
-
+  
   const deleteFuncionario = (Id_Funcionario) => {
     Swal.fire({
       title: "¿Estas seguro?",
@@ -116,11 +150,11 @@ const CrudFuncionarios = () => {
           },
         };
         try {
-          const respuestApi = await clieteAxios.delete(
-            `/${URI}/${Id_Funcionario}`,
+          const respuestApi = await clienteAxios.delete(
+            `${URI}/${Id_Funcionario}`,
             config
           );
-          if (respuestApi.status === 200) {
+          if (respuestApi.status == 200) {
             getAllFuncionarios();
             Swal.fire({
               title: "Borrado!",
@@ -148,118 +182,58 @@ const CrudFuncionarios = () => {
 
   const { msg } = alerta;
 
+  const handleExportToExcel = () => {
+    exportToExcel([], funcionarioList);
+  };
+
   return (
     <>
+      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+        Gestionar Informacion de los 
+        <span className="text-blue-700"> Funcionarios</span>
+      </h1>
       <div className="flex justify-end pb-3">
+        <ModalWindow
+          stateAddNewRow={stateAddFuncionario}
+          setStateAddNewRow={setStateAddFuncionario}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          resetForm={resetForm}
+          updateTextBottom={updateTextButton}
+          form={
+            <FormFuncionarios
+              buttonForm={buttonForm}
+              funcionario={funcionario}
+              updateTextButton={updateTextButton}
+              setFuncionario={setFuncionario}
+              getAllFuncionarios={getAllFuncionarios}
+              formData={formData}
+            />
+          }
+        />
         <button
+          onClick={handleExportToExcel}
           className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-          onClick={() => {
-            setStateAddFuncionario(!stateAddFuncionario);
-          }}
         >
-          {stateAddFuncionario ? (
-            <AiOutlineMinusCircle size={16} className="me-2" />
-          ) : (
-            <IoMdPersonAdd size={16} className="me-2" />
-          )}
-          {stateAddFuncionario ? "Ocultar" : "Agregar"}
+          Exportar a Excel
         </button>
       </div>
       <div className="overflow-x-auto">
-        <div className="flex justify-between">
-          <div>
-            <h1 className="font-semibold text-lg text-gray-700">
-              Buscar Por Documento...
-            </h1>
-            <FormQueryFuncionarios
-              getFuncionario={getFuncionario}
-              deleteFuncionario={deleteFuncionario}
-              buttonForm={buttonForm}
-              funcionarioQuery={funcionarioQuery}
-              setFuncionarioQuery={setFuncionarioQuery}
-            />
-          </div>
-        </div>
         <hr />
         {msg && <Alerta alerta={alerta} />}
-        <table className="min-w-full bg-white text-center text-sm">
-          <thead className="text-white bg-green-700">
-            <tr className="">
-              <th className="py-2 px-4 border-2 border-b-gray-500">ID</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Nombre</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Apellido</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Género</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Teléfono</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Estado</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Cargo</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(funcionarioQuery.length ? funcionarioQuery : funcionarioList).map(
-              (funcionario, indice) =>
-                indice >= desde && indice < hasta ? (
-                  <tr
-                    key={funcionario.Id_Funcionario}
-                    className="odd:bg-white even:bg-gray-100 select-none"
-                  >
-                    <td className="py-2 px-4 border-b">
-                      {funcionario.Id_Funcionario}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {funcionario.Nom_Funcionario}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {funcionario.Ape_Funcionario}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {funcionario.Genero}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {funcionario.Tel_Funcionario}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {funcionario.Estado}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {funcionario.Cargo}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      <button
-                        onClick={() => [
-                          getFuncionario(funcionario.Id_Funcionario),
-                          setStateAddFuncionario(true),
-                        ]}
-                        className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
-                      >
-                        <FaRegEdit />
-                      </button>
-                      <button
-                        onClick={() => deleteFuncionario(funcionario.Id_Funcionario)}
-                        className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
-                      >
-                        <MdDeleteOutline />
-                      </button>
-                    </td>
-                  </tr>
-                ) : (
-                  ""
-                )
-            )}
-          </tbody>
-        </table>
+        <hr />
+        {crearDataTable && (
+          <WriteTable
+            titles={titles}
+            data={formattedData}
+            deleteRow={deleteFuncionario}
+            getRow={getFuncionario}
+            setStateAddNewRow={setStateAddFuncionario}
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+          />
+        )}
       </div>
-      <Pagination URI={URI} setDesde={setDesde} setHasta={setHasta} />
-      <hr />
-      {stateAddFuncionario ? (
-        <FormFuncionarios
-          buttonForm={buttonForm}
-          funcionario={funcionario}
-          updateTextButton={updateTextButton}
-          setFuncionario={setFuncionario}
-          getAllFuncionarios={getAllFuncionarios}
-        />
-      ) : null}
       <hr />
       <Outlet />
     </>

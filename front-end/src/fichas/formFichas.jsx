@@ -3,8 +3,9 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { ReactSession } from 'react-client-session';
-import clieteAxios from "../config/axios";
+import clienteAxios from "../config/axios";
 import Alerta from "../components/Alerta";
+import { error } from "jquery";
 
 const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
   const [Id_Ficha, setId_Ficha] = useState("");
@@ -26,7 +27,7 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
     const fetchProgramas = async () => {
       try {
         const token = ReactSession.get("token");
-        const response = await clieteAxios.get('/programa', {
+        const response = await clienteAxios.get('/programa', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -66,9 +67,10 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
     };
 
     try {
+      let mensajCRUD =""
       let respuestApi;
       if (buttonForm === "Actualizar") {
-        respuestApi = await clieteAxios.put(
+        respuestApi = await clienteAxios.put(
           `/fichas/${fichas.Id_Ficha}`,
           {
             Id_Ficha,
@@ -81,8 +83,9 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
           },
           config
         );
+        mensajCRUD = "Ficha Actualziada Exitosamente"
       } else if (buttonForm === "Enviar") {
-        respuestApi = await clieteAxios.post(
+        respuestApi = await clienteAxios.post(
           `/fichas`,
           {
             Id_Ficha,
@@ -94,11 +97,15 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
           },
           config
         );
+        mensajCRUD = "Ficha Registrada Exitosamente"
       }
-
+      console.log(respuestApi.status);
+      
       if (respuestApi.status === 201 || respuestApi.status === 200) {
-        setMessage("Ficha registrada correctamente!");
-        setMessageType("success");
+        setAlerta({
+          msg: mensajCRUD,
+          error: false
+        })
         clearForm();
         getAllFichas();
         updateTextButton("Enviar");

@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Image,
 } from "@react-pdf/renderer";
-import LOGOSENAEMPRESA from "../assets/LOGOSENAEMPRESA.png";
+
 
 const fechaActual = new Date(Date.now());
 const dia = String(fechaActual.getDate()).padStart(2, "0");
@@ -121,7 +121,7 @@ const MemorandumPDF = () => (
           </Text>
         </View>
         <View style={styles.alignment}>
-          <Image src={LOGOSENAEMPRESA} style={styles.tamamoImagen} />
+          <Image src="Public/assets/LOGOSENAEMPRESA.png" style={styles.tamamoImagen} />
         </View>
       </View>
       <View style={styles.section2}>

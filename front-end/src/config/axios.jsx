@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Crear una instancia de Axios
-const clieteAxios = axios.create({
+const clienteAxios = axios.create({
     baseURL: `${import.meta.env.VITE_BACKEND_URL}`
 });
-export default clieteAxios;
+export default clienteAxios;

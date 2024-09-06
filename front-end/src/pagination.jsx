@@ -3,7 +3,7 @@
 /* eslint-disable react/prop-types */
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
-import clieteAxios from "./config/axios";
+import clienteAxios from "./config/axios";
 import { ReactSession } from 'react-client-session';
 
 const Pagination = ({ URI, setDesde, setHasta }) => {
@@ -22,7 +22,7 @@ const Pagination = ({ URI, setDesde, setHasta }) => {
       },
     };
     try {
-      const response = await clieteAxios(URI, config);
+      const response = await clienteAxios(URI, config);
       const cantidadRegistros = response.data.length;
       setNumRegistros(cantidadRegistros);
       const pages = Math.ceil(cantidadRegistros / registrosPorPagina);

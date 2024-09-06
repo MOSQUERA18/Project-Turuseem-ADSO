@@ -1,0 +1,270 @@
+import clienteAxios from "../config/axios.jsx";
+import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
+import { ReactSession } from 'react-client-session';
+import { saveAs } from 'file-saver';
+import * as XLSX from 'xlsx';
+
+import FormTalentoHumano from "./formTalentoHumano.jsx";
+
+import Alerta from "../components/Alerta.jsx";
+import WriteTable from "../Tables/Data-Tables.jsx";
+import ModalWindow from "../ModalWindow/ModalWindow.jsx";
+
+import { Outlet } from "react-router-dom";
+
+const URI = "talentoHumano";
+
+const CrudTalentoHumano = () => {
+  const [talentoHumanoList, setTalentoHumanoList] = useState([]);
+  const [buttonForm, setButtonForm] = useState("Enviar");
+  const [stateAddTalentoHumano, setStateAddTalentoHumano] = useState(false);
+  const [alerta, setAlerta] = useState({});
+  const [crearDataTable, setCrearDataTable] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData,setFormData] = useState({});
+
+  const resetForm = ()=> {
+    setTalentoHumano({
+      Id_Talento_Humano: "",
+      Nom_Talento_Humano: "",
+      Ape_Talento_Humano: "",
+      Genero_Talento_Humano: "",
+      Cor_Talento_Humano: "",
+      Tel_Talento_Humano: "",
+      Id_Ficha: "",
+      Estado: "",
+    })
+    setFormData({})
+  }
+
+  const [talentoHumano, setTalentoHumano] = useState({
+    Id_Talento_Humano: "",
+    Nom_Talento_Humano: "",
+    Ape_Talento_Humano: "",
+    Genero_Talento_Humano: "",
+    Cor_Talento_Humano: "",
+    Tel_Talento_Humano: "",
+    Id_Ficha: "",
+    Estado: "",
+  });
+
+  const titles = [
+    "Documento",
+    "Nombres",
+    "Apellidos",
+    "Género",
+    "Correo",
+    "Teléfono",
+    "Ficha",
+    "Estado",
+    "Acciones"
+  ];
+
+  const formattedData = talentoHumanoList.map((talento) => [
+    talento.Id_Talento_Humano,
+    talento.Nom_Talento_Humano,
+    talento.Ape_Talento_Humano,
+    talento.Genero_Talento_Humano,
+    talento.Cor_Talento_Humano,
+    talento.Tel_Talento_Humano,
+    talento.fichas ? talento.fichas.Id_Ficha : "N/A",
+    talento.Estado,
+  ]);
+
+  const getAllTalentoHumano = async () => {
+    const token = ReactSession.get("token");
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const respuestApi = await clienteAxios(URI, config);
+      if (respuestApi.status === 200) {
+        setTalentoHumanoList(respuestApi.data);
+        setCrearDataTable(true);
+      } else {
+        setAlerta({
+          msg: "Error al cargar los registros!",
+          error: true,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getTalentoHumano = async (Id_Talento_Humano) => {
+    setButtonForm("Actualizar");
+    const token = ReactSession.get("token");
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const respuestApi = await clienteAxios(`${URI}/${Id_Talento_Humano}`, config);
+      if (respuestApi.status === 200) {
+        setTalentoHumano({
+          ...respuestApi.data,
+        });
+      } else {
+        setAlerta({
+          msg: "Error al cargar los registros!",
+          error: true,
+        });
+      }
+    } catch (error) {
+      setAlerta({
+        msg: "No Existen Registros de Talento Humano",
+        error: true,
+      });
+      console.error(error);
+    }
+  };
+
+  const deleteTalentoHumano = (Id_Talento_Humano) => {
+    Swal.fire({
+      title: "¿Estas seguro?",
+      text: "No podrás revertir esto!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, Borrar!",
+      cancelButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const token = ReactSession.get("token");
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        try {
+          const respuestApi = await clienteAxios.delete(
+            `/${URI}/${Id_Talento_Humano}`,
+            config
+          );
+          if (respuestApi.status === 200) {
+            Swal.fire({
+              title: "Borrado!",
+              text: "El registro ha sido borrado.",
+              icon: "success",
+            });
+          } else {
+            alert(respuestApi.data.message);
+          }
+          getAllTalentoHumano();
+        } catch (error) {
+          Swal.fire({
+            title: "Error!",
+            text: "Hubo un problema al intentar borrar el registro.",
+            icon: "error",
+          });
+          console.error(error);
+        }
+      }
+    });
+  };
+
+  const updateTextButton = (text) => {
+    setButtonForm(text);
+  };
+
+  const { msg } = alerta;
+
+  const prepareDataForExcel = (talentoHumano, talentoHumanoList) => {
+    return (talentoHumano.length ? talentoHumano : talentoHumanoList).map(talentoHumano => ({
+      Documento: talentoHumano.Id_Talento_Humano,
+      Nombre: talentoHumano.Nom_Talento_Humano,
+      Apellido: talentoHumano.Ape_Talento_Humano,
+      Genero: talentoHumano.Gen_Talento_Humano,
+      Correo: talentoHumano.Cor_Talento_Humano,
+      Teléfono: talentoHumano.Tel_Talento_Humano,
+      Ficha: talentoHumano.fichas ? talentoHumano.fichas.Id_Ficha : "N/A",
+      Estado: talentoHumano.Est_Talento_Humano,
+    }));
+  };
+
+  const handleExportToExcel = (talentoHumano, talentoHumanoList) => {
+    const data = prepareDataForExcel(talentoHumano, talentoHumanoList);
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Talento Humano');
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'Talento_Humano.xlsx');
+  };
+
+  const handleExport = () => {
+    handleExportToExcel(talentoHumano, talentoHumanoList);
+  };
+
+  useEffect(() => {
+    getAllTalentoHumano();
+  }, []);
+
+  return (
+    <>
+      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+        Gestionar Información de 
+        <span className="text-blue-700"> Talento Humano</span>
+      </h1>
+
+      <div className="flex justify-end pb-3">
+        <ModalWindow
+          stateAddNewRow={stateAddTalentoHumano}
+          setStateAddNewRow={setStateAddTalentoHumano}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          resetForm={resetForm}
+          updateTextBottom={updateTextButton}
+          form={
+            <FormTalentoHumano
+              buttonForm={buttonForm}
+              talentoHumano={talentoHumano}
+              updateTextButton={updateTextButton}
+              setTalentoHumano={setTalentoHumano}
+              getAllTalentoHumano={getAllTalentoHumano}
+              formData={formData}
+            />
+          }
+        />
+
+        <button
+          onClick={handleExport}
+          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
+        >
+          Exportar a Excel
+        </button>
+      </div>
+
+      <hr />
+
+      <div className="overflow-x-auto">
+        <hr />
+        {msg && <Alerta alerta={alerta} />}
+        <hr />
+        {crearDataTable && (
+          <WriteTable
+            titles={titles}
+            data={formattedData}
+            deleteRow={deleteTalentoHumano}
+            getRow={getTalentoHumano}
+            setStateAddNewRow={setStateAddTalentoHumano}
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+          />
+        )}
+      </div>
+
+      <Outlet />
+    </>
+  );
+};
+
+export default CrudTalentoHumano;

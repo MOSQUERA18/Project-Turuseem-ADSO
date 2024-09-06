@@ -20,4 +20,5 @@ router
   .put(checkAuth, updateFuncionario)
   .delete(checkAuth, deleteFuncionario);
 
+
 export default router;

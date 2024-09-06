@@ -1,11 +1,10 @@
 import OfficialModel from "../models/officialModel.js";
-import { Sequelize, Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 
 export const getAllFuncionarios = async (req, res) => {
   try {
     const Funcionarios = await OfficialModel.findAll();
-    if( Funcionarios > 0){
+    if( Funcionarios.length > 0){
       res.status(200).json(Funcionarios);
       return
     }
@@ -19,7 +18,7 @@ export const getAllFuncionarios = async (req, res) => {
 export const getFuncionario = async (req, res) => {
   try {
     const Funcionario = await OfficialModel.findByPk(req.params.Id_Funcionario);
-    if (Funcionario > 0) {
+    if (Funcionario) {
       res.status(200).json(Funcionario);
       return
     } else {
@@ -111,24 +110,5 @@ export const deleteFuncionario = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
     logger.error(`Error al eliminar el funcionario: ${error}`);
-  }
-};
-
-export const getQueryFuncionario = async (req, res) => {
-  try {
-    const Funcionarios = await OfficialModel.findAll({
-      where: {
-        Id_Funcionario: {
-          [Op.like]: `%${req.params.Id_Funcionario}%`,
-        },
-      },
-    });
-    if(Funcionarios.length > 0){
-      res.status(200).json(Funcionarios);
-    }
-    
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-    logger.error(`Error al buscar el funcionario: ${error}`);
   }
 };

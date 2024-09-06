@@ -1,6 +1,5 @@
 import FichasModel from "../models/fichasModel.js";
 import ProgramaModel from "../models/programaModel.js";
-import { Sequelize, Op } from "sequelize";
 import { logger } from "../middleware/logMiddleware.js";
 
 export const getAllFichas = async (req, res) => {
@@ -126,31 +125,3 @@ export const deleteFicha = async (req, res) => {
     logger.error(`Error al eliminar la ficha: ${error}`);
   }
 };
-
-export const getQueryFicha = async (req, res) => {
-  try {
-    const Fichas = await FichasModel.findAll({
-      where: {
-        Id_Ficha: {
-          [Op.like]: `%${req.params.Id_Ficha}%`,
-        },
-      },
-      include: [
-        {
-          model: ProgramaModel,
-          as: "programasFormacion", // Asegúrate de que el alias coincida con tu modelo
-        },
-      ],
-    });
-    if (Fichas) {
-      res.status(200).json(Fichas);
-      return
-    } else {
-      res.status(404).json({ message: "No se encontraron fichas con el ID proporcionado." });
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-    logger.error(`Error al buscar la ficha: ${error}`);
-  }
-};
-

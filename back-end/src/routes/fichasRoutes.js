@@ -5,7 +5,6 @@ import {
   createFicha,
   updateFicha,
   deleteFicha,
-  getQueryFicha
 } from "../controller/fichasController.js";
 import checkAuth from "../middleware/authMiddleware.js";
 
@@ -20,6 +19,5 @@ router
   .get(checkAuth, getFicha)
   .put(checkAuth, updateFicha)
   .delete(checkAuth, deleteFicha);
-router.get("/codFicha/:Id_Ficha",checkAuth, getQueryFicha)
 
 export default router;

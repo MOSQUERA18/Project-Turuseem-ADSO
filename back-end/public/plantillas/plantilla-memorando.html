@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memorando</title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+        .page {
+            padding: 45px;
+        }
+        .section {
+            margin-top: 25px;
+            padding: 5px;
+            border: 1px solid black;
+            height: 100px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .texto {
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .textoPequeño {
+            font-size: 9px;
+        }
+        .mb {
+            margin-bottom: 35px;
+        }
+        .tamamoImagen {
+            width: 105px;
+            height: 115px;
+        }
+        .alignment {
+            align-items: end;
+            display: flex;
+        }
+        .section2 {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 35px;
+        }
+        .font {
+            font-weight: bold;
+        }
+        .mgH {
+            margin: 0 45px;
+        }
+        .fontSM {
+            font-size: 12px;
+        }
+        .negrita {
+            font-family: "Helvetica-Bold";
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .center {
+            text-align: center;
+            font-size: 12px;
+            margin: 20px 0;
+        }
+        .texto1 {
+            margin: 0 60px 20px;
+            font-size: 13px;
+        }
+        .texto2 {
+            margin: 25px 60px 110px;
+            font-size: 13px;
+        }
+        .sectionFirma {
+            display: flex;
+            justify-content: space-around;
+            font-size: 12px;
+            margin-bottom: 35px;
+        }
+        .textoFooter {
+            margin: 0 60px 20px;
+            font-size: 10px;
+            padding-top: 30px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="section">
+            <div>
+                <div class="mb">
+                    <p class="texto">FORMATO MEMORANDO SENAEMPRESA</p>
+                    <p class="texto">PRUEBA PILOTO</p>
+                </div>
+                <p class="textoPequeño">Proceso: Gestión del Talento Humano</p>
+                <p class="textoPequeño">Procedimiento: Selección, Desarrollo y Evaluación de Desempeño de Personal</p>
+            </div>
+            <div class="alignment">
+                <img src="../assets/SenaEmpresa.png" alt="Logo" class="tamamoImagen">
+            </div>
+        </div>
+        <div class="section2">
+            <p>Espinal - {{FechaActual}}</p>
+            <p class="font">No. {{NumeroMemorando}}</p>
+        </div>
+        <div class="mgH">
+            <p class="fontSM">Aprendiz</p>
+            <p class="negrita">{{NombreAprendiz}}</p>
+            <p class="negrita">{{ProgramaFormacion}}</p>
+            <p class="fontSM">Ficha No. {{FichaNo}}</p>
+            <p class="fontSM">Unidad Asignada: {{UnidadAsignada}}</p>
+            <p class="fontSM">Fecha: {{FechaActual}}</p>
+        </div>
+        <div>
+            <p class="center">Asunto: Memorando</p>
+            <p class="texto1">
+                Me permito notificarle que por {{Mot_OtroMemorando}} se genera el respectivo Memorando.
+            </p>
+            <p class="texto1">
+                Igual lo invitamos a continuar con el cumplimiento de sus labores que contribuyen con el buen funcionamiento de la estrategia Sena Empresa. Recuerde que usted es parte fundamental de los procesos productivos de las unidades tanto en lo técnico como en lo administrativo.
+            </p>
+            <p class="texto1">
+                Este es el memorando número {{totalMemorandumForApprentice}} del trimestre {{trimestre}} {{AnoActual}}.
+            </p>
+            <p class="texto1">
+                Nota: Este correctivo se realizará de acuerdo con la normatividad vigente del Sena, se archiva en la hoja de vida del aprendiz y sirve como evidencia para el comité de evaluación. Tiene cuarenta y ocho horas (48) a partir del momento en que se le entrega el memorando para justificarlo en forma escrita o a través de correo.
+            </p>
+            <p class="texto2">Para constancia de lo anterior firma,</p>
+        </div>
+        <div class="sectionFirma">
+            <div>
+                <p>{{NombreLider}}</p>
+                <p>Líder Sena Empresa</p>
+            </div>
+            <div>
+                <p>{{TalentoHumano}}</p>
+                <p>Líder Talento Humano</p>
+            </div>
+        </div>
+        <div class="textoFooter">
+            <p>Elaborado Por: Turuseem</p>
+        </div>
+    </div>
+</body>
+</html>
