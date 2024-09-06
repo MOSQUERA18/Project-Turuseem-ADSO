@@ -11,8 +11,10 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 import DataTableProgramaFormacion from "./dataTableProgramaFormacion.jsx"
+import WriteTable from "../Tables/Data-Tables.jsx";
 
 import { exportToExcel } from './exportExcel.js'; 
+
 const URI = "programa";
 
 const CrudPrograma = () => {
@@ -20,14 +22,34 @@ const CrudPrograma = () => {
   const [programaList, setProgramaList] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddPrograma, setStateAddPrograma] = useState(false);
-  
   const [alerta, setAlerta] = useState({});
+  const [crearDataTable, setCrearDataTable] = useState(false);
 
   const [programa, setPrograma] = useState({
     Nom_ProgramaFormacion: "",
     Tip_ProgramaFormacion: "",
     Id_Area: "",
   });
+
+  //const shouldShowPhoto = apprenticeList.some(row => row.Foto_Aprendiz !== undefined);
+
+  const titles = [
+    "Documento",
+    "Nombre del Programa",
+    "Tipo del Programa",
+    "Área",
+    "Acción",
+  ].filter(Boolean)
+
+  const formatteData = programaList.map((programa) => {
+    const rowData = [
+    programa.Id_ProgramaFormacion,
+    programa.Nom_ProgramaFormacion,
+    programa.Tip_ProgramaFormacion,
+    programa.Id_Area,
+  ];
+  return rowData;
+  })
 
   useEffect(() => {
     getAllProgramas();
@@ -46,6 +68,7 @@ const CrudPrograma = () => {
       const respuestApi = await clieteAxios(URI, config);
       if (respuestApi.status === 200) {
         setProgramaList(respuestApi.data);
+        setCrearDataTable(true);
       } else {
         setAlerta({
           msg: `Error al cargar los programas!`,
@@ -154,7 +177,7 @@ const CrudPrograma = () => {
     <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7"> Gestionar Informacion de los Programas de Formacion</h1>
       <div className="flex justify-end pb-3">
         <button
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
+          className="bg-green-700 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
           onClick={() => {
             setStateAddPrograma(!stateAddPrograma);
           }}
@@ -169,23 +192,23 @@ const CrudPrograma = () => {
 
         <button
           onClick={handleExportToExcel}
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
+          className="bg-green-700 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
         >
           Exportar a Excel
         </button>
 
+        {crearDataTable && (
+          <WriteTable
+          titles={titles}
+          data={formatteData}
+          deleteRow={deletePrograma}
+          getRow={getPrograma}
+          setStateAddNewRow={setStateAddPrograma}
+          />
+        )}
       </div>
-      <div className="overflow-x-auto">
-        <hr />
-        {msg && <Alerta alerta={alerta} />}
-        <hr />
-        <DataTableProgramaFormacion
-        programaList={programaList}
-        getPrograma={getPrograma}
-        deletePrograma={deletePrograma}
-        setStateAddPrograma={setStateAddPrograma}
-  />
-      </div>
+
+     
       <hr />
       {stateAddPrograma ? (
         <FormProgramaFormacion

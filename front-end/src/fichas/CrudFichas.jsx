@@ -7,7 +7,8 @@ import { exportToExcel } from './ExportExcel.js'
 
 import FormFichas from "./formFichas.jsx";
 import Alerta from "../components/Alerta.jsx";
-import DataTableFichas from "./dataTableFichas.jsx";
+
+import WriteTable from "../Tables/Data-Tables.jsx";
 
 import { IoMdPersonAdd } from "react-icons/io";
 import { AiOutlineMinusCircle } from "react-icons/ai";
@@ -20,6 +21,7 @@ const CrudFichas = () => {
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddFichas, setStateAddFichas] = useState(false);
   const [alerta, setAlerta] = useState({});
+  const [crearDataTable, setCrearDataTable] = useState(false);
 
   const [fichas, setFichas] = useState({
     Id_Ficha: "",
@@ -30,9 +32,32 @@ const CrudFichas = () => {
     Estado: "",
   });
 
-  useEffect(() => {
-    getAllFichas();
-  }, []);
+  const titles = [
+    "Id_Ficha",
+    "Fecha Inicio Etapa Lectiva",
+    "Fecha Fin Etapa Lectiva",
+    "Cantidad Aprendices",
+    "Programa de Formación",
+    "Estado",
+    "Acciones",
+  ].filter(Boolean)
+
+  const formatteData = fichasList.map((fichas) => {
+    const rowData = [
+      fichas.Id_Ficha,
+      fichas.Fec_IniEtapaLectiva,
+      fichas.Fec_FinEtapaLectiva,
+      fichas.Can_Aprendices,
+      fichas.Id_ProgramaFormacion,
+      fichas.Estado,
+    ];
+    return rowData;
+    })
+
+
+      useEffect(() => {
+        getAllFichas();
+      }, []);
 
   const getAllFichas = async () => {
     const token = ReactSession.get("token");
@@ -46,6 +71,7 @@ const CrudFichas = () => {
       const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setFichasList(respuestApi.data);
+        setCrearDataTable(true);
       } else {
         setAlerta({
           msg: `Error al cargar los registros!`,
@@ -177,14 +203,18 @@ const CrudFichas = () => {
       <div className="overflow-x-auto">
         <hr />
         {msg && <Alerta alerta={alerta} />}
-        <hr />
-        <DataTableFichas
-          fichasList={fichasList}
-          getFicha={getFicha}
-          deleteFichas={deleteFichas}
-          setStateAddFichas={setStateAddFichas}
-        />
-      </div>
+        
+        {crearDataTable && (
+          <WriteTable
+          titles={titles}
+          data={formatteData}
+          deleteRow={deleteFichas}
+          getRow={getFicha}
+          setStateAddNewRow={setStateAddFichas}
+          />
+        )}
+        </div>
+
       <hr />
       {stateAddFichas ? (
         <FormFichas
