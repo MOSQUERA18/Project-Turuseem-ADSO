@@ -20,6 +20,20 @@ const CrudUnidades = () => {
   const [stateAddUnidad, setStateAddUnidad] = useState(false);
   const [alerta, setAlerta] = useState({});
   const [crearDataTable, setCrearDataTable] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData,setFormData] = useState({});
+
+
+  const resetForm = () =>{
+   setUnidad({
+    Nom_Unidad : "",
+    Hor_Apertura: "",
+    Hor_Cierre:"",
+    Estado:"",
+    Id_Area:""
+   });
+   setFormData({})
+  }
 
   const [unidad, setUnidad] = useState({
     Nom_Unidad: "",
@@ -45,11 +59,6 @@ const CrudUnidades = () => {
     unidad.Estado, // Estado
     unidad.areas?.Nom_Area || "N/A", // Area (usando "N/A" si areas o Nom_Area es undefined)
   ]);
-
-  useEffect(() => {
-    getAllUnidades();
-  }, []);
-
 
 
 
@@ -167,6 +176,10 @@ const CrudUnidades = () => {
     exportToExcel([], unidadList); // Pasar [] si `unidad` está vacío
   };
 
+  useEffect(() => {
+      getAllUnidades()
+  }, []);
+
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
@@ -176,6 +189,10 @@ const CrudUnidades = () => {
         <ModalWindow
           stateAddNewRow={stateAddUnidad}
           setStateAddNewRow={setStateAddUnidad}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          resetForm={resetForm}
+          updateTextBottom={updateTextButton}
           form={
             <FormUnidades
               buttonForm={buttonForm}
@@ -183,6 +200,7 @@ const CrudUnidades = () => {
               updateTextButton={updateTextButton}
               setUnidad={setUnidad}
               getAllUnidades={getAllUnidades}
+              formData={formData}
             />
           }
         />
@@ -206,6 +224,8 @@ const CrudUnidades = () => {
             deleteRow={deleteUnidad}
             getRow={getUnidad}
             setStateAddNewRow={setStateAddUnidad}
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
           />
         )}
       </div>

@@ -11,7 +11,6 @@ function ModalWindow({ stateAddNewRow, setStateAddNewRow, form, isModalOpen, set
     if (isOpen !== isModalOpen) {
       setIsOpen(isModalOpen);
     }
-  
     // Limpiar el formulario cuando el modal se cierra
     if (!isModalOpen) {
       resetForm();
