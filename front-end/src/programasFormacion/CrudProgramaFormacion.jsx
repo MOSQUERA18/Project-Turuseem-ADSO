@@ -184,7 +184,7 @@ const resetForm = () => {
 
   return (
     <>
-    <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7"> Gestionar Informacion de los Programas de Formacion</h1>
+    <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7"> Gestionar Informacion de los <span className="text-blue-700"> Programas de Formacion</span></h1>
       
 
         {/* <button
