@@ -46,7 +46,7 @@ const CrudFichas = () => {
   });
 
   const titles = [
-    "Id_Ficha",
+    "Numero Ficha",
     "Fecha Inicio Etapa Lectiva",
     "Fecha Fin Etapa Lectiva",
     "Cantidad Aprendices",
@@ -61,7 +61,7 @@ const CrudFichas = () => {
       fichas.Fec_InicioEtapaLectiva,
       fichas.Fec_FinEtapaLectiva,
       fichas.Can_Aprendices,
-      fichas.Id_ProgramaFormacion,
+      fichas.programasFormacion.Nom_ProgramaFormacion,
       fichas.Estado,
     ];
     return rowData;

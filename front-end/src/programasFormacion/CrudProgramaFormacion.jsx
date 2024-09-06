@@ -56,7 +56,7 @@ const resetForm = () => {
     programa.Id_ProgramaFormacion,
     programa.Nom_ProgramaFormacion,
     programa.Tip_ProgramaFormacion,
-    programa.Id_Area,
+    programa.areas.Nom_Area,
   ];
   return rowData;
   })
