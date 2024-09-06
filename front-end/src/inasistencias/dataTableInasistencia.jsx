@@ -23,7 +23,7 @@ const DataTableInasistencia = ({
         tableInstance.current = tableElement.DataTable({
           data: inasistenciaList,
           columns: [
-            { data: "Id_Inasistencia", title: "N° Inasistencia" },
+            { data: "Id_Inasistencia", title: "Identificador de Inasistencia" },
             { data: "Fec_Inasistencia", title: "Fecha de la inasistencia" },
             { data: "Mot_Inasistencia", title: "Motivo" },
             {
@@ -39,6 +39,15 @@ const DataTableInasistencia = ({
               render: function (data, type, row) {
                 return row.turnorutinario && row.turnorutinario.aprendiz
                   ? row.turnorutinario.aprendiz.Nom_Aprendiz
+                  : "";
+              },
+            },
+            {
+              data: "turnorutinario.aprendiz.Ape_Aprendiz",
+              title: "Apellidos del Aprendiz",
+              render: function (data, type, row) {
+                return row.turnorutinario && row.turnorutinario.aprendiz
+                  ? row.turnorutinario.aprendiz.Ape_Aprendiz
                   : "";
               },
             },
@@ -125,7 +134,7 @@ const DataTableInasistencia = ({
         <thead className="text-white bg-green-700">
           <tr>
             <th className="py-2 px-4 border-2 border-b-gray-500">
-              N° Inasistencia
+              Identificador de Inasistencia
             </th>
             <th className="py-2 px-4 border-2 border-b-gray-500">
               Fecha de la inasistencia
@@ -136,6 +145,9 @@ const DataTableInasistencia = ({
             </th>
             <th className="py-2 px-4 border-2 border-b-gray-500">
               Nombre Aprendiz
+            </th>
+            <th className="py-2 px-4 border-2 border-b-gray-500">
+              Apellidos del Aprendiz
             </th>
           </tr>
         </thead>
@@ -156,6 +168,9 @@ const DataTableInasistencia = ({
               </td>
               <td className="py-2 px-4 border-b">
                 {inasistencia.turnorutinario?.aprendiz?.Nom_Aprendiz}
+              </td>
+              <td className="py-2 px-4 border-b">
+                {inasistencia.turnorutinario?.aprendiz?.Ape_Aprendiz}
               </td>
             </tr>
           ))}

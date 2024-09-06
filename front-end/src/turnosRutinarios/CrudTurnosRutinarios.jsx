@@ -53,10 +53,10 @@ const CrudTurnosRutinarios = () => {
     "Fecha Fin",
     "Hora Inicio Turno",
     "Hora Fin Turno",
-    "Obs_TurnoRutinario",
-    "Ind_Asistencia",
-    "Id_Aprendiz",
-    "Id_Unidad",
+    "Observaciones del Turno",
+    "Indicador Asistencia",
+    "Documento Aprendiz",
+    "Nombre Unidad",
     // shouldShowPhoto && "Foto Aprendiz",
     "Acciones"
   ].filter(Boolean)

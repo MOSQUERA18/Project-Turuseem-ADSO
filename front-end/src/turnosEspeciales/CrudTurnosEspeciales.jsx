@@ -58,12 +58,13 @@ const CrudTurnosEspeciales = () => {
     "Fecha Turno",
     "Hora Inicio",
     "Hora Fin",
-    "Observaciones",
-    "Total Aprendices",
+    "Observaciones del Turno",
+    "Total Aprendices que asistieron",
     "Ficha",
     // "Imagen Asistencia",
-    "Funcionario",
-    "Unidad",
+    "Documento Funcionario",
+    "Nombre Funcionario",
+    "Nombre Unidad",
     shouldShowPhoto && "Archivo Asistencia",
     "Acciones"
   ].filter(Boolean)
@@ -79,6 +80,7 @@ const CrudTurnosEspeciales = () => {
       turnoEspecial.Id_Ficha,
       // turnoEspecial.Img_Asistencia,
       turnoEspecial.Id_Funcionario,
+      turnoEspecial.funcionario.Nom_Funcionario,
       turnoEspecial.unidad.Nom_Unidad,
     ];
     if (shouldShowPhoto) {

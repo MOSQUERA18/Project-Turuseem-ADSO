@@ -43,8 +43,8 @@ const CrudUnidades = () => {
     Id_Area: "",
   });
   const titles = [
-    "ID",
-    "Nombre",
+    "Identificador de Unidad",
+    "Nombre Unidad",
     "Hora Apertura",
     "Hora Cierre",
     "Estado",
