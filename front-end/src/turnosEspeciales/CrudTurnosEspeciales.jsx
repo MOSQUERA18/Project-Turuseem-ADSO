@@ -12,7 +12,7 @@ import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 // import { exportToExcel } from './ExportExcel.js';
 
 const URI = "/turnoespecial";
-const URI_FOTOS = '/public/uploads/'
+const URI_FOTOS = "/public/uploads/";
 const URI_AXIOS = import.meta.env.VITE_BACKEND_URL;
 
 const CrudTurnosEspeciales = () => {
@@ -21,25 +21,26 @@ const CrudTurnosEspeciales = () => {
   const [stateAddturnoEspecial, setStateAddturnoEspecial] = useState(false);
   const [alerta, setAlerta] = useState({});
   const [crearDataTable, setCrearDataTable] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData,setFormData] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
 
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
 
-  const resetForm = () =>{
+  const resetForm = () => {
     setTurnoEspecial({
-    Id_TurnoEspecial: "",
-    Fec_TurnoEspecial: "",
-    Hor_Inicio: "",
-    Hor_Fin: "",
-    Obs_TurnoEspecial: "",
-    Tot_AprendicesAsistieron: "",
-    Id_Ficha: "",
-    Img_Asistencia: "",
-    Id_Funcionario: "",
-    Id_Unidad: "",
-    })
-    setFormData({})
-}
+      Id_TurnoEspecial: "",
+      Fec_TurnoEspecial: "",
+      Hor_Inicio: "",
+      Hor_Fin: "",
+      Obs_TurnoEspecial: "",
+      Tot_AprendicesAsistieron: "",
+      Id_Ficha: "",
+      Img_Asistencia: "",
+      Id_Funcionario: "",
+      Id_Unidad: "",
+    });
+  };
   const [turnoEspecial, setTurnoEspecial] = useState({
     Id_TurnoEspecial: "",
     Fec_TurnoEspecial: "",
@@ -52,7 +53,13 @@ const CrudTurnosEspeciales = () => {
     Id_Funcionario: "",
     Id_Unidad: "",
   });
-  const shouldShowPhoto = turnoEspecialList.some(row => row.Img_Asistencia !== undefined);
+
+  const titleModul = [
+    "REPORTE DE TURNOS ESPECIALES"
+  ]
+  const shouldShowPhoto = turnoEspecialList.some(
+    (row) => row.Img_Asistencia !== undefined
+  );
   const titles = [
     "Identificador del Turno",
     "Fecha Turno",
@@ -65,8 +72,8 @@ const CrudTurnosEspeciales = () => {
     "Funcionario",
     "Unidad",
     shouldShowPhoto && "Archivo Asistencia",
-    "Acciones"
-  ].filter(Boolean)
+    "Acciones",
+  ].filter(Boolean);
 
   const formattedData = turnoEspecialList.map((turnoEspecial) => {
     const rowData = [
@@ -91,7 +98,7 @@ const CrudTurnosEspeciales = () => {
       );
     }
     return rowData;
-  })
+  });
 
   useEffect(() => {
     getAllTurnosEspeciales();
@@ -116,8 +123,6 @@ const CrudTurnosEspeciales = () => {
           error: true,
         });
       }
-
-      
     } catch (error) {
       setAlerta({
         msg: `Ocurrio un error!`,
@@ -219,8 +224,8 @@ const CrudTurnosEspeciales = () => {
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
-      Gestionar Informacion de los 
-      <span className="text-blue-700"> Turnos Especiales</span>
+        Gestionar Informacion de los
+        <span className="text-blue-700"> Turnos Especiales</span>
       </h1>
       {/* <div className="flex justify-end pb-3">
 
@@ -233,28 +238,25 @@ const CrudTurnosEspeciales = () => {
       </div> */}
 
       <div className="flex justify-end pb-3">
-      <ModalWindow
-                stateAddNewRow={stateAddturnoEspecial}
-                setStateAddNewRow={setStateAddturnoEspecial}
-                isModalOpen={isModalOpen}
-                setIsModalOpen={setIsModalOpen}
-                resetForm={resetForm}
-                updateTextBottom={updateTextButton}
-        form={
-         <FormTurnosEspeciales
-          buttonForm={buttonForm}
-          turnoEspecial={turnoEspecial}
-          updateTextButton={updateTextButton}
-          setTurnoEspecial={setTurnoEspecial}
-          formData={formData}
+        <ModalWindow
+          stateAddNewRow={stateAddturnoEspecial}
+          setStateAddNewRow={setStateAddturnoEspecial}
+          toggleModal={toggleModal} // Aquí pasamos la función
+          isOpen={isOpen}
+          resetForm={resetForm}
+          updateTextBottom={updateTextButton}
+          form={
+            <FormTurnosEspeciales
+              buttonForm={buttonForm}
+              turnoEspecial={turnoEspecial}
+              updateTextButton={updateTextButton}
+              setTurnoEspecial={setTurnoEspecial}
+            />
+          }
         />
-  }
-  />
-  </div>
-
+      </div>
 
       <div className="overflow-x-auto">
-        <hr />
         {msg && <Alerta alerta={alerta} />}
         <hr />
         {crearDataTable && (
@@ -264,14 +266,12 @@ const CrudTurnosEspeciales = () => {
             deleteRow={deleteTurnoEspecial}
             getRow={getTurnoEspecial}
             setStateAddNewRow={setStateAddturnoEspecial}
-            isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
+            toggleModal={toggleModal} // Aquí pasamos la función
+            isOpen={isOpen}
+            titleModul={titleModul}
           />
         )}
       </div>
-      <hr />
-
-      
     </>
   );
 };

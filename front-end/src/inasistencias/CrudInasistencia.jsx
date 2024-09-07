@@ -6,16 +6,15 @@ import { ReactSession } from "react-client-session";
 // import { exportToExcel } from './ExportExcel.js';
 
 import Alerta from "../components/Alerta.jsx";
-import DataTableInasistencia from "./dataTableInasistencia.jsx";
-
-import { Outlet } from "react-router-dom";
+import WriteTable from "../Tables/Data-Tables.jsx";
 
 const URI = "inasistencias";
 
 const CrudFuncionarios = () => {
   const [inasistenciaList, setInasistenciaList] = useState([]);
   const [setButtonForm] = useState("Enviar");
-  // const [stateAddInasistencia, setStateAddInasistencia] = useState(false);
+  const [crearDataTable, setCrearDataTable] = useState(false);
+
   const [alerta, setAlerta] = useState({});
 
   const [setInasistencia] = useState({
@@ -24,6 +23,23 @@ const CrudFuncionarios = () => {
     Mot_Inasistencia: "",
     Id_TurnoRutinario: "",
   });
+  const titleModul = [
+    "REPORTE DE INASISTENCIAS"
+  ]
+
+  const titles = [
+    "ID",
+    "Fecha",
+    "Motivo",
+    "Turno Rutinario",
+    "Acciones",
+  ];
+  const formattedData = inasistenciaList.map((inasistencia) => [
+    inasistencia.Id_Inasistencia,
+    inasistencia.Fec_Inasistencia,
+    inasistencia.Mot_Inasistencia,
+    inasistencia.Id_TurnoRutinario,
+  ]);
 
   useEffect(() => {
     getAllInasistencias();
@@ -41,6 +57,7 @@ const CrudFuncionarios = () => {
       const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setInasistenciaList(respuestApi.data);
+        setCrearDataTable(true)
       } else {
         setAlerta({
           msg: `Error al cargar los registros!`,
@@ -149,24 +166,25 @@ const CrudFuncionarios = () => {
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
-        Gestionar Informacion de las Inasistencias
+        Gestionar Informacion de las
+        <span className="text-blue-700"> Inasistencias</span>
       </h1>
       <br />
       <br />
       <div className="overflow-x-auto">
         <hr />
-        {msg && <Alerta alerta={alerta} />}
+        {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
         <hr />
-        <DataTableInasistencia
-          inasistenciaList={inasistenciaList}
-          getFuncionario={getInasistencia}
-          deleteFuncionario={deleteInasistencia}
-          // setStateAddInasistencia={setStateAddInasistencia}
-        />
+        {crearDataTable && (
+          <WriteTable 
+          titles={titles}
+          data={formattedData}
+          deleteRow={deleteInasistencia}
+          getRow={getInasistencia}
+          titleModul={titleModul}
+          />
+        )}
       </div>
-      <hr />
-      <hr />
-      <Outlet />
     </>
   );
 };

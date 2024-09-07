@@ -9,8 +9,6 @@ import Alerta from "../components/Alerta.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
-// import { IoMdPersonAdd } from "react-icons/io";
-// import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 
 const URI = "/aprendiz/";
@@ -24,8 +22,11 @@ const CrudApprentices = () => {
   const [stateAddApprentice, setStateAddApprentice] = useState(false);
   const [alerta, setAlerta] = useState({});
   const [crearDataTable, setCrearDataTable] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData,setFormData] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
 
   const resetForm = () => {
     setApprentice({
@@ -51,7 +52,7 @@ const CrudApprentices = () => {
       CentroConvivencia: "",
       Foto_Aprendiz: "",
     });
-    setFormData({})
+    // setFormData({})
   };
 
   const [apprentice, setApprentice] = useState({
@@ -80,6 +81,9 @@ const CrudApprentices = () => {
   const shouldShowPhoto = apprenticeList.some(
     (row) => row.Foto_Aprendiz !== undefined
   );
+  const titleModul = [
+    "REPORTE DE APRENDICES"
+  ]
   const titles = [
     "Documento",
     "Nombres",
@@ -139,7 +143,6 @@ const CrudApprentices = () => {
     }
     return rowData;
   });
-
 
   const getAllApprentices = async () => {
     const token = ReactSession.get("token");
@@ -259,10 +262,8 @@ const CrudApprentices = () => {
     getAllApprentices();
   }, []);
 
-
   return (
     <>
-      <br />
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar Informacion de los
         <span className="text-blue-700"> Aprendices</span>
@@ -271,18 +272,16 @@ const CrudApprentices = () => {
         <ModalWindow
           stateAddNewRow={stateAddApprentice}
           setStateAddNewRow={setStateAddApprentice}
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
           resetForm={resetForm}
           updateTextBottom={updateTextButton}
+          toggleModal={toggleModal} // Aquí pasamos la función
+          isOpen={isOpen}
           form={
             <FormApprentices
               buttonForm={buttonForm}
               apprentice={apprentice}
               updateTextButton={updateTextButton}
               setApprentice={setApprentice}
-              formData={formData} 
-              setFormData={setFormData} 
             />
           }
         />
@@ -332,8 +331,9 @@ const CrudApprentices = () => {
             deleteRow={deleteApprentice}
             getRow={getApprentice}
             setStateAddNewRow={setStateAddApprentice}
-            isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
+            setIsOpen={setIsOpen}
+            toggleModal={toggleModal} // Aquí pasamos la función
+            titleModul={titleModul}
           />
         )}
       </div>

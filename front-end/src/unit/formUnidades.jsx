@@ -6,7 +6,7 @@ import clienteAxios from "../config/axios";
 import Alerta from "../components/Alerta";
 import { ReactSession } from 'react-client-session';
 
-const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) => {
+const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades, toggleModal }) => {
   const [Nom_Unidad, setNom_Unidad] = useState("");
   const [Hor_Apertura, setHor_Apertura] = useState("");
   const [Hor_Cierre, setHor_Cierre] = useState("");
@@ -18,7 +18,6 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
 
   // Estado para mensajes
   const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState(""); // 'success' o 'error'
 
   useEffect(() => {
     const fetchAreas = async () => {
@@ -44,7 +43,6 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
     if (message) {
       const timer = setTimeout(() => {
         setMessage("");
-        setMessageType("");
       }, 5000);
 
       return () => clearTimeout(timer);
@@ -102,7 +100,6 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
         updateTextButton("Enviar");
       } else {
         setMessage(respuestApi.error.message || "Error al registrar la unidad.");
-        setMessageType("error");
       }
     } catch (error) {
       // setMessage("Error al registrar la unidad, Campos Faltantes.");
@@ -110,7 +107,6 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
         msg: "Todos los campos son obligatorios!",
         error: true,
       });
-      setMessageType("error");
     }
   };
 
@@ -140,22 +136,17 @@ const FormUnidades = ({ buttonForm, unidad, updateTextButton, getAllUnidades }) 
 
   return (
     <>
-      <div className="flex justify-center items-center min-h-screen content-center w-full">
+      <div className="flex justify-center items-center content-center">
         <form
           id="apprenticeForm"
           onSubmit={sendForm}
-          className="bg-white shadow-2xl rounded-2xl px-14 pt-6 pb-8 mb-4 max-w-3xl w-full mt-10"
+          className="bg-white shadow-2xl rounded-2xl px-14 pb-8 mb-4"
         >
-          {msg && <Alerta alerta={alerta} />}
-          <h1 className="font-bold text-green-600 text-3xl uppercase text-center my-5">
+          {msg && <Alerta alerta={alerta}  setAlerta={setAlerta}/>}
+          <h1 className="font-bold text-green-600 text-3xl uppercase text-center">
             Registrar Unidades
           </h1>
 
-          {message && (
-            <div className={`p-4 mb-4 text-white rounded-md ${messageType === 'success' ? 'bg-green-500' : 'bg-red-500'}`}>
-              {message}
-            </div>
-          )}
 
           <div className="mb-3">
             <label className="text-gray-700 uppercase font-bold">

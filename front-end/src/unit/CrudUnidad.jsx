@@ -20,9 +20,11 @@ const CrudUnidades = () => {
   const [stateAddUnidad, setStateAddUnidad] = useState(false);
   const [alerta, setAlerta] = useState({});
   const [crearDataTable, setCrearDataTable] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData,setFormData] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
 
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
 
   const resetForm = () =>{
    setUnidad({
@@ -32,7 +34,6 @@ const CrudUnidades = () => {
     Estado:"",
     Id_Area:""
    });
-   setFormData({})
   }
 
   const [unidad, setUnidad] = useState({
@@ -42,6 +43,9 @@ const CrudUnidades = () => {
     Estado: "",
     Id_Area: "",
   });
+  const titleModul = [
+    "REPORTE DE UNIDADES"
+  ]
   const titles = [
     "ID",
     "Nombre",
@@ -76,16 +80,16 @@ const CrudUnidades = () => {
         setUnidadList(respuestApi.data);
         setCrearDataTable(true);
       } else {
-        // setAlerta({
-        //   msg: `Error al cargar los registros!`,
-        //   error: true,
-        // });
+        setAlerta({
+          msg: `Error al cargar los registros!`,
+          error: true,
+        });
       }
     } catch (error) {
-      // setAlerta({
-      //   msg: `Error al cargar los registros!`,
-      //   error: true,
-      // });
+      setAlerta({
+        msg: `Error al cargar los registros!`,
+        error: true,
+      });
       console.error(error);
     }
   };
@@ -183,14 +187,15 @@ const CrudUnidades = () => {
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
-        Gestionar Informacion de las Unidades
+        Gestionar Informacion de las{" "}
+        <span className="text-blue-700">Unidades</span>
       </h1>
       <div className="flex justify-end pb-3">
         <ModalWindow
           stateAddNewRow={stateAddUnidad}
           setStateAddNewRow={setStateAddUnidad}
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
+          toggleModal={toggleModal} // Aquí pasamos la función
+          isOpen={isOpen}
           resetForm={resetForm}
           updateTextBottom={updateTextButton}
           form={
@@ -200,7 +205,6 @@ const CrudUnidades = () => {
               updateTextButton={updateTextButton}
               setUnidad={setUnidad}
               getAllUnidades={getAllUnidades}
-              formData={formData}
             />
           }
         />
@@ -224,8 +228,8 @@ const CrudUnidades = () => {
             deleteRow={deleteUnidad}
             getRow={getUnidad}
             setStateAddNewRow={setStateAddUnidad}
-            isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
+            toggleModal={toggleModal} // Aquí pasamos la función
+            titleModul={titleModul}
           />
         )}
       </div>
