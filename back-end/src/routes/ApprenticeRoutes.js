@@ -36,6 +36,7 @@ router
   .get(checkAuth, getApprentice)
   .put(upload.single('Foto_Aprendiz'), updateApprentice)
   .delete(checkAuth, deleteApprentice);
-router.post("/import-csv", checkAuth, importCSV);
+// Ruta para importar CSV de aprendices
+router.post("/import-csv", checkAuth, upload.single('file'), importCSV);
 
 export default router;

@@ -27,10 +27,7 @@ import OtrosMemorandumRoutes from "./src/routes/OtrosMemorandosRoutes.js";
 import userRouter from "./src/routes/UserRoutes.js";
 import { logger } from "./src/middleware/logMiddleware.js";
 
-// import pdfRoutes from "./src/routes/pdfRoutes.js"
-// import excelRoutes from "./src/routes/excelRoutes.js"
 
-// import routespdf from "./src/routes/routespdf.js";
 
 //Models
 import cityModel from "./src/models/cityModel.js";
@@ -41,8 +38,7 @@ import AreaModel from "./src/models/areaModel.js";
 import ProgramaModel from "./src/models/programaModel.js";
 import FichasModel from "./src/models/fichasModel.js";
 import AbsenceModel from "./src/models/absenceModel.js";
-// import TurnoEspecialAprendizModel from "./src/models/turnoEspeciales_Aprendices.js";
-// import TurnoRutinarioAprendizModel from "./src/models/turnoRutinarioAprendices.js";
+
 import TurnoEspecialModel from "./src/models/turnoEspecialModel.js";
 import OfficialModel from "./src/models/officialModel.js";
 import TurnosRutinariosModel from "./src/models/turnoRutinarioModel.js";
@@ -65,8 +61,7 @@ import OtrosMemorandumModel from "./src/models/Otros_MemorandosModel.js";
 const appExpress = express();
 const PORT = process.env.PORT || 8080;
 
-// Middleware para servir archivos estáticos como los PDFs y Excels
-// appExpress.use('/output', express.static(path.join(__dirname, 'output')));
+
 
 
 
@@ -87,8 +82,7 @@ appExpress.use("/turRutAprendiz", turnoRutinarioAprendizRoutes);
 appExpress.use("/turnoRutinario", turnoRutinarioRoutes);
 appExpress.use("/unidades", unitRoutes);
 appExpress.use("/ciudades", cityRoutes);
-// appExpress.use('/pdf', pdfRoutes);
-// appExpress.use('/excel', excelRoutes);
+
 
 
 

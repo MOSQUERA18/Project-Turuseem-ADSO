@@ -16,7 +16,7 @@ const ApprenticeModel = db.define(
         key: "Id_Ficha",
       },
     },
-    Fec_Nacimiento: { type: DataTypes.DATE },
+    Fec_Nacimiento: { type: DataTypes.DATE},
     Id_Ciudad:{type:DataTypes.STRING(10),
       references:{
         model: cityModel,
@@ -39,7 +39,7 @@ const ApprenticeModel = db.define(
     },
     Nom_Empresa: { type: DataTypes.STRING(50) },
     CentroConvivencia: { type: DataTypes.ENUM("Si", "No") },
-    Foto_Aprendiz: { type: DataTypes.STRING(255), allowNull:false},
+    Foto_Aprendiz: { type: DataTypes.STRING(255), allowNull:true},
   },
   {
     timestamps: true,

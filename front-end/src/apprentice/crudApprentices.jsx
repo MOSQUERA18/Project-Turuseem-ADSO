@@ -141,6 +141,10 @@ const CrudApprentices = () => {
   });
 
 
+
+
+
+
   const getAllApprentices = async () => {
     const token = ReactSession.get("token");
     const config = {
@@ -312,12 +316,12 @@ const CrudApprentices = () => {
       </div>
       <div className="overflow-x-auto">
         <div className="flex justify-between">
-          <div>
-            <h1 className="font-semibold text-lg text-gray-700">
-              Subir Archivo CSV
-            </h1>
-            <ImportarCSV URI={URI} />
-          </div>
+        <div>
+  <h1 className="font-semibold text-lg text-gray-700">
+    Subir Archivo CSV
+  </h1>
+  <ImportarCSV URI={URI} />
+</div>
         </div>
         {/* <hr /> */}
 
