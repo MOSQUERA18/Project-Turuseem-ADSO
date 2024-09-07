@@ -6,6 +6,7 @@ import {
   updateUnit,
   deleteUnit,
 } from "../controller/unitControllers.js";
+import reportPDF from "../middleware/reportPdf.js";
 import checkAuth from "../middleware/authMiddleware.js";
 
 const router = express.Router();

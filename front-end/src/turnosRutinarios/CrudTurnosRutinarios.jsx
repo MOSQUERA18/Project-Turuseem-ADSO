@@ -3,14 +3,12 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
 import FormTurnosRutinarios from "./FormTurnosRutinarios.jsx";
-// import DataTableTurnosRutinarios from "./dataTableTurnosRutinarios.jsx";
 import Alerta from "../components/Alerta.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
 import { Outlet } from "react-router-dom";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
 const URI = "/turnorutinario/";
-// const URI_AXIOS = import.meta.env.VITE_BACKEND_URL;
 
 const CrudTurnosRutinarios = () => {
   const [turnoRutinarioList, setTurnoRutinarioList] = useState([]);
@@ -18,11 +16,13 @@ const CrudTurnosRutinarios = () => {
   const [stateAddturnoRutinario, setStateAddturnoRutinario] = useState(false);
   const [alerta, setAlerta] = useState({});
   const [crearDataTable, setCrearDataTable] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData,setFormData] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
 
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
 
-  const resetForm =()=>{
+  const resetForm = () => {
     setTurnoRutinario({
       Fec_InicioTurno: "",
       Fec_FinTurno: "",
@@ -32,9 +32,8 @@ const CrudTurnosRutinarios = () => {
       Ind_Asistencia: "",
       Id_Aprendiz: "",
       Id_Unidad: "",
-    })
-    setFormData({})
-  }
+    });
+  };
 
   const [turnoRutinario, setTurnoRutinario] = useState({
     Fec_InicioTurno: "",
@@ -46,7 +45,11 @@ const CrudTurnosRutinarios = () => {
     Id_Aprendiz: "",
     Id_Unidad: "",
   });
-  // const shouldShowPhoto = apprenticeList.some(row => row.Foto_Aprendiz !== undefined);
+  
+  const titleModul = [
+    "REPORTE DE TURNOS RUTINARIOS"
+  ]
+
   const titles = [
     "Identificador Del Turno",
     "Fecha Inicio",
@@ -58,8 +61,8 @@ const CrudTurnosRutinarios = () => {
     "Documento Aprendiz",
     "Nombre Unidad",
     // shouldShowPhoto && "Foto Aprendiz",
-    "Acciones"
-  ].filter(Boolean)
+    "Acciones",
+  ].filter(Boolean);
 
   const formattedData = turnoRutinarioList.map((turnoRutinario) => {
     const rowData = [
@@ -71,19 +74,10 @@ const CrudTurnosRutinarios = () => {
       turnoRutinario.Obs_TurnoRutinario,
       turnoRutinario.Ind_Asistencia,
       turnoRutinario.Id_Aprendiz,
-      turnoRutinario.unidad.Nom_Unidad,
+      turnoRutinario.unidad?.Nom_Unidad,
     ];
-    // if (shouldShowPhoto) {
-    //   rowData.push(
-    //     <img
-    //       width="80px"
-    //       src={`${URI_AXIOS}${URIFOTOS}${apprentice.Foto_Aprendiz}`}
-    //       alt="No Foto"
-    //     />
-    //   );
-    // }
     return rowData;
-  })
+  });
 
   useEffect(() => {
     getAllTurnosRutinarios();
@@ -178,7 +172,11 @@ const CrudTurnosRutinarios = () => {
           );
           if (respuestApi.status === 200) {
             // Actualiza el estado para eliminar el turno de la tabla
-            setTurnoRutinarioList(turnoRutinarioList.filter(turno => turno.id !== Id_TurnoRutinario));
+            setTurnoRutinarioList(
+              turnoRutinarioList.filter(
+                (turno) => turno.id !== Id_TurnoRutinario
+              )
+            );
             Swal.fire({
               title: "Borrado!",
               text: "El registro ha sido borrado.",
@@ -212,32 +210,31 @@ const CrudTurnosRutinarios = () => {
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
-        Gestionar Información de los <span className="text-blue-700"> Turnos Rutinarios</span>
+        Gestionar Información de los{" "}
+        <span className="text-blue-700"> Turnos Rutinarios</span>
       </h1>
 
       <div className="flex justify-end pb-3">
-      <hr />
-      <ModalWindow
+        <hr />
+        <ModalWindow
           stateAddNewRow={stateAddturnoRutinario}
           setStateAddNewRow={setStateAddturnoRutinario}
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
+          toggleModal={toggleModal} // Aquí pasamos la función
+          isOpen={isOpen}
           resetForm={resetForm}
           updateTextBottom={updateTextButton}
-      form={
-        <FormTurnosRutinarios
-          buttonForm={buttonForm}
-          turnoRutinario={turnoRutinario}
-          updateTextButton={updateTextButton}
-          getAllTurnosRutinarios={getAllTurnosRutinarios}
-          formData={formData}
+          form={
+            <FormTurnosRutinarios
+              buttonForm={buttonForm}
+              turnoRutinario={turnoRutinario}
+              updateTextButton={updateTextButton}
+              getAllTurnosRutinarios={getAllTurnosRutinarios}
+            />
+          }
         />
-        }
-    />
-    </div>
+      </div>
 
-    <div className="overflow-x-auto">
-
+      <div className="overflow-x-auto">
         <hr />
         {msg && <Alerta alerta={alerta} />}
         <hr />
@@ -248,9 +245,8 @@ const CrudTurnosRutinarios = () => {
             deleteRow={deleteTurnoRutinario}
             getRow={getTurnoRutinario}
             setStateAddNewRow={setStateAddturnoRutinario}
-            isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
-
+            toggleModal={toggleModal} // Aquí pasamos la función
+            titleModul={titleModul}
           />
         )}
       </div>

@@ -1,7 +1,7 @@
 import clieteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { ReactSession } from 'react-client-session';
+import { ReactSession } from "react-client-session";
 
 // import { CSVLink } from 'react-csv';
 
@@ -11,37 +11,38 @@ import { Outlet } from "react-router-dom";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
 
-// import { exportToExcel } from './exportExcel.js'; 
+// import { exportToExcel } from './exportExcel.js';
 
 const URI = "programa";
 
 const CrudPrograma = () => {
-  
   const [programaList, setProgramaList] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddPrograma, setStateAddPrograma] = useState(false);
   const [alerta, setAlerta] = useState({});
   const [crearDataTable, setCrearDataTable] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData,setFormData] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
 
-const resetForm = () => {
-  setPrograma({
-    Nom_ProgramaFormacion: "",
-    Tip_ProgramaFormacion: "",
-    Id_Area: "",
-  });
-  setFormData({})
-}
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
 
+  const resetForm = () => {
+    setPrograma({
+      Nom_ProgramaFormacion: "",
+      Tip_ProgramaFormacion: "",
+      Id_Area: "",
+    });
+  };
 
   const [programa, setPrograma] = useState({
     Nom_ProgramaFormacion: "",
     Tip_ProgramaFormacion: "",
     Id_Area: "",
   });
-
-  //const shouldShowPhoto = apprenticeList.some(row => row.Foto_Aprendiz !== undefined);
+  const titleModul = [
+    "REPORTE DE PROGRAMAS DE FORMACION"
+  ]
 
   const titles = [
     "Documento",
@@ -49,21 +50,20 @@ const resetForm = () => {
     "Tipo del Programa",
     "Área",
     "Acción",
-  ].filter(Boolean)
+  ].filter(Boolean);
 
   const formatteData = programaList.map((programa) => {
     const rowData = [
-    programa.Id_ProgramaFormacion,
-    programa.Nom_ProgramaFormacion,
-    programa.Tip_ProgramaFormacion,
-    programa.areas.Nom_Area,
-  ];
-  return rowData;
-  })
+      programa.Id_ProgramaFormacion,
+      programa.Nom_ProgramaFormacion,
+      programa.Tip_ProgramaFormacion,
+      programa.areas?.Nom_Area,
+    ];
+    return rowData;
+  });
 
   useEffect(() => {
     getAllProgramas();
-    
   }, []);
 
   const getAllProgramas = async () => {
@@ -104,7 +104,10 @@ const resetForm = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(`${URI}/${Id_ProgramaFormacion}`, config);
+      const respuestApi = await clieteAxios(
+        `${URI}/${Id_ProgramaFormacion}`,
+        config
+      );
       if (respuestApi.status === 200) {
         setPrograma({
           ...respuestApi.data,
@@ -149,7 +152,7 @@ const resetForm = () => {
             config
           );
           if (respuestApi.status === 200) {
-            getAllProgramas();  // Refrescar la lista después de borrar
+            getAllProgramas(); // Refrescar la lista después de borrar
             Swal.fire({
               title: "Borrado!",
               text: "El programa ha sido borrado.",
@@ -180,62 +183,55 @@ const resetForm = () => {
   //   exportToExcel([], programaList); // Pasar [] si `programa` está vacío
   // };
 
-
-
   return (
     <>
-    <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7"> Gestionar Informacion de los <span className="text-blue-700"> Programas de Formacion</span></h1>
-      
+      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+        {" "}
+        Gestionar Informacion de los{" "}
+        <span className="text-blue-700"> Programas de Formacion</span>
+      </h1>
 
-        {/* <button
+      {/* <button
           onClick={handleExportToExcel}
           className="bg-green-700 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
         >
           Exportar a Excel
         </button> */}
-<div className="flex justify-end pb-3">
-      <ModalWindow
+      <div className="flex justify-end pb-3">
+        <ModalWindow
           stateAddNewRow={stateAddPrograma}
           setStateAddNewRow={setStateAddPrograma}
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
           resetForm={resetForm}
+          toggleModal={toggleModal} // Aquí pasamos la función
+          isOpen={isOpen}
           updateTextBottom={updateTextButton}
-form={ 
-        <FormProgramaFormacion
-          buttonForm={buttonForm}
-          programa={programa}
-          updateTextButton={updateTextButton}
-          setPrograma={setPrograma}
-          getAllProgramas={getAllProgramas}
-          formData={formData} 
-          setFormData={setFormData} 
+          form={
+            <FormProgramaFormacion
+              buttonForm={buttonForm}
+              programa={programa}
+              updateTextButton={updateTextButton}
+              setPrograma={setPrograma}
+              getAllProgramas={getAllProgramas}
+            />
+          }
         />
-}
-/>
+      </div>
 
-</div>
-
-
-
-
-<div className="overflow-x-auto">
+      <div className="overflow-x-auto">
         {msg && <Alerta alerta={alerta} />}
 
         {crearDataTable && (
           <WriteTable
-          titles={titles}
-          data={formatteData}
-          deleteRow={deletePrograma}
-          getRow={getPrograma}
-          setStateAddNewRow={setStateAddPrograma}
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
+            titles={titles}
+            data={formatteData}
+            deleteRow={deletePrograma}
+            getRow={getPrograma}
+            setStateAddNewRow={setStateAddPrograma}
+            toggleModal={toggleModal} // Aquí pasamos la función
+            titleModul={titleModul}
           />
         )}
-
-</div>
-      
+      </div>
 
       <Outlet />
     </>
