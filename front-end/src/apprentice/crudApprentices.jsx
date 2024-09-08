@@ -9,8 +9,6 @@ import Alerta from "../components/Alerta.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
-import { Outlet } from "react-router-dom";
-
 const URI = "/aprendiz/";
 
 const URIFOTOS = "/public/uploads/";
@@ -81,9 +79,8 @@ const CrudApprentices = () => {
   const shouldShowPhoto = apprenticeList.some(
     (row) => row.Foto_Aprendiz !== undefined
   );
-  const titleModul = [
-    "REPORTE DE APRENDICES"
-  ]
+  const titleModul = ["REPORTE DE APRENDICES"];
+  const titleForm = ["REGISTRAR APRENDICES"];
   const titles = [
     "Documento",
     "Nombres",
@@ -143,7 +140,6 @@ const CrudApprentices = () => {
     }
     return rowData;
   });
-
 
   const getAllApprentices = async () => {
     const token = ReactSession.get("token");
@@ -269,56 +265,61 @@ const CrudApprentices = () => {
         Gestionar Informacion de los
         <span className="text-blue-700"> Aprendices</span>
       </h1>
-      <div className="flex justify-end pb-3">
-        <ModalWindow
-          stateAddNewRow={stateAddApprentice}
-          setStateAddNewRow={setStateAddApprentice}
-          resetForm={resetForm}
-          updateTextBottom={updateTextButton}
-          toggleModal={toggleModal} // Aquí pasamos la función
-          isOpen={isOpen}
-          form={
-            <FormApprentices
-              buttonForm={buttonForm}
-              apprentice={apprentice}
-              updateTextButton={updateTextButton}
-              setApprentice={setApprentice}
-            />
-          }
-        />
-        <a
-          href="#"
-          onClick={async (e) => {
-            e.preventDefault();
-
-            const filePath = "/Public/assets/Aprendiz.csv";
-            try {
-              const response = await fetch(filePath, { method: "HEAD" });
-
-              if (response.ok) {
-                window.location.href = filePath;
-              } else {
-                alert("El archivo no está disponible en la ruta especificada.");
-              }
-            } catch (error) {
-              console.error("Error al intentar descargar el archivo:", error);
-              alert("Error al intentar descargar el archivo.");
+      <div className="flex justify-between">
+        <div className="flex justify-between">
+          <div>
+            <h1 className="font-semibold text-lg text-gray-700 mb-3">
+              Subir Archivo CSV
+            </h1>
+            <ImportarCSV URI={URI} />
+          </div>
+        </div>
+        <div className="flex my-10 space-x-5">
+          <ModalWindow
+            stateAddNewRow={stateAddApprentice}
+            setStateAddNewRow={setStateAddApprentice}
+            resetForm={resetForm}
+            updateTextBottom={updateTextButton}
+            toggleModal={toggleModal} // Aquí pasamos la función
+            isOpen={isOpen}
+            titleForm={titleForm}
+            form={
+              <FormApprentices
+                buttonForm={buttonForm}
+                apprentice={apprentice}
+                updateTextButton={updateTextButton}
+                setApprentice={setApprentice}
+              />
             }
-          }}
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-        >
-          Descargar CSV
-        </a>
+          />
+          <a
+            href="#"
+            onClick={async (e) => {
+              e.preventDefault();
+
+              const filePath = "/Public/assets/Aprendiz.csv";
+              try {
+                const response = await fetch(filePath, { method: "HEAD" });
+
+                if (response.ok) {
+                  window.location.href = filePath;
+                } else {
+                  alert(
+                    "El archivo no está disponible en la ruta especificada."
+                  );
+                }
+              } catch (error) {
+                console.error("Error al intentar descargar el archivo:", error);
+                alert("Error al intentar descargar el archivo.");
+              }
+            }}
+            className="bg-green-600 px-6 rounded-xl text-white font-bold flex items-center hover:bg-green-800"
+          >
+            Descargar CSV
+          </a>
+        </div>
       </div>
       <div className="overflow-x-auto">
-        <div className="flex justify-between">
-        <div>
-  <h1 className="font-semibold text-lg text-gray-700">
-    Subir Archivo CSV
-  </h1>
-  <ImportarCSV URI={URI} />
-</div>
-        </div>
         {/* <hr /> */}
 
         <br />
@@ -339,7 +340,6 @@ const CrudApprentices = () => {
         )}
       </div>
       <hr />
-      <Outlet />
     </>
   );
 };

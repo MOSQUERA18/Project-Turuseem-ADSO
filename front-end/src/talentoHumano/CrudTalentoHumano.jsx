@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
 
-
 import FormTalentoHumano from "./formTalentoHumano.jsx";
 
 import Alerta from "../components/Alerta.jsx";
@@ -49,9 +48,8 @@ const CrudTalentoHumano = () => {
     Id_Ficha: "",
     Estado: "",
   });
-  const titleModul = [
-    "REPORTE DE TALENTO HUMANO"
-  ]
+  const titleModul = ["REPORTE DE TALENTO HUMANO"];
+  const titleForm = ["REGISTRAR TALENTO HUMANO"];
 
   const titles = [
     "Documento",
@@ -185,10 +183,6 @@ const CrudTalentoHumano = () => {
 
   const { msg } = alerta;
 
-
-
-
-
   useEffect(() => {
     getAllTalentoHumano();
   }, []);
@@ -200,7 +194,7 @@ const CrudTalentoHumano = () => {
         <span className="text-blue-700"> Talento Humano</span>
       </h1>
 
-      <div className="flex justify-end pb-3">
+      <div className="flex pb-3">
         <ModalWindow
           stateAddNewRow={stateAddTalentoHumano}
           setStateAddNewRow={setStateAddTalentoHumano}
@@ -208,6 +202,7 @@ const CrudTalentoHumano = () => {
           isOpen={isOpen}
           resetForm={resetForm}
           updateTextBottom={updateTextButton}
+          titleForm={titleForm}
           form={
             <FormTalentoHumano
               buttonForm={buttonForm}
@@ -218,15 +213,11 @@ const CrudTalentoHumano = () => {
             />
           }
         />
-
       </div>
-
-      <hr />
 
       <div className="overflow-x-auto">
         <hr />
-        {msg && <Alerta alerta={alerta} />}
-        <hr />
+        {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
         {crearDataTable && (
           <WriteTable
             titles={titles}

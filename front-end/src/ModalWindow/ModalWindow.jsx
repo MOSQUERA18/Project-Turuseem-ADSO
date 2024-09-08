@@ -8,6 +8,7 @@ function ModalWindow({
   form,
   toggleModal,
   isOpen,
+  titleForm
 }) {
   return (
     <>
@@ -15,15 +16,14 @@ function ModalWindow({
       <button
         onClick={() => {
           setStateAddNewRow(!stateAddNewRow);
-          console.log("toggleModal:", typeof toggleModal); // Verificar que sea una función
           if (typeof toggleModal === 'function') {
             toggleModal();
           }
         }}
-        className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        className="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         type="button"
       >
-        <IoMdPersonAdd />
+        <IoMdPersonAdd className="mx-1"/>
         Agregar
       </button>
 
@@ -33,17 +33,14 @@ function ModalWindow({
           id="crud-modal"
           tabIndex="-1"
           aria-hidden="true"
-          className="fixed inset-0 z-50 flex justify-center items-center w-full h-screen bg-gray-900 bg-opacity-50 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex justify-center items-center h-screen bg-gray-900 bg-opacity-50 backdrop-blur-sm"
         >
-          <div className="relative p-4 w-full max-w-5xl h-auto min-h-[200px] max-h-[95vh] ">
-            {" "}
-            {/* overflow-y-auto */}
-            {/* Contenido del modal */}
+          <div className="relative p-4 w-full max-w-6xl h-auto min-h-[200px] max-h-[94vh] ">
             <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
               {/* Encabezado del modal */}
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Create New
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                  {titleForm}
                 </h3>
                 <button
                   type="button"
@@ -55,7 +52,7 @@ function ModalWindow({
                 </button>
               </div>
               {/* Aquí se renderiza el formulario */}
-              <div className="p-6">{form}</div>
+              <div className="pt-2">{form}</div>
             </div>
           </div>
         </div>

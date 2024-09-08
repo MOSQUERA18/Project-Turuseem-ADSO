@@ -9,14 +9,7 @@ import Alerta from "../components/Alerta";
 const URI = "/ciudades/";
 const UriFichas = "/fichas/";
 
-const FormApprentices = ({
-  buttonForm,
-  apprentice,
-  updateTextButton,
-  setApprentice,
-  formData,
-  setFormData,
-}) => {
+const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
   const [Id_Aprendiz, setId_Aprendiz] = useState("");
   const [Nom_Aprendiz, setNom_Aprendiz] = useState("");
   const [Ape_Aprendiz, setApe_Aprendiz] = useState("");
@@ -254,13 +247,9 @@ const FormApprentices = ({
         id="apprenticeForm"
         action=""
         onSubmit={sendForm}
-        className="bg-white shadow-2xl rounded-2xl px-8 pb-6 mb-4 w-full max-w-7xl"
+        className="bg-white rounded-2xl px-8 pb-6 w-full max-w-7xl"
       >
         {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
-        <h1 className="font-bold text-green-600 text-3xl uppercase text-center mb-5">
-          Registrar Aprendices
-        </h1>
-
         <div className="grid grid-cols-4 gap-4">
           <div className="space-y-2">
             <label
@@ -320,15 +309,17 @@ const FormApprentices = ({
           </div>
 
           <div className="space-y-2">
-            <label className="text-gray-700 uppercase font-bold">Fichas:</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Fichas:
+            </label>
             <select
               name=""
               id="ficha"
               value={Id_Ficha}
               onChange={(e) => setId_Ficha(e.target.value)}
-              className="block text-sm font-medium text-gray-700"
+              className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             >
-              <option value="">Seleccione su Ficha: </option>
+              <option value="">Seleccione la Ficha: </option>
               {fichas.map((ficha) => (
                 <option key={ficha.Id_Ficha} value={ficha.Id_Ficha}>
                   {ficha.Id_Ficha}
@@ -404,7 +395,9 @@ const FormApprentices = ({
           </div>
 
           <div className="space-y-2">
-            <label className="text-gray-700 uppercase font-bold">Hijos</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Hijos
+            </label>
             <select
               id="children"
               value={Hijos}
@@ -418,7 +411,9 @@ const FormApprentices = ({
           </div>
 
           <div className="space-y-2">
-            <label className="text-gray-700 uppercase font-bold">EPS</label>
+            <label className="block text-sm font-medium text-gray-700">
+              EPS
+            </label>
             <input
               type="text"
               id="eps"
@@ -516,7 +511,6 @@ const FormApprentices = ({
           </div>
 
 
-
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">
               Patrocinio
@@ -532,6 +526,21 @@ const FormApprentices = ({
               <option value="no">No</option>
             </select>
           </div>
+          {Patrocinio === "si" && (
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Nombre de la Empresa
+              </label>
+              <input
+                type="text"
+                id="companyName"
+                placeholder="Nombre de la Empresa"
+                value={Nom_Empresa}
+                onChange={(e) => setNom_Empresa(e.target.value)}
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              />
+            </div>
+          )}
 
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">
@@ -548,22 +557,6 @@ const FormApprentices = ({
               <option value="Inactivo">Inactivo</option>
             </select>
           </div>
-
-          {Patrocinio === "si" && (
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
-                Nombre de la Empresa
-              </label>
-              <input
-                type="text"
-                id="companyName"
-                placeholder="Nombre de la Empresa"
-                value={Nom_Empresa}
-                onChange={(e) => setNom_Empresa(e.target.value)}
-                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-              />
-            </div>
-          )}
 
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">
@@ -592,28 +585,28 @@ const FormApprentices = ({
               type="file"
               id="Foto_Aprendiz"
               onChange={(e) => setFoto_Aprendiz(e.target.files[0])}
-              className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              className="border-2 w-full mt-2 placeholder-gray-400 rounded-md"
             />
           </div>
-
-          <div className="mt-6 flex justify-around">
-            <input
-              type="submit"
-              id="button"
-              value={buttonForm}
-              className="bg-green-600 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-700 md:w-auto"
-            />
-            <input
-              type="button"
-              id="button"
-              value="Limpiar"
-              onClick={() => {
-                clearForm();
-                updateTextButton("Enviar");
-              }}
-              className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-700 md:w-auto"
-            />
-          </div>
+        </div>
+        <hr className="mt-3" />
+        <div className="flex justify-around mt-2">
+          <input
+            type="submit"
+            id="button"
+            value={buttonForm}
+            className="bg-green-600 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-700 md:w-auto"
+          />
+          <input
+            type="button"
+            id="button"
+            value="Limpiar"
+            onClick={() => {
+              clearForm();
+              updateTextButton("Enviar");
+            }}
+            className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-700 md:w-auto"
+          />
         </div>
       </form>
     </div>

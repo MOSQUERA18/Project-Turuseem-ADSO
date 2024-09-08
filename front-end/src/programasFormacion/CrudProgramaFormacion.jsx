@@ -40,9 +40,8 @@ const CrudPrograma = () => {
     Tip_ProgramaFormacion: "",
     Id_Area: "",
   });
-  const titleModul = [
-    "REPORTE DE PROGRAMAS DE FORMACION"
-  ]
+  const titleModul = ["REPORTE DE PROGRAMAS DE FORMACION"];
+  const titleForm = ["REGISTRAR PROGRAMAS DE FORMACION"];
 
   const titles = [
     "Documento",
@@ -179,10 +178,6 @@ const CrudPrograma = () => {
 
   const { msg } = alerta;
 
-  // const handleExportToExcel = () => {
-  //   exportToExcel([], programaList); // Pasar [] si `programa` está vacío
-  // };
-
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
@@ -190,14 +185,7 @@ const CrudPrograma = () => {
         Gestionar Informacion de los{" "}
         <span className="text-blue-700"> Programas de Formacion</span>
       </h1>
-
-      {/* <button
-          onClick={handleExportToExcel}
-          className="bg-green-700 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-        >
-          Exportar a Excel
-        </button> */}
-      <div className="flex justify-end pb-3">
+      <div className="flex pb-3">
         <ModalWindow
           stateAddNewRow={stateAddPrograma}
           setStateAddNewRow={setStateAddPrograma}
@@ -205,6 +193,7 @@ const CrudPrograma = () => {
           toggleModal={toggleModal} // Aquí pasamos la función
           isOpen={isOpen}
           updateTextBottom={updateTextButton}
+          titleForm={titleForm}
           form={
             <FormProgramaFormacion
               buttonForm={buttonForm}
@@ -218,7 +207,8 @@ const CrudPrograma = () => {
       </div>
 
       <div className="overflow-x-auto">
-        {msg && <Alerta alerta={alerta} />}
+        <hr />
+        {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
 
         {crearDataTable && (
           <WriteTable

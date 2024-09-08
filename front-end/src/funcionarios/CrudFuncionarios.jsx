@@ -48,6 +48,8 @@ const CrudFuncionarios = () => {
     Cargo: "",
   });
   const titleModul = ["REPORTE DE FUNCIONARIOS"];
+  const titleForm = ["REGISTRAR FUNCIONARIOS"];
+
 
   const titles = [
     "Documento",
@@ -194,7 +196,7 @@ const CrudFuncionarios = () => {
         Gestionar Informacion de los
         <span className="text-blue-700"> Funcionarios</span>
       </h1>
-      <div className="flex justify-end pb-3">
+      <div className="flex pb-3">
         <ModalWindow
           stateAddNewRow={stateAddFuncionario}
           setStateAddNewRow={setStateAddFuncionario}
@@ -202,6 +204,7 @@ const CrudFuncionarios = () => {
           isOpen={isOpen}
           resetForm={resetForm}
           updateTextBottom={updateTextButton}
+          titleForm={titleForm}
           form={
             <FormFuncionarios
               buttonForm={buttonForm}
@@ -216,7 +219,6 @@ const CrudFuncionarios = () => {
       <div className="overflow-x-auto">
         <hr />
         {msg && <Alerta alerta={alerta} />}
-        <hr />
         {crearDataTable && (
           <WriteTable
             titles={titles}

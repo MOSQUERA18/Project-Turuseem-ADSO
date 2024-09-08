@@ -57,6 +57,8 @@ const CrudTurnosEspeciales = () => {
   const titleModul = [
     "REPORTE DE TURNOS ESPECIALES"
   ]
+  const titleForm = ["CREAR TURNOS ESPECIALES"];
+
   const shouldShowPhoto = turnoEspecialList.some(
     (row) => row.Img_Asistencia !== undefined
   );
@@ -218,28 +220,13 @@ const CrudTurnosEspeciales = () => {
 
   const { msg } = alerta;
 
-  // Función para manejar la exportación a Excel
-  // const handleExportToExcel = () => {
-  //   exportToExcel([], turnoEspecialList); // Pasar [] si `turnoEspecial` está vacío
-  // };
-
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar Informacion de los
         <span className="text-blue-700"> Turnos Especiales</span>
       </h1>
-      {/* <div className="flex justify-end pb-3">
-
-        <button
-          onClick={handleExportToExcel}
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-        >
-          Exportar a Excel
-        </button>
-      </div> */}
-
-      <div className="flex justify-end pb-3">
+      <div className="flex pb-3">
         <ModalWindow
           stateAddNewRow={stateAddturnoEspecial}
           setStateAddNewRow={setStateAddturnoEspecial}
@@ -247,6 +234,7 @@ const CrudTurnosEspeciales = () => {
           isOpen={isOpen}
           resetForm={resetForm}
           updateTextBottom={updateTextButton}
+          titleForm={titleForm}
           form={
             <FormTurnosEspeciales
               buttonForm={buttonForm}

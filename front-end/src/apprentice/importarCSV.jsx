@@ -72,7 +72,7 @@ const ImportarCSV = () => {
   const { msg } = alerta;
 
   return (
-    <div className="p-4">
+    <div className="">
       {msg && <Alerta alerta={alerta} />}
       <input
         type="file"

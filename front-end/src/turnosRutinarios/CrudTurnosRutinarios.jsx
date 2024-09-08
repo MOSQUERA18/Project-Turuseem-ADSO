@@ -45,13 +45,13 @@ const CrudTurnosRutinarios = () => {
     Id_Aprendiz: "",
     Id_Unidad: "",
   });
-  
-  const titleModul = [
-    "REPORTE DE TURNOS RUTINARIOS"
-  ]
+
+  const titleModul = ["REPORTE DE TURNOS RUTINARIOS"];
+  const titleForm = ["CREAR TURNOS RUTINARIOS"];
+
 
   const titles = [
-    "Identificador Del Turno",
+    "ID",
     "Fecha Inicio",
     "Fecha Fin",
     "Hora Inicio Turno",
@@ -214,8 +214,7 @@ const CrudTurnosRutinarios = () => {
         <span className="text-blue-700"> Turnos Rutinarios</span>
       </h1>
 
-      <div className="flex justify-end pb-3">
-        <hr />
+      <div className="flex pb-3">
         <ModalWindow
           stateAddNewRow={stateAddturnoRutinario}
           setStateAddNewRow={setStateAddturnoRutinario}
@@ -223,6 +222,7 @@ const CrudTurnosRutinarios = () => {
           isOpen={isOpen}
           resetForm={resetForm}
           updateTextBottom={updateTextButton}
+          titleForm={titleForm}
           form={
             <FormTurnosRutinarios
               buttonForm={buttonForm}
@@ -237,7 +237,7 @@ const CrudTurnosRutinarios = () => {
       <div className="overflow-x-auto">
         <hr />
         {msg && <Alerta alerta={alerta} />}
-        <hr />
+
         {crearDataTable && (
           <WriteTable
             titles={titles}
