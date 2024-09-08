@@ -46,6 +46,8 @@ const CrudUnidades = () => {
   const titleModul = [
     "REPORTE DE UNIDADES"
   ]
+  const titleForm = ["REGISTRAR UNIDADES"];
+
   const titles = [
     "ID",
     "Nombre Unidad",
@@ -196,6 +198,7 @@ const CrudUnidades = () => {
           isOpen={isOpen}
           resetForm={resetForm}
           updateTextBottom={updateTextButton}
+          titleForm={titleForm}
           form={
             <FormUnidades
               buttonForm={buttonForm}

@@ -9,7 +9,6 @@ import Alerta from "../components/Alerta.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
-
 const URI = "/aprendiz/";
 
 const URIFOTOS = "/public/uploads/";

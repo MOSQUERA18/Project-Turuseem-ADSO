@@ -48,6 +48,8 @@ const CrudFuncionarios = () => {
     Cargo: "",
   });
   const titleModul = ["REPORTE DE FUNCIONARIOS"];
+  const titleForm = ["REGISTRAR FUNCIONARIOS"];
+
 
   const titles = [
     "Documento",
@@ -202,6 +204,7 @@ const CrudFuncionarios = () => {
           isOpen={isOpen}
           resetForm={resetForm}
           updateTextBottom={updateTextButton}
+          titleForm={titleForm}
           form={
             <FormFuncionarios
               buttonForm={buttonForm}

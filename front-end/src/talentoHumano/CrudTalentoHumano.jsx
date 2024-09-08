@@ -49,6 +49,7 @@ const CrudTalentoHumano = () => {
     Estado: "",
   });
   const titleModul = ["REPORTE DE TALENTO HUMANO"];
+  const titleForm = ["REGISTRAR TALENTO HUMANO"];
 
   const titles = [
     "Documento",
@@ -201,6 +202,7 @@ const CrudTalentoHumano = () => {
           isOpen={isOpen}
           resetForm={resetForm}
           updateTextBottom={updateTextButton}
+          titleForm={titleForm}
           form={
             <FormTalentoHumano
               buttonForm={buttonForm}
@@ -215,7 +217,7 @@ const CrudTalentoHumano = () => {
 
       <div className="overflow-x-auto">
         <hr />
-        {msg && <Alerta alerta={alerta} setAlerta={setAlerta}/>}
+        {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
         {crearDataTable && (
           <WriteTable
             titles={titles}

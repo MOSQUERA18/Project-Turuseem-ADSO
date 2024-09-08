@@ -43,6 +43,7 @@ const CrudFichas = () => {
     Estado: "",
   });
   const titleModul = ["REPORTE DE FICHAS"];
+  const titleForm = ["REGISTRAR FICHAS"];
 
   const titles = [
     "Numero Ficha",
@@ -195,6 +196,7 @@ const CrudFichas = () => {
           isOpen={isOpen}
           resetForm={resetForm}
           updateTextBottom={updateTextButton}
+          titleForm={titleForm}
           form={
             <FormFichas
               buttonForm={buttonForm}

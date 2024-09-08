@@ -40,9 +40,8 @@ const CrudPrograma = () => {
     Tip_ProgramaFormacion: "",
     Id_Area: "",
   });
-  const titleModul = [
-    "REPORTE DE PROGRAMAS DE FORMACION"
-  ]
+  const titleModul = ["REPORTE DE PROGRAMAS DE FORMACION"];
+  const titleForm = ["REGISTRAR PROGRAMAS DE FORMACION"];
 
   const titles = [
     "Documento",
@@ -179,10 +178,6 @@ const CrudPrograma = () => {
 
   const { msg } = alerta;
 
-  // const handleExportToExcel = () => {
-  //   exportToExcel([], programaList); // Pasar [] si `programa` está vacío
-  // };
-
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
@@ -198,6 +193,7 @@ const CrudPrograma = () => {
           toggleModal={toggleModal} // Aquí pasamos la función
           isOpen={isOpen}
           updateTextBottom={updateTextButton}
+          titleForm={titleForm}
           form={
             <FormProgramaFormacion
               buttonForm={buttonForm}
@@ -212,7 +208,7 @@ const CrudPrograma = () => {
 
       <div className="overflow-x-auto">
         <hr />
-        {msg && <Alerta alerta={alerta} />}
+        {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
 
         {crearDataTable && (
           <WriteTable
