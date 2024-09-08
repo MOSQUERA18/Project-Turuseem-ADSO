@@ -168,6 +168,7 @@ const FormTurnoRutinario = ({
     }
   };
 
+
   // Crear registro de inasistencia
   const crearRegistroInasistencia = async (Id_TurnoRutinario) => {
     try {
@@ -190,6 +191,20 @@ const FormTurnoRutinario = ({
         inasistenciaData,
         config
       );
+
+      console.log("Creando registro de inasistencia con datos:", inasistenciaData); // Agrega este log
+
+      if (respuestaInasistencia.status === 201) {
+        console.log('Registro de inasistencia creado exitosamente');
+      // Si se registra una inasistencia, incrementamos o decrementamos Tot_Inasistencias del aprendiz
+        const action = Ind_Asistencia === "No" ? "incrementar" : "decrementar";        
+        await clienteAxios.put(
+          `/aprendiz/${Id_Aprendiz}/actualizar-inasistencia`,
+          { action },  // Enviar la acción
+          config
+        );
+        console.log('Inasistencia actualizada exitosamente');
+      }
 
       if (respuestaInasistencia.status === 201) {
         console.log('Registro de inasistencia creado exitosamente');
