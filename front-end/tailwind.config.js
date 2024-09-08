@@ -10,10 +10,10 @@ export default {
     extend: {
       colors: {
         green: {
-          500: "#F3F4F6",
-          600: "#1C75BC",
-          700: "#1C75BC",
-          800: "#1A5E99",
+          500: "#F3F4F6", //No cambiar
+          600: "#60aefa",
+          700: "#60aefa",
+          800: "#303bff",
         },
         stone: {
           400: "#000000"
@@ -24,6 +24,7 @@ export default {
       },
       textColor: {
         white: "#000000",
+        blue: "#13109f"
       },
       border: {
          600: "#1b01ff"

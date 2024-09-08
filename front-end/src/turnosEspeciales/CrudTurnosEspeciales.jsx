@@ -204,7 +204,8 @@ const CrudTurnosEspeciales = () => {
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
-      Gestionar Informacion de los Turnos Especiales
+      Gestionar Informacion de los 
+      <span className="text-blue-700"> Turnos Especiales</span> 
       </h1>
       <div className="flex justify-end pb-3">
         <button

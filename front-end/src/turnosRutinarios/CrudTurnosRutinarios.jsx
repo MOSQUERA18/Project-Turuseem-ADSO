@@ -194,7 +194,8 @@ const CrudTurnosRutinarios = () => {
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
-        Gestionar Información de los Turnos Rutinarios
+        Gestionar Información de los  
+        <span className="text-blue-700"> Turnos Rutinarios</span>
       </h1>
       <div className="flex justify-end pb-3">
         <button
