@@ -74,8 +74,6 @@ export const createApprentice = async (req, res) => {
       Gen_Aprendiz,
       Cor_Aprendiz,
       Tel_Aprendiz,
-      Tot_Memorandos,
-      Tot_Inasistencias,
       Patrocinio,
       Estado,
       Nom_Empresa,
@@ -85,7 +83,7 @@ export const createApprentice = async (req, res) => {
     const Foto_Aprendiz = req.file ? req.file.filename : null;
 
     // Validación de campos obligatorios
-    if (!Id_Aprendiz || !Nom_Aprendiz || !Ape_Aprendiz || !Id_Ficha || !Fec_Nacimiento || !Id_Ciudad || !Lugar_Residencia || !Edad || !Hijos || !Nom_Eps || !Tel_Padre || !Gen_Aprendiz || !Cor_Aprendiz || !Tel_Aprendiz || !Tot_Memorandos || !Tot_Inasistencias|| !Estado || !CentroConvivencia) {
+    if (!Id_Aprendiz || !Nom_Aprendiz || !Ape_Aprendiz || !Id_Ficha || !Fec_Nacimiento || !Id_Ciudad || !Lugar_Residencia || !Edad || !Hijos || !Nom_Eps || !Tel_Padre || !Gen_Aprendiz || !Cor_Aprendiz || !Tel_Aprendiz || !Estado || !CentroConvivencia) {
       return res.status(400).json({ message: 'Todos los campos son obligatorios O El documento esta repetido' });
     }
 
@@ -104,8 +102,8 @@ export const createApprentice = async (req, res) => {
       Gen_Aprendiz,
       Cor_Aprendiz,
       Tel_Aprendiz,
-      Tot_Memorandos,
-      Tot_Inasistencias,
+      Tot_Memorandos: 0,
+      Tot_Inasistencias:0,
       Patrocinio,
       Estado,
       Nom_Empresa,
@@ -145,8 +143,6 @@ export const updateApprentice = async (req, res) => {
       Gen_Aprendiz,
       Cor_Aprendiz,
       Tel_Aprendiz,
-      Tot_Memorandos,
-      Tot_Inasistencias,
       Patrocinio,
       Estado,
       Nom_Empresa,
@@ -170,8 +166,6 @@ export const updateApprentice = async (req, res) => {
         Gen_Aprendiz,
         Cor_Aprendiz,
         Tel_Aprendiz,
-        Tot_Memorandos,
-        Tot_Inasistencias,
         Patrocinio,
         Estado,
         Nom_Empresa,
@@ -214,65 +208,76 @@ export const deleteApprentice = async (req, res) => {
   }
 };
 
+
+// Función importCSV
 export const importCSV = async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({
-        message: "No se proporcionó un archivo CSV.",
-      });
-    }
-
-    const filePath = path.join(__dirname, "../uploads", req.file.filename);
-
+    const filePath = req.file.path;
     const results = [];
+
+    // Leer el archivo CSV y procesar sus filas
     fs.createReadStream(filePath)
       .pipe(csv())
-      .on("data", (data) => results.push(data))
-      .on("end", async () => {
-        try {
-          // Ajusta los campos del CSV y el modelo según tu necesidad
-          for (const row of results) {
-            await ApprenticeModel.create({
-              Id_Aprendiz: row.Id_Aprendiz,
-              Nom_Aprendiz: row.Nom_Aprendiz,
-              Ape_Aprendiz: row.Ape_Aprendiz,
-              Id_Ficha: row.Id_Ficha,
-              Fec_Nacimiento: row.Fec_Nacimiento,
-              Id_Ciudad: row.Id_Ciudad,
-              Lugar_Residencia: row.Lugar_Residencia,
-              Edad: row.Edad,
-              Hijos: row.Hijos,
-              Nom_Eps: row.Nom_Eps,
-              Tel_Padre: row.Tel_Padre,
-              Gen_Aprendiz: row.Gen_Aprendiz,
-              Cor_Aprendiz: row.Cor_Aprendiz,
-              Tel_Aprendiz: row.Tel_Aprendiz,
-              Tot_Memorandos: row.Tot_Memorandos,
-              Tot_Inasistencias: row.Tot_Inasistencias,
-              Patrocinio: row.Patrocinio,
-              Estado: row.Estado,
-              Nom_Empresa: row.Nom_Empresa,
-              Fot_Aprendiz: row.Fot_Aprendiz,
-              CentroConvivencia: row.CentroConvivencia,
-            });
-          }
-          res.status(200).json({
-            message: "Datos importados correctamente.",
-            data: results,
+      .on('data', (data) => {
+        results.push(data);
+      })
+      .on('end', async () => {
+        for (const row of results) {
+          const { Id_Aprendiz, Nom_Aprendiz, Ape_Aprendiz, Id_Ficha,Id_Ciudad,Edad} = row;
+
+          // Validar si la ficha existe
+          const fichaExists = await FichasModel.findOne({
+            where: { Id_Ficha: Id_Ficha },
           });
-        } catch (error) {
-          logger.error("Error importing data from CSV: ", error.message);
-          res.status(500).json({
-            message: "Error al importar los datos del CSV.",
-            error: error.message,
+
+          if (!fichaExists) {
+            return res.status(400).json({ error: `La ficha ${Id_Ficha} no existe` });
+          }
+
+
+          const aprendizExists = await ApprenticeModel.findOne({
+            where: { Id_Aprendiz: Id_Aprendiz },
+          });
+
+          if (aprendizExists) {
+            return res.status(400).json({ error: `El aprendiz con documento ${Id_Aprendiz} ya existe` });
+          }
+
+          // Crear el aprendiz en la base de datos con los campos requeridos
+          await ApprenticeModel.create({
+            Id_Aprendiz: Id_Aprendiz,
+            Nom_Aprendiz: Nom_Aprendiz,
+            Ape_Aprendiz: Ape_Aprendiz,
+            Id_Ficha: Id_Ficha,
+            Fec_Nacimiento: '2000-01-01', // Manejar fecha vacía
+            Id_Ciudad:Id_Ciudad,
+            Lugar_Residencia:'mz j ?',
+            Edad: Edad,
+            // Otros campos con valores por defecto o vacíos
+            Hijos: 'No', // Valor por defecto
+            Nom_Eps:'No',
+            Tel_Padre:'0',
+            Gen_Aprendiz: 'Otro', // Si deseas asignar un valor por defecto para el género
+            Cor_Aprendiz:'ejemplo@gmail.com',
+            Tel_Aprendiz:'0',
+            Tot_Memorandos: 0, // Valor vacío para memorandos
+            Tot_Inasistencias: 0, // Valor vacío para inasistencias
+            Patrocinio: 'No', // Por defecto
+            Estado: 'Activo', // Asignar estado por defecto
+            Nom_Empresa: '', // Si no se proporciona el nombre de la empresa
+            CentroConvivencia: 'No', // Valor por defecto para este campo
+            Foto_Aprendiz: "default.png", // Foto nula
+            // Agregar otros campos si es necesario
           });
         }
+
+        // Eliminar el archivo CSV después de procesarlo
+        fs.unlinkSync(filePath);
+
+        res.status(200).json({ message: 'CSV cargado y procesado correctamente' });
       });
   } catch (error) {
-    logger.error("Error processing CSV file: ", error.message);
-    res.status(500).json({
-      message: "Error al procesar el archivo CSV.",
-      error: error.message,
-    });
+    res.status(500).json({ error: 'Error al procesar el archivo CSV' });
   }
 };
+

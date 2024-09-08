@@ -1,9 +1,7 @@
 import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { ReactSession } from 'react-client-session';
-import { saveAs } from 'file-saver';
-import * as XLSX from 'xlsx';
+import { ReactSession } from "react-client-session";
 
 import FormTalentoHumano from "./formTalentoHumano.jsx";
 
@@ -21,10 +19,13 @@ const CrudTalentoHumano = () => {
   const [stateAddTalentoHumano, setStateAddTalentoHumano] = useState(false);
   const [alerta, setAlerta] = useState({});
   const [crearDataTable, setCrearDataTable] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData,setFormData] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
 
-  const resetForm = ()=> {
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const resetForm = () => {
     setTalentoHumano({
       Id_Talento_Humano: "",
       Nom_Talento_Humano: "",
@@ -34,9 +35,8 @@ const CrudTalentoHumano = () => {
       Tel_Talento_Humano: "",
       Id_Ficha: "",
       Estado: "",
-    })
-    setFormData({})
-  }
+    });
+  };
 
   const [talentoHumano, setTalentoHumano] = useState({
     Id_Talento_Humano: "",
@@ -48,6 +48,8 @@ const CrudTalentoHumano = () => {
     Id_Ficha: "",
     Estado: "",
   });
+  const titleModul = ["REPORTE DE TALENTO HUMANO"];
+  const titleForm = ["REGISTRAR TALENTO HUMANO"];
 
   const titles = [
     "Documento",
@@ -58,7 +60,7 @@ const CrudTalentoHumano = () => {
     "Teléfono",
     "Ficha",
     "Estado",
-    "Acciones"
+    "Acciones",
   ];
 
   const formattedData = talentoHumanoList.map((talento) => [
@@ -106,7 +108,10 @@ const CrudTalentoHumano = () => {
       },
     };
     try {
-      const respuestApi = await clienteAxios(`${URI}/${Id_Talento_Humano}`, config);
+      const respuestApi = await clienteAxios(
+        `${URI}/${Id_Talento_Humano}`,
+        config
+      );
       if (respuestApi.status === 200) {
         setTalentoHumano({
           ...respuestApi.data,
@@ -178,32 +183,6 @@ const CrudTalentoHumano = () => {
 
   const { msg } = alerta;
 
-  const prepareDataForExcel = (talentoHumano, talentoHumanoList) => {
-    return (talentoHumano.length ? talentoHumano : talentoHumanoList).map(talentoHumano => ({
-      Documento: talentoHumano.Id_Talento_Humano,
-      Nombre: talentoHumano.Nom_Talento_Humano,
-      Apellido: talentoHumano.Ape_Talento_Humano,
-      Genero: talentoHumano.Gen_Talento_Humano,
-      Correo: talentoHumano.Cor_Talento_Humano,
-      Teléfono: talentoHumano.Tel_Talento_Humano,
-      Ficha: talentoHumano.fichas ? talentoHumano.fichas.Id_Ficha : "N/A",
-      Estado: talentoHumano.Est_Talento_Humano,
-    }));
-  };
-
-  const handleExportToExcel = (talentoHumano, talentoHumanoList) => {
-    const data = prepareDataForExcel(talentoHumano, talentoHumanoList);
-    const ws = XLSX.utils.json_to_sheet(data);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Talento Humano');
-    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'Talento_Humano.xlsx');
-  };
-
-  const handleExport = () => {
-    handleExportToExcel(talentoHumano, talentoHumanoList);
-  };
-
   useEffect(() => {
     getAllTalentoHumano();
   }, []);
@@ -211,18 +190,19 @@ const CrudTalentoHumano = () => {
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
-        Gestionar Información de 
+        Gestionar Información de
         <span className="text-blue-700"> Talento Humano</span>
       </h1>
 
-      <div className="flex justify-end pb-3">
+      <div className="flex pb-3">
         <ModalWindow
           stateAddNewRow={stateAddTalentoHumano}
           setStateAddNewRow={setStateAddTalentoHumano}
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
+          toggleModal={toggleModal} // Aquí pasamos la función
+          isOpen={isOpen}
           resetForm={resetForm}
           updateTextBottom={updateTextButton}
+          titleForm={titleForm}
           form={
             <FormTalentoHumano
               buttonForm={buttonForm}
@@ -230,25 +210,14 @@ const CrudTalentoHumano = () => {
               updateTextButton={updateTextButton}
               setTalentoHumano={setTalentoHumano}
               getAllTalentoHumano={getAllTalentoHumano}
-              formData={formData}
             />
           }
         />
-
-        <button
-          onClick={handleExport}
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-        >
-          Exportar a Excel
-        </button>
       </div>
-
-      <hr />
 
       <div className="overflow-x-auto">
         <hr />
-        {msg && <Alerta alerta={alerta} />}
-        <hr />
+        {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
         {crearDataTable && (
           <WriteTable
             titles={titles}
@@ -256,8 +225,9 @@ const CrudTalentoHumano = () => {
             deleteRow={deleteTalentoHumano}
             getRow={getTalentoHumano}
             setStateAddNewRow={setStateAddTalentoHumano}
-            isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
+            toggleModal={toggleModal} // Aquí pasamos la función
+            isOpen={isOpen}
+            titleModul={titleModul}
           />
         )}
       </div>

@@ -80,9 +80,9 @@ const FormTurnoRutinario = ({
     };
 
     try {
-      let mensajeCRUD = ""
+      let mensajeCRUD = "";
       let respuestApi;
-      
+
       // Determinar si es actualización o creación
       if (buttonForm === "Actualizar") {
         respuestApi = await clienteAxios.put(
@@ -99,7 +99,7 @@ const FormTurnoRutinario = ({
           },
           config
         );
-        mensajeCRUD = "Turno Rutinario Actualizado Exitosamente"
+        mensajeCRUD = "Turno Rutinario Actualizado Exitosamente";
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
           `/turnoRutinario`,
@@ -115,22 +115,23 @@ const FormTurnoRutinario = ({
           },
           config
         );
-         mensajeCRUD = "Turno Rutinario Registrado Exitosamente"
-        getAllTurnosRutinarios();  // Actualiza la lista de turnos rutinarios
+        mensajeCRUD = "Turno Rutinario Registrado Exitosamente";
+        getAllTurnosRutinarios(); // Actualiza la lista de turnos rutinarios
       }
 
       // Manejo de respuesta exitosa
       if (respuestApi.status === 201 || respuestApi.status === 200) {
         setAlerta({
           msg: mensajeCRUD,
-          error:false
-        })
+          error: false,
+        });
         // Crear o eliminar registro de inasistencia según Ind_Asistencia
-        const turnoRutinarioId = respuestApi.data.Id_TurnoRutinario || Id_TurnoRutinario;
+        const turnoRutinarioId =
+          respuestApi.data.Id_TurnoRutinario || Id_TurnoRutinario;
         if (Ind_Asistencia === "No") {
           await crearRegistroInasistencia(turnoRutinarioId);
         } else if (Ind_Asistencia === "Si") {
-          await eliminarRegistroInasistencia(turnoRutinarioId);
+          console.warn("La Inasistencia se Borro satisfactoriamente")
         }
         getAllTurnosRutinarios();
         clearForm();
@@ -150,23 +151,24 @@ const FormTurnoRutinario = ({
     }
   };
 
-  // Eliminar registro de inasistencia
-  const eliminarRegistroInasistencia = async (Id_TurnoRutinario) => {
-    try {
-      const token = ReactSession.get("token");
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
+  // // Eliminar registro de inasistencia
+  // const eliminarRegistroInasistencia = async (Id_TurnoRutinario) => {
+  //   try {
+  //     const token = ReactSession.get("token");
+  //     const config = {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     };
 
-      await clienteAxios.delete(`/inasistencias/${Id_TurnoRutinario}`, config);
-      console.log("Registro de inasistencia eliminado exitosamente");
-    } catch (error) {
-      console.error("Error al eliminar registro de inasistencia:", error);
-    }
-  };
+  //     await clienteAxios.delete(`/inasistencias/${Id_TurnoRutinario}`, config);
+  //     console.log("Registro de inasistencia eliminado exitosamente");
+  //   } catch (error) {
+  //     console.error("Error al eliminar registro de inasistencia:", error);
+  //   }
+  // };
+
 
   // Crear registro de inasistencia
   const crearRegistroInasistencia = async (Id_TurnoRutinario) => {
@@ -186,16 +188,30 @@ const FormTurnoRutinario = ({
       };
 
       const respuestaInasistencia = await clienteAxios.post(
-        '/inasistencias',
+        "/inasistencias",
         inasistenciaData,
         config
       );
 
+      console.log("Creando registro de inasistencia con datos:", inasistenciaData); // Agrega este log
+
       if (respuestaInasistencia.status === 201) {
         console.log('Registro de inasistencia creado exitosamente');
+      // Si se registra una inasistencia, incrementamos o decrementamos Tot_Inasistencias del aprendiz
+        const action = Ind_Asistencia === "No" ? "incrementar" : "decrementar";        
+        await clienteAxios.put(
+          `/aprendiz/${Id_Aprendiz}/actualizar-inasistencia`,
+          { action },  // Enviar la acción
+          config
+        );
+        console.log('Inasistencia actualizada exitosamente');
+      }
+
+      if (respuestaInasistencia.status === 201) {
+        console.log("Registro de inasistencia creado exitosamente");
       }
     } catch (error) {
-      console.error('Error al crear registro de inasistencia:', error);
+      console.error("Error al crear registro de inasistencia:", error);
     }
   };
 
@@ -245,47 +261,40 @@ const FormTurnoRutinario = ({
 
   return (
     <>
-      <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="flex justify-center items-center">
         <form
           id="turnoRutinarioForm"
           onSubmit={sendForm}
-          className="bg-white shadow-xl rounded-lg p-10 max-w-4xl w-full"
+          className="bg-white rounded-2xl px-8 pb-6 w-full max-w-7xl"
         >
           {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
-          <h1 className="font-bold text-green-600 text-3xl uppercase text-center my-5">
-            Crear Turnos Rutinarios
-          </h1>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Fecha Inicio Turno Rutinario
+              </label>
+              <input
+                type="date"
+                id="Fec_InicioTurno"
+                value={Fec_InicioTurno}
+                onChange={(e) => setFec_InicioTurno(e.target.value)}
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              />
+            </div>
 
-
-          <div className="grid grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
-              Fecha De Inicio Turno Rutinario
-            </label>
-            <input
-              type="date"
-              id="Fec_InicioTurno"
-              value={Fec_InicioTurno}
-              onChange={(e) => setFec_InicioTurno(e.target.value)}
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
-              Fecha Fin Del Turno Rutinario
-            </label>
-            <input
-              type="date"
-              id="Fec_FinTurno"
-              value={Fec_FinTurno}
-              onChange={(e) => setFec_FinTurno(e.target.value)}
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <div className="flex items-center mb-3 space-x-4">
-            <div className="w-1/2">
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Fecha Fin Del Turno Rutinario
+              </label>
+              <input
+                type="date"
+                id="Fec_FinTurno"
+                value={Fec_FinTurno}
+                onChange={(e) => setFec_FinTurno(e.target.value)}
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              />
+            </div>
+            <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Hora Inicio
               </label>
@@ -294,11 +303,11 @@ const FormTurnoRutinario = ({
                 id="hora_inicio"
                 value={Hor_InicioTurno}
                 onChange={(e) => setHor_InicioTurno(e.target.value)}
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               />
             </div>
 
-            <div className="w-1/2">
+            <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Hora Fin
               </label>
@@ -307,75 +316,81 @@ const FormTurnoRutinario = ({
                 id="hora_fin"
                 value={Hor_FinTurno}
                 onChange={(e) => setHor_FinTurno(e.target.value)}
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               />
             </div>
-          </div>
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
-              Observaciones
-            </label>
-            <textarea
-              id="observaciones"
-              placeholder="Observaciones"
-              value={Obs_TurnoRutinario}
-              onChange={(e) => setObs_TurnoRutinario(e.target.value)}
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
-              Indicador De Asistencia
-            </label>
-            <select
-              id="ind_Asistencia"
-              value={Ind_Asistencia}
-              onChange={(e) => setInd_Asistencia(e.target.value)}
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Seleccione:</option>
-              <option value="Si">Si</option>
-              <option value="No">No</option>
-            </select>
-          </div>
 
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
-              Aprendiz
-            </label>
-            <select
-              id="Aprendiz"
-              value={Id_Aprendiz}
-              onChange={(e) => setId_Aprendiz(e.target.value)}
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Seleccione un Aprendiz:</option>
-              {Aprendiz.map((Aprendiz) => (
-                <option key={Aprendiz.Id_Aprendiz} value={Aprendiz.Id_Aprendiz}>
-                  {`${Aprendiz.Nom_Aprendiz} ${Aprendiz.Ape_Aprendiz}`}
-                </option>
-              ))}
-            </select>
-          </div>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Observaciones
+              </label>
+              <textarea
+                id="observaciones"
+                placeholder="Observaciones"
+                value={Obs_TurnoRutinario}
+                onChange={(e) => setObs_TurnoRutinario(e.target.value)}
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Indicador De Asistencia
+              </label>
+              <select
+                id="ind_Asistencia"
+                value={Ind_Asistencia}
+                onChange={(e) => setInd_Asistencia(e.target.value)}
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              >
+                <option value="">Seleccione:</option>
+                <option value="Si">Si</option>
+                <option value="No">No</option>
+              </select>
+            </div>
 
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">Unidad</label>
-            <select
-              id="unidad"
-              value={Id_Unidad}
-              onChange={(e) => setId_Unidad(e.target.value)}
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Seleccione una Unidad:</option>
-              {Unidad.map((unidad) => (
-                <option key={unidad.Id_Unidad} value={unidad.Id_Unidad}>
-                  {unidad.Nom_Unidad}
-                </option>
-              ))}
-            </select>
-          </div>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Aprendiz
+              </label>
+              <select
+                id="Aprendiz"
+                value={Id_Aprendiz}
+                onChange={(e) => setId_Aprendiz(e.target.value)}
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              >
+                <option value="">Seleccione un Aprendiz:</option>
+                {Aprendiz.map((Aprendiz) => (
+                  <option
+                    key={Aprendiz.Id_Aprendiz}
+                    value={Aprendiz.Id_Aprendiz}
+                  >
+                    {`${Aprendiz.Nom_Aprendiz} ${Aprendiz.Ape_Aprendiz}`}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div className="mt-6 flex justify-around">
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Unidad
+              </label>
+              <select
+                id="unidad"
+                value={Id_Unidad}
+                onChange={(e) => setId_Unidad(e.target.value)}
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              >
+                <option value="">Seleccione una Unidad:</option>
+                {Unidad.map((unidad) => (
+                  <option key={unidad.Id_Unidad} value={unidad.Id_Unidad}>
+                    {unidad.Nom_Unidad}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <hr className="mt-3" />
+          <div className="flex justify-around mt-2">
             <input
               type="submit"
               id="button"
@@ -392,7 +407,6 @@ const FormTurnoRutinario = ({
               className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-500 md:w-auto"
               aria-label="Limpiar"
             />
-          </div>
           </div>
         </form>
       </div>

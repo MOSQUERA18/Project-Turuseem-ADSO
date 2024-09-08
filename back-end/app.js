@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import cors from "cors";
+import checkAuth from "./src/middleware/authMiddleware.js";
 // import { app, BrowserWindow } from "electron";
 
 // import path from 'path';
@@ -27,10 +28,7 @@ import OtrosMemorandumRoutes from "./src/routes/OtrosMemorandosRoutes.js";
 import userRouter from "./src/routes/UserRoutes.js";
 import { logger } from "./src/middleware/logMiddleware.js";
 
-// import pdfRoutes from "./src/routes/pdfRoutes.js"
-// import excelRoutes from "./src/routes/excelRoutes.js"
 
-// import routespdf from "./src/routes/routespdf.js";
 
 //Models
 import cityModel from "./src/models/cityModel.js";
@@ -41,26 +39,15 @@ import AreaModel from "./src/models/areaModel.js";
 import ProgramaModel from "./src/models/programaModel.js";
 import FichasModel from "./src/models/fichasModel.js";
 import AbsenceModel from "./src/models/absenceModel.js";
-// import TurnoEspecialAprendizModel from "./src/models/turnoEspeciales_Aprendices.js";
-// import TurnoRutinarioAprendizModel from "./src/models/turnoRutinarioAprendices.js";
 import TurnoEspecialModel from "./src/models/turnoEspecialModel.js";
 import OfficialModel from "./src/models/officialModel.js";
 import TurnosRutinariosModel from "./src/models/turnoRutinarioModel.js";
 import MemorandumModel from "./src/models/memorandumModel.js";
 import OtrosMemorandumModel from "./src/models/Otros_MemorandosModel.js";
 
-// const createWindow = () => {
-//   const win = new BrowserWindow({
-//     width: 800,
-//     height: 600
-//   })
+import reportPDF from "./src/middleware/reportPdf.js";
+import reportXLSX from "./src/middleware/reportXlsx.js";
 
-//   win.loadURL('http://localhost:5173/')
-// }
-
-// app.whenReady().then(() => {
-//   createWindow()
-// })
 
 const appExpress = express();
 const PORT = process.env.PORT || 8080;
@@ -95,6 +82,9 @@ appExpress.use("/ciudades", cityRoutes);
 appExpress.use("/public/uploads/", express.static("public/uploads"));
 
 appExpress.use("/api/user", userRouter);
+
+appExpress.use("/reportPDF", checkAuth, reportPDF)
+appExpress.use("/reportXLSX", checkAuth, reportXLSX)
 
 
 

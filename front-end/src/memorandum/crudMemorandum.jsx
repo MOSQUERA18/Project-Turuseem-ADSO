@@ -3,20 +3,26 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
 import FormMemorandum from "./formMemorandum.jsx";
-import { useNavigate } from "react-router-dom";
-import DataTableMemorandum from "./dataTableMemorandum.jsx";
 
 // Icons
-import { AiOutlineMinusCircle } from "react-icons/ai";
-import { TiDocumentAdd } from "react-icons/ti";
 import Alerta from "../components/Alerta.jsx";
+import ModalWindow from "../ModalWindow/ModalWindow.jsx";
+import WriteTable from "../Tables/Data-Tables.jsx";
 
 const CrudMemorandum = () => {
   const [memorandumList, setMemorandumList] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddMemorandum, setStateAddMemorandum] = useState(false);
   const [alerta, setAlerta] = useState({});
-  const navigate = useNavigate();
+  const [crearDataTable, setCrearDataTable] = useState(false);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
+
+  // const navigate = useNavigate();
 
   const [memorandum, setMemorandum] = useState({
     Id_OtroMemorando: "",
@@ -24,6 +30,24 @@ const CrudMemorandum = () => {
     Mot_OtroMemorando: "",
     Id_Aprendiz: "",
   });
+  const titleModul = ["REPORTE DE MEMORANDOS"];
+  const titleForm = ["REGISTRAR MEMORANDOS"];
+
+  const titles = [
+    "Documento",
+    "Nombre",
+    "Apellido",
+    "Fecha Memorando",
+    "Motivo Memorando",
+    "Acciones",
+  ];
+  const formattedData = memorandumList.map((memorandum) => [
+    memorandum.Id_Aprendiz,
+    memorandum.aprendiz?.Nom_Aprendiz,
+    memorandum.aprendiz?.Ape_Aprendiz,
+    memorandum.Fec_OtroMemorando,
+    memorandum.Mot_OtroMemorando,
+  ]);
 
   useEffect(() => {
     getAllMemorandum();
@@ -41,6 +65,7 @@ const CrudMemorandum = () => {
       const respuestApi = await clienteAxios("/otrosmemorandos/", config);
       if (respuestApi.status == 200) {
         setMemorandumList(respuestApi.data);
+        setCrearDataTable(true);
       } else {
         console.log("Error: " + respuestApi.status);
       }
@@ -119,9 +144,6 @@ const CrudMemorandum = () => {
       }
     });
   };
-  const mostrarPdf = () => {
-    navigate("/admin/PdfView");
-  };
   const { msg } = alerta;
 
   return (
@@ -130,42 +152,41 @@ const CrudMemorandum = () => {
         Gestionar informacion de los{" "}
         <span className="text-blue-700">Memorandos</span>
       </h1>
-      <div className="flex justify-end pb-3">
-        <button
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-          onClick={() => {
-            setStateAddMemorandum(!stateAddMemorandum);
-          }}
-        >
-          {stateAddMemorandum ? (
-            <AiOutlineMinusCircle size={16} className="me-2" />
-          ) : (
-            <TiDocumentAdd size={16} className="me-2" />
-          )}
-          {stateAddMemorandum ? "Ocultar" : "Agregar"}
-        </button>
+      <div className="flex pb-3">
+        <ModalWindow
+          stateAddNewRow={stateAddMemorandum}
+          setStateAddNewRow={setStateAddMemorandum}
+          toggleModal={toggleModal} // Aquí pasamos la función
+          isOpen={isOpen}
+          titleForm={titleForm}
+          updateTextBottom={updateTextButton}
+          form={
+            <FormMemorandum
+              buttonForm={buttonForm}
+              memorandum={memorandum}
+              updateTextButton={updateTextButton}
+              setMemorandum={setMemorandum}
+              getAllMemorandum={getAllMemorandum}
+            />
+          }
+        />
       </div>
       <div className="overflow-x-auto">
         <hr />
         {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
-        <hr />
-        <DataTableMemorandum
-          memorandumList={memorandumList}
-          getMemorandum={getMemorandum}
-          deleteMemorandum={deleteMemorandum}
-          setStateAddMemorandum={setStateAddMemorandum}
-          mostrarPdf={mostrarPdf}
-        />
+
+        {crearDataTable && (
+          <WriteTable
+            titles={titles}
+            data={formattedData}
+            deleteRow={deleteMemorandum}
+            getRow={getMemorandum}
+            stateAddNewRow={setStateAddMemorandum}
+            toggleModal={toggleModal} // Aquí pasamos la función
+            titleModul={titleModul}
+          />
+        )}
       </div>
-      <hr />
-      {stateAddMemorandum ? (
-        <FormMemorandum
-          buttonForm={buttonForm}
-          memorandum={memorandum}
-          updateTextButton={updateTextButton}
-        />
-      ) : null}
-      <hr />
     </>
   );
 };

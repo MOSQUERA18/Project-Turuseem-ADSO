@@ -3,14 +3,11 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
 
-// import { exportToExcel } from './ExportExcel.js'
-
 import FormFichas from "./formFichas.jsx";
 import Alerta from "../components/Alerta.jsx";
 
 import WriteTable from "../Tables/Data-Tables.jsx";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
-import { Outlet } from "react-router-dom";
 
 const URI = "fichas";
 
@@ -20,9 +17,11 @@ const CrudFichas = () => {
   const [stateAddFichas, setStateAddFichas] = useState(false);
   const [alerta, setAlerta] = useState({});
   const [crearDataTable, setCrearDataTable] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData,setFormData] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
 
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
 
   const resetForm = () => {
     setFichas({
@@ -32,9 +31,8 @@ const CrudFichas = () => {
       Can_Aprendices: "",
       Id_ProgramaFormacion: "",
       Estado: "",
-    })
-    setFormData({})
-  }
+    });
+  };
 
   const [fichas, setFichas] = useState({
     Id_Ficha: "",
@@ -44,6 +42,8 @@ const CrudFichas = () => {
     Id_ProgramaFormacion: "",
     Estado: "",
   });
+  const titleModul = ["REPORTE DE FICHAS"];
+  const titleForm = ["REGISTRAR FICHAS"];
 
   const titles = [
     "Numero Ficha",
@@ -53,7 +53,7 @@ const CrudFichas = () => {
     "Programa de Formación",
     "Estado",
     "Acciones",
-  ].filter(Boolean)
+  ].filter(Boolean);
 
   const formatteData = fichasList.map((fichas) => {
     const rowData = [
@@ -61,16 +61,15 @@ const CrudFichas = () => {
       fichas.Fec_InicioEtapaLectiva,
       fichas.Fec_FinEtapaLectiva,
       fichas.Can_Aprendices,
-      fichas.programasFormacion.Nom_ProgramaFormacion,
+      fichas.programasFormacion?.Nom_ProgramaFormacion,
       fichas.Estado,
     ];
     return rowData;
-    })
+  });
 
-
-      useEffect(() => {
-        getAllFichas();
-      }, []);
+  useEffect(() => {
+    getAllFichas();
+  }, []);
 
   const getAllFichas = async () => {
     const token = ReactSession.get("token");
@@ -92,10 +91,10 @@ const CrudFichas = () => {
         });
       }
     } catch (error) {
-      // setAlerta({
-      //   msg: `No Existen Fichas Registradas!`,
-      //   error: true,
-      // });
+      setAlerta({
+        msg: `No Existen Fichas Registradas!`,
+        error: true,
+      });
       console.error(error);
     }
   };
@@ -182,69 +181,50 @@ const CrudFichas = () => {
 
   const { msg } = alerta;
 
-  // Función para manejar la exportación a Excel
-  // const handleExportToExcel = () => {
-  //   exportToExcel([], fichasList); // Pasar [] si `fichas` está vacío
-  // };
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
-      Gestionar Informacion de las 
-      <span className="text-blue-700"> Fichas</span>
+        Gestionar Informacion de las
+        <span className="text-blue-700"> Fichas</span>
       </h1>
-      <div className="flex justify-end pb-3">
-        
-        {/* <button
-          onClick={handleExportToExcel}
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-        >
-          Exportar a Excel
-        </button> */}
-      </div>
-      <div className="flex justify-end pb-3">
-      <hr />
-      <ModalWindow
+      <div className="flex pb-3">
+        <hr />
+        <ModalWindow
           stateAddNewRow={stateAddFichas}
           setStateAddNewRow={setStateAddFichas}
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
+          toggleModal={toggleModal} // Aquí pasamos la función
+          isOpen={isOpen}
           resetForm={resetForm}
           updateTextBottom={updateTextButton}
-form={
-        <FormFichas
-          buttonForm={buttonForm}
-          fichas={fichas}
-          updateTextButton={updateTextButton}
-          setUnidad={setFichas}
-          getAllFichas={getAllFichas}
-          formData={formData} 
-          setFormData={setFormData} 
+          titleForm={titleForm}
+          form={
+            <FormFichas
+              buttonForm={buttonForm}
+              fichas={fichas}
+              updateTextButton={updateTextButton}
+              setUnidad={setFichas}
+              getAllFichas={getAllFichas}
+              toggleModal={toggleModal} // Aquí pasamos la función
+              isOpen={isOpen}
+            />
+          }
         />
-}
-/>
-
-</div>
-
-
+      </div>
       <div className="overflow-x-auto">
         <hr />
-        {msg && <Alerta alerta={alerta} />}
-        
+        {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
         {crearDataTable && (
           <WriteTable
-          titles={titles}
-          data={formatteData}
-          deleteRow={deleteFichas}
-          getRow={getFicha}
-          setStateAddNewRow={setStateAddFichas}
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
+            titles={titles}
+            data={formatteData}
+            deleteRow={deleteFichas}
+            getRow={getFicha}
+            setStateAddNewRow={setStateAddFichas}
+            toggleModal={toggleModal} // Aquí pasamos la función
+            titleModul={titleModul}
           />
         )}
-        </div>
-
-
-      <Outlet />
+      </div>
     </>
   );
 };
