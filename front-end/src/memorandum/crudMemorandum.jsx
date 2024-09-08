@@ -30,9 +30,8 @@ const CrudMemorandum = () => {
     Mot_OtroMemorando: "",
     Id_Aprendiz: "",
   });
-  const titleModul = [
-    "REPORTE DE MEMORANDOS"
-  ]
+  const titleModul = ["REPORTE DE MEMORANDOS"];
+  const titleForm = ["REGISTRAR MEMORANDOS"];
 
   const titles = [
     "Documento",
@@ -145,9 +144,6 @@ const CrudMemorandum = () => {
       }
     });
   };
-  // const mostrarPdf = () => {
-  //   navigate("/admin/PdfView");
-  // };
   const { msg } = alerta;
 
   return (
@@ -156,13 +152,13 @@ const CrudMemorandum = () => {
         Gestionar informacion de los{" "}
         <span className="text-blue-700">Memorandos</span>
       </h1>
-      <div className="flex justify-end pb-3">
+      <div className="flex pb-3">
         <ModalWindow
           stateAddNewRow={stateAddMemorandum}
           setStateAddNewRow={setStateAddMemorandum}
           toggleModal={toggleModal} // Aquí pasamos la función
           isOpen={isOpen}
-          // resetForm={resetForm}
+          titleForm={titleForm}
           updateTextBottom={updateTextButton}
           form={
             <FormMemorandum
@@ -178,7 +174,7 @@ const CrudMemorandum = () => {
       <div className="overflow-x-auto">
         <hr />
         {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
-        <hr />
+
         {crearDataTable && (
           <WriteTable
             titles={titles}

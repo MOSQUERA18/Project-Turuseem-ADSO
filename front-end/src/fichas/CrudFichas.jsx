@@ -8,7 +8,6 @@ import Alerta from "../components/Alerta.jsx";
 
 import WriteTable from "../Tables/Data-Tables.jsx";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
-import { Outlet } from "react-router-dom";
 
 const URI = "fichas";
 
@@ -43,9 +42,7 @@ const CrudFichas = () => {
     Id_ProgramaFormacion: "",
     Estado: "",
   });
-  const titleModul = [
-    "REPORTE DE FICHAS"
-  ]
+  const titleModul = ["REPORTE DE FICHAS"];
 
   const titles = [
     "Numero Ficha",
@@ -183,25 +180,13 @@ const CrudFichas = () => {
 
   const { msg } = alerta;
 
-  // Función para manejar la exportación a Excel
-  // const handleExportToExcel = () => {
-  //   exportToExcel([], fichasList); // Pasar [] si `fichas` está vacío
-  // };
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar Informacion de las
         <span className="text-blue-700"> Fichas</span>
       </h1>
-      <div className="flex justify-end pb-3">
-        {/* <button
-          onClick={handleExportToExcel}
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-        >
-          Exportar a Excel
-        </button> */}
-      </div>
-      <div className="flex justify-end pb-3">
+      <div className="flex pb-3">
         <hr />
         <ModalWindow
           stateAddNewRow={stateAddFichas}
@@ -223,11 +208,9 @@ const CrudFichas = () => {
           }
         />
       </div>
-
       <div className="overflow-x-auto">
         <hr />
-        {msg && <Alerta alerta={alerta} />}
-
+        {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
         {crearDataTable && (
           <WriteTable
             titles={titles}
@@ -240,8 +223,6 @@ const CrudFichas = () => {
           />
         )}
       </div>
-
-      <Outlet />
     </>
   );
 };

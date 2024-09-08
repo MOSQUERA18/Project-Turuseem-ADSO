@@ -194,7 +194,7 @@ const CrudFuncionarios = () => {
         Gestionar Informacion de los
         <span className="text-blue-700"> Funcionarios</span>
       </h1>
-      <div className="flex justify-end pb-3">
+      <div className="flex pb-3">
         <ModalWindow
           stateAddNewRow={stateAddFuncionario}
           setStateAddNewRow={setStateAddFuncionario}
@@ -216,7 +216,6 @@ const CrudFuncionarios = () => {
       <div className="overflow-x-auto">
         <hr />
         {msg && <Alerta alerta={alerta} />}
-        <hr />
         {crearDataTable && (
           <WriteTable
             titles={titles}

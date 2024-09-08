@@ -161,13 +161,19 @@ function WriteTable({
           infoEmpty: "No hay registros disponibles",
           infoFiltered: "(Filtrado de _MAX_ registros totales)",
         },
+        drawCallback: () => {
+          $("#TableDinamic td, #TableDinamic th").css({
+            "text-align": "center",
+            "vertical-align": "middle",
+          });
+        },
       });
     }
   }, []);
 
   return (
     <>
-      <div className="relative overflow-x-auto container">
+      <div className="relative overflow-x-auto container ">
         <div className="flex justify-end px-5">
           <button
             type="button"

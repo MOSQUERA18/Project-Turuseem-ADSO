@@ -47,7 +47,7 @@ const CrudUnidades = () => {
     "REPORTE DE UNIDADES"
   ]
   const titles = [
-    "Identificador de Unidad",
+    "ID",
     "Nombre Unidad",
     "Hora Apertura",
     "Hora Cierre",
@@ -188,7 +188,7 @@ const CrudUnidades = () => {
         Gestionar Informacion de las{" "}
         <span className="text-blue-700">Unidades</span>
       </h1>
-      <div className="flex justify-end pb-3">
+      <div className="flex pb-3">
         <ModalWindow
           stateAddNewRow={stateAddUnidad}
           setStateAddNewRow={setStateAddUnidad}
@@ -213,7 +213,6 @@ const CrudUnidades = () => {
       <div className="overflow-x-auto">
         <hr />
         {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
-        <hr />
         {crearDataTable && (
           <WriteTable
             titles={titles}

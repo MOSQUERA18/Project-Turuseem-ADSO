@@ -190,14 +190,7 @@ const CrudPrograma = () => {
         Gestionar Informacion de los{" "}
         <span className="text-blue-700"> Programas de Formacion</span>
       </h1>
-
-      {/* <button
-          onClick={handleExportToExcel}
-          className="bg-green-700 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-        >
-          Exportar a Excel
-        </button> */}
-      <div className="flex justify-end pb-3">
+      <div className="flex pb-3">
         <ModalWindow
           stateAddNewRow={stateAddPrograma}
           setStateAddNewRow={setStateAddPrograma}
@@ -218,6 +211,7 @@ const CrudPrograma = () => {
       </div>
 
       <div className="overflow-x-auto">
+        <hr />
         {msg && <Alerta alerta={alerta} />}
 
         {crearDataTable && (

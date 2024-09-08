@@ -23,17 +23,9 @@ const CrudFuncionarios = () => {
     Mot_Inasistencia: "",
     Id_TurnoRutinario: "",
   });
-  const titleModul = [
-    "REPORTE DE INASISTENCIAS"
-  ]
+  const titleModul = ["REPORTE DE INASISTENCIAS"];
 
-  const titles = [
-    "ID",
-    "Fecha",
-    "Motivo",
-    "Turno Rutinario",
-    "Acciones",
-  ];
+  const titles = ["ID", "Fecha", "Motivo", "Turno Rutinario", "Acciones"];
   const formattedData = inasistenciaList.map((inasistencia) => [
     inasistencia.Id_Inasistencia,
     inasistencia.Fec_Inasistencia,
@@ -57,7 +49,7 @@ const CrudFuncionarios = () => {
       const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setInasistenciaList(respuestApi.data);
-        setCrearDataTable(true)
+        setCrearDataTable(true);
       } else {
         setAlerta({
           msg: `Error al cargar los registros!`,
@@ -153,15 +145,7 @@ const CrudFuncionarios = () => {
     });
   };
 
-  // const updateTextButton = (text) => {
-  //   setButtonForm(text);
-  // };
-
   const { msg } = alerta;
-
-  // const handleExportToExcel = () => {
-  //   exportToExcel([], inasistenciaList); // Pasar [] si `programa` está vacío
-  // };
 
   return (
     <>
@@ -174,14 +158,13 @@ const CrudFuncionarios = () => {
       <div className="overflow-x-auto">
         <hr />
         {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
-        <hr />
         {crearDataTable && (
-          <WriteTable 
-          titles={titles}
-          data={formattedData}
-          deleteRow={deleteInasistencia}
-          getRow={getInasistencia}
-          titleModul={titleModul}
+          <WriteTable
+            titles={titles}
+            data={formattedData}
+            deleteRow={deleteInasistencia}
+            getRow={getInasistencia}
+            titleModul={titleModul}
           />
         )}
       </div>
