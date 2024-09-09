@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
 
-import { exportToExcel } from './ExportExcel.js'; 
+
 
 import FormFuncionarios from "./formFuncionarios.jsx";
 import Alerta from "../components/Alerta.jsx";
@@ -20,11 +20,13 @@ const CrudFuncionarios = () => {
   const [stateAddFuncionario, setStateAddFuncionario] = useState(false);
   const [alerta, setAlerta] = useState({});
   const [crearDataTable, setCrearDataTable] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData,setFormData] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
 
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
 
-  const resetForm =()=> {
+  const resetForm = () => {
     setFuncionario({
       Id_Funcionario: "",
       Nom_Funcionario: "",
@@ -33,9 +35,8 @@ const CrudFuncionarios = () => {
       Tel_Funcionario: "",
       Estado: "",
       Cargo: "",
-    })
-    setFormData({})
-  }
+    });
+  };
 
   const [funcionario, setFuncionario] = useState({
     Id_Funcionario: "",
@@ -46,6 +47,9 @@ const CrudFuncionarios = () => {
     Estado: "",
     Cargo: "",
   });
+  const titleModul = ["REPORTE DE FUNCIONARIOS"];
+  const titleForm = ["REGISTRAR FUNCIONARIOS"];
+
 
   const titles = [
     "Documento",
@@ -55,7 +59,7 @@ const CrudFuncionarios = () => {
     "Teléfono",
     "Estado",
     "Cargo",
-    "Acciones"
+    "Acciones",
   ];
 
   const formattedData = funcionarioList.map((funcionario) => [
@@ -65,7 +69,7 @@ const CrudFuncionarios = () => {
     funcionario.Genero,
     funcionario.Tel_Funcionario,
     funcionario.Estado,
-    funcionario.Cargo
+    funcionario.Cargo,
   ]);
 
   useEffect(() => {
@@ -110,7 +114,10 @@ const CrudFuncionarios = () => {
       },
     };
     try {
-      const respuestApi = await clienteAxios.get(`/${URI}/${Id_Funcionario}`, config);
+      const respuestApi = await clienteAxios.get(
+        `/${URI}/${Id_Funcionario}`,
+        config
+      );
       if (respuestApi.status === 200) {
         setFuncionario({
           ...respuestApi.data,
@@ -129,7 +136,7 @@ const CrudFuncionarios = () => {
       console.error(error);
     }
   };
-  
+
   const deleteFuncionario = (Id_Funcionario) => {
     Swal.fire({
       title: "¿Estas seguro?",
@@ -182,24 +189,22 @@ const CrudFuncionarios = () => {
 
   const { msg } = alerta;
 
-  const handleExportToExcel = () => {
-    exportToExcel([], funcionarioList);
-  };
 
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
-        Gestionar Informacion de los 
+        Gestionar Informacion de los
         <span className="text-blue-700"> Funcionarios</span>
       </h1>
-      <div className="flex justify-end pb-3">
+      <div className="flex pb-3">
         <ModalWindow
           stateAddNewRow={stateAddFuncionario}
           setStateAddNewRow={setStateAddFuncionario}
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
+          toggleModal={toggleModal} // Aquí pasamos la función
+          isOpen={isOpen}
           resetForm={resetForm}
           updateTextBottom={updateTextButton}
+          titleForm={titleForm}
           form={
             <FormFuncionarios
               buttonForm={buttonForm}
@@ -207,21 +212,13 @@ const CrudFuncionarios = () => {
               updateTextButton={updateTextButton}
               setFuncionario={setFuncionario}
               getAllFuncionarios={getAllFuncionarios}
-              formData={formData}
             />
           }
         />
-        <button
-          onClick={handleExportToExcel}
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-1 flex items-center hover:bg-green-300"
-        >
-          Exportar a Excel
-        </button>
       </div>
       <div className="overflow-x-auto">
         <hr />
         {msg && <Alerta alerta={alerta} />}
-        <hr />
         {crearDataTable && (
           <WriteTable
             titles={titles}
@@ -229,8 +226,9 @@ const CrudFuncionarios = () => {
             deleteRow={deleteFuncionario}
             getRow={getFuncionario}
             setStateAddNewRow={setStateAddFuncionario}
-            isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
+            toggleModal={toggleModal} // Aquí pasamos la función
+            isOpen={isOpen}
+            titleModul={titleModul}
           />
         )}
       </div>

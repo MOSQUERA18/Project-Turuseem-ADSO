@@ -210,24 +210,31 @@ export const deleteMemorandum = async (req, res) => {
   }
 };
 
-export const generateMemorandumPdf = (memorandum, totalMemorandums) => {
+// Controlador para generar un PDF de memorando
+export const generateMemorandumPdf = (memorandum, totalMemorandums, res) => {
   try {
-    const { nombre, fecha, contenido } = memorandum;
+    // Accedemos a los datos del memorandum y sus asociaciones
     const { inasistencia } = memorandum;
     const { turnorutinario } = inasistencia;
     const { aprendiz, unidad } = turnorutinario;
+
+    // Ruta para acceder a la plantilla HTML
     const raiz = process.cwd() + "\\src";
 
+    // Leemos la plantilla HTML
     const plantillaHtml = fs.readFileSync(
       `${raiz}/public/plantillas/plantilla-memorando.html`,
       "utf-8"
     );
+
+    // Generamos la fecha actual
     const hoy = new Date();
     const dia = hoy.getDate();
     const mes = hoy.getMonth() + 1;
     const año = hoy.getFullYear();
     const fechaActual = `${dia}/${mes}/${año}`;
 
+    // Reemplazamos los marcadores en la plantilla con datos reales
     const htmlContent = plantillaHtml
       .replace("{{FechaActual}}", fechaActual)
       .replace("{{NumeroMemorando}}", totalMemorandums)
@@ -236,15 +243,22 @@ export const generateMemorandumPdf = (memorandum, totalMemorandums) => {
       .replace("{{FichaNo}}", aprendiz.FichaNo)
       .replace("{{UnidadAsignada}}", unidad.NombreUnidad);
 
+    // Creamos el PDF a partir del contenido HTML
     pdf.create(htmlContent).toBuffer((err, buffer) => {
       if (err) {
+        // Manejamos el error al generar el PDF
+        logger.error("Error generating PDF: ", err.message);
         return res.status(500).json({ error: err.message });
       }
+
+      // Convertimos el PDF a base64 para su respuesta
       const base64 = buffer.toString("base64");
       return res.status(200).json({ Reporte: base64 });
     });
   } catch (error) {
+    // Capturamos cualquier otro error durante el proceso
     logger.error("Error generating PDF: ", error.message);
     return res.status(500).json({ message: "Error al generar el PDF." });
   }
 };
+

@@ -11,7 +11,7 @@ import { Outlet } from "react-router-dom";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
 
-// import { exportToExcel } from './exportExcel.js'; 
+// import { exportToExcel } from './exportExcel.js';
 
 const URI = "programa";
 
@@ -21,26 +21,27 @@ const CrudPrograma = () => {
   const [stateAddPrograma, setStateAddPrograma] = useState(false);
   const [alerta, setAlerta] = useState({});
   const [crearDataTable, setCrearDataTable] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData,setFormData] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
 
-const resetForm = () => {
-  setPrograma({
-    Nom_ProgramaFormacion: "",
-    Tip_ProgramaFormacion: "",
-    Id_Area: "",
-  });
-  setFormData({})
-}
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
 
+  const resetForm = () => {
+    setPrograma({
+      Nom_ProgramaFormacion: "",
+      Tip_ProgramaFormacion: "",
+      Id_Area: "",
+    });
+  };
 
   const [programa, setPrograma] = useState({
     Nom_ProgramaFormacion: "",
     Tip_ProgramaFormacion: "",
     Id_Area: "",
   });
-
-  //const shouldShowPhoto = apprenticeList.some(row => row.Foto_Aprendiz !== undefined);
+  const titleModul = ["REPORTE DE PROGRAMAS DE FORMACION"];
+  const titleForm = ["REGISTRAR PROGRAMAS DE FORMACION"];
 
   const titles = [
     "Documento",
@@ -48,17 +49,17 @@ const resetForm = () => {
     "Tipo del Programa",
     "Área",
     "Acción",
-  ].filter(Boolean)
+  ].filter(Boolean);
 
   const formatteData = programaList.map((programa) => {
     const rowData = [
-    programa.Id_ProgramaFormacion,
-    programa.Nom_ProgramaFormacion,
-    programa.Tip_ProgramaFormacion,
-    programa.areas.Nom_Area,
-  ];
-  return rowData;
-  })
+      programa.Id_ProgramaFormacion,
+      programa.Nom_ProgramaFormacion,
+      programa.Tip_ProgramaFormacion,
+      programa.areas?.Nom_Area,
+    ];
+    return rowData;
+  });
 
   useEffect(() => {
     getAllProgramas();
@@ -102,7 +103,7 @@ const resetForm = () => {
       },
     };
     try {
-      const respuestApi = await clienteAxios(
+      const respuestApi = await clieteAxios(
         `${URI}/${Id_ProgramaFormacion}`,
         config
       );
@@ -177,64 +178,50 @@ const resetForm = () => {
 
   const { msg } = alerta;
 
-  // const handleExportToExcel = () => {
-  //   exportToExcel([], programaList); // Pasar [] si `programa` está vacío
-  // };
-
   return (
     <>
-    <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7"> Gestionar Informacion de los <span className="text-blue-700"> Programas de Formacion</span></h1>
-      
-
-        {/* <button
-          onClick={handleExportToExcel}
-          className="bg-green-700 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-        >
-          Exportar a Excel
-        </button> */}
-<div className="flex justify-end pb-3">
-      <ModalWindow
+      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+        {" "}
+        Gestionar Informacion de los{" "}
+        <span className="text-blue-700"> Programas de Formacion</span>
+      </h1>
+      <div className="flex pb-3">
+        <ModalWindow
           stateAddNewRow={stateAddPrograma}
           setStateAddNewRow={setStateAddPrograma}
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
           resetForm={resetForm}
+          toggleModal={toggleModal} // Aquí pasamos la función
+          isOpen={isOpen}
           updateTextBottom={updateTextButton}
-form={ 
-        <FormProgramaFormacion
-          buttonForm={buttonForm}
-          programa={programa}
-          updateTextButton={updateTextButton}
-          setPrograma={setPrograma}
-          getAllProgramas={getAllProgramas}
-          formData={formData} 
-          setFormData={setFormData} 
+          titleForm={titleForm}
+          form={
+            <FormProgramaFormacion
+              buttonForm={buttonForm}
+              programa={programa}
+              updateTextButton={updateTextButton}
+              setPrograma={setPrograma}
+              getAllProgramas={getAllProgramas}
+            />
+          }
         />
-}
-/>
+      </div>
 
-</div>
-
-
-
-
-<div className="overflow-x-auto">
-        {msg && <Alerta alerta={alerta} />}
+      <div className="overflow-x-auto">
+        <hr />
+        {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
 
         {crearDataTable && (
           <WriteTable
-          titles={titles}
-          data={formatteData}
-          deleteRow={deletePrograma}
-          getRow={getPrograma}
-          setStateAddNewRow={setStateAddPrograma}
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
+            titles={titles}
+            data={formatteData}
+            deleteRow={deletePrograma}
+            getRow={getPrograma}
+            setStateAddNewRow={setStateAddPrograma}
+            toggleModal={toggleModal} // Aquí pasamos la función
+            titleModul={titleModul}
           />
         )}
-
-</div>
-      
+      </div>
 
       <Outlet />
     </>

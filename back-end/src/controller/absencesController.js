@@ -134,21 +134,25 @@ export const updateAbsence = async (req, res) => {
   }
 };
 
-const {Id_TurnoRutinario} = TurnoRutinarioModel;
+
 
 export const deleteAbsence = async (req, res) => {
   try {
-    // Se intenta eliminar la inasistencia basada en el ID de TurnoRutinario
+    const { Id_TurnoRutinario } = req.params;
+
+    // Asegúrate de que Id_TurnoRutinario no sea undefined o null
+    if (!Id_TurnoRutinario) {
+      return res.status(400).json({ message: "Id_TurnoRutinario es requerido" });
+    }
+
     const result = await AbsenceModel.destroy({
       where: { Id_TurnoRutinario: req.params.Id_TurnoRutinario },
     });
 
-    // Si no se elimina ninguna fila, significa que no se encontró la inasistencia
     if (result === 0) {
       return res.status(404).json({ message: "Inasistencia no encontrada" });
     } else {
-      // Si la eliminación es exitosa, se retorna un mensaje de éxito
-      return res.json({ message: "Inasistencia eliminada correctamente" });
+      res.json({ message: "Inasistencia eliminada correctamente" });
     }
   } catch (error) {
     // Manejo de errores y registro en logs
