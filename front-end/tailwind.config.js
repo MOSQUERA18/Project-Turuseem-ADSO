@@ -21,6 +21,7 @@ export default {
           400: "#000000",
         },
         gray: {
+          500: "#000000",
           800: "#455d88", //Boton modulos Seleccionar Archivo
           600: "#000000",
         },
