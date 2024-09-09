@@ -47,6 +47,7 @@ import OtrosMemorandumModel from "./src/models/Otros_MemorandosModel.js";
 
 import reportPDF from "./src/middleware/reportPdf.js";
 import reportXLSX from "./src/middleware/reportXlsx.js";
+import generateSQL from "./src/middleware/exportSql.js";
 
 
 const appExpress = express();
@@ -85,6 +86,7 @@ appExpress.use("/api/user", userRouter);
 
 appExpress.use("/reportPDF", checkAuth, reportPDF)
 appExpress.use("/reportXLSX", checkAuth, reportXLSX)
+appExpress.use("/exportsSQL", checkAuth, generateSQL)
 
 
 

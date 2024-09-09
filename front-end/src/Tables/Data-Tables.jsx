@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ReactSession } from "react-client-session";
 import $ from "jquery";
 import DataTable from "datatables.net-dt";
@@ -13,6 +13,7 @@ import { FaRegFilePdf } from "react-icons/fa6";
 import { BsFiletypeXlsx } from "react-icons/bs";
 import { BsFiletypeSql } from "react-icons/bs";
 import clienteAxios from "../config/axios";
+import { MdOutlineDownloading } from "react-icons/md";
 
 //pidan de parametros los titulos y la data
 function WriteTable({
@@ -23,8 +24,10 @@ function WriteTable({
   setStateAddNewRow,
   toggleModal,
   titleModul,
+  tableName
 }) {
   const tableRef = useRef(null);
+  const [loading, setLoading] = useState(false);
 
   const exportPDF = async () => {
     try {
@@ -146,6 +149,69 @@ function WriteTable({
     }
   };
 
+  const exportSQL = () => {
+    const table = document.getElementById("TableDinamic");
+    const rows = table.querySelectorAll("tbody tr");
+
+    // Capturar los nombres de las columnas (los headers de la tabla)
+    const headers = Array.from(table.querySelectorAll("thead th")).map(
+      (th) => th.innerText
+    );
+
+    const data = Array.from(rows).map((row) => {
+      const cells = row.querySelectorAll("td");
+      let rowData = {};
+      cells.forEach((cell, index) => {
+        rowData[headers[index]] = cell.innerText;
+      });
+      return rowData;
+    });
+
+    return data;
+  };
+
+  const handleEsportSQL = async () => {
+    setLoading(true);
+
+    const tableData = exportSQL();
+
+    const dataValues = tableData.map((row) => Object.values(row))
+    const payload = {
+      tableName: tableName,
+      data: dataValues,
+    };
+    const token = ReactSession.get("token");
+
+    // Validar si el token es válido
+    if (!token) {
+      console.error("Token no disponible.");
+      return;
+    }
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await clienteAxios.post("/exportsSQL", payload, config);
+
+      const { base64SQL } = response.data;
+
+      const link = document.createElement("a");
+      link.href = `data:application/sql;base64,${base64SQL}`;
+      link.download = `${tableName}.sql`;
+      link.click();
+
+      console.log("Archivo SQL descargado correctamente");
+    } catch (error) {
+      console.error("Error al exportar el archivo SQL:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   //table
   useEffect(() => {
     // Verifica si el DataTable ya está inicializado
@@ -194,10 +260,10 @@ function WriteTable({
           <button
             type="button"
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mx-1 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4"
-            // onClick={handleGetInnerHTML}
+            onClick={handleEsportSQL}
             title="Export SQL"
           >
-            <BsFiletypeSql size={17} />
+            {loading ? <MdOutlineDownloading size={17} /> :<BsFiletypeSql size={17} />}
           </button>
         </div>
         <div className="overflow-x-auto">

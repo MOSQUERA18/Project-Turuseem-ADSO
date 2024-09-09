@@ -81,6 +81,7 @@ const CrudApprentices = () => {
   );
   const titleModul = ["REPORTE DE APRENDICES"];
   const titleForm = ["REGISTRAR APRENDICES"];
+  const tableName = "Aprendices"
   const titles = [
     "Documento",
     "Nombres",
@@ -336,6 +337,8 @@ const CrudApprentices = () => {
             setIsOpen={setIsOpen}
             toggleModal={toggleModal} // Aquí pasamos la función
             titleModul={titleModul}
+            tableName={tableName}
+
           />
         )}
       </div>
