@@ -21,7 +21,10 @@ export default {
       },
       borderColor: {
         white: "#1C75BC"
-      }
+      },
+      border: {
+        600: "#1c1cff"
+     }
     },
   },
   plugins: [
