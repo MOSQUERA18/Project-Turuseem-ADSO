@@ -2,9 +2,10 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "index.html", "./src/**/*.jsx",
+    "index.html",
+    "./src/**/*.jsx",
     "./src/**/*.{js,jsx,ts,tsx}",
-    ".node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}"
+    ".node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
     extend: {
@@ -17,19 +18,17 @@ export default {
           700: "#2318ea", //Botono DescargarCSV modulos
         },
         stone: {
-          400: "#000000"
+          400: "#000000",
         },
         gray: {
-          800: "#455d88", //Boton modulos Seleccionar Archivo 
+          800: "#455d88", //Boton modulos Seleccionar Archivo
+          600: "#000000",
         },
-      },  
+      },
       textColor: {
         stone: "#000000",
       },
-    },
+    },
   },
-  plugins: [
-    require('flowbite/plugin')
-  ],
-}
-
+  plugins: [require("flowbite/plugin")],
+};
