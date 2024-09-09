@@ -8,10 +8,7 @@ import FormUnidades from "./formUnidades.jsx";
 import Alerta from "../components/Alerta.jsx";
 // import DataTableUnit from "./dataTableUnit.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
-
-import { IoMdPersonAdd } from "react-icons/io";
-import { AiOutlineMinusCircle } from "react-icons/ai";
-import { Outlet } from "react-router-dom";
+import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
 const URI = "unidades";
 
@@ -23,6 +20,20 @@ const CrudUnidades = () => {
   const [stateAddUnidad, setStateAddUnidad] = useState(false);
   const [alerta, setAlerta] = useState({});
   const [crearDataTable, setCrearDataTable] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData,setFormData] = useState({});
+
+
+  const resetForm = () =>{
+   setUnidad({
+    Nom_Unidad : "",
+    Hor_Apertura: "",
+    Hor_Cierre:"",
+    Estado:"",
+    Id_Area:""
+   });
+   setFormData({})
+  }
 
   const [unidad, setUnidad] = useState({
     Nom_Unidad: "",
@@ -32,8 +43,8 @@ const CrudUnidades = () => {
     Id_Area: "",
   });
   const titles = [
-    "ID",
-    "Nombre",
+    "Identificador de Unidad",
+    "Nombre Unidad",
     "Hora Apertura",
     "Hora Cierre",
     "Estado",
@@ -49,9 +60,7 @@ const CrudUnidades = () => {
     unidad.areas?.Nom_Area || "N/A", // Area (usando "N/A" si areas o Nom_Area es undefined)
   ]);
 
-  useEffect(() => {
-    getAllUnidades();
-  }, []);
+
 
   const getAllUnidades = async () => {
     const token = ReactSession.get("token");
@@ -167,6 +176,10 @@ const CrudUnidades = () => {
     exportToExcel([], unidadList); // Pasar [] si `unidad` está vacío
   };
 
+  useEffect(() => {
+      getAllUnidades()
+  }, []);
+
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
@@ -174,25 +187,32 @@ const CrudUnidades = () => {
         <span className="text-blue-700"> Unidades</span> 
       </h1>
       <div className="flex justify-end pb-3">
-        <button
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-          onClick={() => {
-            setStateAddUnidad(!stateAddUnidad);
-          }}
-        >
-          {stateAddUnidad ? (
-            <AiOutlineMinusCircle size={16} className="me-2" />
-          ) : (
-            <IoMdPersonAdd size={16} className="me-2" />
-          )}
-          {stateAddUnidad ? "Ocultar" : "Agregar"}
-        </button>
+        <ModalWindow
+          stateAddNewRow={stateAddUnidad}
+          setStateAddNewRow={setStateAddUnidad}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          resetForm={resetForm}
+          updateTextBottom={updateTextButton}
+          form={
+            <FormUnidades
+              buttonForm={buttonForm}
+              unidad={unidad}
+              updateTextButton={updateTextButton}
+              setUnidad={setUnidad}
+              getAllUnidades={getAllUnidades}
+              formData={formData}
+            />
+          }
+        />
+
         <button
           onClick={handleExportToExcel}
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
+          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-1 flex items-center hover:bg-green-300"
         >
           Exportar a Excel
         </button>
+
       </div>
       <div className="overflow-x-auto">
         <hr />
@@ -205,21 +225,11 @@ const CrudUnidades = () => {
             deleteRow={deleteUnidad}
             getRow={getUnidad}
             setStateAddNewRow={setStateAddUnidad}
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
           />
         )}
       </div>
-      <hr />
-      {stateAddUnidad ? (
-        <FormUnidades
-          buttonForm={buttonForm}
-          unidad={unidad}
-          updateTextButton={updateTextButton}
-          setUnidad={setUnidad}
-          getAllUnidades={getAllUnidades}
-        />
-      ) : null}
-      <hr />
-      <Outlet />
     </>
   );
 };

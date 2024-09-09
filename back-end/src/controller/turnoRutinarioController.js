@@ -243,10 +243,8 @@ export const getTurnoRutinariosForAprendiz = async (req, res) => {
 
     // Verifico si se encontraron turnos rutinarios para el aprendiz.
     if (turnoRutinarioForAprendiz.length === 0) {
-      res.status(404).json({
-        message: "No se encontraron turnos para el aprendiz.",
-      });
-      return; // Uso de return para salir de la función después de enviar la respuesta.
+      res.status(404).json({ message: "No Tienes Turno Programado" });
+      return;
     }
 
     res.status(200).json(turnoRutinarioForAprendiz);

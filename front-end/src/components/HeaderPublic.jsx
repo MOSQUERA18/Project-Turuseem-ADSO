@@ -30,7 +30,7 @@ export default function HeaderPublic() {
         <nav className="flex justify-between">
           <div className="flex items-center space-x-3 lg:pr-16 pr-6">
             <img src="Public/IMG/LOGOTURUSEEM.png" className="w-11 drop-shadow-2xl" />
-            <h2 className="font-bold text-2xl leading-6 text-white ">
+            <h2 className="font-bold text-2xl leading-6 text-black ">
               TURUSEEM
             </h2>
           </div>
@@ -39,8 +39,8 @@ export default function HeaderPublic() {
               onClick={() => selected(0)}
               className={`${
                 style[0]
-                  ? "text-white border-b-4 border-b-green-600"
-                  : "text-white bg-green-500"
+                  ? "text-black border-b-4 border-blue-700"
+                  : "text-black bg-green-500"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
               Home
@@ -49,8 +49,8 @@ export default function HeaderPublic() {
               onClick={() => selected(1)}
               className={`${
                 style[1]
-                  ? "text-white border-b-4 border-b-green-600"
-                  : "text-white bg-green-500"
+                  ? "text-black border-b-4 border-blue-700"
+                  : "text-black bg-green-500"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
               Contacto
@@ -59,8 +59,8 @@ export default function HeaderPublic() {
               onClick={() => selected(2)}
               className={`${
                 style[2]
-                  ? "text-white border-b-4 border-b-green-600"
-                  : "text-white bg-green-500"
+                  ? "text-black border-b-4 border-blue-700"
+                  : "text-black bg-green-500"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
               Consultar Turno Rutinario
@@ -69,15 +69,25 @@ export default function HeaderPublic() {
               onClick={() => selected(3)}
               className={`${
                 style[3]
-                  ? "text-white border-b-4 border-b-green-600"
-                  : "text-white bg-green-500"
+                  ? "text-black border-b-4 border-blue-700"
+                  : "text-black bg-green-500"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
               Manual Consulta Turno
             </Link>
+            <Link to='consultarespecial'
+              onClick={() => selected(4)}
+              className={`${
+                style[4]
+                  ? "text-black border-b-4 border-blue-700"
+                  : "text-black bg-green-500"
+              } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
+            >
+              Consultar Turno Especial
+            </Link>
           </ul>
           <div className=" flex space-x-5 justify-center items-center pl-2">
-            <Link to="/login" className="text-white font-medium" onClick={() => selected(null)}>
+            <Link to="/login" className="text-black font-medium" onClick={() => selected(null)}>
               <IoLogIn size={28} title="Login" />
               Login
             </Link>
@@ -87,7 +97,7 @@ export default function HeaderPublic() {
         <div className="block md:hidden w-full mt-5 ">
           <div
             onClick={() => setDropDown(!dropDown)}
-            className="cursor-pointer px-4 py-3 text-white bg-green-600 rounded flex justify-between items-center w-full"
+            className="cursor-pointer px-4 py-3 text-black bg-green-600 rounded flex justify-between items-center w-full"
           >
             <div className="flex space-x-2">
               <span
@@ -150,11 +160,18 @@ export default function HeaderPublic() {
               >
                 Consultar Turno
               </Link>
+
               <Link to='manual'
                 onClick={() => setSelectedText("Manual")}
                 className="px-4 py-3 text-gray-600 bg-gray-50 border border-gray-50 focus:outline-none focus:bg-gray-100 hover:bg-gray-100 duration-100 cursor-pointer text-xs leading-3 font-bold uppercase"
               >
                 Manual
+              </Link>
+              <Link to='consultarturnoespecial'
+                onClick={() => setSelectedText("Consultar Especial")}
+                className="px-4 py-3 text-gray-600 bg-gray-50 border border-gray-50 focus:outline-none focus:bg-gray-100 hover:bg-gray-100 duration-100 cursor-pointer text-xs leading-3 font-bold uppercase"
+              >
+                Consultar Turno Especial
               </Link>
             </ul>
           </div>

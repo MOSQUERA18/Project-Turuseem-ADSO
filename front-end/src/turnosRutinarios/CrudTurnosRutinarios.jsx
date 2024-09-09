@@ -3,14 +3,13 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
 import FormTurnosRutinarios from "./FormTurnosRutinarios.jsx";
-import DataTableTurnosRutinarios from "./dataTableTurnosRutinarios.jsx";
+// import DataTableTurnosRutinarios from "./dataTableTurnosRutinarios.jsx";
 import Alerta from "../components/Alerta.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
-import { IoMdPersonAdd } from "react-icons/io";
-import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
+import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
-const URI = "/turnorutinario";
+const URI = "/turnorutinario/";
 // const URI_AXIOS = import.meta.env.VITE_BACKEND_URL;
 
 const CrudTurnosRutinarios = () => {
@@ -19,6 +18,23 @@ const CrudTurnosRutinarios = () => {
   const [stateAddturnoRutinario, setStateAddturnoRutinario] = useState(false);
   const [alerta, setAlerta] = useState({});
   const [crearDataTable, setCrearDataTable] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData,setFormData] = useState({});
+
+
+  const resetForm =()=>{
+    setTurnoRutinario({
+      Fec_InicioTurno: "",
+      Fec_FinTurno: "",
+      Hor_InicioTurno: "",
+      Hor_FinTurno: "",
+      Obs_TurnoRutinario: "",
+      Ind_Asistencia: "",
+      Id_Aprendiz: "",
+      Id_Unidad: "",
+    })
+    setFormData({})
+  }
 
   const [turnoRutinario, setTurnoRutinario] = useState({
     Fec_InicioTurno: "",
@@ -32,20 +48,22 @@ const CrudTurnosRutinarios = () => {
   });
   // const shouldShowPhoto = apprenticeList.some(row => row.Foto_Aprendiz !== undefined);
   const titles = [
-    "Fec_InicioTurno",
-    "Fec_FinTurno",
-    "Hor_InicioTurno",
-    "Hor_FinTurno",
-    "Obs_TurnoRutinario",
-    "Ind_Asistencia",
-    "Id_Aprendiz",
-    "Id_Unidad",
+    "Identificador Del Turno",
+    "Fecha Inicio",
+    "Fecha Fin",
+    "Hora Inicio Turno",
+    "Hora Fin Turno",
+    "Observaciones del Turno",
+    "Indicador Asistencia",
+    "Documento Aprendiz",
+    "Nombre Unidad",
     // shouldShowPhoto && "Foto Aprendiz",
     "Acciones"
   ].filter(Boolean)
 
   const formattedData = turnoRutinarioList.map((turnoRutinario) => {
     const rowData = [
+      turnoRutinario.Id_TurnoRutinario,
       turnoRutinario.Fec_InicioTurno,
       turnoRutinario.Fec_FinTurno,
       turnoRutinario.Hor_InicioTurno,
@@ -53,7 +71,7 @@ const CrudTurnosRutinarios = () => {
       turnoRutinario.Obs_TurnoRutinario,
       turnoRutinario.Ind_Asistencia,
       turnoRutinario.Id_Aprendiz,
-      turnoRutinario.Id_Unidad,
+      turnoRutinario.unidad.Nom_Unidad,
     ];
     // if (shouldShowPhoto) {
     //   rowData.push(
@@ -131,10 +149,10 @@ const CrudTurnosRutinarios = () => {
   };
 
   const deleteTurnoRutinario = (Id_TurnoRutinario) => {
-    // if (!Id_TurnoRutinario) {
-    //   console.error("El ID del turno rutinario no es válido");
-    //   return;
-    // }
+    if (!Id_TurnoRutinario) {
+      console.error("El ID del turno rutinario no es válido");
+      return;
+    }
     Swal.fire({
       title: "¿Estás seguro?",
       text: "¡No podrás revertir esto!",
@@ -194,23 +212,32 @@ const CrudTurnosRutinarios = () => {
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
-        Gestionar Información de los  
-        <span className="text-blue-700"> Turnos Rutinarios</span>
+        Gestionar Información de los <span className="text-blue-700"> Turnos Rutinarios</span>
       </h1>
+
       <div className="flex justify-end pb-3">
-        <button
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-          onClick={() => setStateAddturnoRutinario(!stateAddturnoRutinario)}
-        >
-          {stateAddturnoRutinario ? (
-            <AiOutlineMinusCircle size={16} className="me-2" />
-          ) : (
-            <IoMdPersonAdd size={16} className="me-2" />
-          )}
-          {stateAddturnoRutinario ? "Ocultar" : "Agregar"}
-        </button>
-      </div>
-      <div className="overflow-x-auto">
+      <hr />
+      <ModalWindow
+          stateAddNewRow={stateAddturnoRutinario}
+          setStateAddNewRow={setStateAddturnoRutinario}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          resetForm={resetForm}
+          updateTextBottom={updateTextButton}
+      form={
+        <FormTurnosRutinarios
+          buttonForm={buttonForm}
+          turnoRutinario={turnoRutinario}
+          updateTextButton={updateTextButton}
+          getAllTurnosRutinarios={getAllTurnosRutinarios}
+          formData={formData}
+        />
+        }
+    />
+    </div>
+
+    <div className="overflow-x-auto">
+
         <hr />
         {msg && <Alerta alerta={alerta} />}
         <hr />
@@ -221,25 +248,12 @@ const CrudTurnosRutinarios = () => {
             deleteRow={deleteTurnoRutinario}
             getRow={getTurnoRutinario}
             setStateAddNewRow={setStateAddturnoRutinario}
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+
           />
         )}
-        {/* <DataTableTurnosRutinarios
-          turnoRutinarioList={turnoRutinarioList}
-          getTurnoRutinario={getTurnoRutinario}
-          deleteTurnoRutinario={deleteTurnoRutinario}
-          setStateAddturnoRutinario={setStateAddturnoRutinario}
-        /> */}
       </div>
-
-      <hr />
-      {stateAddturnoRutinario ? (
-        <FormTurnosRutinarios
-          buttonForm={buttonForm}
-          turnoRutinario={turnoRutinario}
-          updateTextButton={updateTextButton}
-          getAllTurnosRutinarios={getAllTurnosRutinarios}
-        />
-      ) : null}
       <hr />
       <Outlet />
     </>

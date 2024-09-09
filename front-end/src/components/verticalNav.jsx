@@ -71,7 +71,7 @@ const VerticalNav = () => {
         src="/Public/IMG/LOGOTURUSEEM.png"
         className="hidden sm:block w-12 drop-shadow-2xl"
       />
-      <p className="text-2xl leading-6 text-white font-bold">TURUSEEM</p>
+      <p className="text-2xl leading-6 text-black font-bold">TURUSEEM</p>
     </div>
         <div aria-label="toggler" className="flex justify-center items-center">
           <button
@@ -149,7 +149,7 @@ const VerticalNav = () => {
       >
         <div className="hidden xl:flex justify-start p-6 items-center space-x-3">
           <img src="Public/IMG/LOGOTURUSEEM.png" className="w-12 drop-shadow-2xl" />
-          <p className="text-2xl leading-6 text-white font-bold">TURUSEEM</p>
+          <p className="text-2xl leading-6 text-black font-bold">TURUSEEM</p>
         </div>
         <div className="flex flex-col justify-end items-center pl-4 w-full border-gray-700 border-b space-y-3 p-5">
           {[
@@ -165,9 +165,9 @@ const VerticalNav = () => {
             { to: "inasistencias", label: "Inasistencias", Icon: GiNotebook },
           ].map(({ to, label, Icon }) => (
             <Link key={to} to={to} className="w-full">
-              <button className="flex justify-start items-center w-full space-x-4 pl-3 py-2 focus:bg-green-600 text-white hover:bg-green-600 rounded border-y border-white">
+              <button className="flex justify-start items-center w-full space-x-4 pl-3 py-2 focus:bg-green-600 text-black hover:bg-green-400 rounded border-y border-white">
                 <Icon size={22} />
-                <span className="text-white text-sm uppercase font-bold">{label}</span>
+                <span className="text-black text-sm uppercase font-bold">{label}</span>
               </button>
             </Link>
           ))}
@@ -177,10 +177,10 @@ const VerticalNav = () => {
           <br />
           <button
             onClick={cerrarSesion}
-            className="flex justify-start items-center w-full space-x-4 pl-3 py-2 focus:outline-none text-white hover:bg-green-600 rounded border-y border-white"
+            className="flex justify-start items-center w-full space-x-4 pl-3 py-2 focus:outline-none text-black hover:bg-green-400 rounded border-y border-white"
           >
             <IoLogOut size={22} />
-            <span className="text-white text-sm uppercase font-bold">Cerrar Sesión</span>
+            <span className="text-black text-sm uppercase font-bold">Cerrar Sesión</span>
           </button>
         </div>
       </div>

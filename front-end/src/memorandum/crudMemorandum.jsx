@@ -132,7 +132,7 @@ const CrudMemorandum = () => {
       </h1>
       <div className="flex justify-end pb-3">
         <button
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
+          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-300"
           onClick={() => {
             setStateAddMemorandum(!stateAddMemorandum);
           }}

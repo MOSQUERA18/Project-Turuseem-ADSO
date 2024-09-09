@@ -9,14 +9,12 @@ import "datatables.net-responsive-dt/css/responsive.dataTables.min.css";
 import { MdDeleteOutline } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 
-
-
 const DataTableApprentices = ({
   apprenticeList,
   getApprentice,
   deleteApprentice,
   setStateAddApprentice,
-  URIFOTOS
+  URIFOTOS,
 }) => {
   const tableRef = useRef(null);
   const tableInstance = useRef(null);
@@ -103,88 +101,146 @@ const DataTableApprentices = ({
     <div className="overflow-x-auto">
       <div className="inline-block min-w-full">
         <div className="overflow-hidden">
-      <table
-        ref={tableRef}
-        id="tablaApprentices"
-        className="min-w-full"
-      >
-        <thead className="text-white bg-green-700">
-          <tr>
-          <th className="py-2 px-4 border-2 border-b-gray-500">
-                Documento
-              </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Nombres</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Apellidos</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Ficha</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Fecha de Nacimiento </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Ciudad </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Lugar Residencia </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Edad </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Hijos </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Nombre EPS </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Telefono Padre </th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Genero</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Correo</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Telefono Aprendiz</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Total Memorandos</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Total Inasistencias</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Patrocinio</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Estado</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Nombre Empresa</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Centro Convivencia</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Foto Aprendiz</th>
-              <th className="py-2 px-4 border-2 border-b-gray-500">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {apprenticeList.map((apprentice) => (
-            <tr key={apprentice.Id_Aprendiz}>
-              <td className="py-2 px-4 border-b">{apprentice.Id_Aprendiz}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Nom_Aprendiz}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Ape_Aprendiz}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Id_Ficha}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Fec_Nacimiento}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.ciudad.Nom_Ciudad}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Lugar_Residencia}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Edad}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Hijos}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Nom_Eps}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Tel_Padre}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Gen_Aprendiz}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Cor_Aprendiz}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Tel_Aprendiz}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Tot_Memorandos}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Tot_Inasistencias}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Patrocinio}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Estado}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.Nom_Empresa}</td>
-                        <td className="py-2 px-4 border-b">{apprentice.CentroConvivencia}</td>
-                        <td className="py-2 px-4 border-b">
-                <img width='80px' src={URI_AXIOS + URIFOTOS + apprentice.Foto_Aprendiz} alt="No Foto" />
-                   </td>
-              <td className="py-2 px-4 border-b">
-                <button
-                  onClick={() => [
-                    getApprentice(apprentice.Id_Aprendiz),
-                    setStateAddApprentice(true),
-                  ]}
-                  className="text-green-500 hover:text-green-700 hover:border hover:border-green-500 mr-3 p-1 rounded"
-                >
-                  <FaRegEdit />
-                </button>
-                <button
-                  onClick={() => deleteApprentice(apprentice.Id_Aprendiz)}
-                  className="text-green-500 hover:text-green-700 hover:border hover:border-green-500 p-1 rounded"
-                >
-                  <MdDeleteOutline />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          <table ref={tableRef} id="tablaApprentices" className="min-w-full">
+            <thead className="text-white bg-green-700">
+              <tr>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Documento
+                </th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Nombres
+                </th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Apellidos
+                </th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">Ficha</th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Fecha de Nacimiento{" "}
+                </th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Ciudad{" "}
+                </th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Lugar Residencia{" "}
+                </th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">Edad </th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">Hijos </th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Nombre EPS{" "}
+                </th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Telefono Padre{" "}
+                </th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">Genero</th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">Correo</th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Telefono Aprendiz
+                </th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Total Memorandos
+                </th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Total Inasistencias
+                </th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Patrocinio
+                </th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">Estado</th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Nombre Empresa
+                </th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Centro Convivencia
+                </th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Foto Aprendiz
+                </th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Acciones
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {apprenticeList.map((apprentice) => (
+                <tr key={apprentice.Id_Aprendiz}>
+                  <td className="py-2 px-4 border-b">
+                    {apprentice.Id_Aprendiz}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {apprentice.Nom_Aprendiz}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {apprentice.Ape_Aprendiz}
+                  </td>
+                  <td className="py-2 px-4 border-b">{apprentice.Id_Ficha}</td>
+                  <td className="py-2 px-4 border-b">
+                    {apprentice.Fec_Nacimiento}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {apprentice.ciudad.Nom_Ciudad}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {apprentice.Lugar_Residencia}
+                  </td>
+                  <td className="py-2 px-4 border-b">{apprentice.Edad}</td>
+                  <td className="py-2 px-4 border-b">{apprentice.Hijos}</td>
+                  <td className="py-2 px-4 border-b">{apprentice.Nom_Eps}</td>
+                  <td className="py-2 px-4 border-b">{apprentice.Tel_Padre}</td>
+                  <td className="py-2 px-4 border-b">
+                    {apprentice.Gen_Aprendiz}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {apprentice.Cor_Aprendiz}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {apprentice.Tel_Aprendiz}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {apprentice.Tot_Memorandos}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {apprentice.Tot_Inasistencias}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {apprentice.Patrocinio}
+                  </td>
+                  <td className="py-2 px-4 border-b">{apprentice.Estado}</td>
+                  <td className="py-2 px-4 border-b">
+                    {apprentice.Nom_Empresa}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {apprentice.CentroConvivencia}
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    <img
+                      width="80px"
+                      src={URI_AXIOS + URIFOTOS + apprentice.Foto_Aprendiz}
+                      alt="No Foto"
+                    />
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    <button
+                      onClick={() => [
+                        getApprentice(apprentice.Id_Aprendiz),
+                        setStateAddApprentice(true),
+                      ]}
+                      className="text-green-500 hover:text-green-700 hover:border hover:border-green-500 mr-3 p-1 rounded"
+                    >
+                      <FaRegEdit />
+                    </button>
+                    <button
+                      onClick={() => deleteApprentice(apprentice.Id_Aprendiz)}
+                      className="text-green-500 hover:text-green-700 hover:border hover:border-green-500 p-1 rounded"
+                    >
+                      <MdDeleteOutline />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-        </div>
+      </div>
     </div>
   );
 };

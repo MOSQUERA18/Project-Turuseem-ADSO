@@ -74,7 +74,7 @@ const ImportarCSV = ({ URI }) => {
             type="submit"
             id="button"
             value="Enviar"
-            className="bg-green-600 h-11 flex content-center px-6 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-green-800 md:w-auto ml-5"
+            className="bg-green-600 h-11 flex content-center px-6 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-green-300 md:w-auto ml-5"
           />
         </div>
       </form>

@@ -28,6 +28,7 @@ import UserForm from "./users/CreateAccount";
 import OlvidePassword from "./users/OlvidePassword";
 import ConfirmarCuenta from "./users/ConfirmarCuenta";
 import CambiarPassword from "./users/CambiarPassword";
+import ConsultarTurnoEspecial from "./home/ConsultarTurnoEspecial.jsx";
 
 import { AuthProvider } from "./context/authProvider";
 
@@ -43,6 +44,7 @@ function App() {
               <Route index element={<Home />} />
               <Route path="contacto" element={<Contacto />} />
               <Route path="consultarturno" element={<ConsultarTurno />} />
+              <Route path="consultarespecial" element={<ConsultarTurnoEspecial />} />
               <Route path="manual" element={<Manual />} />
               <Route path="login" element={<LoginForm />} />
               <Route path="registrar" element={<UserForm />} />

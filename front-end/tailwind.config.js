@@ -10,25 +10,22 @@ export default {
     extend: {
       colors: {
         green: {
-          500: "#F3F4F6", //No cambiar
-          600: "#60aefa",
-          700: "#60aefa",
-          800: "#303bff",
+          300: "#030076", //Hover botones InicioSesion, BuscarTurnos, Modulos => Enviar, Agregar, DescargarCSV, ExportarExcel
+          400: "#2f79ff", //Barra Nav Vertical Hover
+          500: "#F3F4F6", //No cambiar Principal blanco+-
+          600: "#2318ea", //Boton Enviar modulos
+          700: "#2318ea", //Botono DescargarCSV modulos
         },
         stone: {
           400: "#000000"
         },
         gray: {
-          500: "#000000"
+          800: "#455d88", //Boton modulos Seleccionar Archivo 
         },
-      },
+      },  
       textColor: {
-        white: "#000000",
-        blue: "#13109f"
-      },
-      border: {
-         600: "#1b01ff"
-      }
+        stone: "#000000",
+      },
     },
   },
   plugins: [

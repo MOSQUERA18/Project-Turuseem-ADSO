@@ -7,26 +7,58 @@ import { ReactSession } from "react-client-session";
 
 import FormProgramaFormacion from "./formProgramaFormacion.jsx";
 import Alerta from "../components/Alerta.jsx";
-import { IoMdPersonAdd } from "react-icons/io";
-import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
-import DataTableProgramaFormacion from "./dataTableProgramaFormacion.jsx";
+import ModalWindow from "../ModalWindow/ModalWindow.jsx";
+import WriteTable from "../Tables/Data-Tables.jsx";
 
-import { exportToExcel } from "./exportExcel.js";
+// import { exportToExcel } from './exportExcel.js'; 
+
 const URI = "programa";
 
 const CrudPrograma = () => {
   const [programaList, setProgramaList] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddPrograma, setStateAddPrograma] = useState(false);
-
   const [alerta, setAlerta] = useState({});
+  const [crearDataTable, setCrearDataTable] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData,setFormData] = useState({});
+
+const resetForm = () => {
+  setPrograma({
+    Nom_ProgramaFormacion: "",
+    Tip_ProgramaFormacion: "",
+    Id_Area: "",
+  });
+  setFormData({})
+}
+
 
   const [programa, setPrograma] = useState({
     Nom_ProgramaFormacion: "",
     Tip_ProgramaFormacion: "",
     Id_Area: "",
   });
+
+  //const shouldShowPhoto = apprenticeList.some(row => row.Foto_Aprendiz !== undefined);
+
+  const titles = [
+    "Documento",
+    "Nombre del Programa",
+    "Tipo del Programa",
+    "Área",
+    "Acción",
+  ].filter(Boolean)
+
+  const formatteData = programaList.map((programa) => {
+    const rowData = [
+    programa.Id_ProgramaFormacion,
+    programa.Nom_ProgramaFormacion,
+    programa.Tip_ProgramaFormacion,
+    programa.areas.Nom_Area,
+  ];
+  return rowData;
+  })
 
   useEffect(() => {
     getAllProgramas();
@@ -44,6 +76,7 @@ const CrudPrograma = () => {
       const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setProgramaList(respuestApi.data);
+        setCrearDataTable(true);
       } else {
         setAlerta({
           msg: `Error al cargar los programas!`,
@@ -144,61 +177,64 @@ const CrudPrograma = () => {
 
   const { msg } = alerta;
 
-  const handleExportToExcel = () => {
-    exportToExcel([], programaList); // Pasar [] si `programa` está vacío
-  };
+  // const handleExportToExcel = () => {
+  //   exportToExcel([], programaList); // Pasar [] si `programa` está vacío
+  // };
 
   return (
     <>
-      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
-        {" "}
-        Gestionar Informacion de los 
-        <span className="text-blue-700"> Programas de Formacion</span> 
-      </h1>
-      <div className="flex justify-end pb-3">
-        <button
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-          onClick={() => {
-            setStateAddPrograma(!stateAddPrograma);
-          }}
-        >
-          {stateAddPrograma ? (
-            <AiOutlineMinusCircle size={16} className="me-2" />
-          ) : (
-            <IoMdPersonAdd size={16} className="me-2" />
-          )}
-          {stateAddPrograma ? "Ocultar" : "Agregar"}
-        </button>
+    <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7"> Gestionar Informacion de los <span className="text-blue-700"> Programas de Formacion</span></h1>
+      
 
-        <button
+        {/* <button
           onClick={handleExportToExcel}
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
+          className="bg-green-700 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
         >
           Exportar a Excel
-        </button>
-      </div>
-      <div className="overflow-x-auto">
-        <hr />
-        {msg && <Alerta alerta={alerta} />}
-        <hr />
-        <DataTableProgramaFormacion
-          programaList={programaList}
-          getPrograma={getPrograma}
-          deletePrograma={deletePrograma}
-          setStateAddPrograma={setStateAddPrograma}
-        />
-      </div>
-      <hr />
-      {stateAddPrograma ? (
+        </button> */}
+<div className="flex justify-end pb-3">
+      <ModalWindow
+          stateAddNewRow={stateAddPrograma}
+          setStateAddNewRow={setStateAddPrograma}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          resetForm={resetForm}
+          updateTextBottom={updateTextButton}
+form={ 
         <FormProgramaFormacion
           buttonForm={buttonForm}
           programa={programa}
           updateTextButton={updateTextButton}
           setPrograma={setPrograma}
           getAllProgramas={getAllProgramas}
+          formData={formData} 
+          setFormData={setFormData} 
         />
-      ) : null}
-      <hr />
+}
+/>
+
+</div>
+
+
+
+
+<div className="overflow-x-auto">
+        {msg && <Alerta alerta={alerta} />}
+
+        {crearDataTable && (
+          <WriteTable
+          titles={titles}
+          data={formatteData}
+          deleteRow={deletePrograma}
+          getRow={getPrograma}
+          setStateAddNewRow={setStateAddPrograma}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          />
+        )}
+
+</div>
+      
 
       <Outlet />
     </>
