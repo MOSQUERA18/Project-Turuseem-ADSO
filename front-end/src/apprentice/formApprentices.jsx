@@ -24,8 +24,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
   const [Gen_Aprendiz, setGen_Aprendiz] = useState("");
   const [Cor_Aprendiz, setCor_Aprendiz] = useState("");
   const [Tel_Aprendiz, setTel_Aprendiz] = useState("");
-  const [Tot_Memorandos, setTot_Memorandos] = useState("");
-  const [Tot_Inasistencias, setTot_Inasistencias] = useState("");
+  // const [Tot_Memorandos, setTot_Memorandos] = useState("");
+  // const [Tot_Inasistencias, setTot_Inasistencias] = useState("");
   const [Patrocinio, setPatrocinio] = useState("");
   const [Estado, setEstado] = useState("");
   const [Nom_Empresa, setNom_Empresa] = useState("");
@@ -116,8 +116,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
       formData.append("Gen_Aprendiz", Gen_Aprendiz);
       formData.append("Cor_Aprendiz", Cor_Aprendiz);
       formData.append("Tel_Aprendiz", Tel_Aprendiz);
-      formData.append("Tot_Memorandos", Tot_Memorandos);
-      formData.append("Tot_Inasistencias", Tot_Inasistencias);
+      // formData.append("Tot_Memorandos", Tot_Memorandos);
+      // formData.append("Tot_Inasistencias", Tot_Inasistencias);
       formData.append("Patrocinio", Patrocinio);
       formData.append("Estado", Estado);
       formData.append("Nom_Empresa", Nom_Empresa);
@@ -192,8 +192,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
     setGen_Aprendiz("");
     setCor_Aprendiz("");
     setTel_Aprendiz("");
-    setTot_Memorandos("");
-    setTot_Inasistencias("");
+    // setTot_Memorandos("");
+    // setTot_Inasistencias("");
     setPatrocinio("");
     setEstado("");
     setNom_Empresa(""); // Limpiar Nombre de la Empresa
@@ -217,8 +217,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
     setGen_Aprendiz(apprentice.Gen_Aprendiz);
     setCor_Aprendiz(apprentice.Cor_Aprendiz);
     setTel_Aprendiz(apprentice.Tel_Aprendiz);
-    setTot_Memorandos(apprentice.Tot_Memorandos);
-    setTot_Inasistencias(apprentice.Tot_Inasistencias);
+    // setTot_Memorandos(apprentice.Tot_Memorandos);
+    // setTot_Inasistencias(apprentice.Tot_Inasistencias);
     setPatrocinio(apprentice.Patrocinio);
     setEstado(apprentice.Estado);
     setNom_Empresa(apprentice.Nom_Empresa);
@@ -510,45 +510,6 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
             />
           </div>
 
-          {/* <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
-              Total Memorandos
-            </label>
-            <input
-              type="text"
-              id="phone"
-              placeholder="memorandos"
-              value={Tot_Memorandos}
-              onChange={(e) => {
-                const value = e.target.value;
-                if (value.length <= 2) {
-                  setTot_Memorandos(value);
-                }
-              }}
-              maxLength={2}
-              className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-            />
-          </div> */}
-
-          {/* <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
-              Total Inasistencias
-            </label>
-            <input
-              type="text"
-              id="phone"
-              placeholder="Inasistencias"
-              value={Tot_Inasistencias}
-              onChange={(e) => {
-                const value = e.target.value;
-                if (value.length <= 2) {
-                  setTot_Inasistencias(value);
-                }
-              }}
-              maxLength={2}
-              className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-            />
-          </div> */}
 
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">

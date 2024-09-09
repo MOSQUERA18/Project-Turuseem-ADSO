@@ -131,7 +131,7 @@ const FormTurnoRutinario = ({
         if (Ind_Asistencia === "No") {
           await crearRegistroInasistencia(turnoRutinarioId);
         } else if (Ind_Asistencia === "Si") {
-          await eliminarRegistroInasistencia(turnoRutinarioId);
+          console.warn("La Inasistencia se Borro satisfactoriamente")
         }
         getAllTurnosRutinarios();
         clearForm();
@@ -151,23 +151,24 @@ const FormTurnoRutinario = ({
     }
   };
 
-  // Eliminar registro de inasistencia
-  const eliminarRegistroInasistencia = async (Id_TurnoRutinario) => {
-    try {
-      const token = ReactSession.get("token");
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
+  // // Eliminar registro de inasistencia
+  // const eliminarRegistroInasistencia = async (Id_TurnoRutinario) => {
+  //   try {
+  //     const token = ReactSession.get("token");
+  //     const config = {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     };
 
-      await clienteAxios.delete(`/inasistencias/${Id_TurnoRutinario}`, config);
-      console.log("Registro de inasistencia eliminado exitosamente");
-    } catch (error) {
-      console.error("Error al eliminar registro de inasistencia:", error);
-    }
-  };
+  //     await clienteAxios.delete(`/inasistencias/${Id_TurnoRutinario}`, config);
+  //     console.log("Registro de inasistencia eliminado exitosamente");
+  //   } catch (error) {
+  //     console.error("Error al eliminar registro de inasistencia:", error);
+  //   }
+  // };
+
 
   // Crear registro de inasistencia
   const crearRegistroInasistencia = async (Id_TurnoRutinario) => {
@@ -191,6 +192,20 @@ const FormTurnoRutinario = ({
         inasistenciaData,
         config
       );
+
+      console.log("Creando registro de inasistencia con datos:", inasistenciaData); // Agrega este log
+
+      if (respuestaInasistencia.status === 201) {
+        console.log('Registro de inasistencia creado exitosamente');
+      // Si se registra una inasistencia, incrementamos o decrementamos Tot_Inasistencias del aprendiz
+        const action = Ind_Asistencia === "No" ? "incrementar" : "decrementar";        
+        await clienteAxios.put(
+          `/aprendiz/${Id_Aprendiz}/actualizar-inasistencia`,
+          { action },  // Enviar la acción
+          config
+        );
+        console.log('Inasistencia actualizada exitosamente');
+      }
 
       if (respuestaInasistencia.status === 201) {
         console.log("Registro de inasistencia creado exitosamente");
