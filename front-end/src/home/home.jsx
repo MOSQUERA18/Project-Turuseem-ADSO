@@ -4,7 +4,7 @@ const Home = () => {
   return (
     <>
       <h1 className="text-stone-900 font-black text-3xl sm:text-4xl text-center">
-        BIENBENIDOS A <span className="text-green-600">TURUSEEM</span>
+        BIENVENIDOS A <span className="text-green-600">TURUSEEM</span>
       </h1>
       <div className="flex flex-col sm:flex-row justify-evenly items-center mt-10 sm:mt-20">
         <img src="Public/IMG/LOGOTURUSEEM.png" className="w-48 sm:w-64 mb-6 sm:mb-0" />

@@ -43,7 +43,7 @@ export default function HeaderPublic() {
                   : "text-black bg-green-500"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
-              Home
+              INICIO
             </Link>
             <Link to='contacto'
               onClick={() => selected(1)}

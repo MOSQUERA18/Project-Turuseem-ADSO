@@ -177,7 +177,7 @@ function WriteTable({
         <div className="flex justify-end px-5">
           <button
             type="button"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mx-1 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4"
+            className="text-red-600 bg-green-500 hover:bg-red-200 focus:ring-4 focus:outline-none focus:ring-red-600 font-medium rounded-lg text-sm px-5 mx-1 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4 "
             onClick={exportPDF}
             title="Export PDF"
           >
@@ -185,7 +185,7 @@ function WriteTable({
           </button>
           <button
             type="button"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mx-1 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4"
+            className="text-lime-700 bg-green-500 hover:bg-emerald-100 focus:ring-4 focus:outline-none focus:ring-green-700 font-medium rounded-lg text-sm px-5 mx-1 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4"
             onClick={exportToExcel}
             title="Export XLSX"
           >
@@ -193,7 +193,7 @@ function WriteTable({
           </button>
           <button
             type="button"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mx-1 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4"
+            className="text-green-600 bg-green-500 hover:bg-sky-200 focus:ring-4 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-5 mx-1 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4"
             // onClick={handleGetInnerHTML}
             title="Export SQL"
           >
@@ -208,7 +208,7 @@ function WriteTable({
                 id="TableDinamic"
                 ref={tableRef}
               >
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <thead className="text-xs text-gray-500 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     {titles.map((title, index) => (
                       <th scope="col" key={index}>
