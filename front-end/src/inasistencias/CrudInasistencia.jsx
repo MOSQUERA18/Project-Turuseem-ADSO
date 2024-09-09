@@ -21,7 +21,7 @@ const CrudFuncionarios = () => {
 
   const titles = [
     "Identificador",
-    "Fecha Turnp",
+    "Fecha Turno",
     "Motivo Inasistencia",
     "Documento Aprendiz ",
     "Acciones",

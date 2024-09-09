@@ -9,6 +9,8 @@ import {
 } from "../controller/turnoRutinarioController.js";
 import checkAuth from "../middleware/authMiddleware.js";
 
+
+
 const router = express.Router();
 
 router
@@ -21,5 +23,6 @@ router
   .put(checkAuth, updateTurnoRutinario)
   .delete(checkAuth, deleteTurnoRutinario);
 router.get('/consulta/:Id_Aprendiz', getTurnoRutinariosForAprendiz)
+
 
 export default router;

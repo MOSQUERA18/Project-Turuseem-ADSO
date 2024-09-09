@@ -22,7 +22,6 @@ const CrudMemorandum = () => {
     setIsOpen(!isOpen);
   };
 
-  // const navigate = useNavigate();
 
   const [memorandum, setMemorandum] = useState({
     Id_OtroMemorando: "",
