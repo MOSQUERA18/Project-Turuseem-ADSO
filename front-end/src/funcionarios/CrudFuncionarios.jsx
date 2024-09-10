@@ -8,7 +8,8 @@ import Alerta from "../components/Alerta.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
-import { Outlet } from "react-router-dom";
+import { MdDeleteOutline } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
 
 const URI = "funcionarios";
 
@@ -60,15 +61,40 @@ const CrudFuncionarios = () => {
     "Acciones",
   ];
 
-  const formattedData = funcionarioList.map((funcionario) => [
-    funcionario.Id_Funcionario,
-    funcionario.Nom_Funcionario,
-    funcionario.Ape_Funcionario,
-    funcionario.Genero,
-    funcionario.Tel_Funcionario,
-    funcionario.Estado,
-    funcionario.Cargo,
-  ]);
+  const ButtonsForOtherModules = (Id_Funcionario) => [
+    <button
+      onClick={() => [
+        getFuncionario(Id_Funcionario),
+        setStateAddFuncionario(true),
+        toggleModal(),
+      ]}
+      className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
+      key="get"
+    >
+      <FaRegEdit />
+    </button>,
+    <button
+      onClick={() => deleteFuncionario(Id_Funcionario)}
+      className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
+      key="delete"
+    >
+      <MdDeleteOutline />
+    </button>,
+  ];
+
+  const formattedData = funcionarioList.map((funcionario) => {
+    const rowData = [
+      funcionario.Id_Funcionario,
+      funcionario.Nom_Funcionario,
+      funcionario.Ape_Funcionario,
+      funcionario.Genero,
+      funcionario.Tel_Funcionario,
+      funcionario.Estado,
+      funcionario.Cargo,
+    ];
+    rowData.push(ButtonsForOtherModules(funcionario.Id_Funcionario));
+    return rowData
+  });
 
   useEffect(() => {
     getAllFuncionarios();
@@ -220,18 +246,12 @@ const CrudFuncionarios = () => {
           <WriteTable
             titles={titles}
             data={formattedData}
-            deleteRow={deleteFuncionario}
-            getRow={getFuncionario}
-            setStateAddNewRow={setStateAddFuncionario}
-            toggleModal={toggleModal} // Aquí pasamos la función
-            isOpen={isOpen}
             titleModul={titleModul}
             tableName={tableName}
           />
         )}
       </div>
       <hr />
-      <Outlet />
     </>
   );
 };

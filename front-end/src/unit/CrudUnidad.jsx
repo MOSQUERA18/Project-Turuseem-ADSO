@@ -2,17 +2,16 @@ import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
-import "datatables.net-responsive-dt";
 
 import FormUnidades from "./formUnidades.jsx";
 import Alerta from "../components/Alerta.jsx";
-// import DataTableUnit from "./dataTableUnit.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
+import { MdDeleteOutline } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
+
 const URI = "unidades";
-
-
 
 const CrudUnidades = () => {
   const [unidadList, setUnidadList] = useState([]);
@@ -26,15 +25,15 @@ const CrudUnidades = () => {
     setIsOpen(!isOpen);
   };
 
-  const resetForm = () =>{
-   setUnidad({
-    Nom_Unidad : "",
-    Hor_Apertura: "",
-    Hor_Cierre:"",
-    Estado:"",
-    Id_Area:""
-   });
-  }
+  const resetForm = () => {
+    setUnidad({
+      Nom_Unidad: "",
+      Hor_Apertura: "",
+      Hor_Cierre: "",
+      Estado: "",
+      Id_Area: "",
+    });
+  };
 
   const [unidad, setUnidad] = useState({
     Nom_Unidad: "",
@@ -43,11 +42,9 @@ const CrudUnidades = () => {
     Estado: "",
     Id_Area: "",
   });
-  const titleModul = [
-    "REPORTE DE UNIDADES"
-  ]
+  const titleModul = ["REPORTE DE UNIDADES"];
   const titleForm = ["REGISTRAR UNIDADES"];
-    const tableName = "Unidades"
+  const tableName = "Unidades";
 
   const titles = [
     "ID",
@@ -58,16 +55,36 @@ const CrudUnidades = () => {
     "Area",
     "Acciones",
   ];
-  const formattedData = unidadList.map((unidad) => [
-    unidad.Id_Unidad, // ID
-    unidad.Nom_Unidad, // Nombre
-    unidad.Hor_Apertura, // Hora Apertura
-    unidad.Hor_Cierre, // Hora Cierre
-    unidad.Estado, // Estado
-    unidad.areas?.Nom_Area || "N/A", // Area (usando "N/A" si areas o Nom_Area es undefined)
-  ]);
 
+  const ButtonsForOtherModules = (Id_Unidad) => [
+    <button
+      onClick={() => [getUnidad(Id_Unidad), setStateAddUnidad(true), toggleModal()]}
+      className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
+      key="get"
+    >
+      <FaRegEdit />
+    </button>,
+    <button
+      onClick={() => deleteUnidad(Id_Unidad)}
+      className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
+      key="delete"
+    >
+      <MdDeleteOutline />
+    </button>,
+  ];
 
+  const formattedData = unidadList.map((unidad) => {
+    const rowData = [
+      unidad.Id_Unidad, // ID
+      unidad.Nom_Unidad, // Nombre
+      unidad.Hor_Apertura, // Hora Apertura
+      unidad.Hor_Cierre, // Hora Cierre
+      unidad.Estado, // Estado
+      unidad.areas?.Nom_Area || "N/A", // Area (usando "N/A" si areas o Nom_Area es undefined)
+    ];
+    rowData.push(ButtonsForOtherModules(unidad.Id_Unidad));
+    return rowData
+  });
 
   const getAllUnidades = async () => {
     const token = ReactSession.get("token");
@@ -179,10 +196,8 @@ const CrudUnidades = () => {
 
   const { msg } = alerta;
 
-
-
   useEffect(() => {
-      getAllUnidades()
+    getAllUnidades();
   }, []);
 
   return (
@@ -210,8 +225,6 @@ const CrudUnidades = () => {
             />
           }
         />
-
-
       </div>
       <div className="overflow-x-auto">
         <hr />
@@ -220,10 +233,6 @@ const CrudUnidades = () => {
           <WriteTable
             titles={titles}
             data={formattedData}
-            deleteRow={deleteUnidad}
-            getRow={getUnidad}
-            setStateAddNewRow={setStateAddUnidad}
-            toggleModal={toggleModal} // Aquí pasamos la función
             titleModul={titleModul}
             tableName={tableName}
           />

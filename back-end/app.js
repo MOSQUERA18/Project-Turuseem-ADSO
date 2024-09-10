@@ -5,7 +5,7 @@ import cors from "cors";
 import checkAuth from "./src/middleware/authMiddleware.js";
 // import { app, BrowserWindow } from "electron";
 
-// import path from 'path';
+import path from 'path';
 
 import db from "./src/database/db.js";
 
@@ -78,9 +78,12 @@ appExpress.use("/ciudades", cityRoutes);
 // appExpress.use('/pdf', pdfRoutes);
 // appExpress.use('/excel', excelRoutes);
 
-
+appExpress.use(express.static(path.join(import.meta.url, 'public')));
 
 appExpress.use("/public/uploads/", express.static("public/uploads"));
+appExpress.use("/assets", express.static("public/assets"));
+appExpress.use("/plantillas", express.static("public/plantillas"));
+
 
 appExpress.use("/api/user", userRouter);
 

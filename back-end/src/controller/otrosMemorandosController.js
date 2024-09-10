@@ -95,7 +95,7 @@ export const getTotalOtrosMemorandums = async () => {
 export const getTotalOtrosMemorandumsForAprendiz = async (Id_Aprendiz) => {
   try {
     return await OtrosMemorandumModel.count({
-      where: { Id_Aprendiz: Id_Aprendiz }
+      where: { Id_Aprendiz: Id_Aprendiz },
     });
   } catch (error) {
     logger.error("Error obteniendo el total de memorandos: ", error.message);
@@ -106,62 +106,68 @@ export const getTotalOtrosMemorandumsForAprendiz = async (Id_Aprendiz) => {
 export const createOtroMemorandum = async (req, res) => {
   const transaction = await db.transaction();
   try {
-      // 1. Crear el memorando en la base de datos
-      const newMemorandum = await OtrosMemorandumModel.create(req.body, {
-          transaction,
-      });
+    // 1. Crear el memorando en la base de datos
+    const newMemorandum = await OtrosMemorandumModel.create(req.body, {
+      transaction,
+    });
 
-      // 2. Obtener el memorando recién creado junto con las relaciones necesarias
-      const fullMemorandum = await OtrosMemorandumModel.findOne({
-          where: {
-              Id_OtroMemorando: newMemorandum.Id_OtroMemorando,
-          },
+    // 2. Obtener el memorando recién creado junto con las relaciones necesarias
+    const fullMemorandum = await OtrosMemorandumModel.findOne({
+      where: {
+        Id_OtroMemorando: newMemorandum.Id_OtroMemorando,
+      },
+      include: [
+        {
+          model: ApprenticeModel,
+          as: "aprendiz",
           include: [
-              {
-                  model: ApprenticeModel,
-                  as: "aprendiz",
-                  include: [
-                      {
-                          model: FichasModel,
-                          as: "fichas",
-                          include: [
-                              {
-                                  model: ProgramaModel,
-                                  as: "programasFormacion",
-                              },
-                          ],
-                      },
-                  ],
-              },
+            {
+              model: FichasModel,
+              as: "fichas",
+              include: [
+                {
+                  model: ProgramaModel,
+                  as: "programasFormacion",
+                },
+              ],
+            },
           ],
-          transaction,
-      });
+        },
+      ],
+      transaction,
+    });
 
-      const totalMemorandumForApprentice = await getTotalOtrosMemorandumsForAprendiz(fullMemorandum.aprendiz.Id_Aprendiz);
-      const totalMemorandums = await getTotalOtrosMemorandums();
+    const totalMemorandumForApprentice =
+      await getTotalOtrosMemorandumsForAprendiz(
+        fullMemorandum.aprendiz.Id_Aprendiz
+      );
+    const totalMemorandums = await getTotalOtrosMemorandums();
 
-      // 3. Generar el PDF en Base64
-      const pdfBase64 = await generateOtroMemorandumPdf(fullMemorandum, totalMemorandums, totalMemorandumForApprentice);
+    // 3. Generar el PDF en Base64
+    const pdfBase64 = await generateOtroMemorandumPdf(
+      fullMemorandum,
+      totalMemorandums,
+      totalMemorandumForApprentice
+    );
 
-      // 4. Confirmar la transacción
-      await transaction.commit();
+    // 4. Confirmar la transacción
+    await transaction.commit();
 
-      // 5. Enviar la respuesta con el memorando creado y el PDF en Base64
-      res.status(201).json({
-          message: "Memorando registrado y PDF generado correctamente!",
-          data: newMemorandum,
-          pdfBase64: pdfBase64,
-      });
+    // 5. Enviar la respuesta con el memorando creado y el PDF en Base64
+    res.status(201).json({
+      message: "Memorando registrado y PDF generado correctamente!",
+      data: newMemorandum,
+      pdfBase64: pdfBase64,
+    });
   } catch (error) {
-      await transaction.rollback();
-      logger.error("Error creating memorandum: ", error);
-      res.status(400).json({
-          message: "Error al registrar el memorando.",
-          error: error.message,
-      });
+    await transaction.rollback();
+    logger.error("Error creating memorandum: ", error);
+    res.status(400).json({
+      message: "Error al registrar el memorando.",
+      error: error.message,
+    });
   }
 };
-
 
 export const updateOtroMemorandum = async (req, res) => {
   try {
@@ -211,52 +217,69 @@ export const deleteOtroMemorandum = async (req, res) => {
   }
 };
 
-export const generateOtroMemorandumPdf = (memorandum, totalMemorandums, totalMemorandumForApprentice) => {
+export const generateOtroMemorandumPdf = (
+  memorandum,
+  totalMemorandums,
+  totalMemorandumForApprentice
+) => {
   return new Promise((resolve, reject) => {
-      const { aprendiz, Fec_OtroMemorando, Mot_OtroMemorando} = memorandum;
-      const { fichas } = aprendiz;
-      const { programasFormacion } = fichas;
-      const raiz = process.cwd();
+    const { aprendiz, Fec_OtroMemorando, Mot_OtroMemorando } = memorandum;
+    const { fichas } = aprendiz;
+    const { programasFormacion } = fichas;
+    const raiz = process.cwd();
 
-      const plantillaHtml = fs.readFileSync(
-          `${raiz}/public/plantillas/plantilla-memorando.html`,
-          "utf-8"
-      );
-      const hoy = new Date();
-      const mes = hoy.getMonth() + 1;
-      const año = hoy.getFullYear();
-      let trimestreActual;
-      if (mes >= 1 && mes <= 3) {
-          trimestreActual = "I";
-      } else if (mes >= 4 && mes <= 6) {
-          trimestreActual = "II"; 
-      } else if (mes >= 7 && mes <= 9) {
-          trimestreActual = "III";
-      } else if (mes >= 10 && mes <= 12) {
-          trimestreActual = "IV";
+    const plantillaHtml = fs.readFileSync(
+      `${raiz}/public/plantillas/plantilla-memorando.html`,
+      "utf-8"
+    );
+    const hoy = new Date();
+    const mes = hoy.getMonth() + 1;
+    const año = hoy.getFullYear();
+    let trimestreActual;
+    if (mes >= 1 && mes <= 3) {
+      trimestreActual = "I";
+    } else if (mes >= 4 && mes <= 6) {
+      trimestreActual = "II";
+    } else if (mes >= 7 && mes <= 9) {
+      trimestreActual = "III";
+    } else if (mes >= 10 && mes <= 12) {
+      trimestreActual = "IV";
+    }
+
+    const htmlContent = plantillaHtml
+      .replace("{{FechaActual}}", Fec_OtroMemorando)
+      .replace("{{NumeroMemorando}}", totalMemorandums)
+      .replace("{{NombreAprendiz}}", aprendiz.Nom_Aprendiz)
+      .replace("{{ApellidoAprendiz}}", aprendiz.Ape_Aprendiz)
+      .replace(
+        "{{ProgramaFormacion}}",
+        programasFormacion.Nom_ProgramaFormacion
+      )
+      .replace("{{FichaNo}}", fichas.Id_Ficha)
+      .replace("{{UnidadAsignada}}", "Sena Empresa")
+      .replace("{{FechaActual}}", Fec_OtroMemorando)
+      .replace("{{Mot_OtroMemorando}}", Mot_OtroMemorando)
+      .replace("{{totalMemorandumForApprentice}}", totalMemorandumForApprentice)
+      .replace("{{trimestre}}", trimestreActual)
+      .replace("{{AnoActual}}", año)
+      .replace("{{NombreLider}}", "Daniel Cardenas")
+      .replace("{{TalentoHumano}}", "Monica");
+
+    const options = {
+      format: "A4",
+      orientation: "portrait",
+      border: "10mm",
+      timeout: 30000,
+      base: 'http://localhost:8000'
+    };
+    console.log(htmlContent);
+    
+    pdf.create(htmlContent, options).toBuffer((err, buffer) => {
+      if (err) {
+        return reject(err);
       }
-
-      const htmlContent = plantillaHtml
-          .replace("{{FechaActual}}", Fec_OtroMemorando)
-          .replace("{{NumeroMemorando}}", totalMemorandums)
-          .replace("{{NombreAprendiz}}", aprendiz.Nom_Aprendiz)
-          .replace("{{ProgramaFormacion}}", programasFormacion.Nom_ProgramaFormacion)
-          .replace("{{FichaNo}}", fichas.Id_Ficha)
-          .replace("{{UnidadAsignada}}", "Sena Empresa")
-          .replace("{{FechaActual}}", Fec_OtroMemorando)
-          .replace("{{Mot_OtroMemorando}}", Mot_OtroMemorando)
-          .replace("{{totalMemorandumForApprentice}}", totalMemorandumForApprentice)
-          .replace("{{trimestre}}", trimestreActual)
-          .replace("{{AnoActual}}", año)
-          .replace("{{NombreLider}}", "Daniel Cardenas")
-          .replace("{{TalentoHumano}}", "Monica");
-
-      pdf.create(htmlContent).toBuffer((err, buffer) => {
-          if (err) {
-              return reject(err);
-          }
-          const base64 = buffer.toString("base64");
-          resolve(base64);
-      });
+      const base64 = buffer.toString("base64");
+      resolve(base64);
+    });
   });
 };

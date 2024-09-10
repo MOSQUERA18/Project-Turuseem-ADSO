@@ -10,6 +10,8 @@ import WriteTable from "../Tables/Data-Tables.jsx";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
 import { FaArrowCircleDown } from "react-icons/fa";
+import { MdDeleteOutline } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
 
 const URI = "/aprendiz/";
 
@@ -109,6 +111,27 @@ const CrudApprentices = () => {
     "Acciones",
   ].filter(Boolean);
 
+  const ButtonsForOtherModules = (Id_Aprendiz) => [
+    <button
+      onClick={() => [
+        getApprentice(Id_Aprendiz),
+        setStateAddApprentice(true),
+        toggleModal(),
+      ]}
+      className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
+      key="get"
+    >
+      <FaRegEdit />
+    </button>,
+    <button
+      onClick={() => deleteApprentice(Id_Aprendiz)}
+      className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
+      key="delete"
+    >
+      <MdDeleteOutline />
+    </button>,
+  ];
+
   const formattedData = apprenticeList.map((apprentice) => {
     const rowData = [
       apprentice.Id_Aprendiz,
@@ -141,6 +164,9 @@ const CrudApprentices = () => {
         />
       );
     }
+
+    rowData.push(ButtonsForOtherModules(apprentice.Id_Aprendiz));
+
     return rowData;
   });
 
@@ -334,14 +360,8 @@ const CrudApprentices = () => {
           <WriteTable
             titles={titles}
             data={formattedData}
-            deleteRow={deleteApprentice}
-            getRow={getApprentice}
-            setStateAddNewRow={setStateAddApprentice}
-            setIsOpen={setIsOpen}
-            toggleModal={toggleModal} // Aquí pasamos la función
             titleModul={titleModul}
             tableName={tableName}
-
           />
         )}
       </div>
