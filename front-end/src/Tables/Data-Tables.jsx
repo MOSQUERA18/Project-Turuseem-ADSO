@@ -24,7 +24,7 @@ function WriteTable({
   setStateAddNewRow,
   toggleModal,
   titleModul,
-  tableName
+  tableName,
 }) {
   const tableRef = useRef(null);
   const [loading, setLoading] = useState(false);
@@ -32,48 +32,47 @@ function WriteTable({
   const exportPDF = async () => {
     try {
       const tableElement = tableRef.current;
-
+  
       if (!tableElement) {
         console.error("No se pudo encontrar el elemento de la tabla.");
         return;
       }
-
+  
+      // Mostrar todos los registros antes de exportar
+      const table = $("#TableDinamic").DataTable();
+      const currentPageLength = table.page.len(); // Guardar el valor actual de los registros mostrados
+      table.page.len(-1).draw(); // Mostrar todos los registros
+  
       // Obtener el contenido de thead y tbody por separado
       const theadHtml = tableElement.querySelector("thead")?.outerHTML || "";
       const tbodyHtml = tableElement.querySelector("tbody")?.outerHTML || "";
-
-      // Validar si thead o tbody son nulos o indefinidos
+  
       if (!theadHtml || !tbodyHtml) {
         console.error("No se pudo obtener el contenido de la tabla.");
         return;
       }
-
-      // Combinar thead y tbody para enviar la tabla completa
+  
       const tableHtml = `<table>${theadHtml}${tbodyHtml}</table>`;
-
       const token = ReactSession.get("token");
-
-      // Validar si el token es válido
+  
       if (!token) {
         console.error("Token no disponible.");
         return;
       }
-
+  
       const config = {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       };
-
-      // Hacer la petición al backend con el HTML de la tabla completa
+  
       const response = await clienteAxios.post(
         "/reportPDF",
         { innerHTML: tableHtml, titleModul: titleModul },
         config
       );
-
-      // Asegúrate de que estás accediendo a los datos correctamente
+  
       if (response.data.Reporte) {
         const link = document.createElement("a");
         link.href = `data:application/pdf;base64,${response.data.Reporte}`;
@@ -84,24 +83,32 @@ function WriteTable({
       } else {
         console.error("No se encontró el reporte");
       }
+  
       console.log("Respuesta del servidor:", response.data);
+  
+      // Restaurar el valor de registros mostrados
+      table.page.len(currentPageLength).draw();
     } catch (error) {
       console.error("Error al enviar el HTML:", error);
     }
   };
+  
 
   const exportToExcel = async () => {
     try {
+      const table = $("#TableDinamic").DataTable();
+      const currentPageLength = table.page.len();
+      table.page.len(-1).draw();
+  
       const headers = [];
       document
         .querySelectorAll("table thead th")
         .forEach((header, index, array) => {
           if (index < array.length - 1) {
-            // Ignora la última columna
             headers.push(header.innerText);
           }
         });
-
+  
       const data = [];
       document.querySelectorAll("table tbody tr").forEach((row) => {
         const rowData = [];
@@ -112,31 +119,28 @@ function WriteTable({
         });
         data.push(rowData);
       });
-
+  
       const tableData = {
         headers: headers,
         rows: data,
       };
+  
       const token = ReactSession.get("token");
-
-      // Validar si el token es válido
+  
       if (!token) {
         console.error("Token no disponible.");
         return;
       }
-
+  
       const config = {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       };
-      const response = await clienteAxios.post(
-        "/reportXLSX",
-        tableData,
-        config
-      );
-
+  
+      const response = await clienteAxios.post("/reportXLSX", tableData, config);
+  
       const base64XLSX = response.data.base64;
       const link = document.createElement("a");
       link.href =
@@ -144,6 +148,9 @@ function WriteTable({
         base64XLSX;
       link.download = `${titleModul}.xlsx`;
       link.click();
+  
+      // Restaurar el valor de registros mostrados
+      table.page.len(currentPageLength).draw();
     } catch (error) {
       console.error("Error exporting to Excel", error);
     }
@@ -172,54 +179,61 @@ function WriteTable({
 
   const handleEsportSQL = async () => {
     setLoading(true);
-
+  
+    const table = $("#TableDinamic").DataTable();
+    const currentPageLength = table.page.len();
+    table.page.len(-1).draw();
+  
     const tableData = exportSQL();
-
-    const dataValues = tableData.map((row) => Object.values(row))
+  
+    const dataValues = tableData.map((row) => Object.values(row));
     const payload = {
       tableName: tableName,
       data: dataValues,
     };
+  
     const token = ReactSession.get("token");
-
-    // Validar si el token es válido
+  
     if (!token) {
       console.error("Token no disponible.");
       return;
     }
-
+  
     const config = {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     };
+  
     try {
       const response = await clienteAxios.post("/exportsSQL", payload, config);
-
+  
       const { base64SQL } = response.data;
-
+  
       const link = document.createElement("a");
       link.href = `data:application/sql;base64,${base64SQL}`;
       link.download = `${tableName}.sql`;
       link.click();
-
+  
       console.log("Archivo SQL descargado correctamente");
     } catch (error) {
       console.error("Error al exportar el archivo SQL:", error);
     } finally {
+      // Restaurar el valor de registros mostrados
+      table.page.len(currentPageLength).draw();
       setLoading(false);
     }
   };
-
   //table
   useEffect(() => {
     // Verifica si el DataTable ya está inicializado
     if (!$.fn.DataTable.isDataTable("#TableDinamic")) {
       let table = new DataTable("#TableDinamic", {
+        // dom: 'lfrtip', 
         responsive: true,
         lengthChange: false,
-        pageLength: 10,
+        pageLength: 5,
         language: {
           search: "Buscar:",
           zeroRecords: "No se encontraron resultados",
@@ -237,13 +251,14 @@ function WriteTable({
     }
   }, []);
 
+
   return (
     <>
       <div className="relative overflow-x-auto container ">
         <div className="flex justify-end px-5">
           <button
             type="button"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mx-1 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4"
+            className="text-red-600 bg-green-500 hover:bg-red-200 focus:ring-4 focus:outline-none focus:ring-red-600 font-medium rounded-lg text-sm px-5 mx-1 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4 "
             onClick={exportPDF}
             title="Export PDF"
           >
@@ -251,7 +266,7 @@ function WriteTable({
           </button>
           <button
             type="button"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mx-1 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4"
+            className="text-lime-700 bg-green-500 hover:bg-emerald-100 focus:ring-4 focus:outline-none focus:ring-green-700 font-medium rounded-lg text-sm px-5 mx-1 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4"
             onClick={exportToExcel}
             title="Export XLSX"
           >
@@ -259,11 +274,15 @@ function WriteTable({
           </button>
           <button
             type="button"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mx-1 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4"
+            className="text-green-600 bg-green-500 hover:bg-sky-200 focus:ring-4 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-5 mx-1 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4"
             onClick={handleEsportSQL}
             title="Export SQL"
           >
-            {loading ? <MdOutlineDownloading size={17} /> :<BsFiletypeSql size={17} />}
+            {loading ? (
+              <MdOutlineDownloading size={17} />
+            ) : (
+              <BsFiletypeSql size={17} />
+            )}
           </button>
         </div>
         <div className="overflow-x-auto">
@@ -274,7 +293,7 @@ function WriteTable({
                 id="TableDinamic"
                 ref={tableRef}
               >
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <thead className="text-xs text-gray-500 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     {titles.map((title, index) => (
                       <th scope="col" key={index}>

@@ -104,7 +104,7 @@ const DataTableApprentices = ({
           <table ref={tableRef} id="tablaApprentices" className="min-w-full">
             <thead className="text-white bg-green-700">
               <tr>
-                <th className="py-2 px-4 border-2 border-b-gray-500">
+                <th className="py-2 px-4 border-2 border-b-gray-500 ">
                   Documento
                 </th>
                 <th className="py-2 px-4 border-2 border-b-gray-500">
@@ -113,7 +113,8 @@ const DataTableApprentices = ({
                 <th className="py-2 px-4 border-2 border-b-gray-500">
                   Apellidos
                 </th>
-                <th className="py-2 px-4 border-2 border-b-gray-500">Ficha</th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Ficha</th>
                 <th className="py-2 px-4 border-2 border-b-gray-500">
                   Fecha de Nacimiento{" "}
                 </th>
@@ -123,16 +124,20 @@ const DataTableApprentices = ({
                 <th className="py-2 px-4 border-2 border-b-gray-500">
                   Lugar Residencia{" "}
                 </th>
-                <th className="py-2 px-4 border-2 border-b-gray-500">Edad </th>
-                <th className="py-2 px-4 border-2 border-b-gray-500">Hijos </th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Edad </th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Hijos </th>
                 <th className="py-2 px-4 border-2 border-b-gray-500">
                   Nombre EPS{" "}
                 </th>
                 <th className="py-2 px-4 border-2 border-b-gray-500">
                   Telefono Padre{" "}
                 </th>
-                <th className="py-2 px-4 border-2 border-b-gray-500">Genero</th>
-                <th className="py-2 px-4 border-2 border-b-gray-500">Correo</th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Genero</th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Correo</th>
                 <th className="py-2 px-4 border-2 border-b-gray-500">
                   Telefono Aprendiz
                 </th>
@@ -145,7 +150,8 @@ const DataTableApprentices = ({
                 <th className="py-2 px-4 border-2 border-b-gray-500">
                   Patrocinio
                 </th>
-                <th className="py-2 px-4 border-2 border-b-gray-500">Estado</th>
+                <th className="py-2 px-4 border-2 border-b-gray-500">
+                  Estado</th>
                 <th className="py-2 px-4 border-2 border-b-gray-500">
                   Nombre Empresa
                 </th>

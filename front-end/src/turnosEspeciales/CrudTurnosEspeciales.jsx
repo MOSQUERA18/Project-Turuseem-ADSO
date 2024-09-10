@@ -58,6 +58,7 @@ const CrudTurnosEspeciales = () => {
     "REPORTE DE TURNOS ESPECIALES"
   ]
   const titleForm = ["CREAR TURNOS ESPECIALES"];
+    const tableName = "TurnosEspeciales"
 
   const shouldShowPhoto = turnoEspecialList.some(
     (row) => row.Img_Asistencia !== undefined
@@ -259,6 +260,7 @@ const CrudTurnosEspeciales = () => {
             toggleModal={toggleModal} // Aquí pasamos la función
             isOpen={isOpen}
             titleModul={titleModul}
+            tableName={tableName}
           />
         )}
       </div>

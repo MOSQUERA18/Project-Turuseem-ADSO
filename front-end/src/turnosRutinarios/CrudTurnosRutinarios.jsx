@@ -48,7 +48,7 @@ const CrudTurnosRutinarios = () => {
 
   const titleModul = ["REPORTE DE TURNOS RUTINARIOS"];
   const titleForm = ["CREAR TURNOS RUTINARIOS"];
-
+  const tableName = "TurnosRutinarios";
 
   const titles = [
     "ID",
@@ -247,6 +247,7 @@ const CrudTurnosRutinarios = () => {
             setStateAddNewRow={setStateAddturnoRutinario}
             toggleModal={toggleModal} // Aquí pasamos la función
             titleModul={titleModul}
+            tableName={tableName}
           />
         )}
       </div>

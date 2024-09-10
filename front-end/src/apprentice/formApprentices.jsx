@@ -141,7 +141,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
         console.log("Actualizando alerta con éxito"); // Log para depuración
         getAllAprentices();
         setAlerta({
-          msg: mensajeCrud,
+          msg: respuestApi.data.message ,
           error: false,
         });
         clearForm();

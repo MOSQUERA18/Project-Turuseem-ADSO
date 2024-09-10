@@ -12,7 +12,8 @@ const Header = () => {
                 <div className="container flex pr-12 flex-col lg:flex-row justify-end">
                   <nav className="flex gap-5 lg:flex-row mt-5 lg:mt-0 items-center">
                     <Link to="/admin" className="text-white text-base uppercase font-bold"><IoHome size={22} title="Inicio"/></Link>
-                    {/* <Link to="/admin/perfil" className="text-white text-base uppercase font-bold"><FaUserCircle size={22} title="Perfil"/></Link> */}
+
+
                     <button type="button" onClick={cerrarSesion} className="text-white text-base uppercase font-bold h-16"><IoLogOut size={22} title="Cerrar Sesion"/></button>
                  
 

@@ -3,8 +3,6 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
 
-
-
 import FormFuncionarios from "./formFuncionarios.jsx";
 import Alerta from "../components/Alerta.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
@@ -49,7 +47,7 @@ const CrudFuncionarios = () => {
   });
   const titleModul = ["REPORTE DE FUNCIONARIOS"];
   const titleForm = ["REGISTRAR FUNCIONARIOS"];
-
+  const tableName = "Funcionarios";
 
   const titles = [
     "Documento",
@@ -189,7 +187,6 @@ const CrudFuncionarios = () => {
 
   const { msg } = alerta;
 
-
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
@@ -229,6 +226,7 @@ const CrudFuncionarios = () => {
             toggleModal={toggleModal} // Aquí pasamos la función
             isOpen={isOpen}
             titleModul={titleModul}
+            tableName={tableName}
           />
         )}
       </div>

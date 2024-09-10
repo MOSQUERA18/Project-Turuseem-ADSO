@@ -50,6 +50,7 @@ const CrudTalentoHumano = () => {
   });
   const titleModul = ["REPORTE DE TALENTO HUMANO"];
   const titleForm = ["REGISTRAR TALENTO HUMANO"];
+  const tableName = "TalentoHumano";
 
   const titles = [
     "Documento",
@@ -228,6 +229,7 @@ const CrudTalentoHumano = () => {
             toggleModal={toggleModal} // Aquí pasamos la función
             isOpen={isOpen}
             titleModul={titleModul}
+            tableName={tableName}
           />
         )}
       </div>

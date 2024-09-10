@@ -9,7 +9,7 @@ import Alerta from "../components/Alerta.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
-const URI = "fichas";
+const URI = "/fichas/";
 
 const CrudFichas = () => {
   const [fichasList, setFichasList] = useState([]);
@@ -44,6 +44,7 @@ const CrudFichas = () => {
   });
   const titleModul = ["REPORTE DE FICHAS"];
   const titleForm = ["REGISTRAR FICHAS"];
+    const tableName = "Fichas"
 
   const titles = [
     "Numero Ficha",
@@ -222,6 +223,7 @@ const CrudFichas = () => {
             setStateAddNewRow={setStateAddFichas}
             toggleModal={toggleModal} // Aquí pasamos la función
             titleModul={titleModul}
+            tableName={tableName}
           />
         )}
       </div>

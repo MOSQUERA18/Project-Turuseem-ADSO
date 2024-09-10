@@ -9,6 +9,8 @@ import Alerta from "../components/Alerta.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
+import { FaArrowCircleDown } from "react-icons/fa";
+
 const URI = "/aprendiz/";
 
 const URIFOTOS = "/public/uploads/";
@@ -152,7 +154,7 @@ const CrudApprentices = () => {
     };
     try {
       const respuestApi = await clienteAxios.get(`/aprendiz`, config);
-      if (respuestApi.status === 200) {
+      if (respuestApi.status === 200 || respuestApi.status === 204) {
         setApprenticeList(respuestApi.data);
         setCrearDataTable(true);
       } else {
@@ -264,12 +266,12 @@ const CrudApprentices = () => {
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar Informacion de los
-        <span className="text-blue-700"> Aprendices</span>
+        <span className="text-green-700"> Aprendices</span>
       </h1>
-      <div className="flex justify-between">
+      <div className="flex justify-between ">
         <div className="flex justify-between">
           <div>
-            <h1 className="font-semibold text-lg text-gray-700 mb-3">
+            <h1 className="font-bold text-lg text-gray-500 mb-3 ">
               Subir Archivo CSV
             </h1>
             <ImportarCSV URI={URI} />
@@ -314,8 +316,9 @@ const CrudApprentices = () => {
                 alert("Error al intentar descargar el archivo.");
               }
             }}
-            className="bg-green-600 px-6 rounded-xl text-white font-bold flex items-center hover:bg-green-800"
+            className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-300 font-semibold flex items-center"
           >
+            <FaArrowCircleDown className="mx-1"/>
             Descargar CSV
           </a>
         </div>

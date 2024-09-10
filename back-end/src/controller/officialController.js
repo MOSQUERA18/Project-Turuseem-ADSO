@@ -1,35 +1,37 @@
 import OfficialModel from "../models/officialModel.js";
 import { logger } from "../middleware/logMiddleware.js";
 
+// Controlador para obtener todos los funcionarios
 export const getAllFuncionarios = async (req, res) => {
   try {
     const Funcionarios = await OfficialModel.findAll();
-    if( Funcionarios.length > 0){
-      res.status(200).json(Funcionarios);
-      return
+    if (Funcionarios.length > 0) {
+      return res.status(200).json(Funcionarios);
+    } else {
+      return res.status(404).json({ message: "No se encontraron funcionarios." });
     }
-    
   } catch (error) {
-    res.status(500).json({ message: error.message });
-    logger.error(`Error al obtener los funcionarios: ${error}`);
+    logger.error(`Error al obtener los funcionarios: ${error.message}`);
+    return res.status(500).json({ message: "Error al recuperar los funcionarios." });
   }
 };
 
+// Controlador para obtener un funcionario específico por ID
 export const getFuncionario = async (req, res) => {
   try {
     const Funcionario = await OfficialModel.findByPk(req.params.Id_Funcionario);
     if (Funcionario) {
-      res.status(200).json(Funcionario);
-      return
+      return res.status(200).json(Funcionario);
     } else {
-      res.status(404).json({ message: "Funcionario no encontrado" });
+      return res.status(404).json({ message: "Funcionario no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
-    logger.error(`Error al obtener el funcionario: ${error}`);
+    logger.error(`Error al obtener el funcionario: ${error.message}`);
+    return res.status(500).json({ message: "Error al recuperar el funcionario." });
   }
 };
 
+// Controlador para crear un nuevo funcionario
 export const createFuncionario = async (req, res) => {
   try {
     const {
@@ -41,6 +43,7 @@ export const createFuncionario = async (req, res) => {
       Estado,
       Cargo,
     } = req.body;
+
     const NewFuncionario = await OfficialModel.create({
       Id_Funcionario,
       Nom_Funcionario,
@@ -50,17 +53,19 @@ export const createFuncionario = async (req, res) => {
       Estado,
       Cargo,
     });
-    if(NewFuncionario){
-      res.status(201).json(NewFuncionario);
-      return
+
+    if (NewFuncionario) {
+      return res.status(201).json(NewFuncionario);
+    } else {
+      return res.status(400).json({ message: "No se pudo crear el funcionario." });
     }
-    
   } catch (error) {
-    res.status(500).json({ message: error.message });
-    logger.error(`Error al crear el funcionario: ${error}`);
+    logger.error(`Error al crear el funcionario: ${error.message}`);
+    return res.status(500).json({ message: "Error al registrar el funcionario." });
   }
 };
 
+// Controlador para actualizar un funcionario existente
 export const updateFuncionario = async (req, res) => {
   try {
     const {
@@ -71,6 +76,7 @@ export const updateFuncionario = async (req, res) => {
       Estado,
       Cargo,
     } = req.body;
+
     const [updated] = await OfficialModel.update(
       {
         Nom_Funcionario,
@@ -84,31 +90,32 @@ export const updateFuncionario = async (req, res) => {
         where: { Id_Funcionario: req.params.Id_Funcionario },
       }
     );
+
     if (updated === 0) {
-      res.status(404).json({ message: "Funcionario no encontrado" });
+      return res.status(404).json({ message: "Funcionario no encontrado" });
     } else {
-      res.json({ message: "Funcionario actualizado correctamente" });
-      return
+      return res.json({ message: "Funcionario actualizado correctamente" });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
-    logger.error(`Error al actualizar el funcionario: ${error}`);
+    logger.error(`Error al actualizar el funcionario: ${error.message}`);
+    return res.status(500).json({ message: "Error al actualizar el funcionario." });
   }
 };
 
+// Controlador para eliminar un funcionario existente
 export const deleteFuncionario = async (req, res) => {
   try {
     const Result = await OfficialModel.destroy({
       where: { Id_Funcionario: req.params.Id_Funcionario },
     });
+
     if (Result === 0) {
-      res.status(404).json({ message: "Funcionario no encontrado" });
+      return res.status(404).json({ message: "Funcionario no encontrado" });
     } else {
-      res.json({ message: "Funcionario eliminado correctamente" });
-      return
+      return res.json({ message: "Funcionario eliminado correctamente" });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
-    logger.error(`Error al eliminar el funcionario: ${error}`);
+    logger.error(`Error al eliminar el funcionario: ${error.message}`);
+    return res.status(500).json({ message: "Error al eliminar el funcionario." });
   }
 };

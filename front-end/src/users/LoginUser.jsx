@@ -54,8 +54,8 @@ const LoginForm = () => {
       <div className="container mx-auto md:grid md:grid-cols-2 gap-10 p-5 items-center">
         <div>
           <h1 className="text-stone-400 font-black text-5xl">
-            Inicia Sesion y Gestiona {""}
-            <span className="text-green-700">tus Turnos</span>
+            INICIA SESIÓN Y GESTIONA {""}
+            <span className="text-green-700">TUS TURNOS</span>
           </h1>
         </div>
         <div className="mt-20 md:mt-5 shadow-2xl px-7 py-10 rounded-xl bg-white">
@@ -89,7 +89,7 @@ const LoginForm = () => {
             <input
               type="submit"
               value="Iniciar Sesion"
-              className="bg-green-800 w-full py-3 px-8 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-green-800 md:w-auto "
+              className="bg-green-700 w-full py-3 px-8 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-green-300 md:w-auto "
             />
           </form>
           <nav className="mt-8 lg:flex lg:justify-between">
@@ -97,11 +97,11 @@ const LoginForm = () => {
               to="/registrar"
               className="block text-center my-5 text-gray-500"
             >
-              ¿No tienes una Cuenta? Registrate
+              ¿No tienes una Cuenta? Registrate 
             </Link> */}
             <Link
               to="/olvide-password"
-              className="block text-center my-5 text-gray-500 mx-2 hover:text-green-500 hover:scale-105 transition-transform duration-200 ease-in-out hover:rounded-md"
+              className="block text-center my-5 text-black mx-2 hover:text-green-600 hover:scale-105 transition-transform duration-200 ease-in-out hover:rounded-md"
             >
               Olvide mi Contraseña
             </Link>

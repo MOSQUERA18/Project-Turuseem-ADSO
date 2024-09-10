@@ -18,6 +18,7 @@ const CrudFuncionarios = () => {
   const [alerta, setAlerta] = useState({});
 
   const titleModul = ["REPORTE DE INASISTENCIAS"];
+    const tableName = "Inasistencias"
 
   const titles = [
     "Identificador",
@@ -83,6 +84,7 @@ const CrudFuncionarios = () => {
           titles={titles}
           data={formattedData}
           titleModul={titleModul}
+          tableName={tableName}
           />
         )}
       </div>

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { IoLogIn } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
-
 export default function HeaderPublic() {
   let arr = [true, false, false, false, false, false];
   const [style, setStyle] = useState(arr);
@@ -40,17 +39,17 @@ export default function HeaderPublic() {
               onClick={() => selected(0)}
               className={`${
                 style[0]
-                  ? "text-black bg-green-600"
+                  ? "text-black border-b-4 border-blue-700"
                   : "text-black bg-green-500"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
-              Home
+              INICIO
             </Link>
             <Link to='contacto'
               onClick={() => selected(1)}
               className={`${
                 style[1]
-                  ? "text-black bg-green-600"
+                  ? "text-black border-b-4 border-blue-700"
                   : "text-black bg-green-500"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
@@ -60,7 +59,7 @@ export default function HeaderPublic() {
               onClick={() => selected(2)}
               className={`${
                 style[2]
-                  ? "text-black bg-green-600"
+                  ? "text-black border-b-4 border-blue-700"
                   : "text-black bg-green-500"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
@@ -70,7 +69,7 @@ export default function HeaderPublic() {
               onClick={() => selected(3)}
               className={`${
                 style[3]
-                  ? "text-black bg-green-600"
+                  ? "text-black border-b-4 border-blue-700"
                   : "text-black bg-green-500"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
@@ -80,7 +79,7 @@ export default function HeaderPublic() {
               onClick={() => selected(4)}
               className={`${
                 style[4]
-                  ? "text-black bg-green-600"
+                  ? "text-black border-b-4 border-blue-700"
                   : "text-black bg-green-500"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
