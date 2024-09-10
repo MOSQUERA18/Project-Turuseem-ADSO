@@ -1,12 +1,11 @@
 import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
-// import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
-
-// import { exportToExcel } from './ExportExcel.js';
 
 import Alerta from "../components/Alerta.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
+import { MdDeleteOutline } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
 
 const URI = "inasistencias";
 
@@ -18,21 +17,41 @@ const CrudFuncionarios = () => {
   const [alerta, setAlerta] = useState({});
 
   const titleModul = ["REPORTE DE INASISTENCIAS"];
-    const tableName = "Inasistencias"
+  const tableName = "Inasistencias";
 
   const titles = [
     "Identificador",
-    "Fecha Turnp",
+    "Fecha Turno",
     "Motivo Inasistencia",
     "Documento Aprendiz ",
     "Acciones",
   ];
-  const formattedData = inasistenciaList.map((inasistencia) => [
-    inasistencia.Id_Inasistencia,
-    inasistencia.Fec_Inasistencia,
-    inasistencia.Mot_Inasistencia,
-    inasistencia.turnorutinario.Id_Aprendiz,
-  ]);
+
+  const ButtonsForOtherModules = () => [
+    <button
+      className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
+      key="get"
+    >
+      <FaRegEdit />
+    </button>,
+    <button
+      className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
+      key="delete"
+    >
+      <MdDeleteOutline />
+    </button>,
+  ];
+
+  const formattedData = inasistenciaList.map((inasistencia) => {
+    const rowData = [
+      inasistencia.Id_Inasistencia,
+      inasistencia.Fec_Inasistencia,
+      inasistencia.Mot_Inasistencia,
+      inasistencia.turnorutinario.Id_Aprendiz,
+    ]
+    rowData.push(ButtonsForOtherModules(inasistencia.Id_Inasistencia));
+    return rowData;
+  });
 
   useEffect(() => {
     getAllInasistencias();
@@ -80,11 +99,12 @@ const CrudFuncionarios = () => {
         <hr />
         {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
         {crearDataTable && (
-          <WriteTable 
-          titles={titles}
-          data={formattedData}
-          titleModul={titleModul}
-          tableName={tableName}
+          <WriteTable
+            titles={titles}
+            data={formattedData}
+            titleModul={titleModul}
+            tableName={tableName}
+            buttons={ButtonsForOtherModules}
           />
         )}
       </div>

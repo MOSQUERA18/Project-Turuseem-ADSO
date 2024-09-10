@@ -7,72 +7,60 @@ import DataTable from "datatables.net-dt";
 import "datatables.net-responsive-dt";
 import "datatables.net-dt/css/dataTables.dataTables.min.css";
 import "datatables.net-responsive-dt/css/responsive.dataTables.min.css";
-import { MdDeleteOutline } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
 import { FaRegFilePdf } from "react-icons/fa6";
-import { BsFiletypeXlsx } from "react-icons/bs";
-import { BsFiletypeSql } from "react-icons/bs";
-import clienteAxios from "../config/axios";
+import { BsFiletypeXlsx, BsFiletypeSql } from "react-icons/bs";
 import { MdOutlineDownloading } from "react-icons/md";
+import clienteAxios from "../config/axios";
 
 //pidan de parametros los titulos y la data
-function WriteTable({
-  titles,
-  data,
-  deleteRow,
-  getRow,
-  setStateAddNewRow,
-  toggleModal,
-  titleModul,
-  tableName,
-}) {
+function WriteTable({ titles, data, titleModul, tableName }) {
   const tableRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
   const exportPDF = async () => {
     try {
       const tableElement = tableRef.current;
-  
+
       if (!tableElement) {
         console.error("No se pudo encontrar el elemento de la tabla.");
         return;
       }
-  
+
       // Mostrar todos los registros antes de exportar
       const table = $("#TableDinamic").DataTable();
       const currentPageLength = table.page.len(); // Guardar el valor actual de los registros mostrados
       table.page.len(-1).draw(); // Mostrar todos los registros
-  
+
       // Obtener el contenido de thead y tbody por separado
       const theadHtml = tableElement.querySelector("thead")?.outerHTML || "";
       const tbodyHtml = tableElement.querySelector("tbody")?.outerHTML || "";
-  
+
       if (!theadHtml || !tbodyHtml) {
         console.error("No se pudo obtener el contenido de la tabla.");
         return;
       }
-  
+
       const tableHtml = `<table>${theadHtml}${tbodyHtml}</table>`;
       const token = ReactSession.get("token");
-  
+
       if (!token) {
         console.error("Token no disponible.");
         return;
       }
-  
+
       const config = {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       };
-  
+
       const response = await clienteAxios.post(
         "/reportPDF",
         { innerHTML: tableHtml, titleModul: titleModul },
         config
       );
-  
+
       if (response.data.Reporte) {
         const link = document.createElement("a");
         link.href = `data:application/pdf;base64,${response.data.Reporte}`;
@@ -83,23 +71,22 @@ function WriteTable({
       } else {
         console.error("No se encontró el reporte");
       }
-  
+
       console.log("Respuesta del servidor:", response.data);
-  
+
       // Restaurar el valor de registros mostrados
       table.page.len(currentPageLength).draw();
     } catch (error) {
       console.error("Error al enviar el HTML:", error);
     }
   };
-  
 
   const exportToExcel = async () => {
     try {
       const table = $("#TableDinamic").DataTable();
       const currentPageLength = table.page.len();
       table.page.len(-1).draw();
-  
+
       const headers = [];
       document
         .querySelectorAll("table thead th")
@@ -108,7 +95,7 @@ function WriteTable({
             headers.push(header.innerText);
           }
         });
-  
+
       const data = [];
       document.querySelectorAll("table tbody tr").forEach((row) => {
         const rowData = [];
@@ -119,28 +106,32 @@ function WriteTable({
         });
         data.push(rowData);
       });
-  
+
       const tableData = {
         headers: headers,
         rows: data,
       };
-  
+
       const token = ReactSession.get("token");
-  
+
       if (!token) {
         console.error("Token no disponible.");
         return;
       }
-  
+
       const config = {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       };
-  
-      const response = await clienteAxios.post("/reportXLSX", tableData, config);
-  
+
+      const response = await clienteAxios.post(
+        "/reportXLSX",
+        tableData,
+        config
+      );
+
       const base64XLSX = response.data.base64;
       const link = document.createElement("a");
       link.href =
@@ -148,7 +139,7 @@ function WriteTable({
         base64XLSX;
       link.download = `${titleModul}.xlsx`;
       link.click();
-  
+
       // Restaurar el valor de registros mostrados
       table.page.len(currentPageLength).draw();
     } catch (error) {
@@ -179,43 +170,43 @@ function WriteTable({
 
   const handleEsportSQL = async () => {
     setLoading(true);
-  
+
     const table = $("#TableDinamic").DataTable();
     const currentPageLength = table.page.len();
     table.page.len(-1).draw();
-  
+
     const tableData = exportSQL();
-  
+
     const dataValues = tableData.map((row) => Object.values(row));
     const payload = {
       tableName: tableName,
       data: dataValues,
     };
-  
+
     const token = ReactSession.get("token");
-  
+
     if (!token) {
       console.error("Token no disponible.");
       return;
     }
-  
+
     const config = {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     };
-  
+
     try {
       const response = await clienteAxios.post("/exportsSQL", payload, config);
-  
+
       const { base64SQL } = response.data;
-  
+
       const link = document.createElement("a");
       link.href = `data:application/sql;base64,${base64SQL}`;
       link.download = `${tableName}.sql`;
       link.click();
-  
+
       console.log("Archivo SQL descargado correctamente");
     } catch (error) {
       console.error("Error al exportar el archivo SQL:", error);
@@ -230,7 +221,6 @@ function WriteTable({
     // Verifica si el DataTable ya está inicializado
     if (!$.fn.DataTable.isDataTable("#TableDinamic")) {
       let table = new DataTable("#TableDinamic", {
-        // dom: 'lfrtip', 
         responsive: true,
         lengthChange: false,
         pageLength: 5,
@@ -250,7 +240,6 @@ function WriteTable({
       });
     }
   }, []);
-
 
   return (
     <>
@@ -305,27 +294,17 @@ function WriteTable({
                 <tbody>
                   {data.map((row, rowIndex) => (
                     <tr key={rowIndex}>
-                      {row.map((cell, cellIndex) => (
+                      {row.slice(0, -1).map((cell, cellIndex) => (
                         <td key={cellIndex}>{cell}</td>
                       ))}
                       <td className="py-2 px-4 border-b">
-                        <button
-                          onClick={() => [
-                            getRow(row[0]),
-                            setStateAddNewRow(true),
-                            console.log(row[0]),
-                            toggleModal(),
-                          ]}
-                          className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
-                        >
-                          <FaRegEdit />
-                        </button>
-                        <button
-                          onClick={() => deleteRow(row[0])}
-                          className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
-                        >
-                          <MdDeleteOutline />
-                        </button>
+                        {Array.isArray(row[row.length - 1]) ? (
+                          row[row.length - 1].map((button, buttonIndex) => (
+                            <span key={buttonIndex}>{button}</span>
+                          ))
+                        ) : (
+                          <span>No buttons</span>
+                        )}
                       </td>
                     </tr>
                   ))}

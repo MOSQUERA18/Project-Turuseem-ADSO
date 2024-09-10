@@ -9,6 +9,10 @@ import Alerta from "../components/Alerta.jsx";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
 
+import { MdDeleteOutline } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
+import { AiOutlineEye, AiOutlineSend } from "react-icons/ai";
+
 const CrudMemorandum = () => {
   const [memorandumList, setMemorandumList] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
@@ -32,7 +36,7 @@ const CrudMemorandum = () => {
   });
   const titleModul = ["REPORTE DE MEMORANDOS"];
   const titleForm = ["REGISTRAR MEMORANDOS"];
-    const tableName = "Memorandos"
+  const tableName = "Memorandos";
 
   const titles = [
     "Documento",
@@ -42,13 +46,55 @@ const CrudMemorandum = () => {
     "Motivo Memorando",
     "Acciones",
   ];
-  const formattedData = memorandumList.map((memorandum) => [
-    memorandum.Id_Aprendiz,
-    memorandum.aprendiz?.Nom_Aprendiz,
-    memorandum.aprendiz?.Ape_Aprendiz,
-    memorandum.Fec_OtroMemorando,
-    memorandum.Mot_OtroMemorando,
-  ]);
+
+  const ButtonsForMemorandum = (Id_OtroMemorando) => [
+    <button
+      onClick={() => [
+        getMemorandum(Id_OtroMemorando),
+        setStateAddMemorandum(true),
+        toggleModal(),
+      ]}
+      className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
+      key="get"
+    >
+      <FaRegEdit />
+    </button>,
+    <button
+      onClick={() => deleteMemorandum(Id_OtroMemorando)}
+      className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
+      key="delete"
+    >
+      <MdDeleteOutline />
+    </button>,
+    <button
+      onClick={() => [
+        viewMemorandum(Id_OtroMemorando),
+      ]}
+      className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
+      key="get"
+    >
+      <AiOutlineEye />
+    </button>,
+    <button
+      onClick={() => sendMemorandum(Id_OtroMemorando)}
+      className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
+      key="delete"
+    >
+      <AiOutlineSend />
+    </button>,
+  ];
+
+  const formattedData = memorandumList.map((memorandum) => {
+    const rowData = [
+      memorandum.Id_Aprendiz,
+      memorandum.aprendiz?.Nom_Aprendiz,
+      memorandum.aprendiz?.Ape_Aprendiz,
+      memorandum.Fec_OtroMemorando,
+      memorandum.Mot_OtroMemorando,
+    ];
+    rowData.push(ButtonsForMemorandum(memorandum.Id_OtroMemorando));
+    return rowData;
+  });
 
   useEffect(() => {
     getAllMemorandum();
@@ -145,6 +191,13 @@ const CrudMemorandum = () => {
       }
     });
   };
+
+  const viewMemorandum = (Id_OtroMemorando) => {
+    console.log(Id_OtroMemorando);
+  };
+  const sendMemorandum = (Id_OtroMemorando) => {
+    console.log(Id_OtroMemorando);
+  };
   const { msg } = alerta;
 
   return (
@@ -180,10 +233,6 @@ const CrudMemorandum = () => {
           <WriteTable
             titles={titles}
             data={formattedData}
-            deleteRow={deleteMemorandum}
-            getRow={getMemorandum}
-            stateAddNewRow={setStateAddMemorandum}
-            toggleModal={toggleModal} // Aquí pasamos la función
             titleModul={titleModul}
             tableName={tableName}
           />
