@@ -11,24 +11,55 @@ const ConsultarTurno = () => {
 
   const sendForm = async (e) => {
     e.preventDefault();
+    if (Id_Aprendiz.trim() === "") {
+      setAlerta({
+        msg: "El número de Documento no puede estar vacío",
+        error: true
+      });
+      return;
+    }
     try {
-      const respuestApi = await clienteAxios(`${URI}/${Id_Aprendiz}`);
-      if (respuestApi.status === 200) {
-        setTurnoRutinarioList(respuestApi.data);
-        clearForm();
+      const respuestaApi = await clienteAxios(`${URI}/${Id_Aprendiz}`);
+      if (respuestaApi.status === 200) {
+        const turnosValidos = respuestaApi.data.filter(turnoRutinario => 
+          esFechaVigente(turnoRutinario.Fec_InicioTurno, turnoRutinario.Fec_FinTurno)
+        );
+        if (turnosValidos.length > 0) {
+          setTurnoRutinarioList(turnosValidos);
+          clearForm();
+        } else {
+          setAlerta({
+            msg: "No hay turnos vigentes para esta ficha.",
+            error: true,
+          });
+          setTurnoRutinarioList([]);
+        }
       } else {
         setAlerta({
-          msg: `Error al cargar los registros!`,
+          msg: "Error al cargar los registros!",
           error: true,
         });
       }
     } catch (error) { 
-      setTurnoRutinarioList({});
+      setTurnoRutinarioList([]);
       setAlerta({
         msg: error.response.data.message,
         error: true,
       });
     }
+  };
+
+  const esFechaVigente = (fechaInicio, fechaFin) => {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+
+    const fechaInicioDate = new Date(fechaInicio);
+    fechaInicioDate.setHours(0, 0, 0, 0);
+
+    const fechaFinDate = new Date(fechaFin);
+    fechaFinDate.setHours(0, 0, 0, 0);
+
+    return fechaInicioDate <= hoy && hoy <= fechaFinDate;
   };
 
   const clearForm = () => {
@@ -57,14 +88,12 @@ const ConsultarTurno = () => {
               type="number"
               id="document"
               value={Id_Aprendiz}
-              
               onChange={(e) => {
                 const value = e.target.value;
                 if (value.length <= 10) {
                   setId_Aprendiz(value);
                 }
-              }
-            }
+              }}
               className="w-full p-2 border rounded"
               maxLength={10}
             />

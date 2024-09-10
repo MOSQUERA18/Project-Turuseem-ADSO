@@ -11,24 +11,63 @@ const ConsultarTurnoEspecial = () => {
 
   const sendForm = async (e) => {
     e.preventDefault();
+    if (Id_Ficha.trim() === "") {
+      setAlerta({
+        msg: "El número de ficha no puede estar vacío",
+        error: true
+      });
+      return;
+    }
     try {
-      const respuestApi = await clienteAxios(`${URI}/${Id_Ficha}`);
-      if (respuestApi.status === 200) {
-        setTurnoEspecialList(respuestApi.data);
+      const respuestaApi = await clienteAxios(`${URI}/${Id_Ficha}`);
+      if (respuestaApi.status === 200) {
+        const turnosEspeciales = respuestaApi.data;
+        setTurnoEspecialList(turnosEspeciales);
+
+        // Verifica si hay algún turno especial con una fecha válida
+        const tieneTurnoValido = turnosEspeciales.some(turno => mostrarTurnoSiEsActual(turno.Fec_TurnoEspecial));
+
+        if (tieneTurnoValido) {
+          setAlerta({
+            msg: "Ficha Con Turno Programado",
+            error: false
+          });
+        } else {
+          setAlerta({
+            msg: "No hay turnos programados vigentes",
+            error: true
+          });
+        }
+        
         clearForm();
       } else {
         setAlerta({
-          msg: `Error al cargar los registros!`,
+          msg: "Error al cargar los registros!",
           error: true,
         });
       }
     } catch (error) { 
-      setTurnoEspecialList({});
+      setTurnoEspecialList([]);
       setAlerta({
         msg: error.response.data.message,
         error: true,
       });
     }
+  };
+
+
+  //VALIDAR LA FECHA
+
+  const mostrarTurnoSiEsActual = (Fec_TurnoEspecial) => {
+    const hoy = new Date(); // Fecha actual
+    hoy.setHours(0, 0, 0, 0); // Establece la hora a 00:00:00 para comparación
+
+    // Convertir la fecha del turno en un objeto Date y también establecer la hora a 00:00:00
+    const fechaTurnoDate = new Date(Fec_TurnoEspecial);
+    fechaTurnoDate.setHours(0, 0, 0, 0);
+
+    // Compara si la fecha del turno es igual o mayor que la de hoy
+    return fechaTurnoDate >= hoy;
   };
 
   const clearForm = () => {
@@ -107,40 +146,36 @@ const ConsultarTurnoEspecial = () => {
                 </tr>
               </thead>
               <tbody>
-                {turnoEspecialList.map((turnoEspecial) => (
-                  <tr
-                    key={turnoEspecial.Id_TurnoEspecial}
-                    className="odd:bg-white even:bg-gray-100"
-                  >
-                    {/* <td className="py-2 px-4 border-b">
-                      {turnoEspecial.Id_Aprendiz}
-                    </td> */}
-                    <td className="py-2 px-4 border-b">
-                      {turnoEspecial.Id_Ficha}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {turnoEspecial.Fec_TurnoEspecial}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {turnoEspecial.Hor_Inicio}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {turnoEspecial.Hor_Fin}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {turnoEspecial.Id_Funcionario}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {turnoEspecial.funcionario.Nom_Funcionario}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {turnoEspecial.unidad?.Nom_Unidad}
-                    </td>
-                    {/* <td className="py-2 px-4 border-b">
-                      {turnoRutinario.Obs_TurnoRutinario}
-                    </td> */}
-                  </tr>
-                ))}
+                {turnoEspecialList
+                  .filter((turnoEspecial) => mostrarTurnoSiEsActual(turnoEspecial.Fec_TurnoEspecial))
+                  .map((turnoEspecial) => (
+                    <tr
+                      key={turnoEspecial.Id_TurnoEspecial}
+                      className="odd:bg-white even:bg-gray-100"
+                    >
+                      <td className="py-2 px-4 border-b">
+                        {turnoEspecial.Id_Ficha}
+                      </td>
+                      <td className="py-2 px-4 border-b">
+                        {turnoEspecial.Fec_TurnoEspecial}
+                      </td>
+                      <td className="py-2 px-4 border-b">
+                        {turnoEspecial.Hor_Inicio}
+                      </td>
+                      <td className="py-2 px-4 border-b">
+                        {turnoEspecial.Hor_Fin}
+                      </td>
+                      <td className="py-2 px-4 border-b">
+                        {turnoEspecial.Id_Funcionario}
+                      </td>
+                      <td className="py-2 px-4 border-b">
+                        {turnoEspecial.funcionario.Nom_Funcionario}
+                      </td>
+                      <td className="py-2 px-4 border-b">
+                        {turnoEspecial.unidad?.Nom_Unidad}
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
