@@ -13,6 +13,7 @@ import {
 } from "../controller/apprenticeController.js";
 import checkAuth from "../middleware/authMiddleware.js";
 import ApprenticeModel from "../models/apprenticeModel.js";
+import Otros_MemorandosModel from "../models/Otros_MemorandosModel.js"
 
 const router = express.Router();
 
@@ -38,41 +39,64 @@ router
   .put(upload.single('Foto_Aprendiz'), updateApprentice)
   .delete(checkAuth, deleteApprentice);
 
+// Ruta para actualizar inasistencias y eliminar memorandos si es necesario
 router.put('/:Id_Aprendiz/actualizar-inasistencia', async (req, res) => {
-    try {
+  try {
       const { Id_Aprendiz } = req.params;
       const { action } = req.body;
-  
-      console.log("Actualizando inasistencia para aprendiz con ID:", Id_Aprendiz); 
-      console.log("Acción:", action); 
-  
+
+      console.log("Actualizando inasistencia para aprendiz con ID:", Id_Aprendiz);
+      console.log("Acción:", action);
+
       const aprendiz = await ApprenticeModel.findByPk(Id_Aprendiz);
-  
+
       if (!aprendiz) {
-        return res.status(404).json({ error: 'Aprendiz no encontrado' });
+          return res.status(404).json({ error: 'Aprendiz no encontrado' });
       }
-  
+
       if (action === "incrementar") {
-        // Solo incrementar memorandos cuando la acción sea "incrementar"
-        aprendiz.Tot_Inasistencias += 1;
-        aprendiz.Tot_Memorandos += 1;
+          // Incrementar memorandos e inasistencias
+          aprendiz.Tot_Inasistencias += 1;
+          aprendiz.Tot_Memorandos += 1;
       } else if (action === "decrementar" && aprendiz.Tot_Inasistencias > 0) {
-        // No decrementamos memorandos, solo inasistencias
-        aprendiz.Tot_Inasistencias -= 1;
-        aprendiz.Tot_Memorandos -= 1;
+          // Decrementar solo inasistencias y memorandos si corresponde
+          aprendiz.Tot_Inasistencias -= 1;
+          aprendiz.Tot_Memorandos -= 1;
+          // Eliminar memorando si el indicador de asistencia es "Si"
+          await eliminarMemorando(Id_Aprendiz);
       } else {
-        return res.status(400).json({ error: 'Acción inválida o inasistencias en 0' });
+          return res.status(400).json({ error: 'Acción inválida o inasistencias en 0' });
       }
-  
+
       await aprendiz.save();
-      console.log("Inasistencia actualizada exitosamente"); 
-  
+      console.log("Inasistencia actualizada exitosamente");
+
       res.status(200).json({ message: 'Inasistencia actualizada exitosamente', aprendiz });
-    } catch (error) {
-      console.error("Error al actualizar inasistencia:", error); 
+  } catch (error) {
+      console.error("Error al actualizar inasistencia:", error);
       res.status(500).json({ error: 'Error al actualizar la inasistencia' });
-    }
-  });
+  }
+});
+
+// Función para eliminar el memorando cuando el indicador de asistencia sea "Si"
+const eliminarMemorando = async (Id_Aprendiz) => {
+  try {
+      // Buscar y eliminar memorando asociado al aprendiz
+      const memorando = await Otros_MemorandosModel.findOne({
+          where: { Id_Aprendiz }
+      });
+
+      if (memorando) {
+          await memorando.destroy();
+          console.log(`Memorando para el aprendiz con ID ${Id_Aprendiz} eliminado exitosamente`);
+      } else {
+          console.log(`No se encontró memorando para el aprendiz con ID ${Id_Aprendiz}`);
+      }
+  } catch (error) {
+      console.error("Error al eliminar memorando:", error);
+  }
+};
+
   
   
 // Ruta para importar CSV de aprendices

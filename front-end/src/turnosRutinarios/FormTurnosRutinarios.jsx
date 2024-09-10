@@ -180,9 +180,9 @@ const crearRegistroMemorando = async () => {
     if (respuestaMemorando.status === 201) {
       console.log('Registro de memorando creado exitosamente');
 
-      const action = Ind_Asistencia === "No" ? "incrementar" : "decrementar";
-      await clienteAxios.put(`/aprendiz/${Id_Aprendiz}/actualizar-inasistencia`, { action }, config);
-      console.log('Inasistencia actualizada exitosamente');
+      // const action = Ind_Asistencia === "No" ? "incrementar" : "decrementar";
+      // await clienteAxios.put(`/aprendiz/${Id_Aprendiz}/actualizar-inasistencia`, { action }, config);
+      // console.log('Inasistencia y memorandos actualizados exitosamente');
     }
   } catch (error) {
     console.error("Error al crear registro de memorando:", error);
