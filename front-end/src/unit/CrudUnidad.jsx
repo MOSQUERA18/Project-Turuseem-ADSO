@@ -47,6 +47,7 @@ const CrudUnidades = () => {
     "REPORTE DE UNIDADES"
   ]
   const titleForm = ["REGISTRAR UNIDADES"];
+    const tableName = "Unidades"
 
   const titles = [
     "ID",
@@ -211,7 +212,6 @@ const CrudUnidades = () => {
         />
 
 
-
       </div>
       <div className="overflow-x-auto">
         <hr />
@@ -225,6 +225,7 @@ const CrudUnidades = () => {
             setStateAddNewRow={setStateAddUnidad}
             toggleModal={toggleModal} // Aquí pasamos la función
             titleModul={titleModul}
+            tableName={tableName}
           />
         )}
       </div>

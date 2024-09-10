@@ -46,11 +46,11 @@ const ConsultarTurno = () => {
           className="bg-white shadow-lg rounded-2xl px-6 pt-6 pb-8 mb-4 w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-3xl mt-10"
         >
           {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
-          <h1 className="font-bold text-green-600 text-2xl sm:text-3xl uppercase text-center my-5">
-            Consultar Turnos Rutinarios
+          <h1 className="font-bold text-black text-2xl sm:text-4xl uppercase text-center my-5">
+            Consultar <span className="text-blue-700">Turnos Rutinarios</span>
           </h1>
           <div className="mb-3">
-            <label className="text-gray-700 uppercase font-bold">
+            <label className="text-black uppercase font-bold">
               Ingrese Numero de Documento
             </label>
             <input
@@ -74,7 +74,7 @@ const ConsultarTurno = () => {
               type="submit"
               id="button"
               value="Buscar"
-              className="bg-green-600 w-full py-2 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-700 md:w-auto"
+              className="bg-green-700 w-full py-2 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-300 md:w-auto"
             />
           </div>
         </form>
@@ -83,30 +83,30 @@ const ConsultarTurno = () => {
         <div className="px-4 sm:px-10 md:px-20">
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white text-center text-sm">
-              <thead className="text-white bg-green-700">
+              <thead className="text-black bg-green-500">
                 <tr>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  <th className="py-2 px-4 border-2 border-gray-500">
                     Documento
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  <th className="py-2 px-4 border-2 border-gray-500">
                     Nombres
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  <th className="py-2 px-4 border-2 border-gray-500">
                     Apellidos
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  <th className="py-2 px-4 border-2 border-gray-500">
                     Fecha Inicio
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  <th className="py-2 px-4 border-2 border-gray-500">
                     Fecha Fin
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  <th className="py-2 px-4 border-2 border-gray-500">
                     Hora Inicio
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  <th className="py-2 px-4 border-2 border-gray-500 ">
                     Hora Fin
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  <th className="py-2 px-4 border-2 border-gray-500">
                     Unidad
                   </th>
                   {/* <th className="py-2 px-4 border-2 border-b-gray-500">

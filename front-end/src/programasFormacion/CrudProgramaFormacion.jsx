@@ -1,4 +1,4 @@
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
@@ -42,6 +42,7 @@ const CrudPrograma = () => {
   });
   const titleModul = ["REPORTE DE PROGRAMAS DE FORMACION"];
   const titleForm = ["REGISTRAR PROGRAMAS DE FORMACION"];
+  const tableName = "Programas";
 
   const titles = [
     "Documento",
@@ -74,7 +75,7 @@ const CrudPrograma = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(URI, config);
+      const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setProgramaList(respuestApi.data);
         setCrearDataTable(true);
@@ -103,7 +104,7 @@ const CrudPrograma = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(
+      const respuestApi = await clienteAxios(
         `${URI}/${Id_ProgramaFormacion}`,
         config
       );
@@ -146,7 +147,7 @@ const CrudPrograma = () => {
           },
         };
         try {
-          const respuestApi = await clieteAxios.delete(
+          const respuestApi = await clienteAxios.delete(
             `/${URI}/${Id_ProgramaFormacion}`,
             config
           );
@@ -219,6 +220,7 @@ const CrudPrograma = () => {
             setStateAddNewRow={setStateAddPrograma}
             toggleModal={toggleModal} // Aquí pasamos la función
             titleModul={titleModul}
+            tableName={tableName}
           />
         )}
       </div>

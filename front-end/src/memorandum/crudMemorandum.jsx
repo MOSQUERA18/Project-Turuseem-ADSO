@@ -31,6 +31,7 @@ const CrudMemorandum = () => {
   });
   const titleModul = ["REPORTE DE MEMORANDOS"];
   const titleForm = ["REGISTRAR MEMORANDOS"];
+    const tableName = "Memorandos"
 
   const titles = [
     "Documento",
@@ -183,6 +184,7 @@ const CrudMemorandum = () => {
             stateAddNewRow={setStateAddMemorandum}
             toggleModal={toggleModal} // Aquí pasamos la función
             titleModul={titleModul}
+            tableName={tableName}
           />
         )}
       </div>

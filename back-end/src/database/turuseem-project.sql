@@ -142,7 +142,7 @@ CREATE TABLE `fichas` (
 
 LOCK TABLES `fichas` WRITE;
 /*!40000 ALTER TABLE `fichas` DISABLE KEYS */;
-INSERT INTO `fichas` VALUES ('1234','2024-08-01','2024-08-27',23,9,'Inactivo','2024-08-23 18:44:22','2024-08-26 20:11:33'),('2671143','2023-01-24','2025-04-22',19,9,'Activo','2024-08-20 15:46:04','2024-08-22 18:57:25');
+INSERT INTO `fichas` VALUES ('1234','2024-08-01','2024-08-27',23,9,'Activo','2024-08-23 18:44:22','2024-09-08 16:38:37'),('2671143','2023-01-24','2025-04-22',19,9,'Activo','2024-08-20 15:46:04','2024-08-22 18:57:25');
 /*!40000 ALTER TABLE `fichas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -174,7 +174,7 @@ CREATE TABLE `funcionarios` (
 
 LOCK TABLES `funcionarios` WRITE;
 /*!40000 ALTER TABLE `funcionarios` DISABLE KEYS */;
-INSERT INTO `funcionarios` VALUES ('1070593778','GEA','mosquera','Masculino','32456789','Inactivo',NULL,'Planta','2024-08-21 14:50:47','2024-08-21 14:50:47');
+INSERT INTO `funcionarios` VALUES ('1070593778','Carlos','mosquera','Masculino','32456789','Inactivo',NULL,'Planta','2024-08-21 14:50:47','2024-09-08 16:52:20');
 /*!40000 ALTER TABLE `funcionarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -293,7 +293,7 @@ CREATE TABLE `programasformacion` (
 
 LOCK TABLES `programasformacion` WRITE;
 /*!40000 ALTER TABLE `programasformacion` DISABLE KEYS */;
-INSERT INTO `programasformacion` VALUES (9,'ADSO','Tecnologo',3,'2024-08-20 15:45:25','2024-08-21 15:51:44'),(18,'mojosos','Tecnologo',2,'2024-09-02 13:47:16','2024-09-02 13:47:16');
+INSERT INTO `programasformacion` VALUES (9,'ADSO','Tecnologo',1,'2024-08-20 15:45:25','2024-09-07 00:42:11'),(18,'mojosos','Tecnologo',2,'2024-09-02 13:47:16','2024-09-02 13:47:16');
 /*!40000 ALTER TABLE `programasformacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -477,7 +477,7 @@ CREATE TABLE `unidades` (
   PRIMARY KEY (`Id_Unidad`),
   KEY `Id_Area` (`Id_Area`),
   CONSTRAINT `unidades_ibfk_1` FOREIGN KEY (`Id_Area`) REFERENCES `areas` (`Id_Area`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -486,7 +486,7 @@ CREATE TABLE `unidades` (
 
 LOCK TABLES `unidades` WRITE;
 /*!40000 ALTER TABLE `unidades` DISABLE KEYS */;
-INSERT INTO `unidades` VALUES (22,'Cunicultura','11:36:00','03:35:00','Inactivo',2,'2024-08-22 16:35:07','2024-09-04 14:40:49'),(23,'Porcinos','07:00:00','16:00:00','Activo',2,'2024-09-02 01:38:35','2024-09-02 01:38:35');
+INSERT INTO `unidades` VALUES (22,'Cunicultura','11:36:00','03:35:00','Inactivo',2,'2024-08-22 16:35:07','2024-09-07 00:45:07'),(23,'Porcinos','07:00:00','16:00:00','Activo',2,'2024-09-02 01:38:35','2024-09-02 01:38:35'),(24,'Juan','05:47:00','04:47:00','Activo',5,'2024-09-05 16:47:37','2024-09-05 16:47:37');
 /*!40000 ALTER TABLE `unidades` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -530,4 +530,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-04 10:31:11
+-- Dump completed on 2024-09-08 14:40:58

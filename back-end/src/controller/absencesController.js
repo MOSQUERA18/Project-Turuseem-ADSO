@@ -1,103 +1,114 @@
 import AbsenceModel from "../models/absenceModel.js";
 import TurnoRutinarioModel from "../models/turnoRutinarioModel.js";
 import { logger } from "../middleware/logMiddleware.js";
-import TurnosRutinariosModel from "../models/turnoRutinarioModel.js";
 import ApprenticeModel from "../models/apprenticeModel.js";
 import UnitModel from "../models/unitModel.js";
 
+// Obtener todas las inasistencias
 export const getAllAbsences = async (req, res) => {
   try {
+    // Se busca todas las inasistencias en la base de datos con sus relaciones
     const inasistencias = await AbsenceModel.findAll({
       include: [
         {
           model: TurnoRutinarioModel,
-          as: "turnorutinario", // Alias usado para la relación
+          as: "turnorutinario",
           include: [
             {
               model: ApprenticeModel,
-              as: "aprendiz", // Alias para la relación con Aprendiz
+              as: "aprendiz",
             },
             {
               model: UnitModel,
-              as: "unidad", // Alias para la relación con Unidad
+              as: "unidad",
             },
           ],
         },
       ],
     });
 
+    // Si se encuentran inasistencias, se retornan con un código 200
     if (inasistencias) {
-      res.status(200).json(inasistencias); //a todos los controllers toca agg esto para validar los datos
-      return;
+      return res.status(200).json(inasistencias);
     } else {
-      res.status(404).json({
+      // Si no se encuentran inasistencias, se retorna un código 404 con un mensaje
+      return res.status(404).json({
         message: "No se encontraron inasistencias.",
       });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    // Manejo de errores y registro en logs
     logger.error(`Error al obtener las inasistencias: ${error}`);
+    return res.status(500).json({ message: error.message });
   }
 };
 
+// Obtener una inasistencia específica por ID
 export const getAbsence = async (req, res) => {
   try {
-    const inasistencia = await AbsenceModel.findByPk(
-      req.params.Id_Inasistencia,
-      {
-        include: [
-          {
-            model: TurnoRutinarioModel,
-            as: "turnorutinario", // Alias usado para la relación
-            include: [
-              {
-                model: ApprenticeModel,
-                as: "aprendiz", // Alias para la relación con Aprendiz
-              },
-              {
-                model: UnitModel,
-                as: "unidad", // Alias para la relación con Unidad
-              },
-            ],
-          },
-        ],
-      }
-    );
+    // Se busca una inasistencia por su ID
+    const inasistencia = await AbsenceModel.findByPk(req.params.Id_Inasistencia, {
+      include: [
+        {
+          model: TurnoRutinarioModel,
+          as: "turnorutinario",
+          include: [
+            {
+              model: ApprenticeModel,
+              as: "aprendiz",
+            },
+            {
+              model: UnitModel,
+              as: "unidad",
+            },
+          ],
+        },
+      ],
+    });
 
+    // Si se encuentra la inasistencia, se retorna con un código 200
     if (inasistencia) {
-      res.status(200).json(inasistencia);
+      return res.status(200).json(inasistencia);
     } else {
-      res.status(404).json({ message: "Inasistencia no encontrada" });
+      // Si no se encuentra la inasistencia, se retorna un código 404 con un mensaje
+      return res.status(404).json({ message: "Inasistencia no encontrada" });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    // Manejo de errores y registro en logs
     logger.error(`Error al obtener la inasistencia: ${error}`);
+    return res.status(500).json({ message: error.message });
   }
 };
 
+// Crear una nueva inasistencia
 export const createAbsence = async (req, res) => {
   try {
     const { Fec_Inasistencia, Mot_Inasistencia, Id_TurnoRutinario } = req.body;
 
+    // Se crea una nueva inasistencia con los datos proporcionados
     const newInasistencia = await AbsenceModel.create({
       Fec_Inasistencia,
       Mot_Inasistencia,
       Id_TurnoRutinario,
     });
+
+    // Si la inasistencia se crea con éxito, se retorna con un código 201
     if (newInasistencia) {
-      res.status(201).json(newInasistencia);
-      return;
+      return res.status(201).json(newInasistencia);
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    // Manejo de errores y registro en logs
     logger.error(`Error al crear la inasistencia: ${error}`);
+    return res.status(500).json({ message: error.message });
   }
 };
 
+// Actualizar una inasistencia existente
 export const updateAbsence = async (req, res) => {
   try {
     const { Fec_Inasistencia, Mot_Inasistencia, Id_TurnoRutinario } = req.body;
 
+    // Se intenta actualizar la inasistencia con el ID especificado
     const [updated] = await AbsenceModel.update(
       {
         Fec_Inasistencia,
@@ -108,15 +119,18 @@ export const updateAbsence = async (req, res) => {
         where: { Id_Inasistencia: req.params.Id_Inasistencia },
       }
     );
+
+    // Si no se actualiza ninguna fila, significa que no se encontró la inasistencia
     if (updated === 0) {
-      res.status(404).json({ message: "Inasistencia no encontrada" });
+      return res.status(404).json({ message: "Inasistencia no encontrada" });
     } else {
-      res.json({ message: "Inasistencia actualizada correctamente" });
-      return;
+      // Si la actualización es exitosa, se retorna un mensaje de éxito
+      return res.json({ message: "Inasistencia actualizada correctamente" });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    // Manejo de errores y registro en logs
     logger.error(`Error al actualizar la inasistencia: ${error}`);
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -132,16 +146,17 @@ export const deleteAbsence = async (req, res) => {
     }
 
     const result = await AbsenceModel.destroy({
-      where: { Id_TurnoRutinario: Id_TurnoRutinario },
+      where: { Id_TurnoRutinario: req.params.Id_TurnoRutinario },
     });
 
     if (result === 0) {
-      res.status(404).json({ message: "Inasistencia no encontrada" });
+      return res.status(404).json({ message: "Inasistencia no encontrada" });
     } else {
       res.json({ message: "Inasistencia eliminada correctamente" });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    // Manejo de errores y registro en logs
     logger.error(`Error al eliminar la inasistencia: ${error}`);
+    return res.status(500).json({ message: error.message });
   }
 };

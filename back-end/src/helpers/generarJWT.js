@@ -8,4 +8,3 @@ export const generarJWT = (Id_User) => {
     expiresIn: "4h",
   });
 };
-
