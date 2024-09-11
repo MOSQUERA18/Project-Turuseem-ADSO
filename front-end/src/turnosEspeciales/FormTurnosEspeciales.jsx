@@ -64,7 +64,6 @@ const FormTurnosEspeciales = ({
         console.error("Error fetching areas:", error);
       }
     };
-    getAllFuncionarios();
     const getAllUnidades = async () => {
       try {
         const token = ReactSession.get("token");
