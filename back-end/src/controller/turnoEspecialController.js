@@ -160,3 +160,34 @@ export const deleteTurnoEspecial = async (req, res) => {
     logger.error(`Error al eliminar el turno especial: ${error}`);
   }
 };
+
+export const getTurnoEspecialForFichas = async (req, res) => {
+  try {
+    const turnoEspecialForAprendiz = await TurnoEspecialModel.findAll({
+      where: { Id_Ficha : req.params.Id_Ficha },
+      include: [
+        {
+          model: FichasModel,
+          as: "fichas",
+        },
+        {
+          model: UnitModel,
+          as: "unidad",
+        },
+        {
+          model: OfficialModel,
+          as: "funcionario",
+        },
+      ],
+    });
+
+    if (turnoEspecialForAprendiz.length === 0) {
+      res.status(404).json({ message: "La ficha no esta Programada Para Turno" });
+      return;
+    }
+    res.status(200).json(turnoEspecialForAprendiz);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    logger.error(`Error al obtener el turno programado: ${error}`);
+  }
+};

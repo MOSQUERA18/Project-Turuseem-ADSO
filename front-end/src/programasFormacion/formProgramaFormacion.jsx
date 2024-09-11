@@ -19,10 +19,6 @@ const FormProgramaFormacion = ({
   const [Areas, setAreas] = useState([]);
   const [alerta, setAlerta] = useState({});
 
-  // Estado para mensajes
-  const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState(""); // 'success' o 'error'
-
   useEffect(() => {
     const fetchAreas = async () => {
       try {
@@ -43,17 +39,6 @@ const FormProgramaFormacion = ({
     fetchAreas();
   }, []);
 
-  useEffect(() => {
-    if (message) {
-      const timer = setTimeout(() => {
-        setMessage("");
-        setMessageType("");
-      }, 5000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [message]);
-
   const sendForm = async (e) => {
     e.preventDefault();
     const token = ReactSession.get("token");
@@ -65,7 +50,7 @@ const FormProgramaFormacion = ({
     };
 
     try {
-      let mensajeCRUD = ""
+      let mensajeCRUD = "";
       let respuestApi;
       if (buttonForm === "Actualizar") {
         respuestApi = await clieteAxios.put(
@@ -77,7 +62,7 @@ const FormProgramaFormacion = ({
           },
           config
         );
-        mensajeCRUD = "Programa Actualizado Exitosamente"
+        mensajeCRUD = "Programa Actualizado Exitosamente";
       } else if (buttonForm === "Enviar") {
         respuestApi = await clieteAxios.post(
           `/programa`,
@@ -88,7 +73,7 @@ const FormProgramaFormacion = ({
           },
           config
         );
-         mensajeCRUD = "Programa Actualizado Exitosamente"
+        mensajeCRUD = "Programa Actualizado Exitosamente";
       }
 
       if (respuestApi.status === 201 || respuestApi.status === 200) {
@@ -111,7 +96,6 @@ const FormProgramaFormacion = ({
         error: true,
       });
       console.log(error);
-      
     }
   };
 
@@ -138,29 +122,15 @@ const FormProgramaFormacion = ({
 
   return (
     <>
-      <div className="flex justify-center items-center min-h-screen bg-gray-100 content-center w-full">
+      <div className="flex justify-center items-center">
         <form
           id="apprenticeForm"
           onSubmit={sendForm}
-          className="bg-white shadow-2xl rounded-2xl px-14 pt-6 pb-8 mb-4 max-w-3xl w-full mt-10"
+          className="bg-white rounded-2xl px-8 pb-6 w-full max-w-3xl"
         >
-          {msg && <Alerta alerta={alerta} />}
-          <h1 className="font-bold text-green-600 text-3xl uppercase text-center my-5">
-            Registrar Programas
-          </h1>
-
-          {message && (
-            <div
-              className={`p-4 mb-4 text-white rounded-md ${
-                messageType === "success" ? "bg-green-500" : "bg-red-500"
-              }`}
-            >
-              {message}
-            </div>
-          )}
-
+          {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
           <div className="mb-3">
-            <label className="text-gray-700 uppercase font-bold">
+            <label className="block text-sm font-medium text-gray-700">
               Nombre Programa
             </label>
             <input
@@ -169,12 +139,14 @@ const FormProgramaFormacion = ({
               placeholder="Nombre"
               value={Nom_ProgramaFormacion}
               onChange={(e) => setNom_ProgramaFormacion(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             />
           </div>
 
           <div className="mb-3">
-            <label className="text-gray-700 uppercase font-bold">Tipo:</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Tipo:
+            </label>
             <select
               id="tipo"
               value={Tip_ProgramaFormacion}
@@ -187,7 +159,7 @@ const FormProgramaFormacion = ({
           </div>
 
           <div className="mb-3">
-            <label className="text-gray-700 uppercase font-bold">
+            <label className="block text-sm font-medium text-gray-700">
               Área Perteneciente:
             </label>
             <select
@@ -204,8 +176,8 @@ const FormProgramaFormacion = ({
               ))}
             </select>
           </div>
-
-          <div className="flex justify-around">
+          <hr className="mt-3" />
+          <div className="flex justify-around mt-2">
             <input
               type="submit"
               id="button"

@@ -3,16 +3,13 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
 
-import { exportToExcel } from './ExportExcel.js'; 
 
 
 import FormFuncionarios from "./formFuncionarios.jsx";
 import Alerta from "../components/Alerta.jsx";
-import DataTableFuncionarios from "./dataTableFuncionarios.jsx";
+import WriteTable from "../Tables/Data-Tables.jsx";
+import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
-
-import { IoMdPersonAdd } from "react-icons/io";
-import { AiOutlineMinusCircle } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 
 const URI = "funcionarios";
@@ -22,6 +19,24 @@ const CrudFuncionarios = () => {
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddFuncionario, setStateAddFuncionario] = useState(false);
   const [alerta, setAlerta] = useState({});
+  const [crearDataTable, setCrearDataTable] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const resetForm = () => {
+    setFuncionario({
+      Id_Funcionario: "",
+      Nom_Funcionario: "",
+      Ape_Funcionario: "",
+      Genero: "",
+      Tel_Funcionario: "",
+      Estado: "",
+      Cargo: "",
+    });
+  };
 
   const [funcionario, setFuncionario] = useState({
     Id_Funcionario: "",
@@ -32,6 +47,30 @@ const CrudFuncionarios = () => {
     Estado: "",
     Cargo: "",
   });
+  const titleModul = ["REPORTE DE FUNCIONARIOS"];
+  const titleForm = ["REGISTRAR FUNCIONARIOS"];
+
+
+  const titles = [
+    "Documento",
+    "Nombres",
+    "Apellidos",
+    "Género",
+    "Teléfono",
+    "Estado",
+    "Cargo",
+    "Acciones",
+  ];
+
+  const formattedData = funcionarioList.map((funcionario) => [
+    funcionario.Id_Funcionario,
+    funcionario.Nom_Funcionario,
+    funcionario.Ape_Funcionario,
+    funcionario.Genero,
+    funcionario.Tel_Funcionario,
+    funcionario.Estado,
+    funcionario.Cargo,
+  ]);
 
   useEffect(() => {
     getAllFuncionarios();
@@ -49,15 +88,16 @@ const CrudFuncionarios = () => {
       const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setFuncionarioList(respuestApi.data);
+        setCrearDataTable(true);
       } else {
         setAlerta({
-          msg: `Error al cargar los registros!`,
+          msg: "Error al cargar los registros!",
           error: true,
         });
       }
     } catch (error) {
       setAlerta({
-        msg: `Error al cargar los registros!`,
+        msg: "Error al cargar los registros!",
         error: true,
       });
       console.error(error);
@@ -74,26 +114,28 @@ const CrudFuncionarios = () => {
       },
     };
     try {
-      const respuestApi = await clienteAxios.get(`/${URI}/${Id_Funcionario}`, config);
+      const respuestApi = await clienteAxios.get(
+        `/${URI}/${Id_Funcionario}`,
+        config
+      );
       if (respuestApi.status === 200) {
         setFuncionario({
           ...respuestApi.data,
         });
       } else {
         setAlerta({
-          msg: `Error al cargar los registros!`,
+          msg: "Error al cargar los registros!",
           error: true,
         });
       }
     } catch (error) {
       setAlerta({
-        msg: `Error al cargar los registros!`,
+        msg: "Error al cargar los registros!",
         error: true,
       });
       console.error(error);
     }
   };
-  
 
   const deleteFuncionario = (Id_Funcionario) => {
     Swal.fire({
@@ -119,7 +161,6 @@ const CrudFuncionarios = () => {
             `${URI}/${Id_Funcionario}`,
             config
           );
-          console.log(respuestApi);
           if (respuestApi.status == 200) {
             getAllFuncionarios();
             Swal.fire({
@@ -148,69 +189,53 @@ const CrudFuncionarios = () => {
 
   const { msg } = alerta;
 
-  const handleExportToExcel = () => {
-    exportToExcel([], funcionarioList); // Pasar [] si `programa` está vacío
-  };
-
-
 
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
-      Gestionar Informacion de los 
-<span className="text-blue-700"> Funcionarios</span>
+        Gestionar Informacion de los
+        <span className="text-blue-700"> Funcionarios</span>
       </h1>
-      <div className="flex justify-end pb-3">
-        <button
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-          onClick={() => {
-            setStateAddFuncionario(!stateAddFuncionario);
-          }}
-        >
-          {stateAddFuncionario ? (
-            <AiOutlineMinusCircle size={16} className="me-2" />
-          ) : (
-            <IoMdPersonAdd size={16} className="me-2" />
-          )}
-          {stateAddFuncionario ? "Ocultar" : "Agregar"}
-        </button>
-
-        <button
-          onClick={handleExportToExcel}
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-        >
-          Exportar a Excel
-        </button>
-
-
-
+      <div className="flex pb-3">
+        <ModalWindow
+          stateAddNewRow={stateAddFuncionario}
+          setStateAddNewRow={setStateAddFuncionario}
+          toggleModal={toggleModal} // Aquí pasamos la función
+          isOpen={isOpen}
+          resetForm={resetForm}
+          updateTextBottom={updateTextButton}
+          titleForm={titleForm}
+          form={
+            <FormFuncionarios
+              buttonForm={buttonForm}
+              funcionario={funcionario}
+              updateTextButton={updateTextButton}
+              setFuncionario={setFuncionario}
+              getAllFuncionarios={getAllFuncionarios}
+            />
+          }
+        />
       </div>
       <div className="overflow-x-auto">
         <hr />
         {msg && <Alerta alerta={alerta} />}
-        <hr />
-        <DataTableFuncionarios
-          funcionarioList={funcionarioList}
-          getFuncionario={getFuncionario}
-          deleteFuncionario={deleteFuncionario}
-          setStateAddFuncionario={setStateAddFuncionario}
-        />
+        {crearDataTable && (
+          <WriteTable
+            titles={titles}
+            data={formattedData}
+            deleteRow={deleteFuncionario}
+            getRow={getFuncionario}
+            setStateAddNewRow={setStateAddFuncionario}
+            toggleModal={toggleModal} // Aquí pasamos la función
+            isOpen={isOpen}
+            titleModul={titleModul}
+          />
+        )}
       </div>
-      <hr />
-      {stateAddFuncionario ? (
-        <FormFuncionarios
-          buttonForm={buttonForm}
-          funcionario={funcionario}
-          updateTextButton={updateTextButton}
-          setFuncionario={setFuncionario}
-          getAllFuncionarios={getAllFuncionarios}
-        />
-      ) : null}
       <hr />
       <Outlet />
     </>
   );
 };
-
 
 export default CrudFuncionarios;

@@ -57,8 +57,16 @@ const ConsultarTurno = () => {
               type="number"
               id="document"
               value={Id_Aprendiz}
-              onChange={(e) => setId_Aprendiz(e.target.value)}
+              
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value.length <= 10) {
+                  setId_Aprendiz(value);
+                }
+              }
+            }
               className="w-full p-2 border rounded"
+              maxLength={10}
             />
           </div>
           <div className="flex justify-around">
@@ -101,9 +109,9 @@ const ConsultarTurno = () => {
                   <th className="py-2 px-4 border-2 border-b-gray-500">
                     Unidad
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  {/* <th className="py-2 px-4 border-2 border-b-gray-500">
                     Observaciones
-                  </th>
+                  </th> */}
                 </tr>
               </thead>
               <tbody>
@@ -136,9 +144,9 @@ const ConsultarTurno = () => {
                     <td className="py-2 px-4 border-b">
                       {turnoRutinario.unidad?.Nom_Unidad}
                     </td>
-                    <td className="py-2 px-4 border-b">
+                    {/* <td className="py-2 px-4 border-b">
                       {turnoRutinario.Obs_TurnoRutinario}
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
               </tbody>

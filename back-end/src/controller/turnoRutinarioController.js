@@ -202,7 +202,7 @@ export const getTurnoRutinariosForAprendiz = async (req, res) => {
     });
 
     if (turnoRutinarioForAprendiz.length === 0) {
-      res.status(404).json({ message: "No se encontraron turnos" });
+      res.status(404).json({ message: "No Tienes Turno Programado" });
       return;
     }
 

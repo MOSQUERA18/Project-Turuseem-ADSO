@@ -208,7 +208,7 @@ export const deleteMemorandum = async (req, res) => {
 };
 
 export const generateMemorandumPdf = (memorandum, totalMemorandums) => {
-  const { nombre, fecha, contenido } = memorandum;
+  // const { nombre, fecha, contenido } = memorandum;
   const { inasistencia } = memorandum;
   const { turnorutinario } = inasistencia;
   const { aprendiz, unidad } = turnorutinario;

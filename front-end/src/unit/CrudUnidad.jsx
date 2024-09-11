@@ -8,14 +8,11 @@ import FormUnidades from "./formUnidades.jsx";
 import Alerta from "../components/Alerta.jsx";
 // import DataTableUnit from "./dataTableUnit.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
-
-import { IoMdPersonAdd } from "react-icons/io";
-import { AiOutlineMinusCircle } from "react-icons/ai";
-import { Outlet } from "react-router-dom";
+import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
 const URI = "unidades";
 
-import { exportToExcel } from "./ExportExcel.js";
+
 
 const CrudUnidades = () => {
   const [unidadList, setUnidadList] = useState([]);
@@ -23,6 +20,21 @@ const CrudUnidades = () => {
   const [stateAddUnidad, setStateAddUnidad] = useState(false);
   const [alerta, setAlerta] = useState({});
   const [crearDataTable, setCrearDataTable] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const resetForm = () =>{
+   setUnidad({
+    Nom_Unidad : "",
+    Hor_Apertura: "",
+    Hor_Cierre:"",
+    Estado:"",
+    Id_Area:""
+   });
+  }
 
   const [unidad, setUnidad] = useState({
     Nom_Unidad: "",
@@ -31,9 +43,14 @@ const CrudUnidades = () => {
     Estado: "",
     Id_Area: "",
   });
+  const titleModul = [
+    "REPORTE DE UNIDADES"
+  ]
+  const titleForm = ["REGISTRAR UNIDADES"];
+
   const titles = [
     "ID",
-    "Nombre",
+    "Nombre Unidad",
     "Hora Apertura",
     "Hora Cierre",
     "Estado",
@@ -49,9 +66,7 @@ const CrudUnidades = () => {
     unidad.areas?.Nom_Area || "N/A", // Area (usando "N/A" si areas o Nom_Area es undefined)
   ]);
 
-  useEffect(() => {
-    getAllUnidades();
-  }, []);
+
 
   const getAllUnidades = async () => {
     const token = ReactSession.get("token");
@@ -67,16 +82,16 @@ const CrudUnidades = () => {
         setUnidadList(respuestApi.data);
         setCrearDataTable(true);
       } else {
-        // setAlerta({
-        //   msg: `Error al cargar los registros!`,
-        //   error: true,
-        // });
+        setAlerta({
+          msg: `Error al cargar los registros!`,
+          error: true,
+        });
       }
     } catch (error) {
-      // setAlerta({
-      //   msg: `Error al cargar los registros!`,
-      //   error: true,
-      // });
+      setAlerta({
+        msg: `Error al cargar los registros!`,
+        error: true,
+      });
       console.error(error);
     }
   };
@@ -163,40 +178,44 @@ const CrudUnidades = () => {
 
   const { msg } = alerta;
 
-  const handleExportToExcel = () => {
-    exportToExcel([], unidadList); // Pasar [] si `unidad` está vacío
-  };
+
+
+  useEffect(() => {
+      getAllUnidades()
+  }, []);
 
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
-        Gestionar Informacion de las Unidades
+        Gestionar Informacion de las{" "}
+        <span className="text-blue-700">Unidades</span>
       </h1>
-      <div className="flex justify-end pb-3">
-        <button
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-          onClick={() => {
-            setStateAddUnidad(!stateAddUnidad);
-          }}
-        >
-          {stateAddUnidad ? (
-            <AiOutlineMinusCircle size={16} className="me-2" />
-          ) : (
-            <IoMdPersonAdd size={16} className="me-2" />
-          )}
-          {stateAddUnidad ? "Ocultar" : "Agregar"}
-        </button>
-        <button
-          onClick={handleExportToExcel}
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-        >
-          Exportar a Excel
-        </button>
+      <div className="flex pb-3">
+        <ModalWindow
+          stateAddNewRow={stateAddUnidad}
+          setStateAddNewRow={setStateAddUnidad}
+          toggleModal={toggleModal} // Aquí pasamos la función
+          isOpen={isOpen}
+          resetForm={resetForm}
+          updateTextBottom={updateTextButton}
+          titleForm={titleForm}
+          form={
+            <FormUnidades
+              buttonForm={buttonForm}
+              unidad={unidad}
+              updateTextButton={updateTextButton}
+              setUnidad={setUnidad}
+              getAllUnidades={getAllUnidades}
+            />
+          }
+        />
+
+
+
       </div>
       <div className="overflow-x-auto">
         <hr />
         {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
-        <hr />
         {crearDataTable && (
           <WriteTable
             titles={titles}
@@ -204,21 +223,11 @@ const CrudUnidades = () => {
             deleteRow={deleteUnidad}
             getRow={getUnidad}
             setStateAddNewRow={setStateAddUnidad}
+            toggleModal={toggleModal} // Aquí pasamos la función
+            titleModul={titleModul}
           />
         )}
       </div>
-      <hr />
-      {stateAddUnidad ? (
-        <FormUnidades
-          buttonForm={buttonForm}
-          unidad={unidad}
-          updateTextButton={updateTextButton}
-          setUnidad={setUnidad}
-          getAllUnidades={getAllUnidades}
-        />
-      ) : null}
-      <hr />
-      <Outlet />
     </>
   );
 };

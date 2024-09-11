@@ -4,26 +4,45 @@ import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
 
 import FormTurnosEspeciales from "./FormTurnosEspeciales.jsx";
-import DataTableTurnosEspeciales from "./dataTableTurnosEspeciales.jsx";
+
 import Alerta from "../components/Alerta.jsx";
+import WriteTable from "../Tables/Data-Tables.jsx";
+import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
-import { IoMdPersonAdd } from "react-icons/io";
-import { AiOutlineMinusCircle } from "react-icons/ai";
-import { Outlet } from "react-router-dom";
-
-import { exportToExcel } from './ExportExcel.js';
+// import { exportToExcel } from './ExportExcel.js';
 
 const URI = "/turnoespecial";
-const URI_FOTOS = '/public/uploads/'
+const URI_FOTOS = "/public/uploads/";
+const URI_AXIOS = import.meta.env.VITE_BACKEND_URL;
 
 const CrudTurnosEspeciales = () => {
   const [turnoEspecialList, setTurnoEspecialList] = useState([]);
   const [buttonForm, setButtonForm] = useState("Enviar");
   const [stateAddturnoEspecial, setStateAddturnoEspecial] = useState(false);
   const [alerta, setAlerta] = useState({});
+  const [crearDataTable, setCrearDataTable] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const resetForm = () => {
+    setTurnoEspecial({
+      Id_TurnoEspecial: "",
+      Fec_TurnoEspecial: "",
+      Hor_Inicio: "",
+      Hor_Fin: "",
+      Obs_TurnoEspecial: "",
+      Tot_AprendicesAsistieron: "",
+      Id_Ficha: "",
+      Img_Asistencia: "",
+      Id_Funcionario: "",
+      Id_Unidad: "",
+    });
+  };
   const [turnoEspecial, setTurnoEspecial] = useState({
-    // Id_TurnoEspecial: "",
+    Id_TurnoEspecial: "",
     Fec_TurnoEspecial: "",
     Hor_Inicio: "",
     Hor_Fin: "",
@@ -33,6 +52,56 @@ const CrudTurnosEspeciales = () => {
     Img_Asistencia: "",
     Id_Funcionario: "",
     Id_Unidad: "",
+  });
+
+  const titleModul = [
+    "REPORTE DE TURNOS ESPECIALES"
+  ]
+  const titleForm = ["CREAR TURNOS ESPECIALES"];
+
+  const shouldShowPhoto = turnoEspecialList.some(
+    (row) => row.Img_Asistencia !== undefined
+  );
+  const titles = [
+    "Identificador del Turno",
+    "Fecha Turno",
+    "Hora Inicio",
+    "Hora Fin",
+    "Observaciones del Turno",
+    "Total Aprendices que asistieron",
+    "Ficha",
+    // "Imagen Asistencia",
+    "Documento Funcionario",
+    "Nombre Funcionario",
+    "Nombre Unidad",
+    shouldShowPhoto && "Archivo Asistencia",
+    "Acciones",
+  ].filter(Boolean);
+
+  const formattedData = turnoEspecialList.map((turnoEspecial) => {
+    const rowData = [
+      turnoEspecial.Id_TurnoEspecial,
+      turnoEspecial.Fec_TurnoEspecial,
+      turnoEspecial.Hor_Inicio,
+      turnoEspecial.Hor_Fin,
+      turnoEspecial.Obs_TurnoEspecial,
+      turnoEspecial.Tot_AprendicesAsistieron,
+      turnoEspecial.Id_Ficha,
+      // turnoEspecial.Img_Asistencia,
+      turnoEspecial.Id_Funcionario,
+      turnoEspecial.funcionario.Nom_Funcionario,
+      turnoEspecial.unidad.Nom_Unidad,
+    ];
+    if (shouldShowPhoto) {
+      rowData.push(
+        <img
+          width="80px"
+          src={`${URI_AXIOS}${URI_FOTOS}${turnoEspecial.Img_Asistencia}`}
+          alt="No Foto"
+        />
+      );
+    }
+    return rowData;
   });
 
   useEffect(() => {
@@ -51,14 +120,13 @@ const CrudTurnosEspeciales = () => {
       const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setTurnoEspecialList(respuestApi.data);
+        setCrearDataTable(true);
       } else {
         setAlerta({
           msg: `Error al cargar los registros!`,
           error: true,
         });
       }
-
-      
     } catch (error) {
       setAlerta({
         msg: `Ocurrio un error!`,
@@ -152,62 +220,48 @@ const CrudTurnosEspeciales = () => {
 
   const { msg } = alerta;
 
-  // Función para manejar la exportación a Excel
-  const handleExportToExcel = () => {
-    exportToExcel([], turnoEspecialList); // Pasar [] si `turnoEspecial` está vacío
-  };
-
   return (
     <>
       <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
-      Gestionar Informacion de los Turnos Especiales
+        Gestionar Informacion de los
+        <span className="text-blue-700"> Turnos Especiales</span>
       </h1>
-      <div className="flex justify-end pb-3">
-        <button
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-          onClick={() => {
-            setStateAddturnoEspecial(!stateAddturnoEspecial);
-          }}
-        >
-          {stateAddturnoEspecial ? (
-            <AiOutlineMinusCircle size={16} className="me-2" />
-          ) : (
-            <IoMdPersonAdd size={16} className="me-2" />
-          )}
-          {stateAddturnoEspecial ? "Ocultar" : "Agregar"}
-        </button>
-
-        <button
-          onClick={handleExportToExcel}
-          className="bg-green-600 px-6 py-2 rounded-xl text-white font-bold m-4 flex items-center hover:bg-green-800"
-        >
-          Exportar a Excel
-        </button>
+      <div className="flex pb-3">
+        <ModalWindow
+          stateAddNewRow={stateAddturnoEspecial}
+          setStateAddNewRow={setStateAddturnoEspecial}
+          toggleModal={toggleModal} // Aquí pasamos la función
+          isOpen={isOpen}
+          resetForm={resetForm}
+          updateTextBottom={updateTextButton}
+          titleForm={titleForm}
+          form={
+            <FormTurnosEspeciales
+              buttonForm={buttonForm}
+              turnoEspecial={turnoEspecial}
+              updateTextButton={updateTextButton}
+              setTurnoEspecial={setTurnoEspecial}
+            />
+          }
+        />
       </div>
+
       <div className="overflow-x-auto">
-        <hr />
         {msg && <Alerta alerta={alerta} />}
         <hr />
-        <DataTableTurnosEspeciales
-          turnoEspecialList={turnoEspecialList}
-          getTurnoEspecial={getTurnoEspecial}
-          deleteTurnoEspecial={deleteTurnoEspecial}
-          setStateAddturnoEspecial={setStateAddturnoEspecial}
-          URI_FOTOS={URI_FOTOS}
-        />
+        {crearDataTable && (
+          <WriteTable
+            titles={titles}
+            data={formattedData}
+            deleteRow={deleteTurnoEspecial}
+            getRow={getTurnoEspecial}
+            setStateAddNewRow={setStateAddturnoEspecial}
+            toggleModal={toggleModal} // Aquí pasamos la función
+            isOpen={isOpen}
+            titleModul={titleModul}
+          />
+        )}
       </div>
-      <hr />
-      {stateAddturnoEspecial ? (
-        <FormTurnosEspeciales
-          buttonForm={buttonForm}
-          turnoEspecial={turnoEspecial}
-          updateTextButton={updateTextButton}
-          // setTurnoEspecial={setTurnoEspecial}
-          getAllTurnosEspeciales={getAllTurnosEspeciales}
-        />
-      ) : null}
-      <hr />
-      <Outlet />
     </>
   );
 };
