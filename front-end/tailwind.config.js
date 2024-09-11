@@ -10,6 +10,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        primary: "#0ac2ff",
         green: {
           300: "#030076", //Hover botones InicioSesion, BuscarTurnos, Modulos => Enviar, Agregar, DescargarCSV, ExportarExcel
           400: "#2f79ff", //Barra Nav Vertical Hover
