@@ -9,7 +9,8 @@ import Alerta from "../components/Alerta.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
-// import { exportToExcel } from './ExportExcel.js';
+import { MdDeleteOutline } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
 
 const URI = "/turnoespecial";
 const URI_FOTOS = "/public/uploads/";
@@ -58,6 +59,7 @@ const CrudTurnosEspeciales = () => {
     "REPORTE DE TURNOS ESPECIALES"
   ]
   const titleForm = ["CREAR TURNOS ESPECIALES"];
+    const tableName = "TurnosEspeciales"
 
   const shouldShowPhoto = turnoEspecialList.some(
     (row) => row.Img_Asistencia !== undefined
@@ -78,6 +80,27 @@ const CrudTurnosEspeciales = () => {
     "Acciones",
   ].filter(Boolean);
 
+  const ButtonsForOtherModules = (Id_TurnoEspecial) => [
+    <button
+      onClick={() => [
+        getTurnoEspecial(Id_TurnoEspecial),
+        setStateAddturnoEspecial(true),
+        toggleModal(),
+      ]}
+      className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
+      key="get"
+    >
+      <FaRegEdit />
+    </button>,
+    <button
+      onClick={() => deleteTurnoEspecial(Id_TurnoEspecial)}
+      className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
+      key="delete"
+    >
+      <MdDeleteOutline />
+    </button>,
+  ];
+
   const formattedData = turnoEspecialList.map((turnoEspecial) => {
     const rowData = [
       turnoEspecial.Id_TurnoEspecial,
@@ -87,7 +110,6 @@ const CrudTurnosEspeciales = () => {
       turnoEspecial.Obs_TurnoEspecial,
       turnoEspecial.Tot_AprendicesAsistieron,
       turnoEspecial.Id_Ficha,
-      // turnoEspecial.Img_Asistencia,
       turnoEspecial.Id_Funcionario,
       turnoEspecial.funcionario.Nom_Funcionario,
       turnoEspecial.unidad.Nom_Unidad,
@@ -101,6 +123,8 @@ const CrudTurnosEspeciales = () => {
         />
       );
     }
+    rowData.push(ButtonsForOtherModules(turnoEspecial.Id_TurnoEspecial));
+
     return rowData;
   });
 
@@ -253,12 +277,8 @@ const CrudTurnosEspeciales = () => {
           <WriteTable
             titles={titles}
             data={formattedData}
-            deleteRow={deleteTurnoEspecial}
-            getRow={getTurnoEspecial}
-            setStateAddNewRow={setStateAddturnoEspecial}
-            toggleModal={toggleModal} // Aquí pasamos la función
-            isOpen={isOpen}
             titleModul={titleModul}
+            tableName={tableName}
           />
         )}
       </div>

@@ -28,8 +28,8 @@ const Pagination = ({ URI, setDesde, setHasta }) => {
       const pages = Math.ceil(cantidadRegistros / registrosPorPagina);
       setPaginas(pages);
     } catch (error) {
-      console.error(error);
-    }
+      console.log(error);
+    }    
   };
 
   useEffect(() => {

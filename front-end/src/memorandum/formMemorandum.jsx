@@ -73,7 +73,12 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
           config
         );
         if (respuestApi.status == 201) {
-          alert(respuestApi.data.message);
+          console.log(respuestApi.data.pdfBase64);
+          
+          setAlerta({
+            msg: respuestApi.data.message,
+            error: false
+          })
           clearForm();
         } else {
           alert(respuestApi.data.message);

@@ -9,7 +9,10 @@ import Alerta from "../components/Alerta.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
-const URI = "fichas";
+import { MdDeleteOutline } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
+
+const URI = "/fichas/";
 
 const CrudFichas = () => {
   const [fichasList, setFichasList] = useState([]);
@@ -44,6 +47,7 @@ const CrudFichas = () => {
   });
   const titleModul = ["REPORTE DE FICHAS"];
   const titleForm = ["REGISTRAR FICHAS"];
+    const tableName = "Fichas"
 
   const titles = [
     "Numero Ficha",
@@ -55,6 +59,27 @@ const CrudFichas = () => {
     "Acciones",
   ].filter(Boolean);
 
+  const ButtonsForOtherModules = (Id_Ficha) => [
+    <button
+      onClick={() => [
+        getFicha(Id_Ficha),
+        setStateAddFichas(true),
+        toggleModal(),
+      ]}
+      className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
+      key="get"
+    >
+      <FaRegEdit />
+    </button>,
+    <button
+      onClick={() => deleteFichas(Id_Ficha)}
+      className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
+      key="delete"
+    >
+      <MdDeleteOutline />
+    </button>,
+  ];
+
   const formatteData = fichasList.map((fichas) => {
     const rowData = [
       fichas.Id_Ficha,
@@ -64,6 +89,7 @@ const CrudFichas = () => {
       fichas.programasFormacion?.Nom_ProgramaFormacion,
       fichas.Estado,
     ];
+    rowData.push(ButtonsForOtherModules(fichas.Id_Ficha));
     return rowData;
   });
 
@@ -150,7 +176,7 @@ const CrudFichas = () => {
         };
         try {
           const respuestApi = await clienteAxios.delete(
-            `/${URI}/${Id_Ficha}`,
+            `${URI}${Id_Ficha}`,
             config
           );
           if (respuestApi.status === 200) {
@@ -217,11 +243,8 @@ const CrudFichas = () => {
           <WriteTable
             titles={titles}
             data={formatteData}
-            deleteRow={deleteFichas}
-            getRow={getFicha}
-            setStateAddNewRow={setStateAddFichas}
-            toggleModal={toggleModal} // Aquí pasamos la función
             titleModul={titleModul}
+            tableName={tableName}
           />
         )}
       </div>

@@ -1,17 +1,15 @@
-import clieteAxios from "../config/axios.jsx";
+import clienteAxios from "../config/axios.jsx";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
 
-// import { CSVLink } from 'react-csv';
-
 import FormProgramaFormacion from "./formProgramaFormacion.jsx";
 import Alerta from "../components/Alerta.jsx";
-import { Outlet } from "react-router-dom";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
 
-// import { exportToExcel } from './exportExcel.js';
+import { MdDeleteOutline } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
 
 const URI = "programa";
 
@@ -42,6 +40,7 @@ const CrudPrograma = () => {
   });
   const titleModul = ["REPORTE DE PROGRAMAS DE FORMACION"];
   const titleForm = ["REGISTRAR PROGRAMAS DE FORMACION"];
+  const tableName = "Programas";
 
   const titles = [
     "Documento",
@@ -51,6 +50,27 @@ const CrudPrograma = () => {
     "Acción",
   ].filter(Boolean);
 
+  const ButtonsForOtherModules = (Id_ProgramaFormacion) => [
+    <button
+      onClick={() => [
+        getPrograma(Id_ProgramaFormacion),
+        setStateAddPrograma(true),
+        toggleModal(),
+      ]}
+      className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
+      key="get"
+    >
+      <FaRegEdit />
+    </button>,
+    <button
+      onClick={() => deletePrograma(Id_ProgramaFormacion)}
+      className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
+      key="delete"
+    >
+      <MdDeleteOutline />
+    </button>,
+  ];
+
   const formatteData = programaList.map((programa) => {
     const rowData = [
       programa.Id_ProgramaFormacion,
@@ -58,6 +78,7 @@ const CrudPrograma = () => {
       programa.Tip_ProgramaFormacion,
       programa.areas?.Nom_Area,
     ];
+    rowData.push(ButtonsForOtherModules(programa.Id_ProgramaFormacion));
     return rowData;
   });
 
@@ -74,7 +95,7 @@ const CrudPrograma = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(URI, config);
+      const respuestApi = await clienteAxios(URI, config);
       if (respuestApi.status === 200) {
         setProgramaList(respuestApi.data);
         setCrearDataTable(true);
@@ -103,7 +124,7 @@ const CrudPrograma = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(
+      const respuestApi = await clienteAxios(
         `${URI}/${Id_ProgramaFormacion}`,
         config
       );
@@ -146,7 +167,7 @@ const CrudPrograma = () => {
           },
         };
         try {
-          const respuestApi = await clieteAxios.delete(
+          const respuestApi = await clienteAxios.delete(
             `/${URI}/${Id_ProgramaFormacion}`,
             config
           );
@@ -219,11 +240,11 @@ const CrudPrograma = () => {
             setStateAddNewRow={setStateAddPrograma}
             toggleModal={toggleModal} // Aquí pasamos la función
             titleModul={titleModul}
+            tableName={tableName}
+            buttons={ButtonsForOtherModules}
           />
         )}
       </div>
-
-      <Outlet />
     </>
   );
 };

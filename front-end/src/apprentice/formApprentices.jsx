@@ -24,8 +24,6 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
   const [Gen_Aprendiz, setGen_Aprendiz] = useState("");
   const [Cor_Aprendiz, setCor_Aprendiz] = useState("");
   const [Tel_Aprendiz, setTel_Aprendiz] = useState("");
-  // const [Tot_Memorandos, setTot_Memorandos] = useState("");
-  // const [Tot_Inasistencias, setTot_Inasistencias] = useState("");
   const [Patrocinio, setPatrocinio] = useState("");
   const [Estado, setEstado] = useState("");
   const [Nom_Empresa, setNom_Empresa] = useState("");
@@ -116,8 +114,6 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
       formData.append("Gen_Aprendiz", Gen_Aprendiz);
       formData.append("Cor_Aprendiz", Cor_Aprendiz);
       formData.append("Tel_Aprendiz", Tel_Aprendiz);
-      // formData.append("Tot_Memorandos", Tot_Memorandos);
-      // formData.append("Tot_Inasistencias", Tot_Inasistencias);
       formData.append("Patrocinio", Patrocinio);
       formData.append("Estado", Estado);
       formData.append("Nom_Empresa", Nom_Empresa);
@@ -141,7 +137,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
         console.log("Actualizando alerta con éxito"); // Log para depuración
         getAllAprentices();
         setAlerta({
-          msg: mensajeCrud,
+          msg: respuestApi.data.message ,
           error: false,
         });
         clearForm();
@@ -192,8 +188,6 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
     setGen_Aprendiz("");
     setCor_Aprendiz("");
     setTel_Aprendiz("");
-    // setTot_Memorandos("");
-    // setTot_Inasistencias("");
     setPatrocinio("");
     setEstado("");
     setNom_Empresa(""); // Limpiar Nombre de la Empresa
@@ -217,8 +211,6 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
     setGen_Aprendiz(apprentice.Gen_Aprendiz);
     setCor_Aprendiz(apprentice.Cor_Aprendiz);
     setTel_Aprendiz(apprentice.Tel_Aprendiz);
-    // setTot_Memorandos(apprentice.Tot_Memorandos);
-    // setTot_Inasistencias(apprentice.Tot_Inasistencias);
     setPatrocinio(apprentice.Patrocinio);
     setEstado(apprentice.Estado);
     setNom_Empresa(apprentice.Nom_Empresa);
@@ -522,11 +514,11 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             >
               <option value="">Seleccione</option>
-              <option value="si">Sí</option>
-              <option value="no">No</option>
+              <option value="Si">Si</option>
+              <option value="No">No</option>
             </select>
           </div>
-          {Patrocinio === "si" && (
+          {Patrocinio === "Si" && (
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Nombre de la Empresa
@@ -553,7 +545,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             >
               <option value="">Seleccione un Estado</option>
-              <option value="activo">Activo</option>
+              <option value="Activo">Activo</option>
               <option value="Inactivo">Inactivo</option>
             </select>
           </div>
@@ -569,8 +561,8 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             >
               <option value="">Seleccione</option>
-              <option value="si">Sí</option>
-              <option value="no">No</option>
+              <option value="Si">Sí</option>
+              <option value="No">No</option>
             </select>
           </div>
 

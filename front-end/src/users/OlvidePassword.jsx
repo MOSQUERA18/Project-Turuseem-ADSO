@@ -61,19 +61,19 @@ const OlvidePassword = () => {
             <input
               type="submit"
               value="Recuperar Contraseña"
-              className="bg-green-800 w-full py-3 px-8 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-green-900 md:w-auto"
+              className="bg-green-700 w-full py-3 px-8 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-green-300 md:w-auto"
             />
           </form>
           <nav className="mt-8 lg:flex lg:justify-between">
-            <Link to="/login" className="block text-center my-5 text-gray-500">
+            <Link to="/login" className="block text-center my-5 text-gray-600 hover:text-green-600">
               ¿Tienes una Cuenta? Inicia Sesion
             </Link>
-            <Link
-              to="/registrar"
-              className="block text-center my-5 text-gray-500"
+          {/*  <Link
+              to="/registrar" 
+              className="block text-center my-5 text-gray-600 hover:text-green-600"
             >
               ¿No tienes una Cuenta? Registrate
-            </Link>
+            </Link>  */}
           </nav>
         </div>
       </div>

@@ -107,8 +107,8 @@ const Contacto = () => {
 
   return (
     <>
-      <h1 className="text-3xl font-bold uppercase text-center">
-        Equipo de Desarrollo
+      <h1 className="text-stone-900 font-black text-3xl sm:text-4xl text-center">
+        EQUIPO DE <span className="text-blue-700">DESARROLLO</span>
       </h1>
       <div className="flex flex-wrap justify-center gap-6 mt-5">
         {contacts.map((contact, index) => (

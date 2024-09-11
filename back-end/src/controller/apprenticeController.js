@@ -2,7 +2,6 @@ import ApprenticeModel from "../models/apprenticeModel.js";
 import FichasModel from "../models/fichasModel.js";
 import cityModel from "../models/cityModel.js";
 import { logger } from "../middleware/logMiddleware.js";
-
 import csv from "csv-parser";
 import fs from "fs";
 import path from "path";
@@ -21,13 +20,14 @@ export const getAllApprentices = async (req, res) => {
         },
       ],
     });
-    if(apprentices){
-      res.status(200).json(apprentices);
-      return
+    if (apprentices.length > 0) {
+      return res.status(200).json(apprentices);
+    } else {
+      return res.status(404).json({ message: "No se encontraron aprendices." });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
-    logger.error(`Error al obtener los aprendices: ${error}`);
+    logger.error(`Error al obtener los aprendices: ${error.message}`);
+    return res.status(500).json({ message: "Error interno del servidor", error: error.message });
   }
 };
 
@@ -46,14 +46,13 @@ export const getApprentice = async (req, res) => {
       ],
     });
     if (apprentice) {
-      res.status(200).json(apprentice);
-      return
+      return res.status(200).json(apprentice);
     } else {
-      res.status(404).json({ message: "Aprendiz no encontrado o no existe" });
+      return res.status(404).json({ message: "Aprendiz no encontrado o no existe" });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
-    logger.error(`Error al obtener el aprendiz: ${error}`);
+    logger.error(`Error al obtener el aprendiz: ${error.message}`);
+    return res.status(500).json({ message: "Error interno del servidor", error: error.message });
   }
 };
 
@@ -113,18 +112,15 @@ export const createApprentice = async (req, res) => {
     if (newApprentice) {
       res.status(201).json({
         apprentice: newApprentice,
-        message: "Aprendiz Registrado Correctamente"
+        message: "Aprendiz registrado correctamente",
       });
       return;
     }
-
-    res.status(500).json({ message: 'Error al crear el aprendiz' });
   } catch (error) {
     logger.error(`Error al crear el aprendiz: ${error.message}`);
-    res.status(500).json({ message: 'Error interno del servidor', error: error.message });
+    return res.status(500).json({ message: "Error interno del servidor", error: error.message });
   }
 };
-
 
 export const updateApprentice = async (req, res) => {
   try {
@@ -178,18 +174,15 @@ export const updateApprentice = async (req, res) => {
     );
 
     if (updated === 0) {
-      res.status(404).json({ message: "Aprendiz no encontrado" });
+      return res.status(404).json({ message: "Aprendiz no encontrado" });
     } else {
-      res.json({ message: "Aprendiz actualizado correctamente" });
+      return res.json({ message: "Aprendiz actualizado correctamente" });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
-    logger.error(`Error al actualizar el aprendiz: ${error}`);
+    logger.error(`Error al actualizar el aprendiz: ${error.message}`);
+    return res.status(500).json({ message: "Error interno del servidor", error: error.message });
   }
 };
-
-
-
 
 export const deleteApprentice = async (req, res) => {
   try {
@@ -197,14 +190,13 @@ export const deleteApprentice = async (req, res) => {
       where: { Id_Aprendiz: req.params.Id_Aprendiz },
     });
     if (result === 0) {
-      res.status(404).json({ message: "Aprendiz no encontrado" });
+      return res.status(404).json({ message: "Aprendiz no encontrado" });
     } else {
-      res.json({ message: "Aprendiz eliminado correctamente" });
-      return
+      return res.json({ message: "Aprendiz eliminado correctamente" });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
-    logger.error(`Error al eliminar el aprendiz: ${error}`);
+    logger.error(`Error al eliminar el aprendiz: ${error.message}`);
+    return res.status(500).json({ message: "Error interno del servidor", error: error.message });
   }
 };
 

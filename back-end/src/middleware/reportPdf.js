@@ -33,9 +33,6 @@ const reportPDF = async (req, res) => {
   // Reemplazar el marcador en la plantilla con el HTML limpio
   const htmlContent = plantillaHtml.replace("{{tablaPDF}}", cleanedHtml).replace("{{titleModul}}", titleModul);
 
-  // Para depurar
-  console.log(htmlContent);
-
   const options = {
     format: 'A3',
     orientation: 'landscape',

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import clieteAxios from "../config/axios";
+import clienteAxios from "../config/axios";
 import Alerta from "../components/Alerta";
 import { ReactSession } from "react-client-session";
 
@@ -23,7 +23,7 @@ const FormProgramaFormacion = ({
     const fetchAreas = async () => {
       try {
         const token = ReactSession.get("token");
-        const response = await clieteAxios.get("/areas", {
+        const response = await clienteAxios.get("/areas", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -53,7 +53,7 @@ const FormProgramaFormacion = ({
       let mensajeCRUD = "";
       let respuestApi;
       if (buttonForm === "Actualizar") {
-        respuestApi = await clieteAxios.put(
+        respuestApi = await clienteAxios.put(
           `/programa/${programa.Id_ProgramaFormacion}`,
           {
             Nom_ProgramaFormacion,
@@ -64,7 +64,7 @@ const FormProgramaFormacion = ({
         );
         mensajeCRUD = "Programa Actualizado Exitosamente";
       } else if (buttonForm === "Enviar") {
-        respuestApi = await clieteAxios.post(
+        respuestApi = await clienteAxios.post(
           `/programa`,
           {
             Nom_ProgramaFormacion,

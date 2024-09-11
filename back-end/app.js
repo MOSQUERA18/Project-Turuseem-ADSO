@@ -5,7 +5,7 @@ import cors from "cors";
 import checkAuth from "./src/middleware/authMiddleware.js";
 // import { app, BrowserWindow } from "electron";
 
-// import path from 'path';
+import path from 'path';
 
 import db from "./src/database/db.js";
 
@@ -47,6 +47,7 @@ import OtrosMemorandumModel from "./src/models/Otros_MemorandosModel.js";
 
 import reportPDF from "./src/middleware/reportPdf.js";
 import reportXLSX from "./src/middleware/reportXlsx.js";
+import generateSQL from "./src/middleware/exportSql.js";
 
 
 const appExpress = express();
@@ -77,14 +78,18 @@ appExpress.use("/ciudades", cityRoutes);
 // appExpress.use('/pdf', pdfRoutes);
 // appExpress.use('/excel', excelRoutes);
 
-
+appExpress.use(express.static(path.join(import.meta.url, 'public')));
 
 appExpress.use("/public/uploads/", express.static("public/uploads"));
+appExpress.use("/assets", express.static("public/assets"));
+appExpress.use("/plantillas", express.static("public/plantillas"));
+
 
 appExpress.use("/api/user", userRouter);
 
 appExpress.use("/reportPDF", checkAuth, reportPDF)
 appExpress.use("/reportXLSX", checkAuth, reportXLSX)
+appExpress.use("/exportsSQL", checkAuth, generateSQL)
 
 
 
