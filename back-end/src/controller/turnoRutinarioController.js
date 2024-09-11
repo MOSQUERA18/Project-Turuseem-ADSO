@@ -229,18 +229,17 @@ export const deleteTurnoRutinario = async (req, res) => {
 };
 
 
-const hoy = new Date();
-hoy.setHours(0, 0, 0, 0); 
-
 export const getTurnoRutinariosForAprendiz = async (req, res) => {
   try {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
 
-    // Intento de obtener los turnos rutinarios para un aprendiz específico.
     const turnoRutinarioForAprendiz = await TurnosRutinariosModel.findAll({
-      where: { Id_Aprendiz: req.params.Id_Aprendiz,
-        Fec_InicioTurno: { [Op.lte]: hoy }, // Fecha inicio <= hoy
-        Fec_FinTurno: { [Op.gte]: hoy }     // Fecha fin >= hoy
-       },
+      where: { 
+        Id_Aprendiz: req.params.Id_Aprendiz,
+        Fec_InicioTurno: { [Op.lte]: hoy },
+        Fec_FinTurno: { [Op.gte]: hoy }
+      },
       include: [
         {
           model: ApprenticeModel,
@@ -253,15 +252,13 @@ export const getTurnoRutinariosForAprendiz = async (req, res) => {
       ],
     });
 
-    // Verifico si se encontraron turnos rutinarios para el aprendiz.
     if (turnoRutinarioForAprendiz.length === 0) {
-      res.status(404).json({ message: "No Tienes Turno Programado" });
+      res.status(404).json({ message: "No tienes turno programado para hoy" });
       return;
     }
 
     res.status(200).json(turnoRutinarioForAprendiz);
   } catch (error) {
-    // Capturo y manejo cualquier error ocurrido durante la consulta.
     logger.error(`Error al obtener los turnos rutinarios para el aprendiz: ${error.message}`);
     res.status(500).json({
       message: "Error al obtener los turnos rutinarios para el aprendiz.",
