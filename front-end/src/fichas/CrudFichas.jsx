@@ -91,11 +91,8 @@ const CrudFichas = () => {
         });
       }
     } catch (error) {
-      setAlerta({
-        msg: `No Existen Fichas Registradas!`,
-        error: true,
-      });
-      console.error(error);
+      console.error("Error en la solicitud:", error);
+      setAlerta({ msg: "Ocurrio Un Error No Existen Fichas registradas!.", error: true });
     }
   };
 
@@ -183,7 +180,7 @@ const CrudFichas = () => {
 
   return (
     <>
-      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+      <h1 className="text-zinc-950 font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar Informacion de las
         <span className="text-blue-700"> Fichas</span>
       </h1>

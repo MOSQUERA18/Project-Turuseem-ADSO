@@ -44,7 +44,7 @@ const CrudPrograma = () => {
   const titleForm = ["REGISTRAR PROGRAMAS DE FORMACION"];
 
   const titles = [
-    "Documento",
+    "Id",
     "Nombre del Programa",
     "Tipo del Programa",
     "Área",
@@ -85,11 +85,8 @@ const CrudPrograma = () => {
         });
       }
     } catch (error) {
-      setAlerta({
-        msg: `Error al cargar los programas!`,
-        error: true,
-      });
-      console.error(error);
+      console.error("Error en la solicitud:", error);
+      setAlerta({ msg: "Ocurrio un Error No Existen Programas De Formación registradas!.", error: true });
     }
   };
 
@@ -103,7 +100,7 @@ const CrudPrograma = () => {
       },
     };
     try {
-      const respuestApi = await clieteAxios(
+      const respuestApi = await clienteAxios.get(
         `${URI}/${Id_ProgramaFormacion}`,
         config
       );
@@ -180,7 +177,7 @@ const CrudPrograma = () => {
 
   return (
     <>
-      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+      <h1 className="text-zinc-950 font-extrabold text-4xl md:text-4xl text-center mb-7">
         {" "}
         Gestionar Informacion de los{" "}
         <span className="text-blue-700"> Programas de Formacion</span>

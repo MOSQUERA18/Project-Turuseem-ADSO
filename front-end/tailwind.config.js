@@ -11,9 +11,7 @@ export default {
     extend: {
       colors: {
         green: {
-          300: "#030076", //Hover botones InicioSesion, BuscarTurnos, Modulos => Enviar, Agregar, DescargarCSV, ExportarExcel
-          400: "#2f79ff", //Barra Nav Vertical Hover
-          500: "#F3F4F6", //No cambiar Principal blanco+-
+          500: "#000000", //vertical - header
           600: "#2318ea", //Boton Enviar modulos
           700: "#2318ea", //Botono DescargarCSV modulos
         },
@@ -27,7 +25,11 @@ export default {
         },
       },
       textColor: {
-        stone: "#000000",
+        black: "#ffffff",
+        gray: "#ffffff",
+      },
+      borderColor: {
+        green: "#ffffff"
       },
     },
   },

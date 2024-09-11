@@ -94,7 +94,8 @@ const CrudTalentoHumano = () => {
         });
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error en la solicitud:", error);
+      setAlerta({ msg: "Error No Existe Talento Humano Registrado!.", error: true });
     }
   };
 
@@ -189,7 +190,7 @@ const CrudTalentoHumano = () => {
 
   return (
     <>
-      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+      <h1 className="text-zinc-950 font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar Información de
         <span className="text-blue-700"> Talento Humano</span>
       </h1>

@@ -63,14 +63,18 @@ const CrudMemorandum = () => {
     };
     try {
       const respuestApi = await clienteAxios("/otrosmemorandos/", config);
-      if (respuestApi.status == 200) {
-        setMemorandumList(respuestApi.data);
+      if (respuestApi.status === 200) {
+        setMemorandumList(respuestApi.data); // Status 200: Solicitud exitosa.
         setCrearDataTable(true);
+      } else if (respuestApi.status === 404) {
+        setAlerta({ msg: "No se encontraron memorandos.", error: true });
+        setCrearDataTable(false);
       } else {
-        console.log("Error: " + respuestApi.status);
+        console.error(`Error: ${respuestApi.status}`);
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error en la solicitud:", error);
+      setAlerta({ msg: "Ocurrio Un Error no existen memorandos registrados!.", error: true });
     }
   };
 
@@ -148,7 +152,7 @@ const CrudMemorandum = () => {
 
   return (
     <>
-      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+      <h1 className="text-zinc-950 font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar informacion de los{" "}
         <span className="text-blue-700">Memorandos</span>
       </h1>

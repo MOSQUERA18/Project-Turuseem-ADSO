@@ -89,7 +89,7 @@ const LoginForm = () => {
             <input
               type="submit"
               value="Iniciar Sesion"
-              className="bg-green-700 w-full py-3 px-8 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-green-300 md:w-auto "
+              className="bg-green-700 w-full py-3 px-8 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-blue-800 md:w-auto "
             />
           </form>
           <nav className="mt-8 lg:flex lg:justify-between">
@@ -101,7 +101,7 @@ const LoginForm = () => {
             </Link> */}
             <Link
               to="/olvide-password"
-              className="block text-center my-5 text-black mx-2 hover:text-green-600 hover:scale-105 transition-transform duration-200 ease-in-out hover:rounded-md"
+              className="block text-center my-5 text-zinc-950 mx-2 hover:text-green-600 hover:scale-105 transition-transform duration-200 ease-in-out hover:rounded-md"
             >
               Olvide mi Contraseña
             </Link>

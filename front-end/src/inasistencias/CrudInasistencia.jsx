@@ -69,7 +69,7 @@ const CrudFuncionarios = () => {
 
   return (
     <>
-      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+      <h1 className="text-zinc-950 font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar Informacion de las
         <span className="text-blue-700"> Inasistencias</span>
       </h1>

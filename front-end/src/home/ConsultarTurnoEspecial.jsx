@@ -46,7 +46,7 @@ const ConsultarTurnoEspecial = () => {
           className="bg-white shadow-lg rounded-2xl px-6 pt-6 pb-8 mb-4 w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-3xl mt-10"
         >
           {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
-          <h1 className="font-bold text-black text-2xl sm:text-4xl uppercase text-center my-5">
+          <h1 className="font-bold text-stone-900 text-2xl sm:text-4xl uppercase text-center my-5">
             Consultar <span className="text-blue-600">Turnos Especiales</span>
           </h1>
           <div className="mb-3">
@@ -72,7 +72,7 @@ const ConsultarTurnoEspecial = () => {
               type="submit"
               id="button"
               value="Buscar"
-              className="bg-green-700 w-full py-2 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-300 md:w-auto"
+              className="bg-green-700 w-full py-2 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-blue-800 md:w-auto"
             />
           </div>
         </form>

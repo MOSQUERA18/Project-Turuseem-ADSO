@@ -61,7 +61,7 @@ const OlvidePassword = () => {
             <input
               type="submit"
               value="Recuperar Contraseña"
-              className="bg-green-700 w-full py-3 px-8 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-green-300 md:w-auto"
+              className="bg-green-700 w-full py-3 px-8 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-blue-800 md:w-auto"
             />
           </form>
           <nav className="mt-8 lg:flex lg:justify-between">
