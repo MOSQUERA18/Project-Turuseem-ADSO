@@ -29,7 +29,7 @@ const ConsultarTurno = () => {
           clearForm();
         } else {
           setAlerta({
-            msg: "No hay turnos vigentes para esta Aprendiz.",
+            msg: "No hay turnos vigentes para este Aprendiz.",
             error: true,
           });
           setTurnoRutinarioList([]);
