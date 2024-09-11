@@ -30,7 +30,6 @@ const CrudTurnosEspeciales = () => {
 
   const resetForm = () => {
     setTurnoEspecial({
-      Id_TurnoEspecial: "",
       Fec_TurnoEspecial: "",
       Hor_Inicio: "",
       Hor_Fin: "",
@@ -264,7 +263,7 @@ const CrudTurnosEspeciales = () => {
               buttonForm={buttonForm}
               turnoEspecial={turnoEspecial}
               updateTextButton={updateTextButton}
-              setTurnoEspecial={setTurnoEspecial}
+              getAllTurnosEspeciales={getAllTurnosEspeciales}
             />
           }
         />

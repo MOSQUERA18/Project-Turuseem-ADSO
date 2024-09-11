@@ -190,6 +190,7 @@ const FormProgramaFormacion = ({
               value="Limpiar"
               onClick={() => {
                 clearForm();
+                updateTextButton("Enviar");
               }}
               className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-500 md:w-auto"
               aria-label="Limpiar"

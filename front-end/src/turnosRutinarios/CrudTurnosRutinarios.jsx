@@ -37,6 +37,8 @@ const CrudTurnosRutinarios = () => {
     });
   };
 
+
+
   const [turnoRutinario, setTurnoRutinario] = useState({
     Fec_InicioTurno: "",
     Fec_FinTurno: "",
@@ -100,7 +102,6 @@ const CrudTurnosRutinarios = () => {
       turnoRutinario.unidad?.Nom_Unidad,
     ];
     rowData.push(ButtonsForOtherModules(turnoRutinario.Id_TurnoRutinario));
-
     return rowData;
   });
 
