@@ -57,7 +57,6 @@ const ConsultarTurnoEspecial = () => {
 
 
   //VALIDAR LA FECHA
-
   const mostrarTurnoSiEsActual = (Fec_TurnoEspecial) => {
     const hoy = new Date(); // Fecha actual
     hoy.setHours(0, 0, 0, 0); // Establece la hora a 00:00:00 para comparación

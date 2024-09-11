@@ -176,7 +176,7 @@ const CrudFichas = () => {
         };
         try {
           const respuestApi = await clienteAxios.delete(
-            `/${URI}/${Id_Ficha}`,
+            `${URI}${Id_Ficha}`,
             config
           );
           if (respuestApi.status === 200) {

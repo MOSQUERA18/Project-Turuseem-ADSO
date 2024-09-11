@@ -5,6 +5,8 @@ import { logger } from "../middleware/logMiddleware.js";
 import AbsenceModel from "../models/absenceModel.js";
 import FichasModel from "../models/fichasModel.js";
 import ProgramaModel from "../models/programaModel.js";
+import { Op } from "sequelize";  // Importa Op de Sequelize para las operaciones de comparación
+
 
 export const getAllTurnosRutinarios = async (req, res) => {
   try {
@@ -53,6 +55,8 @@ export const getAllTurnosRutinarios = async (req, res) => {
 
 export const getTurnoRutinario = async (req, res) => {
   try {
+
+
     // Intento de obtener un turno rutinario específico por ID con relaciones anidadas.
     const turnoRutinario = await TurnosRutinariosModel.findByPk(
       req.params.Id_TurnoRutinario,
@@ -224,11 +228,19 @@ export const deleteTurnoRutinario = async (req, res) => {
   }
 };
 
+
+const hoy = new Date();
+hoy.setHours(0, 0, 0, 0); 
+
 export const getTurnoRutinariosForAprendiz = async (req, res) => {
   try {
+
     // Intento de obtener los turnos rutinarios para un aprendiz específico.
     const turnoRutinarioForAprendiz = await TurnosRutinariosModel.findAll({
-      where: { Id_Aprendiz: req.params.Id_Aprendiz },
+      where: { Id_Aprendiz: req.params.Id_Aprendiz,
+        Fec_InicioTurno: { [Op.lte]: hoy }, // Fecha inicio <= hoy
+        Fec_FinTurno: { [Op.gte]: hoy }     // Fecha fin >= hoy
+       },
       include: [
         {
           model: ApprenticeModel,

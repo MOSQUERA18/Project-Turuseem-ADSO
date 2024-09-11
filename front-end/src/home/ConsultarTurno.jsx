@@ -51,16 +51,17 @@ const ConsultarTurno = () => {
 
   const esFechaVigente = (fechaInicio, fechaFin) => {
     const hoy = new Date();
-    hoy.setHours(0, 0, 0, 0);
-
+    hoy.setHours(0, 0, 0, 0);  // Reiniciamos la hora para que solo comparemos la fecha
+  
     const fechaInicioDate = new Date(fechaInicio);
-    fechaInicioDate.setHours(0, 0, 0, 0);
-
+    fechaInicioDate.setHours(0, 0, 0, 0);  // Lo mismo para la fecha de inicio
+  
     const fechaFinDate = new Date(fechaFin);
-    fechaFinDate.setHours(0, 0, 0, 0);
-
+    fechaFinDate.setHours(0, 0, 0, 0);  // Lo mismo para la fecha de fin
+  
     return fechaInicioDate <= hoy && hoy <= fechaFinDate;
   };
+  
 
   const clearForm = () => {
     setId_Aprendiz("");
