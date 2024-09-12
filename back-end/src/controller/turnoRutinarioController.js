@@ -5,6 +5,12 @@ import { logger } from "../middleware/logMiddleware.js";
 import AbsenceModel from "../models/absenceModel.js";
 import FichasModel from "../models/fichasModel.js";
 import ProgramaModel from "../models/programaModel.js";
+import cron from "node-cron"
+
+
+cron.schedule('0 10 * * 4', () => {
+  console.log('Tarea programada ejecutada con exito');
+});
 
 export const getAllTurnosRutinarios = async (req, res) => {
   try {
