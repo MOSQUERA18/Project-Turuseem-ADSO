@@ -22,7 +22,7 @@ function ModalWindow({
             toggleModal();
           }
         }}
-        className="bg-green-700 text-white px-4 py-2 font-semibold rounded hover:bg-green-300 flex items-center"
+        className="bg-green-700 text-white px-4 py-2 font-semibold rounded hover:bg-blue-800 flex items-center"
         type="button"
       >
         <FaPlusCircle className="mx-1"/>
