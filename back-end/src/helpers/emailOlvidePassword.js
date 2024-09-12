@@ -3,7 +3,7 @@ import { logger } from "../middleware/logMiddleware.js";
 
 export const emailOlvidePassword = async (datos) => {
   try {
-    const transporter = nodemailer.createTransport({
+    let transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: process.env.EMAIL_PORT,
       secure: false,

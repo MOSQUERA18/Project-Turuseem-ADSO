@@ -9,7 +9,7 @@ import Alerta from "../components/Alerta";
 const URI = "/ciudades/";
 const UriFichas = "/fichas/";
 
-const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
+const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllApprentices }) => {
   const [Id_Aprendiz, setId_Aprendiz] = useState("");
   const [Nom_Aprendiz, setNom_Aprendiz] = useState("");
   const [Ape_Aprendiz, setApe_Aprendiz] = useState("");
@@ -47,14 +47,14 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
     },
   };
 
-  const getAllAprentices = async () => {
-    try {
-      const response = await clienteAxios.get("/aprendiz/", config);
-      setId_Aprendiz(response.data);
-    } catch (error) {
-      console.error("Error al obtener los aprendices:", error);
-    }
-  };
+  // const getAllAprentices = async () => {
+  //   try {
+  //     const response = await clienteAxios.get("/aprendiz/", config);
+  //     setId_Aprendiz(response.data);
+  //   } catch (error) {
+  //     console.error("Error al obtener los aprendices:", error);
+  //   }
+  // };
 
   useEffect(() => {
     const fetchCiudades = async () => {
@@ -118,7 +118,10 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
       formData.append("Estado", Estado);
       formData.append("Nom_Empresa", Nom_Empresa);
       formData.append("CentroConvivencia", CentroConvivencia);
-      formData.append("Foto_Aprendiz", Foto_Aprendiz);
+      // formData.append("Foto_Aprendiz", Foto_Aprendiz);
+      if (Foto_Aprendiz) {
+        formData.append("Foto_Aprendiz", Foto_Aprendiz);
+    }
 
       let mensajeCrud = "";
       let respuestApi;
@@ -135,11 +138,11 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
       }
       if (respuestApi.status === 200 || respuestApi.status === 201) {
         console.log("Actualizando alerta con éxito"); // Log para depuración
-        getAllAprentices();
         setAlerta({
           msg: respuestApi.data.message ,
           error: false,
         });
+        getAllApprentices();
         clearForm();
         updateTextButton("Enviar");
       } else {
@@ -576,6 +579,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton }) => {
             <input
               type="file"
               id="Foto_Aprendiz"
+              ref={inputFoto}
               onChange={(e) => setFoto_Aprendiz(e.target.files[0])}
               className="border-2 w-full mt-2 placeholder-gray-400 rounded-md"
             />

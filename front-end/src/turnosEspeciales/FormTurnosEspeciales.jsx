@@ -171,6 +171,7 @@ const FormTurnosEspeciales = ({
     }
   };
 
+
   const clearForm = () => {
     setId_TurnoEspecial("");
     setFec_TurnoEspecial("");
@@ -279,6 +280,7 @@ const FormTurnosEspeciales = ({
                 placeholder="Observaciones Turno Especial"
                 value={Obs_TurnoEspecial}
                 onChange={(e) => setObs_TurnoEspecial(e.target.value)}
+                maxLength={70}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               />
             </div>
@@ -292,6 +294,7 @@ const FormTurnosEspeciales = ({
                 placeholder="Total Aprendices Asistieron"
                 value={Tot_AprendicesAsistieron}
                 onChange={(e) => setTot_AprendicesAsistieron(e.target.value)}
+                maxLength={2}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               />
             </div>
@@ -354,6 +357,7 @@ const FormTurnosEspeciales = ({
                 ))}
               </select>
             </div>
+
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Imagen Asistencia
