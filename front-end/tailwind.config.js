@@ -10,6 +10,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        primary: "#0ac2ff",
         green: {
           500: "#000000", //vertical - header
           600: "#2318ea", //Boton Enviar modulos

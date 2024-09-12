@@ -26,6 +26,7 @@ const CrudMemorandum = () => {
     setIsOpen(!isOpen);
   };
 
+  // const navigate = useNavigate();
 
   const [memorandum, setMemorandum] = useState({
     Id_OtroMemorando: "",
@@ -66,9 +67,7 @@ const CrudMemorandum = () => {
       <MdDeleteOutline />
     </button>,
     <button
-      onClick={() => [
-        viewMemorandum(Id_OtroMemorando),
-      ]}
+      onClick={() => [viewMemorandum(Id_OtroMemorando)]}
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
     >
@@ -109,18 +108,14 @@ const CrudMemorandum = () => {
     };
     try {
       const respuestApi = await clienteAxios("/otrosmemorandos/", config);
-      if (respuestApi.status === 200) {
-        setMemorandumList(respuestApi.data); // Status 200: Solicitud exitosa.
+      if (respuestApi.status == 200) {
+        setMemorandumList(respuestApi.data);
         setCrearDataTable(true);
-      } else if (respuestApi.status === 404) {
-        setAlerta({ msg: "No se encontraron memorandos.", error: true });
-        setCrearDataTable(false);
       } else {
-        console.error(`Error: ${respuestApi.status}`);
+        console.log("Error: " + respuestApi.status);
       }
     } catch (error) {
-      console.error("Error en la solicitud:", error);
-      setAlerta({ msg: "Ocurrio Un Error no existen memorandos registrados!.", error: true });
+      console.error(error);
     }
   };
 
@@ -194,18 +189,68 @@ const CrudMemorandum = () => {
       }
     });
   };
+  const viewMemorandum = async (Id_OtroMemorando) => {
+    const token = ReactSession.get("token");
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await clienteAxios.post(
+        `/otrosmemorandos/view/pdf/${Id_OtroMemorando}`,
+        config
+      );
+      console.log(response);
+      
+      if (response.status === 201) {
+        const pdfWindow = window.open("");
+        pdfWindow.document.write(
+          `<iframe width="100%" height="100%" src="data:application/pdf;base64,${response.data.pdfBase64}"></iframe>`
+        );
+      }
+    } catch (error) {
+      setAlerta({
+        msg: error.response.data.message,
+        error: true
+      })
+    }
+  };
+  const sendMemorandum = async (Id_OtroMemorando) => {
+    const token = ReactSession.get("token");
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await clienteAxios.post(
+        `/otrosmemorandos/send/pdf/${Id_OtroMemorando}`,
+        config
+      );
+      console.log(response.data.message);
+      
+      if (response.status === 201) {
+        setAlerta({
+          msg: response.data.message,
+          error: false
+        })
+      }
+    } catch (error) {
+      setAlerta({
+        msg: error.response.data.message,
+        error: true
+      })
+    }
+  };
 
-  const viewMemorandum = (Id_OtroMemorando) => {
-    console.log(Id_OtroMemorando);
-  };
-  const sendMemorandum = (Id_OtroMemorando) => {
-    console.log(Id_OtroMemorando);
-  };
   const { msg } = alerta;
 
   return (
     <>
-      <h1 className="text-zinc-950 font-extrabold text-4xl md:text-4xl text-center mb-7">
+      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar informacion de los{" "}
         <span className="text-blue-700">Memorandos</span>
       </h1>

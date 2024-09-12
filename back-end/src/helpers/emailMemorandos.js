@@ -19,11 +19,12 @@ export const emailMemorandos = async (datos) => {
     Nom_ProgramaFormacion,
     trimestreActual,
     añoActual,
+    pdfBase64
   } = datos;
   // Enviar Email
 
   const mailOptions = {
-    from: "SENA EMPRESA - LA GRANJA",
+    from: '"SENA EMPRESA - LA GRANJA" <linarrsbarraganjuandavid@gmail.com>',
     to: Cor_Aprendiz,
     subject: `Memorando #${Tot_Memorandos}`,
     text: "Reestablece tu Contraseña",
@@ -49,8 +50,9 @@ export const emailMemorandos = async (datos) => {
         `,
         attachments: [
           {
-            filename: `Memorando #${Tot_Memorandos}.pdf`,
-            path: "path/to/pdf",
+            filename: `Memorando_${Tot_Memorandos}.pdf`,
+            content: pdfBase64, 
+            encoding: 'base64',
             contentType: "application/pdf"
           }
         ]
