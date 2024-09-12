@@ -6,7 +6,7 @@ const HomePrivado = () => {
       </h1>
       <br />
 
-        <div className="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-md md:max-w-2xl">
+        <div className="bg-white p-6 md:p-8 rounded-lg  w-full max-w-md md:max-w-2xl">
           <h2 className="text-xl md:text-2xl font-semibold mb-6 text-center">
             Módulos Disponibles
           </h2>

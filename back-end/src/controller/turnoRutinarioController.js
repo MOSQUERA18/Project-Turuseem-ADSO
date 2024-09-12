@@ -6,6 +6,7 @@ import AbsenceModel from "../models/absenceModel.js";
 import FichasModel from "../models/fichasModel.js";
 import ProgramaModel from "../models/programaModel.js";
 import cron from "node-cron"
+import { Op } from "sequelize";
 
 
 cron.schedule('0 10 * * 4', () => {
