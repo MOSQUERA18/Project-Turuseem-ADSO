@@ -76,7 +76,7 @@ const CambiarPassword = () => {
           </h1>
         </div>
         <div className="mt-20 md:mt-5 shadow-2xl px-7 py-10 rounded-xl bg-white">
-          {msg && <Alerta alerta={alerta} />}
+          {msg && <Alerta alerta={alerta}  setAlerta={setAlerta}/>}
           {tokenValido && (
             <>
               <form onSubmit={handleSubmit}>
@@ -95,7 +95,7 @@ const CambiarPassword = () => {
                 <input
                   type="submit"
                   value="Guardar Nueva Contraseña"
-                  className="bg-green-800 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-900 md:w-auto"
+                  className="bg-green-700 w-full py-3 px-8 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-green-300 md:w-auto"
                 />
               </form>
             </>

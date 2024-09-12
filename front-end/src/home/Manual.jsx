@@ -9,7 +9,8 @@ function Manual() {
         <iframe
           src="Public/PDFs/Manual-Consulta-TURUSEEM.pdf"
           height="700"
-          className="w-full"
+          allowFullScreen
+          className="w-full border-none"
         ></iframe>
       </div>
     </>

@@ -15,7 +15,7 @@ export const emailOlvidePassword = async (datos) => {
   // Enviar Email
 
   const mailOptions = {
-    from: "SENA EMPRESA - LA GRANJA",
+    from: '"SENA EMPRESA - LA GRANJA" <linarrsbarraganjuandavid@gmail.com>',
     to: Cor_User,
     subject: "Reestablece tu Contraseña",
     text: "Reestablece tu Contraseña",

@@ -65,16 +65,6 @@ export default function HeaderPublic() {
             >
               Consultar Turno Rutinario
             </Link>
-            <Link to='manual'
-              onClick={() => selected(3)}
-              className={`${
-                style[3]
-                  ? "text-black border-b-4 border-blue-700"
-                  : "text-black bg-green-500"
-              } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
-            >
-              Manual Consulta Turno
-            </Link>
             <Link to='consultarespecial'
               onClick={() => selected(4)}
               className={`${
@@ -84,6 +74,16 @@ export default function HeaderPublic() {
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
               Consultar Turno Especial
+            </Link>
+            <Link to='manual'
+              onClick={() => selected(3)}
+              className={`${
+                style[3]
+                  ? "text-black border-b-4 border-blue-700"
+                  : "text-black bg-green-500"
+              } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
+            >
+              Manual Consulta Turno
             </Link>
           </ul>
           <div className=" flex space-x-5 justify-center items-center pl-2">

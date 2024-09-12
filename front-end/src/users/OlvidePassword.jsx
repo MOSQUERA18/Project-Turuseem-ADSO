@@ -68,12 +68,12 @@ const OlvidePassword = () => {
             <Link to="/login" className="block text-center my-5 text-gray-600 hover:text-green-600">
               ¿Tienes una Cuenta? Inicia Sesion
             </Link>
-            <Link
+            {/* <Link
               to="/registrar"
               className="block text-center my-5 text-gray-600 hover:text-green-600"
             >
               ¿No tienes una Cuenta? Registrate
-            </Link>
+            </Link> */}
           </nav>
         </div>
       </div>
