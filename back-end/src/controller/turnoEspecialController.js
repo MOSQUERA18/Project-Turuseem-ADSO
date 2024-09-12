@@ -3,26 +3,34 @@ import FichasModel from "../models/fichasModel.js";
 import UnitModel from "../models/unitModel.js";
 import OfficialModel from "../models/officialModel.js";
 import { logger } from "../middleware/logMiddleware.js";
+import ProgramaModel from "../models/programaModel.js";
 
 export const getAllTurnosEspeciales = async (req, res) => {
   try {
-    // Intento de obtener todos los turnos especiales con las relaciones necesarias.
+    // Intento de obtener todos los turnos especiales con las relaciones anidadas.
     const turnosEspeciales = await TurnoEspecialModel.findAll({
       include: [
         {
           model: FichasModel,
-          as: "fichas", // Alias usado para la relación
+          as: "fichas", // Relación de TurnosEspeciales con Fichas
+          include: [
+            {
+              model: ProgramaModel, // Relación de Fichas con ProgramaFormacion
+              as: "programasFormacion",
+            },
+          ],
         },
         {
           model: UnitModel,
-          as: "unidad", // Alias usado para la relación
+          as: "unidad", // Relación de TurnosEspeciales con Unidad
         },
         {
           model: OfficialModel,
-          as: "funcionario", // Alias usado para la relación
+          as: "funcionario", // Relación de TurnosEspeciales con Funcionario
         },
       ],
     });
+
     // Verifico si se encontraron turnos especiales.
     if (turnosEspeciales.length > 0) {
       res.status(200).json(turnosEspeciales);
@@ -41,6 +49,7 @@ export const getAllTurnosEspeciales = async (req, res) => {
   }
 };
 
+
 export const getTurnoEspecial = async (req, res) => {
   try {
     // Intento de obtener un turno especial específico por ID con las relaciones necesarias.
@@ -50,15 +59,21 @@ export const getTurnoEspecial = async (req, res) => {
         include: [
           {
             model: FichasModel,
-            as: "fichas", // Alias usado para la relación
+            as: "fichas", // Relación de TurnosEspeciales con Fichas
+            include: [
+              {
+                model: ProgramaModel, // Relación de Fichas con ProgramaFormacion
+                as: "programasFormacion",
+              },
+            ],
           },
           {
             model: UnitModel,
-            as: "unidad", // Alias usado para la relación
+            as: "unidad", // Relación de TurnosEspeciales con Unidad
           },
           {
             model: OfficialModel,
-            as: "funcionario", // Alias usado para la relación
+            as: "funcionario", // Relación de TurnosEspeciales con Funcionario
           },
         ],
       }

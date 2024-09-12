@@ -3,7 +3,6 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import checkAuth from "./src/middleware/authMiddleware.js";
-// import { app, BrowserWindow } from "electron";
 
 import path from 'path';
 
@@ -83,6 +82,7 @@ appExpress.use(express.static(path.join(import.meta.url, 'public')));
 appExpress.use("/public/uploads/", express.static("public/uploads"));
 appExpress.use("/assets", express.static("public/assets"));
 appExpress.use("/plantillas", express.static("public/plantillas"));
+appExpress.use("/PDFs", express.static("public/PDFs"));
 
 
 appExpress.use("/api/user", userRouter);

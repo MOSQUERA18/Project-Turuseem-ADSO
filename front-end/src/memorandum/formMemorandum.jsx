@@ -2,12 +2,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import clienteAxios from "../config/axios";
 import { ReactSession } from "react-client-session";
+
 import Alerta from "../components/Alerta";
+import clienteAxios from "../config/axios";
 
 const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
-  // const [Id_Memorando, setId_Memorando] = useState("");
   const [Fec_Memorando, setFec_Memorando] = useState("");
   const [Mot_Memorando, setMot_Memorando] = useState("");
   const [Id_Aprendiz, setId_Aprendiz] = useState("");
@@ -49,7 +49,6 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
         const respuestApi = await clienteAxios.put(
           `/otrosmemorandos/${memorandum.Id_OtroMemorando}`,
           {
-            // Id_Memorando: Id_Memorando,
             Fec_OtroMemorando: Fec_Memorando,
             Mot_OtroMemorando: Mot_Memorando,
             Id_Aprendiz: Id_Aprendiz,
@@ -58,14 +57,16 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
         );
         if (respuestApi.status == 200) {
           updateTextButton("Enviar");
-          alert(respuestApi.data.message);
+          setAlerta({
+            msg: respuestApi.data.message,
+            error: false,
+          });
           clearForm();
         }
       } else if (buttonForm === "Enviar") {
         const respuestApi = await clienteAxios.post(
           "/otrosmemorandos",
           {
-            // Id_Memorando: Id_Memorando,
             Fec_OtroMemorando: Fec_Memorando,
             Mot_OtroMemorando: Mot_Memorando,
             Id_Aprendiz: Id_Aprendiz,
@@ -73,12 +74,10 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
           config
         );
         if (respuestApi.status == 201) {
-          console.log(respuestApi.data.pdfBase64);
-          
           setAlerta({
             msg: respuestApi.data.message,
-            error: false
-          })
+            error: false,
+          });
           clearForm();
         } else {
           alert(respuestApi.data.message);
@@ -91,14 +90,12 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
   };
 
   const clearForm = () => {
-    // setId_Memorando("");
     setFec_Memorando("");
     setMot_Memorando("");
     setId_Aprendiz("");
   };
 
   const setData = () => {
-    // setId_Memorando(memorandum.Id_Memorando);
     setFec_Memorando(memorandum.Fec_OtroMemorando);
     setMot_Memorando(memorandum.Mot_OtroMemorando);
     setId_Aprendiz(memorandum.Id_Aprendiz);
@@ -185,7 +182,7 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
               type="submit"
               id="button"
               value={buttonForm}
-              className="bg-green-600 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-700 md:w-auto"
+              className="bg-green-600 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-blue-800 md:w-auto"
               aria-label="Enviar"
             />
             <input
@@ -200,9 +197,6 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
             />
           </div>
         </form>
-        <button>
-          <i className="fa/FaHospitalUser"></i>
-        </button>
       </div>
     </>
   );

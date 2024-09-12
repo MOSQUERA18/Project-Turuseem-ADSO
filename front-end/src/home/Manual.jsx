@@ -8,8 +8,9 @@ function Manual() {
         </h1>
         <iframe
           src="Public/PDFs/Manual-Consulta-TURUSEEM.pdf"
-          height="700"
-          className="w-full"
+          height="600"  // Ajuste de altura
+          className="w-3/4"  // Ajuste de ancho al 75% del contenedor
+
         ></iframe>
       </div>
     </>

@@ -51,17 +51,16 @@ const ConsultarTurno = () => {
 
   const esFechaVigente = (fechaInicio, fechaFin) => {
     const hoy = new Date();
-    hoy.setHours(0, 0, 0, 0);  // Reiniciamos la hora para que solo comparemos la fecha
-  
+    hoy.setHours(0, 0, 0, 0);
+
     const fechaInicioDate = new Date(fechaInicio);
-    fechaInicioDate.setHours(0, 0, 0, 0);  // Lo mismo para la fecha de inicio
-  
+    fechaInicioDate.setHours(0, 0, 0, 0);
+
     const fechaFinDate = new Date(fechaFin);
-    fechaFinDate.setHours(0, 0, 0, 0);  // Lo mismo para la fecha de fin
-  
+    fechaFinDate.setHours(0, 0, 0, 0);
+
     return fechaInicioDate <= hoy && hoy <= fechaFinDate;
   };
-  
 
   const clearForm = () => {
     setId_Aprendiz("");
@@ -78,8 +77,8 @@ const ConsultarTurno = () => {
           className="bg-white shadow-lg rounded-2xl px-6 pt-6 pb-8 mb-4 w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-3xl mt-10"
         >
           {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
-          <h1 className="font-bold text-green-600 text-2xl sm:text-3xl uppercase text-center my-5">
-            Consultar Turnos Rutinarios
+          <h1 className="font-bold text-stone-900 text-2xl sm:text-4xl uppercase text-center my-5">
+            Consultar <span className="text-blue-700">Turnos Rutinarios</span>
           </h1>
           <div className="mb-3">
             <label className="text-gray-700 uppercase font-bold">
@@ -104,7 +103,7 @@ const ConsultarTurno = () => {
               type="submit"
               id="button"
               value="Buscar"
-              className="bg-green-600 w-full py-2 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-700 md:w-auto"
+              className="bg-green-700 w-full py-2 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-300 md:w-auto"
             />
           </div>
         </form>

@@ -64,7 +64,6 @@ const FormTurnoRutinario = ({
         console.error("Error fetching Unidad:", error);
       }
     };
-
     getAllAprendiz();
     getAllUnidad();
   }, []);
@@ -423,7 +422,7 @@ const crearRegistroInasistencia = async (Id_TurnoRutinario) => {
               type="submit"
               id="button"
               value={buttonForm}
-              className="bg-green-600 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-700 md:w-auto"
+              className="bg-green-600 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-blue-800 md:w-auto"
             />
             <input
               type="button"
@@ -431,6 +430,7 @@ const crearRegistroInasistencia = async (Id_TurnoRutinario) => {
               value="Limpiar"
               onClick={() => {
                 clearForm();
+                updateTextButton("Enviar");
               }}
               className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-500 md:w-auto"
               aria-label="Limpiar"

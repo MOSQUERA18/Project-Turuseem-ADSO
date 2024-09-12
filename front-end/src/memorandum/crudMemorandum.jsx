@@ -26,6 +26,7 @@ const CrudMemorandum = () => {
     setIsOpen(!isOpen);
   };
 
+  // const navigate = useNavigate();
 
   const [memorandum, setMemorandum] = useState({
     Id_OtroMemorando: "",
@@ -66,9 +67,7 @@ const CrudMemorandum = () => {
       <MdDeleteOutline />
     </button>,
     <button
-      onClick={() => [
-        viewMemorandum(Id_OtroMemorando),
-      ]}
+      onClick={() => [viewMemorandum(Id_OtroMemorando)]}
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
     >
@@ -190,13 +189,63 @@ const CrudMemorandum = () => {
       }
     });
   };
+  const viewMemorandum = async (Id_OtroMemorando) => {
+    const token = ReactSession.get("token");
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await clienteAxios.post(
+        `/otrosmemorandos/view/pdf/${Id_OtroMemorando}`,
+        config
+      );
+      console.log(response);
+      
+      if (response.status === 201) {
+        const pdfWindow = window.open("");
+        pdfWindow.document.write(
+          `<iframe width="100%" height="100%" src="data:application/pdf;base64,${response.data.pdfBase64}"></iframe>`
+        );
+      }
+    } catch (error) {
+      setAlerta({
+        msg: error.response.data.message,
+        error: true
+      })
+    }
+  };
+  const sendMemorandum = async (Id_OtroMemorando) => {
+    const token = ReactSession.get("token");
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await clienteAxios.post(
+        `/otrosmemorandos/send/pdf/${Id_OtroMemorando}`,
+        config
+      );
+      console.log(response.data.message);
+      
+      if (response.status === 201) {
+        setAlerta({
+          msg: response.data.message,
+          error: false
+        })
+      }
+    } catch (error) {
+      setAlerta({
+        msg: error.response.data.message,
+        error: true
+      })
+    }
+  };
 
-  const viewMemorandum = (Id_OtroMemorando) => {
-    console.log(Id_OtroMemorando);
-  };
-  const sendMemorandum = (Id_OtroMemorando) => {
-    console.log(Id_OtroMemorando);
-  };
   const { msg } = alerta;
 
   return (

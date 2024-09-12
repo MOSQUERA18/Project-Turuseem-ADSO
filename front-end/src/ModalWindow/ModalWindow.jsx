@@ -8,7 +8,9 @@ function ModalWindow({
   form,
   toggleModal,
   isOpen,
-  titleForm
+  titleForm,
+  resetForm,
+  updateTextButtom,
 }) {
   return (
     <>
@@ -20,7 +22,7 @@ function ModalWindow({
             toggleModal();
           }
         }}
-        className="bg-green-700 text-white px-4 py-2 font-semibold rounded hover:bg-green-300 flex items-center"
+        className="bg-green-700 text-white px-4 py-2 font-semibold rounded hover:bg-blue-800 flex items-center"
         type="button"
       >
         <FaPlusCircle className="mx-1"/>
@@ -44,7 +46,19 @@ function ModalWindow({
                 </h3>
                 <button
                   type="button"
-                  onClick={toggleModal}
+                  onClick={() => {
+                    if (typeof resetForm === "function") {
+                      resetForm(); // Resetea el formulario al cerrar el modal
+                      
+                    }
+                    if (typeof toggleModal === "function") {
+                      toggleModal(); // Cierra el modal
+                    }
+                    if (typeof updateTextButtom === "function") {
+                      updateTextButtom("Enviar")
+                    }
+                    
+                  }}
                   className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   <AiOutlineClose size={16} />

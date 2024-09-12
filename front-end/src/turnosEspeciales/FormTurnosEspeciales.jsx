@@ -48,7 +48,7 @@ const FormTurnosEspeciales = ({
         console.error("Error fetching areas:", error);
       }
     };
-    getAllFichas();
+
     const getAllFuncionarios = async () => {
       try {
         const token = ReactSession.get("token");
@@ -76,23 +76,14 @@ const FormTurnosEspeciales = ({
           setUnidades(responseUnidades.data);
         }
       } catch (error) {
-        // setAlerta({
-        //   msg: "Todos los campos son obligatorios!",
-        //   error: true,
-        // });
         console.log(error);
       }
     };
+    getAllFuncionarios();
+    getAllFichas();
     getAllUnidades();
   }, []);
 
-  const token = ReactSession.get("token");
-  const config = {
-    headers: {
-      "Content-Type": "multipart/form-data",
-      authorization: `Bearer ${token}`,
-    },
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -108,19 +99,22 @@ const FormTurnosEspeciales = ({
         setUnidades(unidadesRes.data);
       } catch (error) {
         console.error("Error fetching data:", error);
-        // setAlerta({
-        //   msg: "Error al cargar los datos",
-        //   error: true
-        // });
       }
     };
 
     fetchData();
   }, []);
 
+  const token = ReactSession.get("token");
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      authorization: `Bearer ${token}`,
+    },
+  };
+
   const sendForm = async (e) => {
     e.preventDefault();
-
     try {
       const formData = new FormData();
 
@@ -151,6 +145,7 @@ const FormTurnosEspeciales = ({
           config
         );
         mensajeCRUD = "Turno especial Registrado Exitosamente";
+        getAllTurnosEspeciales();
       }
 
       if (respuestApi.status === 200 || respuestApi.status === 201) {
@@ -158,11 +153,14 @@ const FormTurnosEspeciales = ({
           msg: mensajeCRUD,
           error: false,
         });
-        clearForm();
         getAllTurnosEspeciales();
+        clearForm();
         updateTextButton("Enviar");
       } else {
-        throw new Error(respuestApi.data.message || "Error al crear el Turno!");
+        setAlerta({
+          msg: respuestApi.error.message || "Error al crear el Turno!",
+          error: true,
+        });
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);
@@ -174,7 +172,7 @@ const FormTurnosEspeciales = ({
   };
 
   const clearForm = () => {
-    // setId_TurnoEspecial("");
+    setId_TurnoEspecial("");
     setFec_TurnoEspecial("");
     setHor_Inicio("");
     setHor_Fin("");
@@ -184,17 +182,17 @@ const FormTurnosEspeciales = ({
     setImg_Asistencia(null);
     setId_Funcionario("");
     setId_Unidad("");
-
-    // setSelectedArea(null);
   };
 
   const setData = () => {
-    setId_TurnoEspecial(turnoEspecial.Id_TurnoEspecial);
-    setFec_TurnoEspecial(turnoEspecial.Fec_TurnoEspecial);
-    setHor_Inicio(turnoEspecial.Hor_Inicio);
-    setHor_Fin(turnoEspecial.Hor_Fin);
-    setObs_TurnoEspecial(turnoEspecial.Obs_TurnoEspecial);
-    setTot_AprendicesAsistieron(turnoEspecial.Tot_AprendicesAsistieron);
+
+    if(turnoEspecial){ 
+    setId_TurnoEspecial(turnoEspecial.Id_TurnoEspecial || "");
+    setFec_TurnoEspecial(turnoEspecial.Fec_TurnoEspecial || "");
+    setHor_Inicio(turnoEspecial.Hor_Inicio || "");
+    setHor_Fin(turnoEspecial.Hor_Fin || "");
+    setObs_TurnoEspecial(turnoEspecial.Obs_TurnoEspecial || "");
+    setTot_AprendicesAsistieron(turnoEspecial.Tot_AprendicesAsistieron || "");
     setId_Ficha(turnoEspecial.Id_Ficha || "");
     setImg_Asistencia(turnoEspecial.Img_Asistencia || null);
     setId_Funcionario(turnoEspecial.Id_Funcionario || "");
@@ -212,11 +210,14 @@ const FormTurnosEspeciales = ({
       (unidad) => unidad.Id_Unidad === turnoEspecial.Id_Unidad
     );
     setSelectedUnidad(selectedUni || null);
+  }
+
   };
 
   useEffect(() => {
     setData();
   }, [turnoEspecial]);
+  
   const { msg } = alerta;
 
   return (
@@ -371,7 +372,7 @@ const FormTurnosEspeciales = ({
               type="submit"
               id="button"
               value={buttonForm}
-              className="bg-green-600 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-700 md:w-auto"
+              className="bg-green-600 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-blue-800 md:w-auto"
             />
             <input
               type="button"
