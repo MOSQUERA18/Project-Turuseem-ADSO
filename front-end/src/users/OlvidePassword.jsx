@@ -38,16 +38,16 @@ const OlvidePassword = () => {
     <>
       <div className="container mx-auto md:grid md:grid-cols-2 gap-10 p-5 items-center">
         <div>
-          <h1 className="text-stone-400 font-black text-5xl">
-            Recupera tu Contraseña y Gestiona{" "}
-            <span className="text-green-700">tus Turnos</span>
+          <h1 className="text-zinc-900 font-black text-5xl">
+            Recupera tú contraseña y gestiona{" "}
+            <span className="text-blue-700">tus turnos</span>
           </h1>
         </div>
         <div className="mt-20 md:mt-5 shadow-2xl px-7 py-10 rounded-xl bg-white">
           {msg && <Alerta alerta={alerta} />}
           <form onSubmit={handleSubmit}>
             <div className="my-5">
-              <label className="uppercase text-stone-600 font-bold block text-xl">
+              <label className="uppercase text-zinc-900 font-bold block text-xl">
                 Correo:{" "}
               </label>
               <input
@@ -65,12 +65,12 @@ const OlvidePassword = () => {
             />
           </form>
           <nav className="mt-8 lg:flex lg:justify-between">
-            <Link to="/login" className="block text-center my-5 text-gray-600 hover:text-green-600">
+            <Link to="/login" className="block text-center my-5 text-zinc-900 hover:text-green-600">
               ¿Tienes una Cuenta? Inicia Sesion
             </Link>
             <Link
               to="/registrar"
-              className="block text-center my-5 text-gray-600 hover:text-green-600"
+              className="block text-center my-5 text-zinc-900 hover:text-green-600"
             >
               ¿No tienes una Cuenta? Registrate
             </Link>

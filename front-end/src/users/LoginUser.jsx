@@ -53,7 +53,7 @@ const LoginForm = () => {
     <>
       <div className="container mx-auto md:grid md:grid-cols-2 gap-10 p-5 items-center">
         <div>
-          <h1 className="text-stone-400 font-black text-5xl">
+          <h1 className="text-zinc-900 font-black text-5xl">
             INICIA SESIÓN Y GESTIONA {""}
             <span className="text-green-700">TUS TURNOS</span>
           </h1>
@@ -62,7 +62,7 @@ const LoginForm = () => {
           {msg && <Alerta alerta={alerta} />}
           <form onSubmit={handleSubmit}>
             <div className="my-5">
-              <label className="uppercase text-stone-600 font-bold block text-xl">
+              <label className="uppercase text-zinc-900 font-bold block text-xl">
                 Correo:{" "}
               </label>
               <input
@@ -74,7 +74,7 @@ const LoginForm = () => {
               />
             </div>
             <div className="my-5">
-              <label className="uppercase text-stone-600 font-bold block text-xl">
+              <label className="uppercase text-zinc-900 font-bold block text-xl">
                 Contraseña:
               </label>
               <input

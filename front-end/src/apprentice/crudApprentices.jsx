@@ -263,14 +263,14 @@ const CrudApprentices = () => {
 
   return (
     <>
-      <h1 className="text-zinc-950 font-extrabold text-4xl md:text-4xl text-center mb-7">
+      <h1 className="text-zinc-900 font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar Informacion de los
         <span className="text-green-700"> Aprendices</span>
       </h1>
       <div className="flex justify-between">
         <div className="flex justify-between">
           <div>
-            <h1 className="font-bold text-lg text-gray-500 mb-3 ">
+            <h1 className="font-bold text-lg text-zinc-900 mb-3 ">
               Subir Archivo CSV
             </h1>
             <ImportarCSV URI={URI} />

@@ -25,6 +25,8 @@ export default {
         },
       },
       textColor: {
+        blue: "",
+        zinz: "",
         black: "#ffffff",
         gray: "#ffffff",
       },

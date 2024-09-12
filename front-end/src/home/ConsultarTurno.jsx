@@ -83,7 +83,7 @@ const ConsultarTurno = () => {
         <div className="px-4 sm:px-10 md:px-20">
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white text-center text-sm">
-              <thead className="text-black bg-green-500">
+              <thead className="text-zinc-950 bg-gray-200">
                 <tr>
                   <th className="py-2 px-4 border-2 border-gray-500">
                     Documento
