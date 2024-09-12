@@ -8,8 +8,7 @@ import ProgramaModel from "../models/programaModel.js";
 import cron from "node-cron"
 import { Op } from "sequelize";
 
-
-cron.schedule('0 10 * * 4', () => {
+cron.schedule('5 9 * * *', () => {
   console.log('Tarea programada ejecutada con exito');
 });
 

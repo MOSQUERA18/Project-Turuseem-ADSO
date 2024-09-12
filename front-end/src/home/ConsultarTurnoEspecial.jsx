@@ -110,7 +110,7 @@ const ConsultarTurnoEspecial = () => {
               type="submit"
               id="button"
               value="Buscar"
-              className="bg-green-700 w-full py-2 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-300 md:w-auto"
+              className="bg-botones w-full py-2 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
             />
           </div>
         </form>

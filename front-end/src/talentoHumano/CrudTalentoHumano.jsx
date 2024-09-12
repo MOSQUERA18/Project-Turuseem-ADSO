@@ -219,7 +219,7 @@ const CrudTalentoHumano = () => {
     <>
       <h1 className="text-zinc-950 font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar Información de
-        <span className="text-blue-700"> Talento Humano</span>
+        <span className="text-botones"> Talento Humano</span>
       </h1>
 
       <div className="flex pb-3">

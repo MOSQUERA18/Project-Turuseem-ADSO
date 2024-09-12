@@ -64,11 +64,11 @@ const VerticalNav = () => {
   }
   return (
     <div className="min-h-screen">
-      <div className="bg-green-500 xl:hidden flex justify-between w-full p-6 items-center">
+      <div className="bg-sidebar xl:hidden flex justify-between w-full p-6 items-center">
       <div className="flex justify-between items-center space-x-3">
       {/* Imagen que se muestra en pantallas grandes y se oculta en pantallas pequeñas */}
       <img
-        // src="/Public/IMG/LOGOTURUSEEM.png"
+        src="/Public/IMG/LOGOTURUSEEM.png"
         className="hidden sm:block w-12 drop-shadow-2xl"
       />
       <p className="text-2xl leading-6 text-black font-bold">TURUSEEM</p>
@@ -145,11 +145,11 @@ const VerticalNav = () => {
         id="Main"
         className={`${
           show ? "translate-x-0" : "-translate-x-full"
-        } transform xl:translate-x-0 ease-in-out transition duration-500 flex justify-center items-start h-full w-full sm:w-64 bg-green-500 flex-col`}
+        } transform xl:translate-x-0 ease-in-out transition duration-500 flex justify-center items-start h-full w-full sm:w-64 bg-sidebar flex-col`}
       >
         <div className="hidden xl:flex justify-start p-6 items-center space-x-3">
-          {/* <img src="Public/IMG/LOGOTURUSEEM.png" className="w-12 drop-shadow-2xl" /> */}
-          <p className="text-3xl leading-6 text-black font-bold">TURUSEEM</p>
+          <img src="/Public/IMG/LOGOTURUSEEM.png" className="w-12 drop-shadow-2xl" />
+          <p className="text-3xl leading-6 text-white font-bold bg-gre">TURUSEEM</p>
         </div>
         <div className="flex flex-col justify-end items-center pl-4 w-full border-white border-b space-y-3 py-5 active:text-white hover:text-white">
           {[
@@ -165,7 +165,7 @@ const VerticalNav = () => {
             { to: "inasistencias", label: "Inasistencia", Icon: GiNotebook },
           ].map(({ to, label, Icon }) => (
             <Link key={to} to={to} className="w-full">
-              <button className="flex  items-center w-full pl-3 py-2 focus:bg-green-700 text-black hover:bg-green-600 rounded border-y border-white active:text-white hover:text-white font-bold uppercase focus:text-white">
+              <button className="flex  items-center w-full pl-3 py-2 focus:bg-botoneshover text-white hover:bg-botones rounded border-y border-white active:text-white hover:text-white font-bold uppercase focus:text-white">
                 <Icon size={22} className="mr-2" />
                 {label}
                 {/* <span className="text-black text-sm uppercase font-bold"></span> */}
@@ -178,7 +178,7 @@ const VerticalNav = () => {
           <br />
           <button
             onClick={cerrarSesion}
-            className="flex justify-start items-center w-full space-x-4 pl-3 py-2 focus:outline-none text-black focus:bg-green-700 hover:bg-green-700 rounded border-y border-white active:text-white hover:text-white focus:text-white"
+            className="flex justify-start items-center w-full space-x-4 pl-3 py-2 focus:outline-none text-white focus:bg-botoneshover hover:bg-botones rounded border-y border-white active:text-white hover:text-white focus:text-white font-bold uppercase"
           >
             <IoLogOut size={22} className="mr-2"/> Cerrar Sesión
             {/* <span className="text-black text-sm uppercase font-bold active:text-white hover:text-white focus:text-white">Cerrar Sesión</span> */}

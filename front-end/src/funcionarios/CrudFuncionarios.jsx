@@ -214,7 +214,7 @@ const CrudFuncionarios = () => {
     <>
       <h1 className="text-zinc-950 font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar Informacion de los
-        <span className="text-blue-700"> Funcionarios</span>
+        <span className="text-botones"> Funcionarios</span>
       </h1>
       <div className="flex pb-3">
         <ModalWindow

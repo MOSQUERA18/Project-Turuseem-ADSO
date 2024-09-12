@@ -78,7 +78,7 @@ const ConsultarTurno = () => {
         >
           {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
           <h1 className="font-bold text-stone-900 text-2xl sm:text-4xl uppercase text-center my-5">
-            Consultar <span className="text-blue-700">Turnos Rutinarios</span>
+            Consultar <span className="text-botones">Turnos Rutinarios</span>
           </h1>
           <div className="mb-3">
             <label className="text-gray-700 uppercase font-bold">
@@ -103,7 +103,7 @@ const ConsultarTurno = () => {
               type="submit"
               id="button"
               value="Buscar"
-              className="bg-green-700 w-full py-2 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-300 md:w-auto"
+              className="bg-botones w-full py-2 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover   md:w-auto"
             />
           </div>
         </form>

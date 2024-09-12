@@ -13,34 +13,34 @@ const HomePrivado = () => {
           <div className="p-5">
             <div className="flex flex-wrap gap-4 justify-center">
               <div className="bg-white p-4 rounded-lg shadow-lg min-w-max transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-gray-100">
-                <h3 className="text-center text-lg font-semibold">Aprendices</h3>
+                <h3 className="text-center text-lg font-semibold select-none">Aprendices</h3>
               </div>
               <div className="bg-white p-4 rounded-lg shadow-lg min-w-max transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-gray-100">
-                <h3 className="text-center text-lg font-semibold">Turnos Especiales</h3>
+                <h3 className="text-center text-lg font-semibold select-none">Turnos Especiales</h3>
               </div>
               <div className="bg-white p-4 rounded-lg shadow-lg min-w-max transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-gray-100">
-                <h3 className="text-center text-lg font-semibold">Turnos Rutinarios</h3>
+                <h3 className="text-center text-lg font-semibold select-none">Turnos Rutinarios</h3>
               </div>
               <div className="bg-white p-4 rounded-lg shadow-lg min-w-max transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-gray-100">
-                <h3 className="text-center text-lg font-semibold">Memorandos</h3>
+                <h3 className="text-center text-lg font-semibold select-none">Memorandos</h3>
               </div>
               <div className="bg-white p-4 rounded-lg shadow-lg min-w-max transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-gray-100">
-                <h3 className="text-center text-lg font-semibold">Programas de Formación</h3>
+                <h3 className="text-center text-lg font-semibold select-none">Programas de Formación</h3>
               </div>
               <div className="bg-white p-4 rounded-lg shadow-lg min-w-max transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-gray-100">
-                <h3 className="text-center text-lg font-semibold">Unidades</h3>
+                <h3 className="text-center text-lg font-semibold select-none">Unidades</h3>
               </div>
               <div className="bg-white p-4 rounded-lg shadow-lg min-w-max transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-gray-100 ">
-                <h3 className="text-center text-lg font-semibold">Fichas</h3>
+                <h3 className="text-center text-lg font-semibold select-none">Fichas</h3>
               </div>
               <div className="bg-white p-4 rounded-lg shadow-lg min-w-max transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-gray-100">
-                <h3 className="text-center text-lg font-semibold">Funcionarios</h3>
+                <h3 className="text-center text-lg font-semibold select-none">Funcionarios</h3>
               </div>
               <div className="bg-white p-4 rounded-lg shadow-lg min-w-max transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-gray-100">
-                <h3 className="text-center text-lg font-semibold">Talento Humano</h3>
+                <h3 className="text-center text-lg font-semibold select-none">Talento Humano</h3>
               </div>
               <div className="bg-white p-4 rounded-lg shadow-lg min-w-max transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-gray-100 ">
-                <h3 className="text-center text-lg font-semibold ">Inasistencias</h3>
+                <h3 className="text-center text-lg font-semibold select-none ">Inasistencias</h3>
               </div>
 
           </div>

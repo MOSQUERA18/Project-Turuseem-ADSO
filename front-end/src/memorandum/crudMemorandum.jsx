@@ -250,9 +250,9 @@ const CrudMemorandum = () => {
 
   return (
     <>
-      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+      <h1 className="text-zinc-900 font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar informacion de los{" "}
-        <span className="text-blue-700">Memorandos</span>
+        <span className="text-botonesc">Memorandos</span>
       </h1>
       <div className="flex pb-3">
         <ModalWindow

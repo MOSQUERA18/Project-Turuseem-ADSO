@@ -29,6 +29,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
   const [Nom_Empresa, setNom_Empresa] = useState("");
   const [Foto_Aprendiz, setFoto_Aprendiz] = useState(null);
   const [CentroConvivencia, setCentroConvivencia] = useState("");
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const [SelectedFicha, setSelectedFicha] = useState(null);
   const [fichas, setFichas] = useState([]);
@@ -131,6 +132,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
           formData,
           config
         );
+        setIsDisabled(true)
         mensajeCrud = "Aprendiz actualizado Exitosamente";
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(`/aprendiz`, formData, config);
@@ -139,7 +141,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
       if (respuestApi.status === 200 || respuestApi.status === 201) {
         console.log("Actualizando alerta con éxito"); // Log para depuración
         setAlerta({
-          msg: respuestApi.data.message ,
+          msg: respuestApi.data.message,
           error: false,
         });
         getAllApprentices();
@@ -259,13 +261,14 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
               placeholder="Documento del Aprendiz"
               value={Id_Aprendiz}
               onChange={(e) => {
-                const value = e.target.value;
+                const {value} = e.target;
                 if (value.length <= 10) {
                   setId_Aprendiz(value);
                 }
               }}
               maxLength={10}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              disabled={isDisabled}
             />
           </div>
 
@@ -279,7 +282,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
               placeholder="Nombres"
               value={Nom_Aprendiz}
               onChange={(e) => {
-                const value = e.target.value;
+                const {value} = e.target;
                 if (value.length <= 60) {
                   setNom_Aprendiz(value);
                 }
@@ -379,7 +382,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
               placeholder="Edad"
               value={Edad}
               onChange={(e) => {
-                const value = e.target.value;
+                const {value} = e.target;
                 if (value.length <= 2) {
                   setEdad(value);
                 }
@@ -429,7 +432,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
               placeholder="Teléfono del Padre"
               value={Tel_Padre}
               onChange={(e) => {
-                const value = e.target.value;
+                const {value} = e.target;
                 if (value.length <= 13) {
                   setTel_Padre(value);
                 }
@@ -475,7 +478,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
               placeholder="Correo"
               value={Cor_Aprendiz}
               onChange={(e) => {
-                const value = e.target.value;
+                const {value} = e.target;
                 if (value.length <= 60) {
                   setCor_Aprendiz(value);
                 }
@@ -495,7 +498,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
               placeholder="Teléfono"
               value={Tel_Aprendiz}
               onChange={(e) => {
-                const value = e.target.value;
+                const {value} = e.target;
                 if (value.length <= 13) {
                   setTel_Aprendiz(value);
                 }
@@ -504,7 +507,6 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             />
           </div>
-
 
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">
@@ -591,7 +593,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
             type="submit"
             id="button"
             value={buttonForm}
-            className="bg-green-600 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-blue-800 md:w-auto"
+            className="bg-botones w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
           />
           <input
             type="button"
