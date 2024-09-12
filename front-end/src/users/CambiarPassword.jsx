@@ -72,7 +72,7 @@ const CambiarPassword = () => {
         <div>
           <h1 className="text-stone-400 font-black text-5xl">
             Reestablece tu Contraseña y no Pierdas Acceso a {""}
-            <span className="text-green-700">tus Turnos</span>
+            <span className="text-botones">tus Turnos</span>
           </h1>
         </div>
         <div className="mt-20 md:mt-5 shadow-2xl px-7 py-10 rounded-xl bg-white">
@@ -95,13 +95,13 @@ const CambiarPassword = () => {
                 <input
                   type="submit"
                   value="Guardar Nueva Contraseña"
-                  className="bg-green-700 w-full py-3 px-8 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-green-300 md:w-auto"
+                  className="bg-botones w-full py-3 px-8 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
                 />
               </form>
             </>
           )}
           {passwordModificado && (
-            <Link to="/login" className="block text-center my-5 text-gray-500">
+            <Link to="/login" className="block text-center my-5 text-zinc-950 mx-2 hover:text-link hover:scale-105 transition-transform duration-200 ease-in-out hover:rounded-md">
               Iniciar Sesión
             </Link>
           )}

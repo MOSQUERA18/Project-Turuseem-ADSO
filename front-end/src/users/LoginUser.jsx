@@ -55,11 +55,11 @@ const LoginForm = () => {
         <div>
           <h1 className="text-stone-400 font-black text-5xl">
             INICIA SESIÓN Y GESTIONA {""}
-            <span className="text-green-700">TUS TURNOS</span>
+            <span className="text-botones">TUS TURNOS</span>
           </h1>
         </div>
         <div className="mt-20 md:mt-5 shadow-2xl px-7 py-10 rounded-xl bg-white">
-          {msg && <Alerta alerta={alerta} />}
+          {msg && <Alerta alerta={alerta} setAlerta={setAlerta}/>}
           <form onSubmit={handleSubmit}>
             <div className="my-5">
               <label className="uppercase text-stone-600 font-bold block text-xl">
@@ -89,7 +89,7 @@ const LoginForm = () => {
             <input
               type="submit"
               value="Iniciar Sesion"
-              className="bg-green-700 w-full py-3 px-8 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-green-300 md:w-auto "
+              className="bg-botones w-full py-3 px-8 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto "
             />
           </form>
           <nav className="mt-8 lg:flex lg:justify-between">
@@ -101,7 +101,7 @@ const LoginForm = () => {
             </Link> */}
             <Link
               to="/olvide-password"
-              className="block text-center my-5 text-black mx-2 hover:text-green-600 hover:scale-105 transition-transform duration-200 ease-in-out hover:rounded-md"
+              className="block text-center my-5 text-zinc-950 mx-2 hover:text-link hover:scale-105 transition-transform duration-200 ease-in-out hover:rounded-md"
             >
               Olvide mi Contraseña
             </Link>

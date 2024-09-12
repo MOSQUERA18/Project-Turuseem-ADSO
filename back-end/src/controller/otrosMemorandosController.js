@@ -139,6 +139,7 @@ export const createOtroMemorandum = async (req, res) => {
 export const viewOtherMemorandumPdf = async (req, res) => {
   const transacción = await db.transaction();
   const { Id_OtroMemorando } = req.params;
+  
   try {
     const memorandumPdf = await OtrosMemorandumModel.findOne({
       where: {
@@ -169,13 +170,17 @@ export const viewOtherMemorandumPdf = async (req, res) => {
       await getTotalOtrosMemorandumsForAprendiz(
         memorandumPdf.aprendiz.Id_Aprendiz
       );
+      
     const totalMemorandums = await getTotalOtrosMemorandums();
+    
 
     const pdfBase64 = await generateOtroMemorandumPdf(
       memorandumPdf,
       totalMemorandums,
       totalMemorandumForApprentice
     );
+    
+    
 
     await transacción.commit();
 
@@ -184,7 +189,7 @@ export const viewOtherMemorandumPdf = async (req, res) => {
       data: memorandumPdf,
       pdfBase64: pdfBase64,
     });
-  } catch (error) {
+  } catch (error) {    
     await transacción.rollback();
     res
       .status(404)
@@ -251,7 +256,6 @@ export const sendMemorandumPdf = async (req, res) => {
       trimestreActual,
       año
     );
-    console.log(memorandumPdf);
 
     // Enviar el memorando por email (pasando el PDF en base64)
     await emailMemorandos({
@@ -395,6 +399,7 @@ export const generateOtroMemorandumPdf = (
     pdf.create(htmlContent, options).toBuffer((err, buffer) => {
       if (err) {
         return reject(err);
+        
       }
       const base64 = buffer.toString("base64");
       resolve(base64);

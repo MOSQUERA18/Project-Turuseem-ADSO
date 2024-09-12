@@ -30,7 +30,6 @@ const CrudTurnosEspeciales = () => {
 
   const resetForm = () => {
     setTurnoEspecial({
-      Id_TurnoEspecial: "",
       Fec_TurnoEspecial: "",
       Hor_Inicio: "",
       Hor_Fin: "",
@@ -153,7 +152,7 @@ const CrudTurnosEspeciales = () => {
       }
     } catch (error) {
       setAlerta({
-        msg: `Ocurrio un error!`,
+        msg: `Ocurrio un error no existen turnos especiales registrados!`,
         error: true,
       });
       console.error(error);
@@ -246,9 +245,9 @@ const CrudTurnosEspeciales = () => {
 
   return (
     <>
-      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+      <h1 className="text-zinc-950 font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar Informacion de los
-        <span className="text-blue-700"> Turnos Especiales</span>
+        <span className="text-botones"> Turnos Especiales</span>
       </h1>
       <div className="flex pb-3">
         <ModalWindow
@@ -264,7 +263,7 @@ const CrudTurnosEspeciales = () => {
               buttonForm={buttonForm}
               turnoEspecial={turnoEspecial}
               updateTextButton={updateTextButton}
-              setTurnoEspecial={setTurnoEspecial}
+              getAllTurnosEspeciales={getAllTurnosEspeciales}
             />
           }
         />

@@ -37,6 +37,8 @@ const CrudTurnosRutinarios = () => {
     });
   };
 
+
+
   const [turnoRutinario, setTurnoRutinario] = useState({
     Fec_InicioTurno: "",
     Fec_FinTurno: "",
@@ -100,7 +102,6 @@ const CrudTurnosRutinarios = () => {
       turnoRutinario.unidad?.Nom_Unidad,
     ];
     rowData.push(ButtonsForOtherModules(turnoRutinario.Id_TurnoRutinario));
-
     return rowData;
   });
 
@@ -129,7 +130,7 @@ const CrudTurnosRutinarios = () => {
       }
     } catch (error) {
       setAlerta({
-        msg: `Ocurrió un error!`,
+        msg: `Ocurrió un error no existen turnos especiales registrados!`,
         error: true,
       });
       console.error(error);
@@ -234,9 +235,9 @@ const CrudTurnosRutinarios = () => {
 
   return (
     <>
-      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+      <h1 className="text-zinc-950 font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar Información de los{" "}
-        <span className="text-blue-700"> Turnos Rutinarios</span>
+        <span className="text-botonesc"> Turnos Rutinarios</span>
       </h1>
 
       <div className="flex pb-3">

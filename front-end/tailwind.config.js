@@ -10,14 +10,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#0ac2ff",
-        green: {
-          300: "#030076", //Hover botones InicioSesion, BuscarTurnos, Modulos => Enviar, Agregar, DescargarCSV, ExportarExcel
-          400: "#2f79ff", //Barra Nav Vertical Hover
-          500: "#F3F4F6", //No cambiar Principal blanco+-
-          600: "#2318ea", //Boton Enviar modulos
-          700: "#2318ea", //Botono DescargarCSV modulos
-        },
+        header: "#F3F4F6",
+        sidebar: "#000000",
+        botones: "#2b23ff",
+        botoneshover: "#2318ea",
         stone: {
           400: "#000000",
         },
@@ -28,7 +24,14 @@ export default {
         },
       },
       textColor: {
-        stone: "#000000",
+        link: "#2b23ff",
+        black: "#000000",
+        gray: "#ffffff",
+        
+        
+      },
+      borderColor: {
+        green: "#ffffff"
       },
     },
   },

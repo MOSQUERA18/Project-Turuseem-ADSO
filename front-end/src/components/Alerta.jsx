@@ -15,7 +15,7 @@ function Alerta({ alerta, setAlerta }) {
     } // Si no hay mensaje, no se muestra nada
 
     return (
-        <div className={`${alerta.error ? "from-red-400 to-red-600" : "from-green-400 text-center to-green-600" } bg-gradient-to-r text-center p-2 rounded-xl text-white font-bold mb-2`}>
+        <div className={`${alerta.error ? "from-red-400  to-red-600" : "from-blue-600 text-center to-blue-700" } bg-gradient-to-r text-center p-2 rounded-xl text-white font-bold mb-2`}>
             {alerta.msg}
         </div>
     );

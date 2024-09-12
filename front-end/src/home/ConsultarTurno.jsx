@@ -11,24 +11,55 @@ const ConsultarTurno = () => {
 
   const sendForm = async (e) => {
     e.preventDefault();
+    if (Id_Aprendiz.trim() === "") {
+      setAlerta({
+        msg: "El número de Documento no puede estar vacío",
+        error: true
+      });
+      return;
+    }
     try {
-      const respuestApi = await clienteAxios(`${URI}/${Id_Aprendiz}`);
-      if (respuestApi.status === 200) {
-        setTurnoRutinarioList(respuestApi.data);
-        clearForm();
+      const respuestaApi = await clienteAxios(`${URI}/${Id_Aprendiz}`);
+      if (respuestaApi.status === 200) {
+        const turnosValidos = respuestaApi.data.filter(turnoRutinario => 
+          esFechaVigente(turnoRutinario.Fec_InicioTurno, turnoRutinario.Fec_FinTurno)
+        );
+        if (turnosValidos.length > 0) {
+          setTurnoRutinarioList(turnosValidos);
+          clearForm();
+        } else {
+          setAlerta({
+            msg: "No hay turnos vigentes para este Aprendiz.",
+            error: true,
+          });
+          setTurnoRutinarioList([]);
+        }
       } else {
         setAlerta({
-          msg: `Error al cargar los registros!`,
+          msg: "Error al cargar los registros!",
           error: true,
         });
       }
     } catch (error) { 
-      setTurnoRutinarioList({});
+      setTurnoRutinarioList([]);
       setAlerta({
         msg: error.response.data.message,
         error: true,
       });
     }
+  };
+
+  const esFechaVigente = (fechaInicio, fechaFin) => {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+
+    const fechaInicioDate = new Date(fechaInicio);
+    fechaInicioDate.setHours(0, 0, 0, 0);
+
+    const fechaFinDate = new Date(fechaFin);
+    fechaFinDate.setHours(0, 0, 0, 0);
+
+    return fechaInicioDate <= hoy && hoy <= fechaFinDate;
   };
 
   const clearForm = () => {
@@ -46,25 +77,23 @@ const ConsultarTurno = () => {
           className="bg-white shadow-lg rounded-2xl px-6 pt-6 pb-8 mb-4 w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-3xl mt-10"
         >
           {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
-          <h1 className="font-bold text-black text-2xl sm:text-4xl uppercase text-center my-5">
-            Consultar <span className="text-blue-700">Turnos Rutinarios</span>
+          <h1 className="font-bold text-stone-900 text-2xl sm:text-4xl uppercase text-center my-5">
+            Consultar <span className="text-botones">Turnos Rutinarios</span>
           </h1>
           <div className="mb-3">
-            <label className="text-black uppercase font-bold">
+            <label className="text-gray-700 uppercase font-bold">
               Ingrese Numero de Documento
             </label>
             <input
               type="number"
               id="document"
               value={Id_Aprendiz}
-              
               onChange={(e) => {
                 const value = e.target.value;
                 if (value.length <= 10) {
                   setId_Aprendiz(value);
                 }
-              }
-            }
+              }}
               className="w-full p-2 border rounded"
               maxLength={10}
             />
@@ -74,7 +103,7 @@ const ConsultarTurno = () => {
               type="submit"
               id="button"
               value="Buscar"
-              className="bg-green-700 w-full py-2 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-300 md:w-auto"
+              className="bg-botones w-full py-2 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover   md:w-auto"
             />
           </div>
         </form>
@@ -83,30 +112,30 @@ const ConsultarTurno = () => {
         <div className="px-4 sm:px-10 md:px-20">
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white text-center text-sm">
-              <thead className="text-black bg-green-500">
+              <thead className="text-white bg-green-700">
                 <tr>
-                  <th className="py-2 px-4 border-2 border-gray-500">
+                  <th className="py-2 px-4 border-2 border-b-gray-500">
                     Documento
                   </th>
-                  <th className="py-2 px-4 border-2 border-gray-500">
+                  <th className="py-2 px-4 border-2 border-b-gray-500">
                     Nombres
                   </th>
-                  <th className="py-2 px-4 border-2 border-gray-500">
+                  <th className="py-2 px-4 border-2 border-b-gray-500">
                     Apellidos
                   </th>
-                  <th className="py-2 px-4 border-2 border-gray-500">
+                  <th className="py-2 px-4 border-2 border-b-gray-500">
                     Fecha Inicio
                   </th>
-                  <th className="py-2 px-4 border-2 border-gray-500">
+                  <th className="py-2 px-4 border-2 border-b-gray-500">
                     Fecha Fin
                   </th>
-                  <th className="py-2 px-4 border-2 border-gray-500">
+                  <th className="py-2 px-4 border-2 border-b-gray-500">
                     Hora Inicio
                   </th>
-                  <th className="py-2 px-4 border-2 border-gray-500 ">
+                  <th className="py-2 px-4 border-2 border-b-gray-500">
                     Hora Fin
                   </th>
-                  <th className="py-2 px-4 border-2 border-gray-500">
+                  <th className="py-2 px-4 border-2 border-b-gray-500">
                     Unidad
                   </th>
                   {/* <th className="py-2 px-4 border-2 border-b-gray-500">

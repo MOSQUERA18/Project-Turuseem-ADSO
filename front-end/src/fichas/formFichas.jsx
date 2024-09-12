@@ -240,7 +240,7 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
               type="submit"
               id="button"
               value={buttonForm}
-              className="bg-green-600 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-700 md:w-auto"
+              className="bg-botones w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
             />
             <input
               type="button"

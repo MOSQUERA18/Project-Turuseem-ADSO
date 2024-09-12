@@ -85,7 +85,7 @@ const CrudApprentices = () => {
   );
   const titleModul = ["REPORTE DE APRENDICES"];
   const titleForm = ["REGISTRAR APRENDICES"];
-  const tableName = "Aprendices"
+  const tableName = "Aprendices";
   const titles = [
     "Documento",
     "Nombres",
@@ -191,7 +191,7 @@ const CrudApprentices = () => {
       }
     } catch (error) {
       setAlerta({
-        msg: `Error Existen Aprendices Registrados!`,
+        msg: `Ocurrio Un Error No Existen Aprendices Registrados!`,
         error: true,
       });
       console.error(error);
@@ -290,9 +290,9 @@ const CrudApprentices = () => {
 
   return (
     <>
-      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+      <h1 className="text-zinc-950 font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar Informacion de los
-        <span className="text-green-700"> Aprendices</span>
+        <span className="text-botonesc"> Aprendices</span>
       </h1>
       <div className="flex justify-between ">
         <div className="flex justify-between">
@@ -339,19 +339,16 @@ const CrudApprentices = () => {
                 }
               } catch (error) {
                 console.error("Error al intentar descargar el archivo:", error);
-                alert("Error al intentar descargar el archivo.");
               }
             }}
-            className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-300 font-semibold flex items-center"
+            className="bg-botones text-white px-4 py-2 rounded hover:bg-blue-800 font-semibold flex items-center"
           >
-            <FaArrowCircleDown className="mx-1"/>
+            <FaArrowCircleDown className="mx-1" />
             Descargar CSV
           </a>
         </div>
       </div>
       <div className="overflow-x-auto">
-        {/* <hr /> */}
-
         <br />
         {msg && <Alerta alerta={alerta} />}
         <hr />

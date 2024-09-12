@@ -182,7 +182,7 @@ const FormTalentoHumano = ({
                 placeholder="Documento"
                 value={Id_Talento_Humano}
                 onChange={(e) => {
-                  const value = e.target.value;
+                  const {value} = e.target;
                   if (value.length <= 10) {
                     setId_Talento_Humano(value);
                   }
@@ -201,7 +201,7 @@ const FormTalentoHumano = ({
                 placeholder="Nombre"
                 value={Nom_Talento_Humano}
                 onChange={(e) => {
-                  const value = e.target.value;
+                  const {value} = e.target;
                   if (value.length <= 30) {
                     setNom_Talento_Humano(value);
                   }
@@ -220,7 +220,7 @@ const FormTalentoHumano = ({
                 placeholder="Apellido"
                 value={Ape_Talento_Humano}
                 onChange={(e) => {
-                  const value = e.target.value;
+                  const {value} = e.target;
                   if (value.length <= 40) {
                     setApe_Talento_Humano(value);
                   }
@@ -256,7 +256,7 @@ const FormTalentoHumano = ({
                 placeholder="Correo"
                 value={Cor_Talento_Humano}
                 onChange={(e) => {
-                  const value = e.target.value;
+                  const {value} = e.target;
                   if (value.length <= 60) {
                     setCor_Talento_Humano(value);
                   }
@@ -275,7 +275,7 @@ const FormTalentoHumano = ({
                 placeholder="Teléfono"
                 value={Tel_Talento_Humano}
                 onChange={(e) => {
-                  const value = e.target.value;
+                  const {value} = e.target;
                   if (value.length <= 10) {
                     setTel_Talento_Humano(value);
                   }
@@ -325,7 +325,7 @@ const FormTalentoHumano = ({
               type="submit"
               id="button"
               value={buttonForm}
-              className="bg-green-600 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-700 md:w-auto"
+              className="bg-botones w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
             />
             <input
               type="button"

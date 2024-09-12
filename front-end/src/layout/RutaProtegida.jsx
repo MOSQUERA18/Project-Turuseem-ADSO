@@ -22,7 +22,7 @@ const RutaProtegida = () => {
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
-      <div className="w-72 bg-green-500 text-white fixed h-full overflow-y-auto z-10">
+      <div className="w-72 bg-sidebar text-white fixed h-full overflow-y-auto z-10">
         <VerticalNav />
       </div>
 
