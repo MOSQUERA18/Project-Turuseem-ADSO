@@ -96,7 +96,7 @@ const ConsultarTurnoEspecial = () => {
               id="document"
               value={Id_Ficha}
               onChange={(e) => {
-                const value = e.target.value;
+                const {value} = e.target;
                 if (value.length <= 8) {
                   setId_Ficha(value);
                 }
@@ -119,28 +119,28 @@ const ConsultarTurnoEspecial = () => {
         <div className="px-4 sm:px-10 md:px-20">
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white text-center text-sm">
-              <thead className="text-white bg-green-700">
+              <thead className="text-white bg-botones">
                 <tr>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
-                    Numero Ficha
+                  <th className="py-2 px-4 border-x-2 border-white">
+                    Ficha
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
-                    Fecha Turno Especial
+                  <th className="py-2 px-4 border-x-2 border-white">
+                    Fecha Turno
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  <th className="py-2 px-4 border-x-2 border-white">
                     Hora Inicio
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  <th className="py-2 px-4 border-x-2 border-white">
                     Hora Fin
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
-                    Documento de Instructor de Acompañamiento
+                  <th className="py-2 px-4 border-x-2 border-white">
+                    Documento de Instructor
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
-                    Nombre Instructor de Acompañamiento del Turno
+                  <th className="py-2 px-4 border-x-2 border-white">
+                    Nombre Instructor
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
-                    Nombre Unidad
+                  <th className="py-2 px-4 border-x-2 border-white">
+                    Unidad
                   </th>
                 </tr>
               </thead>
@@ -168,7 +168,7 @@ const ConsultarTurnoEspecial = () => {
                         {turnoEspecial.Id_Funcionario}
                       </td>
                       <td className="py-2 px-4 border-b">
-                        {turnoEspecial.funcionario.Nom_Funcionario}
+                        {`${turnoEspecial.funcionario.Nom_Funcionario} `+ turnoEspecial.funcionario.Ape_Funcionario}
                       </td>
                       <td className="py-2 px-4 border-b">
                         {turnoEspecial.unidad?.Nom_Unidad}

@@ -89,7 +89,7 @@ const ConsultarTurno = () => {
               id="document"
               value={Id_Aprendiz}
               onChange={(e) => {
-                const value = e.target.value;
+                const {value} = e.target;
                 if (value.length <= 10) {
                   setId_Aprendiz(value);
                 }
@@ -112,30 +112,30 @@ const ConsultarTurno = () => {
         <div className="px-4 sm:px-10 md:px-20">
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white text-center text-sm">
-              <thead className="text-white bg-green-700">
+              <thead className="text-white bg-botones">
                 <tr>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  <th className="py-2 px-4 border-x-2 border-white">
                     Documento
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  <th className="py-2 px-4 border-x-2 border-white">
                     Nombres
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  <th className="py-2 px-4 border-x-2 border-white">
                     Apellidos
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  <th className="py-2 px-4 border-x-2 border-white">
                     Fecha Inicio
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  <th className="py-2 px-4 border-x-2 border-white">
                     Fecha Fin
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  <th className="py-2 px-4 border-x-2 border-white">
                     Hora Inicio
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  <th className="py-2 px-4 border-x-2 border-white">
                     Hora Fin
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  <th className="py-2 px-4 border-x-2 border-white">
                     Unidad
                   </th>
                   {/* <th className="py-2 px-4 border-2 border-b-gray-500">

@@ -44,7 +44,7 @@ const Contacto = () => {
     const hoy = new Date();
     
     const nacimiento = new Date(fechaNacimiento);
-    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+    let edad = hoy.getFullYear() - nacimiento.getFullYear()
     const mes = hoy.getMonth() - nacimiento.getMonth();
     
     // Ajustar la edad si el cumpleaños aún no ha ocurrido este año
