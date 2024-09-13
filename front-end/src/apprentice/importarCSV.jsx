@@ -56,7 +56,7 @@ const ImportarCSV = () => {
       }
     } catch (error) {
       setAlerta({
-        msg: 'Hubo un error al procesar el archivo. Existen documentos repetidos.',
+        msg: 'Hubo un error al procesar el archivo.',
         error: true,
       });
     } finally {
@@ -114,3 +114,5 @@ const ImportarCSV = () => {
 };
 
 export default ImportarCSV;
+
+

@@ -203,6 +203,7 @@ export const deleteApprentice = async (req, res) => {
 };
 
 
+
 // Función importCSV
 export const importCSV = async (req, res) => {
   try {
@@ -274,4 +275,3 @@ export const importCSV = async (req, res) => {
     res.status(500).json({ error: 'Error al procesar el archivo CSV' });
   }
 };
-

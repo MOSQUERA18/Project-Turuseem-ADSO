@@ -26,6 +26,8 @@ const CrudApprentices = () => {
   const [crearDataTable, setCrearDataTable] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+
+
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
@@ -191,7 +193,7 @@ const CrudApprentices = () => {
       }
     } catch (error) {
       setAlerta({
-        msg: `Ocurrio Un Error No Existen Aprendices Registrados!`,
+        msg: `Error!!!! No Existen Aprendices Registrados!`,
         error: true,
       });
       console.error(error);

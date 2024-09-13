@@ -5,6 +5,7 @@ import Alerta from "../components/Alerta";
 import clienteAxios from "../config/axios";
 import useAuth from "../hooks/useAuth";
 import { ReactSession } from "react-client-session";
+import { FaEye } from "react-icons/fa";
 
 const LoginForm = () => {
   const [Cor_User, setCor_User] = useState("");
@@ -13,6 +14,7 @@ const LoginForm = () => {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { setAuth } = useAuth();
 
@@ -79,6 +81,10 @@ const LoginForm = () => {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const { msg } = alerta;
 
   return (
@@ -92,7 +98,7 @@ const LoginForm = () => {
           <p className="mt-5 text-xl">{message}</p>
         </div>
         <div className="mt-20 md:mt-5 shadow-2xl px-7 py-10 rounded-xl bg-white">
-          {msg && <Alerta alerta={alerta} setAlerta={setAlerta}/>}
+          {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
           <form onSubmit={handleSubmit}>
             <div className="my-5">
               <label className="uppercase text-stone-600 font-bold block text-xl">
@@ -106,17 +112,24 @@ const LoginForm = () => {
                 onChange={(e) => setCor_User(e.target.value)}
               />
             </div>
-            <div className="my-5">
+            <div className="my-5 relative">
               <label className="uppercase text-stone-600 font-bold block text-xl">
                 Contraseña:
               </label>
               <input
-                type="password"
-                className="border w-full p-2 mt-2 bg-gray-100 rounded-xl"
+                type={showPassword ? 'text' : 'password'}
+                className="border w-full p-2 mt-2 bg-gray-100 rounded-xl pr-10"
                 placeholder="Aquí su Contraseña"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute right-5 top-1/2 transform -translate-y-2/1"
+              >
+                <FaEye />
+              </button>
             </div>
 
             <input

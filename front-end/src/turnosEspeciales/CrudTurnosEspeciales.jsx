@@ -152,7 +152,7 @@ const CrudTurnosEspeciales = () => {
       }
     } catch (error) {
       setAlerta({
-        msg: `Ocurrio un error no existen turnos especiales registrados!`,
+        msg: `Error!!! no existen turnos especiales registrados!`,
         error: true,
       });
       console.error(error);

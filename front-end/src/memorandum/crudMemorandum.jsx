@@ -30,6 +30,16 @@ const CrudMemorandum = () => {
     setIsOpen(!isOpen);
   };
 
+
+  const resetForm =()=>{
+    setMemorandum({
+      Id_OtroMemorando: "",
+      Fec_OtroMemorando: "",
+      Mot_OtroMemorando: "",
+      Id_Aprendiz: "",
+    })
+  }
+
   // const navigate = useNavigate();
 
   const [memorandum, setMemorandum] = useState({
@@ -266,6 +276,7 @@ const CrudMemorandum = () => {
           isOpen={isOpen}
           titleForm={titleForm}
           updateTextBottom={updateTextButton}
+          resetForm={resetForm}
           form={
             <FormMemorandum
               buttonForm={buttonForm}

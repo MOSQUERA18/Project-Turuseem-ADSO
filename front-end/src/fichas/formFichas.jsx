@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { ReactSession } from "react-client-session";
 import clienteAxios from "../config/axios";
 import Alerta from "../components/Alerta";
+import { error } from "jquery";
 
 const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
   const [Id_Ficha, setId_Ficha] = useState("");
@@ -40,6 +41,64 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
 
   const sendForm = async (e) => {
     e.preventDefault();
+
+    
+    if(!Id_Ficha){
+      setAlerta({
+        msg: "El Numero de Ficha esta Vacia",
+        error:true
+      })
+      return
+    }
+
+    if(!Fec_InicioEtapaLectiva){
+      setAlerta({
+        msg: "La Fecha de Inicio esta Vacia",
+        error:true
+      })
+      return
+    }
+    if(!Fec_FinEtapaLectiva){
+      setAlerta({
+        msg: "La Fecha de Fin esta Vacia",
+        error:true
+      })
+      return
+    }
+    if(!Can_Aprendices){
+      setAlerta({
+        msg: "La Cantidad de Aprendices esta Vacia",
+        error:true
+      })
+      return
+    }
+    if(!Id_ProgramaFormacion){
+      setAlerta({
+        msg: "El Nombre del Programa esta Vacio",
+        error:true
+      })
+      return
+    }
+    if(!Estado){
+      setAlerta({
+        msg: "El Estado de Ficha esta Vacia",
+        error:true
+      })
+      return
+    }
+
+    const soloTextoRegex = /^[a-zA-ZÀ-ÿ\s]+$/; // Solo letras y espacios
+
+    if (!Id_Ficha || !Fec_FinEtapaLectiva || !Fec_FinEtapaLectiva || !Can_Aprendices || !Id_ProgramaFormacion || !Estado ) {
+      setAlerta({
+        msg: "Todos los campos son obligatorios ",
+        error: true,
+      });
+      return; // Evitar el envío del formulario
+    }
+
+
+
     const token = ReactSession.get("token");
     const config = {
       headers: {
