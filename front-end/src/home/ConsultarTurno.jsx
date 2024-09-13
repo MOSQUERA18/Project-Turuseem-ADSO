@@ -21,15 +21,13 @@ const ConsultarTurno = () => {
     try {
       const respuestaApi = await clienteAxios(`${URI}/${Id_Aprendiz}`);
       if (respuestaApi.status === 200) {
-        const turnosValidos = respuestaApi.data.filter(turnoRutinario => 
-          esFechaVigente(turnoRutinario.Fec_InicioTurno, turnoRutinario.Fec_FinTurno)
-        );
-        if (turnosValidos.length > 0) {
-          setTurnoRutinarioList(turnosValidos);
+        console.log(respuestaApi.data);
+        if (respuestaApi.data.length > 0) {
+          setTurnoRutinarioList(respuestaApi.data);
           clearForm();
         } else {
           setAlerta({
-            msg: "No hay turnos vigentes para este Aprendiz.",
+            msg: "No hay turnos para este Aprendiz.",
             error: true,
           });
           setTurnoRutinarioList([]);
@@ -43,23 +41,10 @@ const ConsultarTurno = () => {
     } catch (error) { 
       setTurnoRutinarioList([]);
       setAlerta({
-        msg: error.response.data.message,
+        msg: error.response?.data?.message || "Error al consultar los turnos",
         error: true,
       });
     }
-  };
-
-  const esFechaVigente = (fechaInicio, fechaFin) => {
-    const hoy = new Date();
-    hoy.setHours(0, 0, 0, 0);
-
-    const fechaInicioDate = new Date(fechaInicio);
-    fechaInicioDate.setHours(0, 0, 0, 0);
-
-    const fechaFinDate = new Date(fechaFin);
-    fechaFinDate.setHours(0, 0, 0, 0);
-
-    return fechaInicioDate <= hoy && hoy <= fechaFinDate;
   };
 
   const clearForm = () => {
@@ -103,44 +88,25 @@ const ConsultarTurno = () => {
               type="submit"
               id="button"
               value="Buscar"
-              className="bg-botones w-full py-2 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover   md:w-auto"
+              className="bg-botones w-full py-2 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
             />
           </div>
         </form>
       </div>
-      {turnoRutinarioList.length > 0 ? (
+      {turnoRutinarioList.length > 0 && (
         <div className="px-4 sm:px-10 md:px-20">
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white text-center text-sm">
               <thead className="text-white bg-botones">
                 <tr>
-                  <th className="py-2 px-4 border-x-2 border-white">
-                    Documento
-                  </th>
-                  <th className="py-2 px-4 border-x-2 border-white">
-                    Nombres
-                  </th>
-                  <th className="py-2 px-4 border-x-2 border-white">
-                    Apellidos
-                  </th>
-                  <th className="py-2 px-4 border-x-2 border-white">
-                    Fecha Inicio
-                  </th>
-                  <th className="py-2 px-4 border-x-2 border-white">
-                    Fecha Fin
-                  </th>
-                  <th className="py-2 px-4 border-x-2 border-white">
-                    Hora Inicio
-                  </th>
-                  <th className="py-2 px-4 border-x-2 border-white">
-                    Hora Fin
-                  </th>
-                  <th className="py-2 px-4 border-x-2 border-white">
-                    Unidad
-                  </th>
-                  {/* <th className="py-2 px-4 border-2 border-b-gray-500">
-                    Observaciones
-                  </th> */}
+                  <th className="py-2 px-4 border-x-2 border-white">Documento</th>
+                  <th className="py-2 px-4 border-x-2 border-white">Nombres</th>
+                  <th className="py-2 px-4 border-x-2 border-white">Apellidos</th>
+                  <th className="py-2 px-4 border-x-2 border-white">Fecha Inicio</th>
+                  <th className="py-2 px-4 border-x-2 border-white">Fecha Fin</th>
+                  <th className="py-2 px-4 border-x-2 border-white">Hora Inicio</th>
+                  <th className="py-2 px-4 border-x-2 border-white">Hora Fin</th>
+                  <th className="py-2 px-4 border-x-2 border-white">Unidad</th>
                 </tr>
               </thead>
               <tbody>
@@ -149,40 +115,21 @@ const ConsultarTurno = () => {
                     key={turnoRutinario.Id_TurnoRutinario}
                     className="odd:bg-white even:bg-gray-100"
                   >
-                    <td className="py-2 px-4 border-b">
-                      {turnoRutinario.Id_Aprendiz}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {turnoRutinario.aprendiz?.Nom_Aprendiz}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {turnoRutinario.aprendiz?.Ape_Aprendiz}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {turnoRutinario.Fec_InicioTurno}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {turnoRutinario.Fec_FinTurno}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {turnoRutinario.Hor_InicioTurno}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {turnoRutinario.Hor_FinTurno}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {turnoRutinario.unidad?.Nom_Unidad}
-                    </td>
-                    {/* <td className="py-2 px-4 border-b">
-                      {turnoRutinario.Obs_TurnoRutinario}
-                    </td> */}
+                    <td className="py-2 px-4 border-b">{turnoRutinario.Id_Aprendiz}</td>
+                    <td className="py-2 px-4 border-b">{turnoRutinario.aprendiz?.Nom_Aprendiz}</td>
+                    <td className="py-2 px-4 border-b">{turnoRutinario.aprendiz?.Ape_Aprendiz}</td>
+                    <td className="py-2 px-4 border-b">{turnoRutinario.Fec_InicioTurno}</td>
+                    <td className="py-2 px-4 border-b">{turnoRutinario.Fec_FinTurno}</td>
+                    <td className="py-2 px-4 border-b">{turnoRutinario.Hor_InicioTurno}</td>
+                    <td className="py-2 px-4 border-b">{turnoRutinario.Hor_FinTurno}</td>
+                    <td className="py-2 px-4 border-b">{turnoRutinario.unidad?.Nom_Unidad}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         </div>
-      ) : null}
+      )}
     </>
   );
 };

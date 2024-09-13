@@ -300,7 +300,7 @@ const CrudApprentices = () => {
             <h1 className="font-bold text-lg text-gray-500 mb-3 ">
               Subir Archivo CSV
             </h1>
-            <ImportarCSV URI={URI} />
+            <ImportarCSV URI={URI}  />
           </div>
         </div>
         <div className="flex my-10 space-x-5">

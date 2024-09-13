@@ -4,7 +4,6 @@ const HomePrivado = () => {
       <h1 className="text-zinc-950 font-extrabold text-4xl md:text-5xl text-center mb-8 " >
         Bienvenidos a <span className="text-blue-700">TURUSEEM</span>
       </h1>
-      <br />
 
         <div className="bg-white p-6 md:p-8 rounded-lg  w-full max-w-md md:max-w-2xl">
           <h2 className="text-xl md:text-2xl font-semibold mb-6 text-center">

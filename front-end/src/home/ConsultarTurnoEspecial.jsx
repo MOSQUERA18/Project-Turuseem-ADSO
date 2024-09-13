@@ -24,20 +24,20 @@ const ConsultarTurnoEspecial = () => {
         const turnosEspeciales = respuestaApi.data;
         setTurnoEspecialList(turnosEspeciales);
 
-        // Verifica si hay algún turno especial con una fecha válida
-        const tieneTurnoValido = turnosEspeciales.some(turno => mostrarTurnoSiEsActual(turno.Fec_TurnoEspecial));
+        // // Verifica si hay algún turno especial con una fecha válida
+        // const tieneTurnoValido = turnosEspeciales.some(turno => mostrarTurnoSiEsActual(turno.Fec_TurnoEspecial));
 
-        if (tieneTurnoValido) {
-          setAlerta({
-            msg: "Ficha Con Turno Programado",
-            error: false
-          });
-        } else {
-          setAlerta({
-            msg: "No hay turnos programados vigentes",
-            error: true
-          });
-        }
+        // if (tieneTurnoValido) {
+        //   setAlerta({
+        //     msg: "Ficha Con Turno Programado",
+        //     error: false
+        //   });
+        // } else {
+        //   setAlerta({
+        //     msg: "No hay turnos programados vigentes",
+        //     error: true
+        //   });
+        // }
         
         clearForm();
       } else {
@@ -56,18 +56,7 @@ const ConsultarTurnoEspecial = () => {
   };
 
 
-  //VALIDAR LA FECHA
-  const mostrarTurnoSiEsActual = (Fec_TurnoEspecial) => {
-    const hoy = new Date(); // Fecha actual
-    hoy.setHours(0, 0, 0, 0); // Establece la hora a 00:00:00 para comparación
 
-    // Convertir la fecha del turno en un objeto Date y también establecer la hora a 00:00:00
-    const fechaTurnoDate = new Date(Fec_TurnoEspecial);
-    fechaTurnoDate.setHours(0, 0, 0, 0);
-
-    // Compara si la fecha del turno es igual o mayor que la de hoy
-    return fechaTurnoDate >= hoy;
-  };
 
   const clearForm = () => {
     setId_Ficha("");
@@ -145,9 +134,7 @@ const ConsultarTurnoEspecial = () => {
                 </tr>
               </thead>
               <tbody>
-                {turnoEspecialList
-                  .filter((turnoEspecial) => mostrarTurnoSiEsActual(turnoEspecial.Fec_TurnoEspecial))
-                  .map((turnoEspecial) => (
+                {turnoEspecialList.map((turnoEspecial) => (
                     <tr
                       key={turnoEspecial.Id_TurnoEspecial}
                       className="odd:bg-white even:bg-gray-100"

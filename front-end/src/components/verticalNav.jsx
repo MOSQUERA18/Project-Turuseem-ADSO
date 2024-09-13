@@ -173,7 +173,7 @@ const VerticalNav = () => {
             </Link>
           ))}
         </div>
-        <div className="flex flex-col justify-between items-center h-full pb-6 px-6 w-full mt-3">
+        <div className="flex flex-col justify-end items-center pl-4 w-full border-white border-b space-y-3 py-5 active:text-white hover:text-white">
           {/* Botón de Cerrar Sesión */}
           <br />
           <button

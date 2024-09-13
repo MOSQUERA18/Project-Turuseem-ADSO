@@ -6,7 +6,7 @@ import AbsenceModel from "../models/absenceModel.js";
 import FichasModel from "../models/fichasModel.js";
 import ProgramaModel from "../models/programaModel.js";
 import cron from "node-cron"
-import { Op } from "sequelize";
+import { Op, Sequelize} from "sequelize";
 
 cron.schedule('5 9 * * *', () => {
   console.log('Tarea programada ejecutada con exito');
@@ -232,17 +232,23 @@ export const deleteTurnoRutinario = async (req, res) => {
   }
 };
 
-
 export const getTurnoRutinariosForAprendiz = async (req, res) => {
   try {
+    // Obtenemos la fecha de hoy y eliminamos la parte de la hora
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
 
+    // Formateamos la fecha en formato de YYYY-MM-DD para usar en la consulta
+    const fechaHoy = hoy.toISOString().split("T")[0]; // 'YYYY-MM-DD'
+
     const turnoRutinarioForAprendiz = await TurnosRutinariosModel.findAll({
-      where: { 
+      where: {
         Id_Aprendiz: req.params.Id_Aprendiz,
-        Fec_InicioTurno: { [Op.lte]: hoy },
-        Fec_FinTurno: { [Op.gte]: hoy }
+        // Usamos Sequelize.literal para comparar solo las fechas sin horas
+        [Op.and]: [
+          Sequelize.literal(`DATE(Fec_InicioTurno) >= '${fechaHoy}'`),
+          // Sequelize.literal(`DATE(Fec_FinTurno) >= '${fechaHoy}'`)
+        ]
       },
       include: [
         {
@@ -255,10 +261,9 @@ export const getTurnoRutinariosForAprendiz = async (req, res) => {
         },
       ],
     });
-
+    // console.log(turnoRutinarioForAprendiz);
     if (turnoRutinarioForAprendiz.length === 0) {
-      res.status(404).json({ message: "No tienes turno programado para hoy" });
-      return;
+      return res.status(404).json({ message: "No tienes turno programado para hoy" });
     }
 
     res.status(200).json(turnoRutinarioForAprendiz);

@@ -4,6 +4,10 @@ import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
 import FormMemorandum from "./formMemorandum.jsx";
 
+//BOTON MEMORANDO
+import { MdEmail } from "react-icons/md";
+
+
 // Icons
 import Alerta from "../components/Alerta.jsx";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
@@ -11,7 +15,7 @@ import WriteTable from "../Tables/Data-Tables.jsx";
 
 import { MdDeleteOutline } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
-import { AiOutlineEye, AiOutlineSend } from "react-icons/ai";
+import { AiOutlineEye} from "react-icons/ai";
 
 const CrudMemorandum = () => {
   const [memorandumList, setMemorandumList] = useState([]);
@@ -78,7 +82,7 @@ const CrudMemorandum = () => {
       className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
       key="delete"
     >
-      <AiOutlineSend />
+     <MdEmail />
     </button>,
   ];
 
