@@ -5,6 +5,12 @@ import { logger } from "../middleware/logMiddleware.js";
 import AbsenceModel from "../models/absenceModel.js";
 import FichasModel from "../models/fichasModel.js";
 import ProgramaModel from "../models/programaModel.js";
+import cron from "node-cron"
+
+
+cron.schedule('0 10 * * 4', () => {
+  console.log('Tarea programada ejecutada con exito');
+});
 
 export const getAllTurnosRutinarios = async (req, res) => {
   try {
@@ -53,6 +59,8 @@ export const getAllTurnosRutinarios = async (req, res) => {
 
 export const getTurnoRutinario = async (req, res) => {
   try {
+
+
     // Intento de obtener un turno rutinario específico por ID con relaciones anidadas.
     const turnoRutinario = await TurnosRutinariosModel.findByPk(
       req.params.Id_TurnoRutinario,
@@ -224,11 +232,18 @@ export const deleteTurnoRutinario = async (req, res) => {
   }
 };
 
+
 export const getTurnoRutinariosForAprendiz = async (req, res) => {
   try {
-    // Intento de obtener los turnos rutinarios para un aprendiz específico.
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+
     const turnoRutinarioForAprendiz = await TurnosRutinariosModel.findAll({
-      where: { Id_Aprendiz: req.params.Id_Aprendiz },
+      where: { 
+        Id_Aprendiz: req.params.Id_Aprendiz,
+        Fec_InicioTurno: { [Op.lte]: hoy },
+        Fec_FinTurno: { [Op.gte]: hoy }
+      },
       include: [
         {
           model: ApprenticeModel,
@@ -241,15 +256,13 @@ export const getTurnoRutinariosForAprendiz = async (req, res) => {
       ],
     });
 
-    // Verifico si se encontraron turnos rutinarios para el aprendiz.
     if (turnoRutinarioForAprendiz.length === 0) {
-      res.status(404).json({ message: "No Tienes Turno Programado" });
+      res.status(404).json({ message: "No tienes turno programado para hoy" });
       return;
     }
 
     res.status(200).json(turnoRutinarioForAprendiz);
   } catch (error) {
-    // Capturo y manejo cualquier error ocurrido durante la consulta.
     logger.error(`Error al obtener los turnos rutinarios para el aprendiz: ${error.message}`);
     res.status(500).json({
       message: "Error al obtener los turnos rutinarios para el aprendiz.",

@@ -10,6 +10,8 @@ import WriteTable from "../Tables/Data-Tables.jsx";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
 import { FaArrowCircleDown } from "react-icons/fa";
+import { MdDeleteOutline } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
 
 const URI = "/aprendiz/";
 
@@ -83,6 +85,7 @@ const CrudApprentices = () => {
   );
   const titleModul = ["REPORTE DE APRENDICES"];
   const titleForm = ["REGISTRAR APRENDICES"];
+  const tableName = "Aprendices"
   const titles = [
     "Documento",
     "Nombres",
@@ -107,6 +110,27 @@ const CrudApprentices = () => {
     shouldShowPhoto && "Foto Aprendiz",
     "Acciones",
   ].filter(Boolean);
+
+  const ButtonsForOtherModules = (Id_Aprendiz) => [
+    <button
+      onClick={() => [
+        getApprentice(Id_Aprendiz),
+        setStateAddApprentice(true),
+        toggleModal(),
+      ]}
+      className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
+      key="get"
+    >
+      <FaRegEdit />
+    </button>,
+    <button
+      onClick={() => deleteApprentice(Id_Aprendiz)}
+      className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
+      key="delete"
+    >
+      <MdDeleteOutline />
+    </button>,
+  ];
 
   const formattedData = apprenticeList.map((apprentice) => {
     const rowData = [
@@ -140,6 +164,9 @@ const CrudApprentices = () => {
         />
       );
     }
+
+    rowData.push(ButtonsForOtherModules(apprentice.Id_Aprendiz));
+
     return rowData;
   });
 
@@ -267,7 +294,7 @@ const CrudApprentices = () => {
         Gestionar Informacion de los
         <span className="text-green-700"> Aprendices</span>
       </h1>
-      <div className="flex justify-between">
+      <div className="flex justify-between ">
         <div className="flex justify-between">
           <div>
             <h1 className="font-bold text-lg text-zinc-900 mb-3 ">
@@ -333,12 +360,8 @@ const CrudApprentices = () => {
           <WriteTable
             titles={titles}
             data={formattedData}
-            deleteRow={deleteApprentice}
-            getRow={getApprentice}
-            setStateAddNewRow={setStateAddApprentice}
-            setIsOpen={setIsOpen}
-            toggleModal={toggleModal} // Aquí pasamos la función
             titleModul={titleModul}
+            tableName={tableName}
           />
         )}
       </div>

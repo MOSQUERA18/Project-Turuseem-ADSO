@@ -9,7 +9,8 @@ import Alerta from "../components/Alerta.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
-import { Outlet } from "react-router-dom";
+import { MdDeleteOutline } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
 
 const URI = "talentoHumano";
 
@@ -50,6 +51,7 @@ const CrudTalentoHumano = () => {
   });
   const titleModul = ["REPORTE DE TALENTO HUMANO"];
   const titleForm = ["REGISTRAR TALENTO HUMANO"];
+  const tableName = "TalentoHumano";
 
   const titles = [
     "Documento",
@@ -63,16 +65,41 @@ const CrudTalentoHumano = () => {
     "Acciones",
   ];
 
-  const formattedData = talentoHumanoList.map((talento) => [
-    talento.Id_Talento_Humano,
-    talento.Nom_Talento_Humano,
-    talento.Ape_Talento_Humano,
-    talento.Genero_Talento_Humano,
-    talento.Cor_Talento_Humano,
-    talento.Tel_Talento_Humano,
-    talento.fichas ? talento.fichas.Id_Ficha : "N/A",
-    talento.Estado,
-  ]);
+  const ButtonsForOtherModules = (Id_Talento_Humano) => [
+    <button
+      onClick={() => [
+        getTalentoHumano(Id_Talento_Humano),
+        setStateAddTalentoHumano(true),
+        toggleModal(),
+      ]}
+      className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
+      key="get"
+    >
+      <FaRegEdit />
+    </button>,
+    <button
+      onClick={() => deleteTalentoHumano(Id_Talento_Humano)}
+      className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
+      key="delete"
+    >
+      <MdDeleteOutline />
+    </button>,
+  ];
+
+  const formattedData = talentoHumanoList.map((talento) => {
+    const rowData = [
+      talento.Id_Talento_Humano,
+      talento.Nom_Talento_Humano,
+      talento.Ape_Talento_Humano,
+      talento.Genero_Talento_Humano,
+      talento.Cor_Talento_Humano,
+      talento.Tel_Talento_Humano,
+      talento.fichas ? talento.fichas.Id_Ficha : "N/A",
+      talento.Estado,
+    ]
+    rowData.push(ButtonsForOtherModules(talento.Id_Talento_Humano));
+    return rowData
+  });
 
   const getAllTalentoHumano = async () => {
     const token = ReactSession.get("token");
@@ -223,17 +250,11 @@ const CrudTalentoHumano = () => {
           <WriteTable
             titles={titles}
             data={formattedData}
-            deleteRow={deleteTalentoHumano}
-            getRow={getTalentoHumano}
-            setStateAddNewRow={setStateAddTalentoHumano}
-            toggleModal={toggleModal} // Aquí pasamos la función
-            isOpen={isOpen}
             titleModul={titleModul}
+            tableName={tableName}
           />
         )}
       </div>
-
-      <Outlet />
     </>
   );
 };

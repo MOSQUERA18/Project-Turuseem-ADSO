@@ -7,6 +7,8 @@ import Alerta from "../components/Alerta.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
 import { Outlet } from "react-router-dom";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
+import { MdDeleteOutline } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
 
 const URI = "/turnorutinario/";
 
@@ -35,6 +37,8 @@ const CrudTurnosRutinarios = () => {
     });
   };
 
+
+
   const [turnoRutinario, setTurnoRutinario] = useState({
     Fec_InicioTurno: "",
     Fec_FinTurno: "",
@@ -48,7 +52,7 @@ const CrudTurnosRutinarios = () => {
 
   const titleModul = ["REPORTE DE TURNOS RUTINARIOS"];
   const titleForm = ["CREAR TURNOS RUTINARIOS"];
-
+  const tableName = "TurnosRutinarios";
 
   const titles = [
     "ID",
@@ -64,6 +68,27 @@ const CrudTurnosRutinarios = () => {
     "Acciones",
   ].filter(Boolean);
 
+  const ButtonsForOtherModules = (Id_TurnoRutinario) => [
+    <button
+      onClick={() => [
+        getTurnoRutinario(Id_TurnoRutinario),
+        setStateAddturnoRutinario(true),
+        toggleModal(),
+      ]}
+      className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
+      key="get"
+    >
+      <FaRegEdit />
+    </button>,
+    <button
+      onClick={() => deleteTurnoRutinario(Id_TurnoRutinario)}
+      className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
+      key="delete"
+    >
+      <MdDeleteOutline />
+    </button>,
+  ];
+
   const formattedData = turnoRutinarioList.map((turnoRutinario) => {
     const rowData = [
       turnoRutinario.Id_TurnoRutinario,
@@ -76,6 +101,7 @@ const CrudTurnosRutinarios = () => {
       turnoRutinario.Id_Aprendiz,
       turnoRutinario.unidad?.Nom_Unidad,
     ];
+    rowData.push(ButtonsForOtherModules(turnoRutinario.Id_TurnoRutinario));
     return rowData;
   });
 
@@ -242,11 +268,8 @@ const CrudTurnosRutinarios = () => {
           <WriteTable
             titles={titles}
             data={formattedData}
-            deleteRow={deleteTurnoRutinario}
-            getRow={getTurnoRutinario}
-            setStateAddNewRow={setStateAddturnoRutinario}
-            toggleModal={toggleModal} // Aquí pasamos la función
             titleModul={titleModul}
+            tableName={tableName}
           />
         )}
       </div>

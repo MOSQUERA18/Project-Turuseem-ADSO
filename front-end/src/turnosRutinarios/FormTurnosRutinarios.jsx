@@ -22,6 +22,7 @@ const FormTurnoRutinario = ({
   const [Ind_Asistencia, setInd_Asistencia] = useState("");
   const [Id_Aprendiz, setId_Aprendiz] = useState("");
   const [Id_Unidad, setId_Unidad] = useState("");
+  const [Motivo,setMotivo] = useState("")
 
   // Estados para datos adicionales
   const [selectedAprendiz, setSelectedAprendiz] = useState(null);
@@ -63,7 +64,6 @@ const FormTurnoRutinario = ({
         console.error("Error fetching Unidad:", error);
       }
     };
-
     getAllAprendiz();
     getAllUnidad();
   }, []);
@@ -96,6 +96,7 @@ const FormTurnoRutinario = ({
             Ind_Asistencia,
             Id_Aprendiz,
             Id_Unidad,
+            Motivo,
           },
           config
         );
@@ -112,6 +113,7 @@ const FormTurnoRutinario = ({
             Ind_Asistencia,
             Id_Aprendiz,
             Id_Unidad,
+            Motivo
           },
           config
         );
@@ -126,12 +128,12 @@ const FormTurnoRutinario = ({
           error: false,
         });
         // Crear o eliminar registro de inasistencia según Ind_Asistencia
-        const turnoRutinarioId =
-          respuestApi.data.Id_TurnoRutinario || Id_TurnoRutinario;
+
+        const turnoRutinarioId = respuestApi.data.Id_TurnoRutinario || Id_TurnoRutinario;
         if (Ind_Asistencia === "No") {
           await crearRegistroInasistencia(turnoRutinarioId);
-        } else if (Ind_Asistencia === "Si") {
-          console.warn("La Inasistencia se Borro satisfactoriamente")
+          await crearRegistroMemorando(turnoRutinarioId)
+          console.warn("Inasistencia Creada")
         }
         getAllTurnosRutinarios();
         clearForm();
@@ -151,69 +153,73 @@ const FormTurnoRutinario = ({
     }
   };
 
-  // // Eliminar registro de inasistencia
-  // const eliminarRegistroInasistencia = async (Id_TurnoRutinario) => {
-  //   try {
-  //     const token = ReactSession.get("token");
-  //     const config = {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     };
 
-  //     await clienteAxios.delete(`/inasistencias/${Id_TurnoRutinario}`, config);
-  //     console.log("Registro de inasistencia eliminado exitosamente");
-  //   } catch (error) {
-  //     console.error("Error al eliminar registro de inasistencia:", error);
-  //   }
-  // };
+// Crear registro de inasistencia
+const crearRegistroMemorando = async () => {
+  try {
+    const token = ReactSession.get("token");
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
 
+    const memorandoData = {
+      Fec_OtroMemorando: Fec_InicioTurno,
+      Mot_OtroMemorando: Motivo,
+      Id_Aprendiz,
+    };
 
-  // Crear registro de inasistencia
-  const crearRegistroInasistencia = async (Id_TurnoRutinario) => {
-    try {
-      const token = ReactSession.get("token");
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
+    console.log("Creando registro de memorando con datos:", memorandoData);
 
-      const inasistenciaData = {
-        Fec_Inasistencia: Fec_InicioTurno,
-        Mot_Inasistencia: Obs_TurnoRutinario,
-        Id_TurnoRutinario: Id_TurnoRutinario,
-      };
+    const respuestaMemorando = await clienteAxios.post("/otrosmemorandos", memorandoData, config);
+    console.log(respuestaMemorando);
 
-      const respuestaInasistencia = await clienteAxios.post(
-        "/inasistencias",
-        inasistenciaData,
-        config
-      );
+    if (respuestaMemorando.status === 201) {
+      console.log('Registro de memorando creado exitosamente');
 
-      console.log("Creando registro de inasistencia con datos:", inasistenciaData); // Agrega este log
-
-      if (respuestaInasistencia.status === 201) {
-        console.log('Registro de inasistencia creado exitosamente');
-      // Si se registra una inasistencia, incrementamos o decrementamos Tot_Inasistencias del aprendiz
-        const action = Ind_Asistencia === "No" ? "incrementar" : "decrementar";        
-        await clienteAxios.put(
-          `/aprendiz/${Id_Aprendiz}/actualizar-inasistencia`,
-          { action },  // Enviar la acción
-          config
-        );
-        console.log('Inasistencia actualizada exitosamente');
-      }
-
-      if (respuestaInasistencia.status === 201) {
-        console.log("Registro de inasistencia creado exitosamente");
-      }
-    } catch (error) {
-      console.error("Error al crear registro de inasistencia:", error);
+      // const action = Ind_Asistencia === "No" ? "incrementar" : "decrementar";
+      // await clienteAxios.put(`/aprendiz/${Id_Aprendiz}/actualizar-inasistencia`, { action }, config);
+      // console.log('Inasistencia y memorandos actualizados exitosamente');
     }
-  };
+  } catch (error) {
+    console.error("Error al crear registro de memorando:", error);
+  }
+};
+
+const crearRegistroInasistencia = async (Id_TurnoRutinario) => {
+  try {
+    const token = ReactSession.get("token");
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const inasistenciaData = {
+      Fec_Inasistencia: Fec_InicioTurno,
+      Mot_Inasistencia: Motivo,
+      Id_TurnoRutinario,
+    };
+
+    console.log("Creando registro de inasistencia con datos:", inasistenciaData);
+
+    const respuestaInasistencia = await clienteAxios.post("/inasistencias", inasistenciaData, config);
+
+    if (respuestaInasistencia.status === 201) {
+      console.log('Registro de inasistencia creado exitosamente');
+
+      const action = Ind_Asistencia === "No" ? "incrementar" : "decrementar";
+      await clienteAxios.put(`/aprendiz/${Id_Aprendiz}/actualizar-inasistencia`, { action }, config);
+      console.log('Inasistencia actualizada exitosamente');
+    }
+  } catch (error) {
+    console.error("Error al crear registro de inasistencia:", error);
+  }
+};
+
 
   // Limpiar formulario
   const clearForm = () => {
@@ -226,7 +232,9 @@ const FormTurnoRutinario = ({
     setInd_Asistencia("");
     setId_Aprendiz("");
     setId_Unidad("");
+    setMotivo("")
   };
+
 
   // Establecer datos en el formulario para edición
   const setData = () => {
@@ -240,6 +248,7 @@ const FormTurnoRutinario = ({
       setInd_Asistencia(turnoRutinario.Ind_Asistencia);
       setId_Aprendiz(turnoRutinario.Id_Aprendiz || "");
       setId_Unidad(turnoRutinario.Id_Unidad || "");
+      setMotivo(turnoRutinario.Motivo || "");
 
       // Seleccionar aprendiz y unidad
       const selectedFic = Aprendiz.find(
@@ -348,6 +357,24 @@ const FormTurnoRutinario = ({
               </select>
             </div>
 
+            {Ind_Asistencia === "No" && (
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Porque No Asistio:
+              </label>
+              <input
+                type="text"
+                id="Motivo"
+                placeholder="Motivo Inasistencia"
+                value={Motivo}
+                onChange={(e) => setMotivo(e.target.value)}
+                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              />
+            </div>
+          )}
+
+
+
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Aprendiz
@@ -403,6 +430,7 @@ const FormTurnoRutinario = ({
               value="Limpiar"
               onClick={() => {
                 clearForm();
+                updateTextButton("Enviar");
               }}
               className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-500 md:w-auto"
               aria-label="Limpiar"
