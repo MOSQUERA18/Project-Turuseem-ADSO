@@ -256,13 +256,13 @@ const CrudApprentices = () => {
             config
           );
           if (respuestApi.status == 200) {
+            getAllApprentices();
             updateTextButton("Enviar");
             Swal.fire({
               title: "Borrado!",
               text: "El registro ha sido borrado.",
               icon: "success",
             });
-            getAllApprentices();
           } else {
             alert(respuestApi.data.message);
           }
@@ -318,6 +318,9 @@ const CrudApprentices = () => {
                 apprentice={apprentice}
                 updateTextButton={updateTextButton}
                 setApprentice={setApprentice}
+                toggleModal={toggleModal}
+                getAllApprentices={getAllApprentices}
+                isOpen={isOpen}
               />
             }
           />

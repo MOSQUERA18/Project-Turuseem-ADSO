@@ -237,6 +237,7 @@ const CrudTurnosEspeciales = () => {
     });
   };
 
+
   const updateTextButton = (text) => {
     setButtonForm(text);
   };
@@ -249,6 +250,7 @@ const CrudTurnosEspeciales = () => {
         Gestionar Informacion de los
         <span className="text-blue-700"> Turnos Especiales</span>
       </h1>
+
       <div className="flex pb-3">
         <ModalWindow
           stateAddNewRow={stateAddturnoEspecial}

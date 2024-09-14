@@ -148,10 +148,11 @@ export const updateTurnoEspecial = async (req, res) => {
       Obs_TurnoEspecial,
       Tot_AprendicesAsistieron,
       Id_Ficha,
-      Img_Asistencia,
       Id_Funcionario,
       Id_Unidad,
     } = req.body;
+
+    const Img_Asistencia = req.file ? req.file.filename : null;
 
     // Intento de actualizar un turno especial específico por ID.
     const [updated] = await TurnoEspecialModel.update(

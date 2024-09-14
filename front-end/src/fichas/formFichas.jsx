@@ -152,6 +152,7 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
               placeholder="Numero"
               value={Id_Ficha}
               onChange={(e) => setId_Ficha(e.target.value)}
+              maxLength={7}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             />
           </div>
@@ -193,9 +194,10 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
               id="can_aprendices"
               value={Can_Aprendices}
               onChange={(e) => setCan_Aprendices(e.target.value)}
+              maxLength={2}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             />
-          </div>
+          </div>  
 
           <div className="mb-3">
             <label className="block text-sm font-medium text-gray-700">

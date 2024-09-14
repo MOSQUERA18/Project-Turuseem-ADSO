@@ -142,9 +142,11 @@ export const updateApprentice = async (req, res) => {
       Patrocinio,
       Estado,
       Nom_Empresa,
-      CentroConvivencia,
-      Foto_Aprendiz
+      CentroConvivencia
     } = req.body;
+
+// En el backend
+const Foto_Aprendiz = req.file ? req.file.filename : null;
 
     const [updated] = await ApprenticeModel.update(
       {
