@@ -121,7 +121,7 @@ const CrudMemorandum = () => {
       },
     };
     try {
-      const respuestApi = await clienteAxios("/otrosmemorandos/", config);
+      const respuestApi = await clienteAxios("/otrosmemorandos", config);
       if (respuestApi.status == 200) {
         setMemorandumList(respuestApi.data);
         setCrearDataTable(true);
@@ -290,7 +290,7 @@ const CrudMemorandum = () => {
       </div>
       <div className="overflow-x-auto">
         <hr />
-        {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
+        {msg && <Alerta alerta={alerta} />}
 
         {crearDataTable && (
           <WriteTable

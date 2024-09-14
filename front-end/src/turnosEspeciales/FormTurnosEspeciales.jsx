@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
@@ -5,6 +6,7 @@ import { useState, useEffect } from "react";
 import clienteAxios from "../config/axios";
 import Alerta from "../components/Alerta";
 import { ReactSession } from "react-client-session";
+import { error } from "jquery";
 
 const FormTurnosEspeciales = ({
   buttonForm,
@@ -115,6 +117,65 @@ const FormTurnosEspeciales = ({
 
   const sendForm = async (e) => {
     e.preventDefault();
+
+    if (!Fec_TurnoEspecial) {
+      // console.log("Fecha Vacia");
+      setAlerta({
+        msg:"La Fecha Del Turno No puede Estar Vacia",
+        error:true
+      })
+      return
+    }
+
+    if (!Hor_Inicio) {
+      setAlerta({
+        msg:"La Hora Inicio No puede Estar Vacia",
+        error:true
+      })
+      return
+    }
+    if (!Hor_Fin) {
+      setAlerta({
+        msg:"La Hora fin No puede Estar Vacia",
+        error:true
+      })
+      return
+    }
+    if (!Obs_TurnoEspecial) {
+      setAlerta({
+        msg:"La Observacion No puede Estar Vacia",
+        error:true
+      })
+      return
+    }
+    if (!Tot_AprendicesAsistieron) {
+      setAlerta({
+        msg:"El total de Aprendices No puede Estar Vacio",
+        error:true
+      })
+      return
+    }
+    if (!Id_Ficha) {
+      setAlerta({
+        msg:"La Ficha No puede Estar Vacia",
+        error:true
+      })
+    }
+    if (!Id_Funcionario) {
+      setAlerta({
+        msg:"El Nombre del Funcionario No puede Estar Vacia",
+        error:true
+      })
+      return
+    }
+    if (!Id_Unidad) {
+      setAlerta({
+        msg:"La Unidad No puede Estar Vacia",
+        error:true
+      })
+      return
+    }
+
     try {
       const formData = new FormData();
 
@@ -289,7 +350,7 @@ const FormTurnosEspeciales = ({
                 Total Aprendices
               </label>
               <input
-                type="text"
+                type="number"
                 id="total_aprendices"
                 placeholder="Total Aprendices Asistieron"
                 value={Tot_AprendicesAsistieron}

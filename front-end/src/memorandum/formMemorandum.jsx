@@ -6,8 +6,9 @@ import { ReactSession } from "react-client-session";
 
 import Alerta from "../components/Alerta";
 import clienteAxios from "../config/axios";
+import { error } from "jquery";
 
-const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
+const FormMemorandum = ({ buttonForm, memorandum, updateTextButton,getAllMemorandum }) => {
   const [Fec_Memorando, setFec_Memorando] = useState("");
   const [Mot_Memorando, setMot_Memorando] = useState("");
   const [Id_Aprendiz, setId_Aprendiz] = useState("");
@@ -37,6 +38,39 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
 
   const sendForm = async (e) => {
     e.preventDefault();
+
+
+    if (!Fec_Memorando) {
+      setAlerta({
+        msg:"La Fecha No Puede Estar Vacia",
+        error:true
+      })
+      return
+    }
+    if(!Mot_Memorando){
+      setAlerta({
+        msg:"El Motivo No Puede Ir Vacio",
+        error:true
+      })
+      return
+    }
+    if(!Id_Aprendiz){
+      setAlerta({
+        msg:"El Documento del Aprendiz No Puede Ir Vacio",
+        error:true
+      })
+      return
+    }
+         // Validaciones básicas
+  const soloTextoRegex = /^[a-zA-ZÀ-ÿ\s]+$/; // Solo letras y espacios
+
+  if(!soloTextoRegex.test(Mot_Memorando)){
+    setAlerta({
+      msg:"El motivo debe de Ser En Letras",
+      error:true
+    })
+    return
+  }
     const token = ReactSession.get("token");
     const config = {
       headers: {
@@ -61,6 +95,7 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
             msg: respuestApi.data.message,
             error: false,
           });
+          getAllMemorandum();
           clearForm();
         }
       } else if (buttonForm === "Enviar") {
@@ -78,6 +113,7 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton }) => {
             msg: respuestApi.data.message,
             error: false,
           });
+          getAllMemorandum();
           clearForm();
         } else {
           alert(respuestApi.data.message);

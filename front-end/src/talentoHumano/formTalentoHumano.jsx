@@ -3,9 +3,9 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import clienteAxios from "../config/axios";
-
 import Alerta from "../components/Alerta";
 import { ReactSession } from "react-client-session";
+import { error } from "jquery";
 
 const FormTalentoHumano = ({
   buttonForm,
@@ -47,6 +47,92 @@ const FormTalentoHumano = ({
 
   const sendForm = async (e) => {
     e.preventDefault();
+
+    // Verificar campo por campo y mostrar alerta si está vacío
+    if (!Id_Talento_Humano) {
+      setAlerta({
+        msg: "El campo Documento está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!Nom_Talento_Humano) {
+      setAlerta({
+        msg: "El campo Nombre está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!Nom_Talento_Humano) {
+      setAlerta({
+        msg: "El campo Nombre está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!Ape_Talento_Humano) {
+      setAlerta({
+        msg: "El campo Apellido está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!Genero_Talento_Humano) {
+      setAlerta({
+        msg: "El campo Genero está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!Cor_Talento_Humano) {
+      setAlerta({
+        msg: "El campo Correro está vacío.",
+        error: true,
+      });
+      return;
+    }
+
+    if (!Tel_Talento_Humano) {
+      setAlerta({
+        msg: "El campo Telefono está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!Id_Ficha) {
+      setAlerta({
+        msg: "El campo Ficha está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!Estado) {
+      setAlerta({
+        msg: "El campo Nombre está vacío.",
+        error: true,
+      });
+      return;
+    }
+
+    const soloTextoRegex = /^[a-zA-ZÀ-ÿ\s]+$/; // Solo letras y espacios
+
+    if (!soloTextoRegex.test(Nom_Talento_Humano)) {
+      setAlerta({
+        msg: "El campo Nombre solo permite Letras",
+        error:true
+      })
+      return
+      
+    }
+    if (!soloTextoRegex.test(Ape_Talento_Humano)) {
+      setAlerta({
+        msg: "El campo Apellido solo permite Letras",
+        error:true
+      })
+      return
+      
+    }
+
     const token = ReactSession.get("token");
     const config = {
       headers: {
@@ -182,7 +268,7 @@ const FormTalentoHumano = ({
                 placeholder="Documento"
                 value={Id_Talento_Humano}
                 onChange={(e) => {
-                  const {value} = e.target;
+                  const { value } = e.target;
                   if (value.length <= 10) {
                     setId_Talento_Humano(value);
                   }
@@ -201,7 +287,7 @@ const FormTalentoHumano = ({
                 placeholder="Nombre"
                 value={Nom_Talento_Humano}
                 onChange={(e) => {
-                  const {value} = e.target;
+                  const { value } = e.target;
                   if (value.length <= 30) {
                     setNom_Talento_Humano(value);
                   }
@@ -220,7 +306,7 @@ const FormTalentoHumano = ({
                 placeholder="Apellido"
                 value={Ape_Talento_Humano}
                 onChange={(e) => {
-                  const {value} = e.target;
+                  const { value } = e.target;
                   if (value.length <= 40) {
                     setApe_Talento_Humano(value);
                   }
@@ -256,7 +342,7 @@ const FormTalentoHumano = ({
                 placeholder="Correo"
                 value={Cor_Talento_Humano}
                 onChange={(e) => {
-                  const {value} = e.target;
+                  const { value } = e.target;
                   if (value.length <= 60) {
                     setCor_Talento_Humano(value);
                   }
@@ -275,7 +361,7 @@ const FormTalentoHumano = ({
                 placeholder="Teléfono"
                 value={Tel_Talento_Humano}
                 onChange={(e) => {
-                  const {value} = e.target;
+                  const { value } = e.target;
                   if (value.length <= 10) {
                     setTel_Talento_Humano(value);
                   }

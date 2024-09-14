@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import clienteAxios from "../config/axios";
 import Alerta from "../components/Alerta";
 import { ReactSession } from "react-client-session";
+import { error } from "jquery";
 
 const FormUnidades = ({
   buttonForm,
@@ -44,6 +45,56 @@ const FormUnidades = ({
 
   const sendForm = async (e) => {
     e.preventDefault();
+
+    if(!Nom_Unidad){
+      setAlerta({
+        msg: "El Nombre De la Unidad No puede Ir Vacio",
+        error:true
+      })
+      return
+    }
+    if(!Hor_Apertura){
+      setAlerta({
+        msg: "La Hora de Apertura De la Unidad No puede Ir Vacia",
+        error:true
+      })
+      return
+    }
+    if(!Hor_Cierre){
+      setAlerta({
+        msg: "La Hora De Cierre De la Unidad No puede Ir Vacia",
+        error:true
+      })
+      return
+    }
+
+    if(!Estado){
+      setAlerta({
+        msg: "El Estado De la Unidad No puede Ir Vacia",
+        error:true
+      })
+      return
+    }
+    if(!Id_Area){
+      setAlerta({
+        msg: "El Area De la Unidad No puede Ir Vacio",
+        error:true
+      })
+      return
+    }
+
+         // Validaciones básicas
+  const soloTextoRegex = /^[a-zA-ZÀ-ÿ\s]+$/; // Solo letras y espacios
+
+
+  if(!soloTextoRegex.test(Nom_Unidad)){
+    setAlerta({
+      msg:"El Nombre Debe de Ir en Letras",
+      error:true
+    })
+    return
+  }
+
     const token = ReactSession.get("token");
     const config = {
       headers: {
@@ -228,6 +279,7 @@ const FormUnidades = ({
               value="Limpiar"
               onClick={() => {
                 clearForm();
+                updateTextButton("Enviar")
               }}
               className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-500 md:w-auto"
               aria-label="Limpiar"

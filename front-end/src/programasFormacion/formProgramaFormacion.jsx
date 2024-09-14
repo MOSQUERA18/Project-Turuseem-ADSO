@@ -41,6 +41,30 @@ const FormProgramaFormacion = ({
 
   const sendForm = async (e) => {
     e.preventDefault();
+    if (!Nom_ProgramaFormacion) {
+      setAlerta({
+        msg: "El Nombre Del Programa Esta Vacio",
+        error:true
+      })
+      return
+    }
+    if (!Tip_ProgramaFormacion) {
+      setAlerta({
+        msg: "El Tipo De Programa Esta Vacio",
+        error:true
+      })
+      return
+    }
+    if (!Id_Area) {
+      setAlerta({
+        msg: "El Nombre Del Area Esta Vacio",
+        error:true
+      })
+      return
+    }
+
+
+
     const token = ReactSession.get("token");
     const config = {
       headers: {
