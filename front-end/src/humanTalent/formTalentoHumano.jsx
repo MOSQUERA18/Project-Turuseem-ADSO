@@ -4,6 +4,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import clieteAxios from "../config/axios";
+import Alerta from "../components/Alerta"
 
 import { ReactSession } from 'react-client-session';
 
@@ -19,6 +20,8 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
   const [Estado, setEstado] = useState("");    
   const [selectedFicha,setSelectedFicha] = useState(null);
   const [Ficha, setFicha] = useState([]);
+
+  const [alerta, setAlerta] = useState({});
 
   // Estado para mensajes
   const [message, setMessage] = useState("");
@@ -57,6 +60,76 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
 
   const sendForm = async (e) => {
     e.preventDefault();
+
+    if(!Id_Talento_Humano){
+      setAlerta({
+        msg:"El Documento No puede Estar Vacio",
+        error:true
+      })
+      return
+    }
+    if(!Nom_Talento_Humano){
+      setAlerta({
+        msg:"El Nombre No puede Estar Vacio",
+        error:true
+      })
+      return
+    }
+    if(!Ape_Talento_Humano){
+      setAlerta({
+        msg:"El Apellido No puede Estar Vacio",
+        error:true
+      })
+      return
+    }
+    if(!Genero_Talento_Humano){
+      setAlerta({
+        msg:"El Genero No puede Estar Vacio",
+        error:true
+      })
+      return
+    }
+    if(!Cor_Talento_Humano){
+      setAlerta({
+        msg:"El Correo No puede Estar Vacio",
+        error:true
+      })
+      return
+    }
+    if(!Tel_Talento_Humano){
+      setAlerta({
+        msg:"El Telefono No puede Estar Vacio",
+        error:true
+      })
+      return
+    }
+    if(!Id_Ficha){
+      setAlerta({
+        msg:"La Ficha No puede Estar Vacio",
+        error:true
+      })
+      return
+    }
+    if(!Estado){
+      setAlerta({
+        msg:"El Estado No puede Estar Vacio",
+        error:true
+      })
+      return
+    }
+
+
+    let numbers = /^\d*$/;
+
+    if(!numbers.test(Tel_Talento_Humano)){
+      setAlerta({
+        msg: "El campo de Telefono solo debe contener Numeros.",
+        error: true,
+      });
+      return;
+    }
+    
+
     const token = ReactSession.get("token");
     const config = {
       headers: {
@@ -66,6 +139,7 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
     };
 
     try {
+      let mensajeCrud = ""
       let respuestApi;
       if (buttonForm === "Actualizar") {
         respuestApi = await clieteAxios.put(
@@ -82,6 +156,7 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
           },
           config
         );
+        mensajeCrud = "Talento Humano Actualizado Exitosamente"
       } else if (buttonForm === "Enviar") {
         respuestApi = await clieteAxios.post(
           `/talentoHumano`,
@@ -97,21 +172,44 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
           },
           config
         );
+        mensajeCrud = "Talento Humano Registrado Exitosamente"
       }
 
       if (respuestApi.status === 201 || respuestApi.status === 200) {
-        setMessage("Talento Humano registrado correctamente!");
-        setMessageType("success");
+        setAlerta({
+          msg: respuestApi.data.message || mensajeCrud,
+          error: false,
+        });
         clearForm();
         getAllTalentoHumano();
         updateTextButton("Enviar");
       } else {
-        setMessage(respuestApi.data.message || "Error al registrar Talento Humano.");
-        setMessageType("error");
+        setAlerta({
+          msg: respuestApi.data.message || "Error al registrar al Talento Humano.",
+          error: true,
+        });
       }
     } catch (error) {
-      setMessage("Error al registrar Talento Humano.");
-      setMessageType("error");
+      console.error(
+        "Error details!   : ",
+        error.response || error.request || error.message
+      );
+      if (error.response) {
+        setAlerta({
+          msg: error.response.data.message || "Error en la solicitud",
+          error: true,
+        });
+      } else if (error.request) {
+        setAlerta({
+          msg: "No se recibió respuesta del servidor",
+          error: true,
+        });
+      } else {
+        setAlerta({
+          msg: "Error desconocido",
+          error: true,
+        });
+      }
     }
   };
 
@@ -146,6 +244,9 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
     setData();
   }, [talentoHumano]);
 
+  
+  const { msg } = alerta;
+
   return (
     <>
       <div className="flex justify-center items-center min-h-screen bg-gray-100 content-center w-full">
@@ -154,6 +255,7 @@ const FormTalentoHumano = ({ buttonForm, talentoHumano, updateTextButton, getAll
           onSubmit={sendForm}
           className="bg-white shadow-2xl rounded-2xl px-14 pt-6 pb-8 mb-4 max-w-3xl w-full mt-10"
          >
+                  {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
           <h1 className="font-bold text-green-600 text-3xl uppercase text-center my-5">
             Registrar Talento Humano
           </h1>
