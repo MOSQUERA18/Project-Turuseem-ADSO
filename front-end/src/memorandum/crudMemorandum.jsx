@@ -275,7 +275,7 @@ const CrudMemorandum = () => {
           toggleModal={toggleModal} // Aquí pasamos la función
           isOpen={isOpen}
           titleForm={titleForm}
-          updateTextBottom={updateTextButton}
+          updateTextButtom={updateTextButton}
           resetForm={resetForm}
           form={
             <FormMemorandum

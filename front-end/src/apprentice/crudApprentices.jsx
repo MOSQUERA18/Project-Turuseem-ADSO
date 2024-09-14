@@ -310,7 +310,7 @@ const CrudApprentices = () => {
             stateAddNewRow={stateAddApprentice}
             setStateAddNewRow={setStateAddApprentice}
             resetForm={resetForm}
-            updateTextBottom={updateTextButton}
+            updateTextButtom={updateTextButton}
             toggleModal={toggleModal} // Aquí pasamos la función
             isOpen={isOpen}
             titleForm={titleForm}

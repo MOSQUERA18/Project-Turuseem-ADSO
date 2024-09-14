@@ -210,7 +210,7 @@ const CrudPrograma = () => {
           resetForm={resetForm}
           toggleModal={toggleModal} // Aquí pasamos la función
           isOpen={isOpen}
-          updateTextBottom={updateTextButton}
+          updateTextButtom={updateTextButton}
           titleForm={titleForm}
           form={
             <FormProgramaFormacion

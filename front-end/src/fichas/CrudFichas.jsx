@@ -218,7 +218,7 @@ const CrudFichas = () => {
           toggleModal={toggleModal} // Aquí pasamos la función
           isOpen={isOpen}
           resetForm={resetForm}
-          updateTextBottom={updateTextButton}
+          updateTextButtom={updateTextButton}
           titleForm={titleForm}
           form={
             <FormFichas
