@@ -22,6 +22,8 @@ const CrudTalentoHumano = () => {
   const [crearDataTable, setCrearDataTable] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+  const [stateButton, setStateButton] = useState(true);
+
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
@@ -71,6 +73,7 @@ const CrudTalentoHumano = () => {
         getTalentoHumano(Id_Talento_Humano),
         setStateAddTalentoHumano(true),
         toggleModal(),
+        setStateButton(false),
       ]}
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
@@ -96,9 +99,9 @@ const CrudTalentoHumano = () => {
       talento.Tel_Talento_Humano,
       talento.fichas ? talento.fichas.Id_Ficha : "N/A",
       talento.Estado,
-    ]
+    ];
     rowData.push(ButtonsForOtherModules(talento.Id_Talento_Humano));
-    return rowData
+    return rowData;
   });
 
   const getAllTalentoHumano = async () => {
@@ -122,7 +125,10 @@ const CrudTalentoHumano = () => {
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);
-      setAlerta({ msg: "Error No Existe Talento Humano Registrado!.", error: true });
+      setAlerta({
+        msg: "Error No Existe Talento Humano Registrado!.",
+        error: true,
+      });
     }
   };
 
@@ -231,6 +237,7 @@ const CrudTalentoHumano = () => {
           resetForm={resetForm}
           updateTextButtom={updateTextButton}
           titleForm={titleForm}
+          setStateButton={setStateButton}
           form={
             <FormTalentoHumano
               buttonForm={buttonForm}
@@ -238,6 +245,8 @@ const CrudTalentoHumano = () => {
               updateTextButton={updateTextButton}
               setTalentoHumano={setTalentoHumano}
               getAllTalentoHumano={getAllTalentoHumano}
+              stateButton={stateButton}
+              setStateButton={setStateButton}
             />
           }
         />

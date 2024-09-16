@@ -13,6 +13,8 @@ const FormTurnosEspeciales = ({
   turnoEspecial,
   updateTextButton,
   getAllTurnosEspeciales,
+  setStateButton,
+  stateButton,
 }) => {
   const [Id_TurnoEspecial, setId_TurnoEspecial] = useState("");
   const [Fec_TurnoEspecial, setFec_TurnoEspecial] = useState("");
@@ -86,7 +88,6 @@ const FormTurnosEspeciales = ({
     getAllUnidades();
   }, []);
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -121,59 +122,59 @@ const FormTurnosEspeciales = ({
     if (!Fec_TurnoEspecial) {
       // console.log("Fecha Vacia");
       setAlerta({
-        msg:"La Fecha Del Turno No puede Estar Vacia",
-        error:true
-      })
-      return
+        msg: "La Fecha Del Turno No puede Estar Vacia",
+        error: true,
+      });
+      return;
     }
 
     if (!Hor_Inicio) {
       setAlerta({
-        msg:"La Hora Inicio No puede Estar Vacia",
-        error:true
-      })
-      return
+        msg: "La Hora Inicio No puede Estar Vacia",
+        error: true,
+      });
+      return;
     }
     if (!Hor_Fin) {
       setAlerta({
-        msg:"La Hora fin No puede Estar Vacia",
-        error:true
-      })
-      return
+        msg: "La Hora fin No puede Estar Vacia",
+        error: true,
+      });
+      return;
     }
     if (!Obs_TurnoEspecial) {
       setAlerta({
-        msg:"La Observacion No puede Estar Vacia",
-        error:true
-      })
-      return
+        msg: "La Observacion No puede Estar Vacia",
+        error: true,
+      });
+      return;
     }
     if (!Tot_AprendicesAsistieron) {
       setAlerta({
-        msg:"El total de Aprendices No puede Estar Vacio",
-        error:true
-      })
-      return
+        msg: "El total de Aprendices No puede Estar Vacio",
+        error: true,
+      });
+      return;
     }
     if (!Id_Ficha) {
       setAlerta({
-        msg:"La Ficha No puede Estar Vacia",
-        error:true
-      })
+        msg: "La Ficha No puede Estar Vacia",
+        error: true,
+      });
     }
     if (!Id_Funcionario) {
       setAlerta({
-        msg:"El Nombre del Funcionario No puede Estar Vacia",
-        error:true
-      })
-      return
+        msg: "El Nombre del Funcionario No puede Estar Vacia",
+        error: true,
+      });
+      return;
     }
     if (!Id_Unidad) {
       setAlerta({
-        msg:"La Unidad No puede Estar Vacia",
-        error:true
-      })
-      return
+        msg: "La Unidad No puede Estar Vacia",
+        error: true,
+      });
+      return;
     }
 
     try {
@@ -198,6 +199,7 @@ const FormTurnosEspeciales = ({
           formData,
           config
         );
+        setStateButton(true);
         mensajeCRUD = "Turno especial Actualizado Exitosamente";
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
@@ -232,7 +234,6 @@ const FormTurnosEspeciales = ({
     }
   };
 
-
   const clearForm = () => {
     setId_TurnoEspecial("");
     setFec_TurnoEspecial("");
@@ -247,39 +248,37 @@ const FormTurnosEspeciales = ({
   };
 
   const setData = () => {
-
-    if(turnoEspecial){ 
-    setId_TurnoEspecial(turnoEspecial.Id_TurnoEspecial || "");
-    setFec_TurnoEspecial(turnoEspecial.Fec_TurnoEspecial || "");
-    setHor_Inicio(turnoEspecial.Hor_Inicio || "");
-    setHor_Fin(turnoEspecial.Hor_Fin || "");
-    setObs_TurnoEspecial(turnoEspecial.Obs_TurnoEspecial || "");
-    setTot_AprendicesAsistieron(turnoEspecial.Tot_AprendicesAsistieron || "");
-    setId_Ficha(turnoEspecial.Id_Ficha || "");
-    setImg_Asistencia(turnoEspecial.Img_Asistencia || null);
-    setId_Funcionario(turnoEspecial.Id_Funcionario || "");
-    setId_Unidad(turnoEspecial.Id_Unidad || "");
-    const selectedFic = Fichas.find(
-      (ficha) => ficha.Id_Ficha === turnoEspecial.Id_Ficha
-    );
-    setSelectedFicha(selectedFic || null);
-    const selectedFun = Funcionarios.find(
-      (funcionario) =>
-        funcionario.Id_Funcionario === turnoEspecial.Id_Funcionario
-    );
-    setSelectedFuncionario(selectedFun || null);
-    const selectedUni = Unidades.find(
-      (unidad) => unidad.Id_Unidad === turnoEspecial.Id_Unidad
-    );
-    setSelectedUnidad(selectedUni || null);
-  }
-
+    if (turnoEspecial) {
+      setId_TurnoEspecial(turnoEspecial.Id_TurnoEspecial || "");
+      setFec_TurnoEspecial(turnoEspecial.Fec_TurnoEspecial || "");
+      setHor_Inicio(turnoEspecial.Hor_Inicio || "");
+      setHor_Fin(turnoEspecial.Hor_Fin || "");
+      setObs_TurnoEspecial(turnoEspecial.Obs_TurnoEspecial || "");
+      setTot_AprendicesAsistieron(turnoEspecial.Tot_AprendicesAsistieron || "");
+      setId_Ficha(turnoEspecial.Id_Ficha || "");
+      setImg_Asistencia(turnoEspecial.Img_Asistencia || null);
+      setId_Funcionario(turnoEspecial.Id_Funcionario || "");
+      setId_Unidad(turnoEspecial.Id_Unidad || "");
+      const selectedFic = Fichas.find(
+        (ficha) => ficha.Id_Ficha === turnoEspecial.Id_Ficha
+      );
+      setSelectedFicha(selectedFic || null);
+      const selectedFun = Funcionarios.find(
+        (funcionario) =>
+          funcionario.Id_Funcionario === turnoEspecial.Id_Funcionario
+      );
+      setSelectedFuncionario(selectedFun || null);
+      const selectedUni = Unidades.find(
+        (unidad) => unidad.Id_Unidad === turnoEspecial.Id_Unidad
+      );
+      setSelectedUnidad(selectedUni || null);
+    }
   };
 
   useEffect(() => {
     setData();
   }, [turnoEspecial]);
-  
+
   const { msg } = alerta;
 
   return (
@@ -439,16 +438,18 @@ const FormTurnosEspeciales = ({
               value={buttonForm}
               className="bg-botones w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
             />
-            <input
-              type="button"
-              id="button"
-              value="Limpiar"
-              onClick={() => {
-                clearForm();
-                updateTextButton("Enviar");
-              }}
-              className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-700 md:w-auto"
-            />
+            {stateButton && (
+              <input
+                type="button"
+                id="button"
+                value="Limpiar"
+                onClick={() => {
+                  clearForm();
+                  updateTextButton("Enviar");
+                }}
+                className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-700 md:w-auto"
+              />
+            )}
           </div>
         </form>
       </div>

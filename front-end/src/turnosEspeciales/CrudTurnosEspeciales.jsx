@@ -24,6 +24,8 @@ const CrudTurnosEspeciales = () => {
   const [crearDataTable, setCrearDataTable] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+  const [stateButton, setStateButton] = useState(true);
+
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
@@ -54,11 +56,9 @@ const CrudTurnosEspeciales = () => {
     Id_Unidad: "",
   });
 
-  const titleModul = [
-    "REPORTE DE TURNOS ESPECIALES"
-  ]
+  const titleModul = ["REPORTE DE TURNOS ESPECIALES"];
   const titleForm = ["CREAR TURNOS ESPECIALES"];
-    const tableName = "TurnosEspeciales"
+  const tableName = "TurnosEspeciales";
 
   const shouldShowPhoto = turnoEspecialList.some(
     (row) => row.Img_Asistencia !== undefined
@@ -75,6 +75,7 @@ const CrudTurnosEspeciales = () => {
     "Documento Funcionario",
     "Nombre Funcionario",
     "Nombre Unidad",
+    "Asistencia",
     shouldShowPhoto && "Archivo Asistencia",
     "Acciones",
   ].filter(Boolean);
@@ -85,6 +86,7 @@ const CrudTurnosEspeciales = () => {
         getTurnoEspecial(Id_TurnoEspecial),
         setStateAddturnoEspecial(true),
         toggleModal(),
+        setStateButton(false),
       ]}
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
@@ -113,6 +115,30 @@ const CrudTurnosEspeciales = () => {
       turnoEspecial.funcionario.Nom_Funcionario,
       turnoEspecial.unidad.Nom_Unidad,
     ];
+
+    const Asistencia = () => {
+      return (
+        <label className="inline-flex items-center cursor-pointer">
+          <span className="text-sm font-medium text-gray-900 dark:text-gray-300 me-2 uppercase">
+            No
+          </span>
+          <input
+            type="checkbox"
+            value=""
+            className="sr-only peer"
+            onClick={() => console.log("Holaaaaaaaaaaaaaa")}
+          />
+          <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+          <span className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 uppercase">
+            Si
+          </span>
+        </label>
+      );
+    };
+    
+    // Ejemplo de cómo insertar el componente Asistencia en la posición 10 de rowData
+    rowData.splice(10, 0, <Asistencia />);
+    
     if (shouldShowPhoto) {
       rowData.push(
         <img
@@ -237,7 +263,6 @@ const CrudTurnosEspeciales = () => {
     });
   };
 
-
   const updateTextButton = (text) => {
     setButtonForm(text);
   };
@@ -260,12 +285,15 @@ const CrudTurnosEspeciales = () => {
           resetForm={resetForm}
           updateTextButtom={updateTextButton}
           titleForm={titleForm}
+          setStateButton={setStateButton}
           form={
             <FormTurnosEspeciales
               buttonForm={buttonForm}
               turnoEspecial={turnoEspecial}
               updateTextButton={updateTextButton}
               getAllTurnosEspeciales={getAllTurnosEspeciales}
+              stateButton={stateButton}
+              setStateButton={setStateButton}
             />
           }
         />

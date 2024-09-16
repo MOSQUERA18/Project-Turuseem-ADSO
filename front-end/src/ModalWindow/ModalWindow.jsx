@@ -11,6 +11,7 @@ function ModalWindow({
   titleForm,
   resetForm,
   updateTextButtom,
+  setStateButton
 }) {
   return (
     <>
@@ -18,6 +19,7 @@ function ModalWindow({
       <button
         onClick={() => {
           setStateAddNewRow(!stateAddNewRow);
+          setStateButton(true)
           if (typeof toggleModal === 'function') {
             toggleModal();
           }

@@ -12,6 +12,8 @@ const FormTalentoHumano = ({
   talentoHumano,
   updateTextButton,
   getAllTalentoHumano,
+  stateButton,
+  setStateButton,
 }) => {
   const [Id_Talento_Humano, setId_Talento_Humano] = useState("");
   const [Nom_Talento_Humano, setNom_Talento_Humano] = useState("");
@@ -119,18 +121,16 @@ const FormTalentoHumano = ({
     if (!soloTextoRegex.test(Nom_Talento_Humano)) {
       setAlerta({
         msg: "El campo Nombre solo permite Letras",
-        error:true
-      })
-      return
-      
+        error: true,
+      });
+      return;
     }
     if (!soloTextoRegex.test(Ape_Talento_Humano)) {
       setAlerta({
         msg: "El campo Apellido solo permite Letras",
-        error:true
-      })
-      return
-      
+        error: true,
+      });
+      return;
     }
 
     const token = ReactSession.get("token");
@@ -159,6 +159,7 @@ const FormTalentoHumano = ({
           },
           config
         );
+        setStateButton(true);
         successMessage = "Talento Humano actualizado correctamente!";
         updateTextButton("Enviar");
       } else if (buttonForm === "Enviar") {
@@ -413,16 +414,18 @@ const FormTalentoHumano = ({
               value={buttonForm}
               className="bg-botones w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
             />
-            <input
-              type="button"
-              id="button"
-              value="Limpiar"
-              onClick={() => {
-                clearForm();
-                updateTextButton("Enviar");
-              }}
-              className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-700 md:w-auto"
-            />
+            {stateButton && (
+              <input
+                type="button"
+                id="button"
+                value="Limpiar"
+                onClick={() => {
+                  clearForm();
+                  updateTextButton("Enviar");
+                }}
+                className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-700 md:w-auto"
+              />
+            )}
           </div>
         </form>
       </div>
