@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
@@ -5,6 +6,7 @@ import { useState, useEffect } from "react";
 import clienteAxios from "../config/axios";
 import Alerta from "../components/Alerta";
 import { ReactSession } from "react-client-session";
+import { error } from "jquery";
 
 const FormTurnosEspeciales = ({
   buttonForm,
@@ -115,6 +117,65 @@ const FormTurnosEspeciales = ({
 
   const sendForm = async (e) => {
     e.preventDefault();
+
+    if (!Fec_TurnoEspecial) {
+      // console.log("Fecha Vacia");
+      setAlerta({
+        msg:"La Fecha Del Turno No puede Estar Vacia",
+        error:true
+      })
+      return
+    }
+
+    if (!Hor_Inicio) {
+      setAlerta({
+        msg:"La Hora Inicio No puede Estar Vacia",
+        error:true
+      })
+      return
+    }
+    if (!Hor_Fin) {
+      setAlerta({
+        msg:"La Hora fin No puede Estar Vacia",
+        error:true
+      })
+      return
+    }
+    if (!Obs_TurnoEspecial) {
+      setAlerta({
+        msg:"La Observacion No puede Estar Vacia",
+        error:true
+      })
+      return
+    }
+    if (!Tot_AprendicesAsistieron) {
+      setAlerta({
+        msg:"El total de Aprendices No puede Estar Vacio",
+        error:true
+      })
+      return
+    }
+    if (!Id_Ficha) {
+      setAlerta({
+        msg:"La Ficha No puede Estar Vacia",
+        error:true
+      })
+    }
+    if (!Id_Funcionario) {
+      setAlerta({
+        msg:"El Nombre del Funcionario No puede Estar Vacia",
+        error:true
+      })
+      return
+    }
+    if (!Id_Unidad) {
+      setAlerta({
+        msg:"La Unidad No puede Estar Vacia",
+        error:true
+      })
+      return
+    }
+
     try {
       const formData = new FormData();
 
@@ -170,6 +231,7 @@ const FormTurnosEspeciales = ({
       // });
     }
   };
+
 
   const clearForm = () => {
     setId_TurnoEspecial("");
@@ -279,6 +341,7 @@ const FormTurnosEspeciales = ({
                 placeholder="Observaciones Turno Especial"
                 value={Obs_TurnoEspecial}
                 onChange={(e) => setObs_TurnoEspecial(e.target.value)}
+                maxLength={70}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               />
             </div>
@@ -287,11 +350,12 @@ const FormTurnosEspeciales = ({
                 Total Aprendices
               </label>
               <input
-                type="text"
+                type="number"
                 id="total_aprendices"
                 placeholder="Total Aprendices Asistieron"
                 value={Tot_AprendicesAsistieron}
                 onChange={(e) => setTot_AprendicesAsistieron(e.target.value)}
+                maxLength={2}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               />
             </div>
@@ -354,6 +418,7 @@ const FormTurnosEspeciales = ({
                 ))}
               </select>
             </div>
+
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Imagen Asistencia
@@ -372,7 +437,7 @@ const FormTurnosEspeciales = ({
               type="submit"
               id="button"
               value={buttonForm}
-              className="bg-green-600 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-blue-800 md:w-auto"
+              className="bg-botones w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
             />
             <input
               type="button"

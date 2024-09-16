@@ -26,7 +26,7 @@ export default function HeaderPublic() {
 
   return (
     <div className="w-full">  
-      <div className="bg-green-500 shadow-lg py-5 px-7">
+      <div className="bg-header shadow py-5 px-7">
         <nav className="flex justify-between">
           <div className="flex items-center space-x-3 lg:pr-16 pr-6">
             <img src="Public/IMG/LOGOTURUSEEM.png" className="w-11 drop-shadow-2xl" />
@@ -40,7 +40,7 @@ export default function HeaderPublic() {
               className={`${
                 style[0]
                   ? "text-black border-b-4 border-blue-700"
-                  : "text-black bg-green-500"
+                  : "text-black"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
               INICIO
@@ -50,7 +50,7 @@ export default function HeaderPublic() {
               className={`${
                 style[1]
                   ? "text-black border-b-4 border-blue-700"
-                  : "text-black bg-green-500"
+                  : "text-black"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
               Contacto
@@ -60,32 +60,31 @@ export default function HeaderPublic() {
               className={`${
                 style[2]
                   ? "text-black border-b-4 border-blue-700"
-                  : "text-black bg-green-500"
+                  : "text-black"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
               Consultar Turno Rutinario
             </Link>
             <Link to='consultarespecial'
-              onClick={() => selected(3)}
+              onClick={() => selected(4)}
               className={`${
-                style[3]
+                style[4]
                   ? "text-black border-b-4 border-blue-700"
-                  : "text-black bg-green-500"
+                  : "text-black"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
               Consultar Turno Especial
             </Link>
             <Link to='manual'
-              onClick={() => selected(4)}
+              onClick={() => selected(3)}
               className={`${
-                style[4]
+                style[3]
                   ? "text-black border-b-4 border-blue-700"
-                  : "text-black bg-green-500"
+                  : "text-black"
               } cursor-pointer px-3 py-2.5 font-bold text-xs leading-3 rounded uppercase`}
             >
               Manual Consulta Turno
             </Link>
-
           </ul>
           <div className=" flex space-x-5 justify-center items-center pl-2">
             <Link to="/login" className="text-black font-medium" onClick={() => selected(null)}>
@@ -98,7 +97,7 @@ export default function HeaderPublic() {
         <div className="block md:hidden w-full mt-5 ">
           <div
             onClick={() => setDropDown(!dropDown)}
-            className="cursor-pointer px-4 py-3 text-black bg-green-600 rounded flex justify-between items-center w-full"
+            className="cursor-pointer px-4 py-3 text-white bg-botones rounded flex justify-between items-center w-full"
           >
             <div className="flex space-x-2">
               <span
@@ -113,7 +112,7 @@ export default function HeaderPublic() {
                 id="textClicked"
                 className="font-bold uppercase text-sm leading-3 focus:outline-none hover:bg-gray-800 duration-100 cursor-pointer "
               >
-                {text ? text : "Home"}
+                {text ? text : "Inicio"}
               </p>
             </div>
             <svg
@@ -144,10 +143,10 @@ export default function HeaderPublic() {
               } font-normal text-base leading-4 absolute top-2  w-full flex flex-col rounded shadow-md`}
             >
               <Link to='/'
-                onClick={() => setSelectedText("Home")}
+                onClick={() => setSelectedText("Inicio")}
                 className="px-4 py-3 text-gray-600 bg-gray-50 border border-gray-50 focus:outline-none focus:bg-gray-100 hover:bg-gray-100 duration-100 cursor-pointer text-xs leading-3 font-bold uppercase"
               >
-                Home
+                Inicio
               </Link>
               <Link to='contacto'
                 onClick={() => setSelectedText("Contacto")}
@@ -159,22 +158,20 @@ export default function HeaderPublic() {
                 onClick={() => setSelectedText("Consultar Turno")}
                 className="px-4 py-3 text-gray-600 bg-gray-50 border border-gray-50 focus:outline-none focus:bg-gray-100 hover:bg-gray-100 duration-100 cursor-pointer text-xs leading-3 font-bold uppercase"
               >
-                Consultar Turno Rutinario
+                Consultar Turno
               </Link>
-
-              <Link to='consultarturnoespecial'
-                onClick={() => setSelectedText("Consultar Especial")}
-                className="px-4 py-3 text-gray-600 bg-gray-50 border border-gray-50 focus:outline-none focus:bg-gray-100 hover:bg-gray-100 duration-100 cursor-pointer text-xs leading-3 font-bold uppercase"
-              >
-                Consultar Turno Especial
-              </Link>
-
 
               <Link to='manual'
                 onClick={() => setSelectedText("Manual")}
                 className="px-4 py-3 text-gray-600 bg-gray-50 border border-gray-50 focus:outline-none focus:bg-gray-100 hover:bg-gray-100 duration-100 cursor-pointer text-xs leading-3 font-bold uppercase"
               >
                 Manual
+              </Link>
+              <Link to='consultarturnoespecial'
+                onClick={() => setSelectedText("Consultar Especial")}
+                className="px-4 py-3 text-gray-600 bg-gray-50 border border-gray-50 focus:outline-none focus:bg-gray-100 hover:bg-gray-100 duration-100 cursor-pointer text-xs leading-3 font-bold uppercase"
+              >
+                Consultar Turno Especial
               </Link>
             </ul>
           </div>

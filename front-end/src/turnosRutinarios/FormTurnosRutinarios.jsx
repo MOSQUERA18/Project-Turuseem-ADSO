@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import clienteAxios from "../config/axios";
 import Alerta from "../components/Alerta";
 import { ReactSession } from "react-client-session";
+import { error } from "jquery";
 
 const FormTurnoRutinario = ({
   buttonForm,
@@ -71,6 +72,55 @@ const FormTurnoRutinario = ({
   // Enviar formulario
   const sendForm = async (e) => {
     e.preventDefault();
+    if (!Fec_InicioTurno) {
+      setAlerta({
+        msg:"La Fecha de Inicio No Puede Estar Vacia",
+        error:true
+      })
+      return
+    }
+    if (!Fec_FinTurno) {
+      setAlerta({
+        msg:"La Fecha de Fin No Puede Estar Vacia",
+        error:true
+      })
+      return
+    }
+    if (!Hor_InicioTurno) {
+      setAlerta({
+        msg:"La Hora de Inicio No Puede Estar Vacia",
+        error:true
+      })
+      return
+    }
+    if (!Hor_FinTurno) {
+      setAlerta({
+        msg:"La Hora de Fin No Puede Estar Vacia",
+        error:true
+      })
+      return
+    }
+    if (!Ind_Asistencia) {
+      setAlerta({
+        msg:"El Indicador No Puede Estar Vacio",
+        error:true
+      })
+      return
+    }
+    if (!Id_Aprendiz) {
+      setAlerta({
+        msg:"El Nombre Del Aprendiz No puede Estar Vacio",
+        error:true
+      })
+      return
+    }
+    if (!Id_Unidad) {
+      setAlerta({
+        msg:"La Unidad No Puede Estar Vacia",
+        error:true
+      })
+      return
+    }
     const token = ReactSession.get("token");
     const config = {
       headers: {
@@ -422,7 +472,7 @@ const crearRegistroInasistencia = async (Id_TurnoRutinario) => {
               type="submit"
               id="button"
               value={buttonForm}
-              className="bg-green-600 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-blue-800 md:w-auto"
+              className="bg-botones w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
             />
             <input
               type="button"

@@ -4,6 +4,7 @@ import UnitModel from "../models/unitModel.js";
 import OfficialModel from "../models/officialModel.js";
 import { logger } from "../middleware/logMiddleware.js";
 import ProgramaModel from "../models/programaModel.js";
+import { Op, Sequelize} from "sequelize";
 
 export const getAllTurnosEspeciales = async (req, res) => {
   try {
@@ -148,10 +149,11 @@ export const updateTurnoEspecial = async (req, res) => {
       Obs_TurnoEspecial,
       Tot_AprendicesAsistieron,
       Id_Ficha,
-      Img_Asistencia,
       Id_Funcionario,
       Id_Unidad,
     } = req.body;
+
+    const Img_Asistencia = req.file ? req.file.filename : null;
 
     // Intento de actualizar un turno especial específico por ID.
     const [updated] = await TurnoEspecialModel.update(
@@ -218,8 +220,19 @@ export const deleteTurnoEspecial = async (req, res) => {
 
 export const getTurnoEspecialForFichas = async (req, res) => {
   try {
+
+        // Obtenemos la fecha de hoy y eliminamos la parte de la hora
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+        // Formateamos la fecha en formato de YYYY-MM-DD para usar en la consulta
+        const fechaHoy = hoy.toISOString().split("T")[0]; // 'YYYY-MM-DD'
+
     const turnoEspecialForAprendiz = await TurnoEspecialModel.findAll({
-      where: { Id_Ficha : req.params.Id_Ficha },
+      where: { Id_Ficha : req.params.Id_Ficha,
+        [Op.and]: [
+          Sequelize.literal(`DATE(Fec_TurnoEspecial) >= '${fechaHoy}'`),
+        ]
+       },
       include: [
         {
           model: FichasModel,

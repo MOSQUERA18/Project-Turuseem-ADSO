@@ -142,9 +142,11 @@ export const updateApprentice = async (req, res) => {
       Patrocinio,
       Estado,
       Nom_Empresa,
-      CentroConvivencia,
-      Foto_Aprendiz
+      CentroConvivencia
     } = req.body;
+
+// En el backend
+const Foto_Aprendiz = req.file ? req.file.filename : null;
 
     const [updated] = await ApprenticeModel.update(
       {
@@ -199,6 +201,7 @@ export const deleteApprentice = async (req, res) => {
     return res.status(500).json({ message: "Error interno del servidor", error: error.message });
   }
 };
+
 
 
 // Función importCSV
@@ -272,4 +275,3 @@ export const importCSV = async (req, res) => {
     res.status(500).json({ error: 'Error al procesar el archivo CSV' });
   }
 };
-

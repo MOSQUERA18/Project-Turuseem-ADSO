@@ -235,7 +235,8 @@ function WriteTable({ titles, data, titleModul, tableName }) {
           $("#TableDinamic td, #TableDinamic th").css({
             "text-align": "center",
             "vertical-align": "middle",
-          });
+          });      
+          $(".dt-layout-cell").removeClass("dt-layout-end")
         },
       });
     }
@@ -264,7 +265,7 @@ function WriteTable({ titles, data, titleModul, tableName }) {
           <button
             type="button"
             className="text-green-600 bg-sky-200 hover:bg-sky-300 focus:ring-4 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-5 mx-1 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4"
-            // onClick={handleGetInnerHTML}
+            onClick={handleEsportSQL}
             title="Export SQL"
           >
             {loading ? (
@@ -278,11 +279,11 @@ function WriteTable({ titles, data, titleModul, tableName }) {
           <div className="inline-block min-w-full">
             <div className="overflow-hidden">
               <table
-                className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table table-responsive"
+                className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table table-responsive border-b border-black"
                 id="TableDinamic"
                 ref={tableRef}
               >
-                <thead className="text-xs text-gray-500 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <thead className="text-xs text-black uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b border-black">
                   <tr>
                     {titles.map((title, index) => (
                       <th scope="col" key={index}>
@@ -293,11 +294,11 @@ function WriteTable({ titles, data, titleModul, tableName }) {
                 </thead>
                 <tbody>
                   {data.map((row, rowIndex) => (
-                    <tr key={rowIndex}>
+                    <tr key={rowIndex} className="border-b border-black">
                       {row.slice(0, -1).map((cell, cellIndex) => (
                         <td key={cellIndex}>{cell}</td>
                       ))}
-                      <td className="py-2 px-4 border-b">
+                      <td className="py-2 px-4 border-b border-black">
                         {Array.isArray(row[row.length - 1]) ? (
                           row[row.length - 1].map((button, buttonIndex) => (
                             <span key={buttonIndex}>{button}</span>
@@ -313,6 +314,9 @@ function WriteTable({ titles, data, titleModul, tableName }) {
             </div>
           </div>
         </div>
+      </div>
+      <div className="custom-buttons hidden">
+        
       </div>
     </>
   );
