@@ -58,6 +58,7 @@ const CrudMemorandum = () => {
     "Apellido",
     "Fecha Memorando",
     "Motivo Memorando",
+    "Memorando Enviado",
     "Acciones",
   ];
 
@@ -103,6 +104,7 @@ const CrudMemorandum = () => {
       memorandum.aprendiz?.Ape_Aprendiz,
       memorandum.Fec_OtroMemorando,
       memorandum.Mot_OtroMemorando,
+      memorandum.Enviado,
     ];
     rowData.push(ButtonsForMemorandum(memorandum.Id_OtroMemorando));
     return rowData;

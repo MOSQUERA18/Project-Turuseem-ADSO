@@ -39,6 +39,8 @@ router
   .put(upload.single('Foto_Aprendiz'), updateApprentice)
   .delete(checkAuth, deleteApprentice);
 
+
+
 // Ruta para actualizar inasistencias y eliminar memorandos si es necesario
 router.put('/:Id_Aprendiz/actualizar-inasistencia', async (req, res) => {
   try {

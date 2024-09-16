@@ -354,8 +354,13 @@ const FormTurnosEspeciales = ({
                 id="total_aprendices"
                 placeholder="Total Aprendices Asistieron"
                 value={Tot_AprendicesAsistieron}
-                onChange={(e) => setTot_AprendicesAsistieron(e.target.value)}
-                maxLength={2}
+                onChange={(e) => {
+                  const {value} = e.target;
+                  if (value.length <= 2) {
+                    setTot_AprendicesAsistieron(value);
+                  }
+                }}
+                
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               />
             </div>

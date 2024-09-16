@@ -110,7 +110,7 @@ const CrudTurnosEspeciales = () => {
       turnoEspecial.Tot_AprendicesAsistieron,
       turnoEspecial.Id_Ficha,
       turnoEspecial.Id_Funcionario,
-      turnoEspecial.funcionario.Nom_Funcionario,
+      turnoEspecial.funcionario.Nom_Funcionario + " "+ turnoEspecial.funcionario.Ape_Funcionario,
       turnoEspecial.unidad.Nom_Unidad,
     ];
     if (shouldShowPhoto) {
