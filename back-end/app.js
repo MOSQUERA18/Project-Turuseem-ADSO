@@ -212,6 +212,9 @@ TurnoEspecialModel.belongsTo(OfficialModel, {
   as: "funcionario",
 });
 
+
+
+
 //Funcionario No esta relacionado con ninguno sino hasta con Turno Especial....
 
 // RELACIONES PARA TURNOS RUTINARIOS

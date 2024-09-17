@@ -37,8 +37,6 @@ const CrudTurnosRutinarios = () => {
     });
   };
 
-
-
   const [turnoRutinario, setTurnoRutinario] = useState({
     Fec_InicioTurno: "",
     Fec_FinTurno: "",
@@ -101,7 +99,7 @@ const CrudTurnosRutinarios = () => {
       turnoRutinario.Obs_TurnoRutinario,
       turnoRutinario.Ind_Asistencia,
       turnoRutinario.Id_Aprendiz,
-      turnoRutinario.aprendiz.Nom_Aprendiz,
+      turnoRutinario.aprendiz.Nom_Aprendiz + " " +turnoRutinario.aprendiz.Ape_Aprendiz,
       turnoRutinario.aprendiz.fichas.Id_Ficha,
       turnoRutinario.unidad?.Nom_Unidad,
     ];
@@ -212,6 +210,7 @@ const CrudTurnosRutinarios = () => {
               text: "El registro ha sido borrado.",
               icon: "success",
             });
+            getAllTurnosRutinarios();
           } else {
             Swal.fire({
               title: "Error!",

@@ -9,7 +9,8 @@ import {
   getAllApprentices,
   getApprentice,
   updateApprentice,
-  importCSV,
+  importCSV
+
 } from "../controller/apprenticeController.js";
 import checkAuth from "../middleware/authMiddleware.js";
 import ApprenticeModel from "../models/apprenticeModel.js";
@@ -38,8 +39,6 @@ router
   .get(checkAuth, getApprentice)
   .put(upload.single('Foto_Aprendiz'), updateApprentice)
   .delete(checkAuth, deleteApprentice);
-
-
 
 // Ruta para actualizar inasistencias y eliminar memorandos si es necesario
 router.put('/:Id_Aprendiz/actualizar-inasistencia', async (req, res) => {
