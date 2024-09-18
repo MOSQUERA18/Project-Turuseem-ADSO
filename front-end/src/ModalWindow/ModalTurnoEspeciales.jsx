@@ -182,7 +182,7 @@ const ModalTurnoEspeciales = ({
               <div className="flex items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
                 <button
                   onClick={handleGuardarCambios}
-                  className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none rounded-lg text-sm px-5 py-2.5"
+                  className="text-white bg-botones hover:bg-botoneshover focus:ring-4 focus:outline-none rounded-lg text-sm px-5 py-2.5 uppercase font-semibold"
                 >
                   Guardar Cambios
                 </button>
