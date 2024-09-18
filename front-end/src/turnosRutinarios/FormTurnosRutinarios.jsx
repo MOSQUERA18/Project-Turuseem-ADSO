@@ -69,7 +69,7 @@
 //       } catch (error) {
 //         console.error("Error fetching Areas:", error);
 //       }
-//     };    
+//     };
 
 //     const getAprendicesByArea = async () => {
 //       try {
@@ -87,11 +87,9 @@
 //       }
 //     };
 
-    
 //       if (Id_Area) {
 //         getAprendicesByArea();
 //       }
-    
 
 //     // const getAllUnidad = async () => {
 //     //   try {
@@ -129,11 +127,10 @@
 //       }
 //     }
 
-
 //     if (turnoRutinario && Id_Area) {
 //       getAprendicesByArea(); // Cargar los aprendices para el área seleccionada
 //     }
-    
+
 //     // Limpia unidades y aprendices al cambiar el área seleccionada
 //     setUnidades([]);
 //     setAprendices([]);
@@ -142,8 +139,6 @@
 //     // getAllAprendiz();
 //     // getAllUnidad();
 //   }, [turnoRutinario,Id_Area]);
-
-
 
 //   // Enviar formulario
 //   const sendForm = async (e) => {
@@ -422,7 +417,6 @@
 //           {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
 //           <div className="grid grid-cols-2 gap-4">
 
-
 //           <div className="space-y-2">
 //               <label className="block text-sm font-medium text-gray-700">
 //                 Área
@@ -610,8 +604,6 @@
 
 // export default FormTurnoRutinario;
 
-
-
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
@@ -645,7 +637,6 @@ const FormTurnoRutinario = ({
   const [Aprendiz, setAprendiz] = useState([]);
   const [Unidad, setUnidad] = useState([]);
   const [alerta, setAlerta] = useState({});
-  
 
   // Obtener datos de Aprendiz y Unidad
   useEffect(() => {
@@ -987,10 +978,24 @@ const FormTurnoRutinario = ({
               </label>
               <input
                 type="time"
-                id="hora_inicio"
+                id="Hora_Inicio"
                 value={Hor_InicioTurno}
-                onChange={(e) => setHor_InicioTurno(e.target.value)}
+                onChange={(e) => {
+                  const selectedTime = e.target.value;
+                  const maxTime = "06:59"; // 7:00 AM en formato de 24 horas
+
+                  if (selectedTime > maxTime) {
+                    setHor_InicioTurno(selectedTime);
+                  } else {
+                    setAlerta({
+                      msg:"La Hora no Puede ser Menor a las 7:00 AM.",
+                      error:true
+                    })
+                    setHor_InicioTurno(""); // Opcional: Limpia el campo si es mayor a 4:00 PM
+                  }
+                }}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                max="16:00" // Este atributo limita el valor máximo que puede seleccionarse
               />
             </div>
 
@@ -1000,10 +1005,25 @@ const FormTurnoRutinario = ({
               </label>
               <input
                 type="time"
-                id="hora_fin"
+                id="Hora_Fin"
                 value={Hor_FinTurno}
-                onChange={(e) => setHor_FinTurno(e.target.value)}
+                onChange={(e) => {
+                  const selectedTime = e.target.value;
+                  const maxTime = "16:01"; // 5:00 PM en formato de 24 horas
+
+                  // Validar si la hora seleccionada es menor o igual a las 5:00 PM
+                  if (selectedTime <= maxTime) {
+                    setHor_FinTurno(selectedTime);
+                  } else {
+                    setAlerta({
+                      msg:"La hora no puede ser mayor a las 4:00 PM.",
+                      error:true
+                    })
+                    setHor_FinTurno(""); // Opcional: Limpia el campo si es mayor a 5:00 PM
+                  }
+                }}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                max="16:01" // Este atributo limita el valor máximo que puede seleccionarse
               />
             </div>
 

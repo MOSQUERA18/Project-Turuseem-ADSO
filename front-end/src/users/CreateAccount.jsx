@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import Alerta from "../components/Alerta.jsx";
 import clienteAxios from "../config/axios.jsx";
 const UserForm = () => {
@@ -133,17 +132,6 @@ const UserForm = () => {
               className="bg-green-800 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-900 md:w-auto"
             />
           </form>
-          <nav className="mt-6 lg:flex lg:justify-between">
-            <Link to="/" className="block text-center my-5 text-gray-500">
-              ¿Tienes una Cuenta? Inicia Sesion
-            </Link>
-            <Link
-              to="/olvide-password"
-              className="block text-center my-5 text-gray-500"
-            >
-              Olvide mi Contraseña
-            </Link>
-          </nav>
         </div>
       </div>
     </>

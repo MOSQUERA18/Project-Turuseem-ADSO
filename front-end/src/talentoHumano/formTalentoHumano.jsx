@@ -51,9 +51,9 @@ const FormTalentoHumano = ({
     e.preventDefault();
 
     // Verificar campo por campo y mostrar alerta si está vacío
-    if (!Id_Talento_Humano) {
+    if (!Id_Talento_Humano || Id_Talento_Humano.length < 7) {
       setAlerta({
-        msg: "El campo Documento está vacío.",
+        msg: "El Campo Documento Debe Tener Minimo 7 Digitos.",
         error: true,
       });
       return;

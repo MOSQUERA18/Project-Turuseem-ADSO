@@ -25,9 +25,9 @@ const FormFuncionarios = ({
   const sendForm = async (e) => {
     e.preventDefault();
 
-    if (!Id_Funcionario) {
+    if (!Id_Funcionario || Id_Funcionario.length < 7) {
       setAlerta({
-        msg: "El Documento no puede estar Vacio",
+        msg: "El Documento No Puede Tener Menos de 7 Digitos",
         error: true,
       });
       return;

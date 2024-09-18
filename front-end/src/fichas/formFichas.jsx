@@ -50,10 +50,9 @@ const FormFichas = ({
     e.preventDefault();
 
     // const soloTextoRegex = /^[a-zA-ZÀ-ÿ\s]+$/; // Solo letras y espacios
-
-    if (!Id_Ficha) {
+    if (!Id_Ficha || Id_Ficha.length < 6) {
       setAlerta({
-        msg: "El Numero de Ficha esta Vacia",
+        msg: "El Numero de Ficha No puede Tener menos de 6 Digitos",
         error: true,
       });
       return;

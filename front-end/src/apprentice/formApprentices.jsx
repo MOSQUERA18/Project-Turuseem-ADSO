@@ -5,6 +5,7 @@ import { useRef, useState, useEffect } from "react";
 import clienteAxios from "../config/axios";
 import { ReactSession } from "react-client-session";
 import Alerta from "../components/Alerta";
+import { error } from "jquery";
 
 const URI = "/ciudades/";
 const UriFichas = "/fichas/";
@@ -95,14 +96,15 @@ const FormApprentices = ({
     e.preventDefault();
     //VALIDAR CAMPO POR CAMPO
 
-    // Verificar campo por campo y mostrar alerta si está vacío
-    if (!Id_Aprendiz) {
-      setAlerta({
-        msg: "El campo Documento está vacío.",
-        error: true,
-      });
-      return;
-    }
+  // Verificar si el Documento tiene menos de 7 dígitos
+  if (!Id_Aprendiz || Id_Aprendiz.length < 7) {
+    setAlerta({
+      msg: "El Documento del Aprendiz debe tener al menos 7 dígitos.",
+      error: true,
+    });
+    return;  // Detiene el envío del formulario si no pasa la validación
+  }
+
     if (!Nom_Aprendiz) {
       setAlerta({
         msg: "El campo Nombres está vacío.",
