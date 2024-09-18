@@ -26,7 +26,7 @@ const CrudApprentices = () => {
   const [crearDataTable, setCrearDataTable] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-
+  const [stateButton, setStateButton] = useState(true);
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -119,6 +119,7 @@ const CrudApprentices = () => {
         getApprentice(Id_Aprendiz),
         setStateAddApprentice(true),
         toggleModal(),
+        setStateButton(false),
       ]}
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
@@ -294,7 +295,7 @@ const CrudApprentices = () => {
     <>
       <h1 className="text-zinc-950 font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar Informacion de los
-        <span className="text-botonesc"> Aprendices</span>
+        <span className="text-botones"> Aprendices</span>
       </h1>
       <div className="flex justify-between ">
         <div className="flex justify-between">
@@ -302,7 +303,7 @@ const CrudApprentices = () => {
             <h1 className="font-bold text-lg text-gray-500 mb-3 ">
               Subir Archivo CSV
             </h1>
-            <ImportarCSV URI={URI}  />
+            <ImportarCSV URI={URI} />
           </div>
         </div>
         <div className="flex my-10 space-x-5">
@@ -314,6 +315,7 @@ const CrudApprentices = () => {
             toggleModal={toggleModal} // Aquí pasamos la función
             isOpen={isOpen}
             titleForm={titleForm}
+            setStateButton={setStateButton}
             form={
               <FormApprentices
                 buttonForm={buttonForm}
@@ -323,6 +325,8 @@ const CrudApprentices = () => {
                 toggleModal={toggleModal}
                 getAllApprentices={getAllApprentices}
                 isOpen={isOpen}
+                stateButton={stateButton}
+                setStateButton={setStateButton}
               />
             }
           />
@@ -355,7 +359,7 @@ const CrudApprentices = () => {
       </div>
       <div className="overflow-x-auto">
         <br />
-        {msg && <Alerta alerta={alerta} />}
+        {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
         <hr />
 
         {crearDataTable && (

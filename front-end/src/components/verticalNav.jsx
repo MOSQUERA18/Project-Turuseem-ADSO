@@ -149,7 +149,7 @@ const VerticalNav = () => {
       >
         <div className="hidden xl:flex justify-start p-6 items-center space-x-3">
           <img src="/Public/IMG/LOGOTURUSEEM.png" className="w-12 drop-shadow-2xl" />
-          <p className="text-3xl leading-6 text-white font-bold bg-gre">TURUSEEM</p>
+          <p className="text-3xl leading-6 text-white font-bold">TURUSEEM</p>
         </div>
         <div className="flex flex-col justify-end items-center pl-4 w-full border-white border-b space-y-3 py-5 active:text-white hover:text-white">
           {[

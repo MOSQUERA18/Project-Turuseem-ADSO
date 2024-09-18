@@ -6,7 +6,7 @@ import ApprenticeModel from "./apprenticeModel.js";
 const TurnoEspecialAprendizModel = db.define(
   "turnosespeciales_aprendices",
   {
-    Id_TurnoEspecialAprendiz: {
+    Id_TurnoEspecial_Aprendiz: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -25,15 +25,16 @@ const TurnoEspecialAprendizModel = db.define(
         key: "Id_Aprendiz",
       },
     },
-    Ind_Asistencia :{
-      type:DataTypes.ENUM('Si','No')
+    Ind_Asistencia: {
+      type: DataTypes.ENUM("Si", "No"),
     },
   },
   {
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
-  },
-  { freezeTableName: true }
+    freezeTableName: true, 
+  }
 );
+
 export default TurnoEspecialAprendizModel;

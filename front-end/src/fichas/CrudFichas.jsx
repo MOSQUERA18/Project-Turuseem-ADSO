@@ -22,6 +22,9 @@ const CrudFichas = () => {
   const [crearDataTable, setCrearDataTable] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+  const [stateButton, setStateButton] = useState(true);
+
+
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
@@ -65,6 +68,7 @@ const CrudFichas = () => {
         getFicha(Id_Ficha),
         setStateAddFichas(true),
         toggleModal(),
+        setStateButton(false)
       ]}
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
@@ -220,6 +224,7 @@ const CrudFichas = () => {
           resetForm={resetForm}
           updateTextButtom={updateTextButton}
           titleForm={titleForm}
+          setStateButton={setStateButton}
           form={
             <FormFichas
               buttonForm={buttonForm}
@@ -229,6 +234,8 @@ const CrudFichas = () => {
               getAllFichas={getAllFichas}
               toggleModal={toggleModal} // Aquí pasamos la función
               isOpen={isOpen}
+              stateButton={stateButton}
+              setStateButton={setStateButton}
             />
           }
         />

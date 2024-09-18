@@ -7,7 +7,14 @@ import clienteAxios from "../config/axios";
 import Alerta from "../components/Alerta";
 import { error } from "jquery";
 
-const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
+const FormFichas = ({
+  buttonForm,
+  fichas,
+  updateTextButton,
+  getAllFichas,
+  stateButton,
+  setStateButton,
+}) => {
   const [Id_Ficha, setId_Ficha] = useState("");
   const [Fec_InicioEtapaLectiva, setFec_InicioEtapaLectiva] = useState("");
   const [Fec_FinEtapaLectiva, setFec_FinEtapaLectiva] = useState("");
@@ -112,6 +119,7 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
           },
           config
         );
+        setStateButton(true);
         mensajCRUD = "Ficha Actualziada Exitosamente";
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
@@ -300,17 +308,19 @@ const FormFichas = ({ buttonForm, fichas, updateTextButton, getAllFichas }) => {
               value={buttonForm}
               className="bg-botones w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
             />
-            <input
-              type="button"
-              id="button"
-              value="Limpiar"
-              onClick={() => {
-                clearForm();
-                updateTextButton("Enviar");
-              }}
-              className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-500 md:w-auto"
-              aria-label="Limpiar"
-            />
+            {stateButton && (
+              <input
+                type="button"
+                id="button"
+                value="Limpiar"
+                onClick={() => {
+                  clearForm();
+                  updateTextButton("Enviar");
+                }}
+                className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-500 md:w-auto"
+                aria-label="Limpiar"
+              />
+            )}
           </div>
         </form>
       </div>

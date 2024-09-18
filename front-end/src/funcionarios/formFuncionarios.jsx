@@ -1,4 +1,3 @@
-
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
@@ -11,6 +10,8 @@ const FormFuncionarios = ({
   funcionario,
   updateTextButton,
   getAllFuncionarios,
+  stateButton,
+  setStateButton,
 }) => {
   const [Id_Funcionario, setId_Funcionario] = useState("");
   const [Nom_Funcionario, setNom_Funcionario] = useState("");
@@ -24,60 +25,59 @@ const FormFuncionarios = ({
   const sendForm = async (e) => {
     e.preventDefault();
 
-
     if (!Id_Funcionario) {
       setAlerta({
         msg: "El Documento no puede estar Vacio",
-        error:true
-      })
-      return
+        error: true,
+      });
+      return;
     }
 
     if (!Nom_Funcionario) {
       setAlerta({
-          msg:"El Nombre Esta Vacio",
-          error:true
-        })
-        return
+        msg: "El Nombre Esta Vacio",
+        error: true,
+      });
+      return;
     }
 
     if (!Ape_Funcionario) {
       setAlerta({
         msg: "El Apellido no puede Estar Vacio",
-        error:true
-      })
-      return
+        error: true,
+      });
+      return;
     }
 
     if (!Genero) {
       setAlerta({
-        msg:"El Genero No puede Estar Vacio",
-        error:true
-      })
-      return
+        msg: "El Genero No puede Estar Vacio",
+        error: true,
+      });
+      return;
     }
 
     if (!Tel_Funcionario) {
       setAlerta({
-        msg:"El Telefono No puede Estar Vacio",
-        error:true
-      })
-      return
+        msg: "El Telefono No puede Estar Vacio",
+        error: true,
+      });
+      return;
     }
     if (!Estado) {
       setAlerta({
-        msg:"El Estado No puede Estar Vacio",
-        error:true
-      })
-      return
+        msg: "El Estado No puede Estar Vacio",
+        error: true,
+      });
+      return;
     }
 
     if (!Cargo) {
       setAlerta({
-        msg:"El Cargo No puede Estar Vacio",
-        error:true
-      })
-      return
+        msg: "El Cargo No puede Estar Vacio",
+        error: true,
+      });
+      return;
     }
     const token = ReactSession.get("token");
     const config = {
@@ -87,9 +87,8 @@ const FormFuncionarios = ({
       },
     };
 
-
-         // Validaciones básicas
-  const soloTextoRegex = /^[a-zA-ZÀ-ÿ\s]+$/; // Solo letras y espacios
+    // Validaciones básicas
+    const soloTextoRegex = /^[a-zA-ZÀ-ÿ\s]+$/; // Solo letras y espacios
 
     // Validar que los campos de texto solo contengan letras
     if (!soloTextoRegex.test(Nom_Funcionario)) {
@@ -99,25 +98,24 @@ const FormFuncionarios = ({
       });
       return;
     }
-      // Validar que los campos de texto solo contengan letras
-  if (!soloTextoRegex.test(Ape_Funcionario)) {
-    setAlerta({
-      msg: "El campo de Apellido solo debe contener letras.",
-      error: true,
-    });
-    return;
-  }
+    // Validar que los campos de texto solo contengan letras
+    if (!soloTextoRegex.test(Ape_Funcionario)) {
+      setAlerta({
+        msg: "El campo de Apellido solo debe contener letras.",
+        error: true,
+      });
+      return;
+    }
 
-  let numbers = /^\d*$/;
+    let numbers = /^\d*$/;
 
-  if(!numbers.test(Tel_Funcionario)){
-    setAlerta({
-      msg: "El campo de Telefono solo debe contener Numeros.",
-      error: true,
-    });
-    return;
-  }
-  
+    if (!numbers.test(Tel_Funcionario)) {
+      setAlerta({
+        msg: "El campo de Telefono solo debe contener Numeros.",
+        error: true,
+      });
+      return;
+    }
 
     try {
       let mensajeCRUD = "";
@@ -135,6 +133,7 @@ const FormFuncionarios = ({
           },
           config
         );
+        setStateButton(true);
         mensajeCRUD = "Funcionario actualizado correctamente!";
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
@@ -325,16 +324,18 @@ const FormFuncionarios = ({
               value={buttonForm}
               className="bg-botones w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
             />
-            <input
-              type="button"
-              id="button"
-              value="Limpiar"
-              onClick={() => {
-                clearForm();
-              }}
-              className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-500 md:w-auto"
-              aria-label="Limpiar"
-            />
+            {stateButton && (
+              <input
+                type="button"
+                id="button"
+                value="Limpiar"
+                onClick={() => {
+                  clearForm();
+                }}
+                className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-500 md:w-auto"
+                aria-label="Limpiar"
+              />
+            )}
           </div>
         </form>
       </div>

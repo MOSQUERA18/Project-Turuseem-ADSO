@@ -20,6 +20,7 @@ const CrudUnidades = () => {
   const [alerta, setAlerta] = useState({});
   const [crearDataTable, setCrearDataTable] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [stateButton, setStateButton] = useState(true);
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -58,7 +59,12 @@ const CrudUnidades = () => {
 
   const ButtonsForOtherModules = (Id_Unidad) => [
     <button
-      onClick={() => [getUnidad(Id_Unidad), setStateAddUnidad(true), toggleModal()]}
+      onClick={() => [
+        getUnidad(Id_Unidad),
+        setStateAddUnidad(true),
+        toggleModal(),
+        setStateButton(false),
+      ]}
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
     >
@@ -83,7 +89,7 @@ const CrudUnidades = () => {
       unidad.areas?.Nom_Area || "N/A", // Area (usando "N/A" si areas o Nom_Area es undefined)
     ];
     rowData.push(ButtonsForOtherModules(unidad.Id_Unidad));
-    return rowData
+    return rowData;
   });
 
   const getAllUnidades = async () => {
@@ -107,7 +113,10 @@ const CrudUnidades = () => {
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);
-      setAlerta({ msg: "Error No Existen Unidades Registradas!.", error: true });
+      setAlerta({
+        msg: "Error No Existen Unidades Registradas!.",
+        error: true,
+      });
     }
   };
 
@@ -212,6 +221,7 @@ const CrudUnidades = () => {
           resetForm={resetForm}
           updateTextButtom={updateTextButton}
           titleForm={titleForm}
+          setStateButton={setStateButton}
           form={
             <FormUnidades
               buttonForm={buttonForm}
@@ -219,6 +229,8 @@ const CrudUnidades = () => {
               updateTextButton={updateTextButton}
               setUnidad={setUnidad}
               getAllUnidades={getAllUnidades}
+              stateButton={stateButton}
+              setStateButton={setStateButton}
             />
           }
         />

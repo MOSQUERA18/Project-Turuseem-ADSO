@@ -5,13 +5,14 @@ import { useState, useEffect } from "react";
 import clienteAxios from "../config/axios";
 import Alerta from "../components/Alerta";
 import { ReactSession } from "react-client-session";
-import { error } from "jquery";
 
 const FormTurnoRutinario = ({
   buttonForm,
   turnoRutinario,
   updateTextButton,
   getAllTurnosRutinarios,
+  stateButton,
+  setStateButton,
 }) => {
   // Estados del formulario
   const [Id_TurnoRutinario, setId_TurnoRutinario] = useState("");
@@ -212,6 +213,7 @@ const FormTurnoRutinario = ({
           },
           config
         );
+        setStateButton(true);
         mensajeCRUD = "Turno Rutinario Actualizado Exitosamente";
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
@@ -573,17 +575,19 @@ const FormTurnoRutinario = ({
               value={buttonForm}
               className="bg-botones w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
             />
-            <input
-              type="button"
-              id="button"
-              value="Limpiar"
-              onClick={() => {
-                clearForm();
-                updateTextButton("Enviar");
-              }}
-              className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-500 md:w-auto"
-              aria-label="Limpiar"
-            />
+            {stateButton && (
+              <input
+                type="button"
+                id="button"
+                value="Limpiar"
+                onClick={() => {
+                  clearForm();
+                  updateTextButton("Enviar");
+                }}
+                className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-500 md:w-auto"
+                aria-label="Limpiar"
+              />
+            )}
           </div>
         </form>
       </div>

@@ -20,6 +20,8 @@ const CrudTurnosRutinarios = () => {
   const [crearDataTable, setCrearDataTable] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+  const [stateButton, setStateButton] = useState(true);
+
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
@@ -74,6 +76,7 @@ const CrudTurnosRutinarios = () => {
         getTurnoRutinario(Id_TurnoRutinario),
         setStateAddturnoRutinario(true),
         toggleModal(),
+        setStateButton(false),
       ]}
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
@@ -240,7 +243,7 @@ const CrudTurnosRutinarios = () => {
     <>
       <h1 className="text-zinc-950 font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar Información de los{" "}
-        <span className="text-botonesc"> Turnos Rutinarios</span>
+        <span className="text-botones"> Turnos Rutinarios</span>
       </h1>
 
       <div className="flex pb-3">
@@ -252,12 +255,15 @@ const CrudTurnosRutinarios = () => {
           resetForm={resetForm}
           updateTextButtom={updateTextButton}
           titleForm={titleForm}
+          setStateButton={setStateButton}
           form={
             <FormTurnosRutinarios
               buttonForm={buttonForm}
               turnoRutinario={turnoRutinario}
               updateTextButton={updateTextButton}
               getAllTurnosRutinarios={getAllTurnosRutinarios}
+              stateButton={stateButton}
+              setStateButton={setStateButton}
             />
           }
         />
@@ -265,7 +271,7 @@ const CrudTurnosRutinarios = () => {
 
       <div className="overflow-x-auto">
         <hr />
-        {msg && <Alerta alerta={alerta} />}
+        {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
 
         {crearDataTable && (
           <WriteTable

@@ -225,7 +225,8 @@ function WriteTable({ titles, data, titleModul, tableName }) {
         lengthChange: false,
         pageLength: 5,
         language: {
-          search: "Buscar:",
+          search: "_INPUT_",
+          searchPlaceholder: "Buscar...",
           zeroRecords: "No se encontraron resultados",
           info: "Mostrando página _PAGE_ de _PAGES_ paginas",
           infoEmpty: "No hay registros disponibles",
@@ -235,8 +236,8 @@ function WriteTable({ titles, data, titleModul, tableName }) {
           $("#TableDinamic td, #TableDinamic th").css({
             "text-align": "center",
             "vertical-align": "middle",
-          });      
-          $(".dt-layout-cell").removeClass("dt-layout-end")
+          });
+          $(".dt-layout-cell").removeClass("dt-layout-end");
         },
       });
     }
@@ -318,9 +319,7 @@ function WriteTable({ titles, data, titleModul, tableName }) {
           </div>
         </div>
       </div>
-      <div className="custom-buttons hidden">
-        
-      </div>
+      <div className="custom-buttons hidden"></div>
     </>
   );
 }
