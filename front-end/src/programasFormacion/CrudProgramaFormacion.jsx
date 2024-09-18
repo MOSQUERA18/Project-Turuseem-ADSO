@@ -201,7 +201,7 @@ const CrudPrograma = () => {
       <h1 className="text-zinc-950 font-extrabold text-4xl md:text-4xl text-center mb-7">
         {" "}
         Gestionar Informacion de los{" "}
-        <span className="text-blue-700"> Programas de Formacion</span>
+        <span className="text-botones"> Programas de Formacion</span>
       </h1>
       <div className="flex pb-3">
         <ModalWindow
@@ -210,7 +210,7 @@ const CrudPrograma = () => {
           resetForm={resetForm}
           toggleModal={toggleModal} // Aquí pasamos la función
           isOpen={isOpen}
-          updateTextBottom={updateTextButton}
+          updateTextButtom={updateTextButton}
           titleForm={titleForm}
           form={
             <FormProgramaFormacion

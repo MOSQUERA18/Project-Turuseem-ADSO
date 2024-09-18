@@ -26,6 +26,8 @@ const CrudApprentices = () => {
   const [crearDataTable, setCrearDataTable] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+
+
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
@@ -85,7 +87,7 @@ const CrudApprentices = () => {
   );
   const titleModul = ["REPORTE DE APRENDICES"];
   const titleForm = ["REGISTRAR APRENDICES"];
-  const tableName = "Aprendices"
+  const tableName = "Aprendices";
   const titles = [
     "Documento",
     "Nombres",
@@ -191,7 +193,7 @@ const CrudApprentices = () => {
       }
     } catch (error) {
       setAlerta({
-        msg: `Ocurrio Un Error No Existen Aprendices Registrados!`,
+        msg: `Error!!!! No Existen Aprendices Registrados!`,
         error: true,
       });
       console.error(error);
@@ -292,7 +294,7 @@ const CrudApprentices = () => {
     <>
       <h1 className="text-zinc-900 font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar Informacion de los
-        <span className="text-green-700"> Aprendices</span>
+        <span className="text-botonesc"> Aprendices</span>
       </h1>
       <div className="flex justify-between ">
         <div className="flex justify-between">
@@ -300,7 +302,7 @@ const CrudApprentices = () => {
             <h1 className="font-bold text-lg text-zinc-900 mb-3 ">
               Subir Archivo CSV
             </h1>
-            <ImportarCSV URI={URI} />
+            <ImportarCSV URI={URI}  />
           </div>
         </div>
         <div className="flex my-10 space-x-5">
@@ -308,7 +310,7 @@ const CrudApprentices = () => {
             stateAddNewRow={stateAddApprentice}
             setStateAddNewRow={setStateAddApprentice}
             resetForm={resetForm}
-            updateTextBottom={updateTextButton}
+            updateTextButtom={updateTextButton}
             toggleModal={toggleModal} // Aquí pasamos la función
             isOpen={isOpen}
             titleForm={titleForm}
@@ -342,19 +344,16 @@ const CrudApprentices = () => {
                 }
               } catch (error) {
                 console.error("Error al intentar descargar el archivo:", error);
-                alert("Error al intentar descargar el archivo.");
               }
             }}
-            className="bg-green-700 text-white px-4 py-2 rounded hover:bg-blue-800 font-semibold flex items-center"
+            className="bg-botones text-white px-4 py-2 rounded hover:bg-blue-800 font-semibold flex items-center"
           >
-            <FaArrowCircleDown className="mx-1"/>
+            <FaArrowCircleDown className="mx-1" />
             Descargar CSV
           </a>
         </div>
       </div>
       <div className="overflow-x-auto">
-        {/* <hr /> */}
-
         <br />
         {msg && <Alerta alerta={alerta} />}
         <hr />

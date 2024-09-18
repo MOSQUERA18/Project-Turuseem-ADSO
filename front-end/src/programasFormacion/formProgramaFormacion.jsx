@@ -41,6 +41,30 @@ const FormProgramaFormacion = ({
 
   const sendForm = async (e) => {
     e.preventDefault();
+    if (!Nom_ProgramaFormacion) {
+      setAlerta({
+        msg: "El Nombre Del Programa Esta Vacio",
+        error:true
+      })
+      return
+    }
+    if (!Tip_ProgramaFormacion) {
+      setAlerta({
+        msg: "El Tipo De Programa Esta Vacio",
+        error:true
+      })
+      return
+    }
+    if (!Id_Area) {
+      setAlerta({
+        msg: "El Nombre Del Area Esta Vacio",
+        error:true
+      })
+      return
+    }
+
+
+
     const token = ReactSession.get("token");
     const config = {
       headers: {
@@ -182,7 +206,7 @@ const FormProgramaFormacion = ({
               type="submit"
               id="button"
               value={buttonForm}
-              className="bg-green-600 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-blue-800 md:w-auto"
+              className="bg-botones w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
             />
             <input
               type="button"

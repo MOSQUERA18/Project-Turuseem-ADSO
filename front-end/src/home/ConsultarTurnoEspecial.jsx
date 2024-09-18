@@ -24,20 +24,20 @@ const ConsultarTurnoEspecial = () => {
         const turnosEspeciales = respuestaApi.data;
         setTurnoEspecialList(turnosEspeciales);
 
-        // Verifica si hay algún turno especial con una fecha válida
-        const tieneTurnoValido = turnosEspeciales.some(turno => mostrarTurnoSiEsActual(turno.Fec_TurnoEspecial));
+        // // Verifica si hay algún turno especial con una fecha válida
+        // const tieneTurnoValido = turnosEspeciales.some(turno => mostrarTurnoSiEsActual(turno.Fec_TurnoEspecial));
 
-        if (tieneTurnoValido) {
-          setAlerta({
-            msg: "Ficha Con Turno Programado",
-            error: false
-          });
-        } else {
-          setAlerta({
-            msg: "No hay turnos programados vigentes",
-            error: true
-          });
-        }
+        // if (tieneTurnoValido) {
+        //   setAlerta({
+        //     msg: "Ficha Con Turno Programado",
+        //     error: false
+        //   });
+        // } else {
+        //   setAlerta({
+        //     msg: "No hay turnos programados vigentes",
+        //     error: true
+        //   });
+        // }
         
         clearForm();
       } else {
@@ -56,18 +56,7 @@ const ConsultarTurnoEspecial = () => {
   };
 
 
-  //VALIDAR LA FECHA
-  const mostrarTurnoSiEsActual = (Fec_TurnoEspecial) => {
-    const hoy = new Date(); // Fecha actual
-    hoy.setHours(0, 0, 0, 0); // Establece la hora a 00:00:00 para comparación
 
-    // Convertir la fecha del turno en un objeto Date y también establecer la hora a 00:00:00
-    const fechaTurnoDate = new Date(Fec_TurnoEspecial);
-    fechaTurnoDate.setHours(0, 0, 0, 0);
-
-    // Compara si la fecha del turno es igual o mayor que la de hoy
-    return fechaTurnoDate >= hoy;
-  };
 
   const clearForm = () => {
     setId_Ficha("");
@@ -96,7 +85,7 @@ const ConsultarTurnoEspecial = () => {
               id="document"
               value={Id_Ficha}
               onChange={(e) => {
-                const value = e.target.value;
+                const {value} = e.target;
                 if (value.length <= 8) {
                   setId_Ficha(value);
                 }
@@ -110,7 +99,7 @@ const ConsultarTurnoEspecial = () => {
               type="submit"
               id="button"
               value="Buscar"
-              className="bg-green-700 w-full py-2 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-300 md:w-auto"
+              className="bg-botones w-full py-2 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
             />
           </div>
         </form>
@@ -119,35 +108,33 @@ const ConsultarTurnoEspecial = () => {
         <div className="px-4 sm:px-10 md:px-20">
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white text-center text-sm">
-              <thead className="text-white bg-green-700">
+              <thead className="text-white bg-botones">
                 <tr>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
-                    Numero Ficha
+                  <th className="py-2 px-4 border-x-2 border-white">
+                    Ficha
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
-                    Fecha Turno Especial
+                  <th className="py-2 px-4 border-x-2 border-white">
+                    Fecha Turno
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  <th className="py-2 px-4 border-x-2 border-white">
                     Hora Inicio
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
+                  <th className="py-2 px-4 border-x-2 border-white">
                     Hora Fin
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
-                    Documento de Instructor de Acompañamiento
+                  <th className="py-2 px-4 border-x-2 border-white">
+                    Documento de Instructor
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
-                    Nombre Instructor de Acompañamiento del Turno
+                  <th className="py-2 px-4 border-x-2 border-white">
+                    Nombre Instructor
                   </th>
-                  <th className="py-2 px-4 border-2 border-b-gray-500">
-                    Nombre Unidad
+                  <th className="py-2 px-4 border-x-2 border-white">
+                    Unidad
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {turnoEspecialList
-                  .filter((turnoEspecial) => mostrarTurnoSiEsActual(turnoEspecial.Fec_TurnoEspecial))
-                  .map((turnoEspecial) => (
+                {turnoEspecialList.map((turnoEspecial) => (
                     <tr
                       key={turnoEspecial.Id_TurnoEspecial}
                       className="odd:bg-white even:bg-gray-100"
@@ -168,7 +155,7 @@ const ConsultarTurnoEspecial = () => {
                         {turnoEspecial.Id_Funcionario}
                       </td>
                       <td className="py-2 px-4 border-b">
-                        {turnoEspecial.funcionario.Nom_Funcionario}
+                        {`${turnoEspecial.funcionario.Nom_Funcionario} `+ turnoEspecial.funcionario.Ape_Funcionario}
                       </td>
                       <td className="py-2 px-4 border-b">
                         {turnoEspecial.unidad?.Nom_Unidad}

@@ -42,10 +42,9 @@ const ContactCard = ({
 const Contacto = () => {
   function calcularEdad(fechaNacimiento) {
     const hoy = new Date();
-    console.log(hoy);
     
     const nacimiento = new Date(fechaNacimiento);
-    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+    let edad = hoy.getFullYear() - nacimiento.getFullYear()
     const mes = hoy.getMonth() - nacimiento.getMonth();
     
     // Ajustar la edad si el cumpleaños aún no ha ocurrido este año
@@ -108,7 +107,7 @@ const Contacto = () => {
   return (
     <>
       <h1 className="text-stone-900 font-black text-3xl sm:text-4xl text-center">
-        EQUIPO DE <span className="text-blue-700">DESARROLLO</span>
+        EQUIPO DE <span className="text-botones">DESARROLLO</span>
       </h1>
       <div className="flex flex-wrap justify-center gap-6 mt-5">
         {contacts.map((contact, index) => (

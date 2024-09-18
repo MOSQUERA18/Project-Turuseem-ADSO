@@ -4,6 +4,10 @@ import Swal from "sweetalert2";
 import { ReactSession } from "react-client-session";
 import FormMemorandum from "./formMemorandum.jsx";
 
+//BOTON MEMORANDO
+import { MdEmail } from "react-icons/md";
+
+
 // Icons
 import Alerta from "../components/Alerta.jsx";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
@@ -11,7 +15,7 @@ import WriteTable from "../Tables/Data-Tables.jsx";
 
 import { MdDeleteOutline } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
-import { AiOutlineEye, AiOutlineSend } from "react-icons/ai";
+import { AiOutlineEye} from "react-icons/ai";
 
 const CrudMemorandum = () => {
   const [memorandumList, setMemorandumList] = useState([]);
@@ -25,6 +29,16 @@ const CrudMemorandum = () => {
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
+
+
+  const resetForm =()=>{
+    setMemorandum({
+      Id_OtroMemorando: "",
+      Fec_OtroMemorando: "",
+      Mot_OtroMemorando: "",
+      Id_Aprendiz: "",
+    })
+  }
 
   // const navigate = useNavigate();
 
@@ -78,7 +92,7 @@ const CrudMemorandum = () => {
       className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
       key="delete"
     >
-      <AiOutlineSend />
+     <MdEmail />
     </button>,
   ];
 
@@ -107,7 +121,7 @@ const CrudMemorandum = () => {
       },
     };
     try {
-      const respuestApi = await clienteAxios("/otrosmemorandos/", config);
+      const respuestApi = await clienteAxios("/otrosmemorandos", config);
       if (respuestApi.status == 200) {
         setMemorandumList(respuestApi.data);
         setCrearDataTable(true);
@@ -250,9 +264,9 @@ const CrudMemorandum = () => {
 
   return (
     <>
-      <h1 className="text-black font-extrabold text-4xl md:text-4xl text-center mb-7">
+      <h1 className="text-zinc-900 font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar informacion de los{" "}
-        <span className="text-blue-700">Memorandos</span>
+        <span className="text-botonesc">Memorandos</span>
       </h1>
       <div className="flex pb-3">
         <ModalWindow
@@ -261,7 +275,8 @@ const CrudMemorandum = () => {
           toggleModal={toggleModal} // Aquí pasamos la función
           isOpen={isOpen}
           titleForm={titleForm}
-          updateTextBottom={updateTextButton}
+          updateTextButtom={updateTextButton}
+          resetForm={resetForm}
           form={
             <FormMemorandum
               buttonForm={buttonForm}
@@ -275,7 +290,7 @@ const CrudMemorandum = () => {
       </div>
       <div className="overflow-x-auto">
         <hr />
-        {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
+        {msg && <Alerta alerta={alerta} />}
 
         {crearDataTable && (
           <WriteTable

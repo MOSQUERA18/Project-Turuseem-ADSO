@@ -66,6 +66,12 @@ export const createUnit = async (req, res) => {
   try {
     // Intento de crear una nueva unidad con los datos proporcionados en el cuerpo de la solicitud.
     const newUnit = await UnitModel.create(req.body);
+    const { Nom_Unidad } = req.body;
+    
+    // Validación: Verificar si el nombre de la unidad está vacío.
+    if (!Nom_Unidad || Nom_Unidad.trim() === "") {
+      return res.status(400).json({ message: "El nombre de la unidad no puede ir vacío" });
+    }
 
     // Respuesta exitosa con los datos de la nueva unidad.
     res.status(201).json({

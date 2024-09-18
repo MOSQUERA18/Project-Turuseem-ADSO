@@ -15,14 +15,13 @@ export const emailOlvidePassword = async (datos) => {
 
     const { Cor_User, Nom_User, token } = datos;
 
-    // Configurar las opciones del email
-    const mailOptions = {
-      from: "SENA EMPRESA - LA GRANJA",
-      to: Cor_User,
-      subject: "Reestablece tu Contraseña",
-      text: "Reestablece tu Contraseña",
-      html: `<p>Hola ${Nom_User}, has solicitado reestablecer tu Contraseña.</p>
-                <p>Sigue el siguiente enlace para generar una nueva Contraseña: 
+  const mailOptions = {
+    from: '"SENA EMPRESA - LA GRANJA" <linarrsbarraganjuandavid@gmail.com>',
+    to: Cor_User,
+    subject: "Reestablece tu Contraseña",
+    text: "Reestablece tu Contraseña",
+    html: `<p>Hola ${Nom_User}, has solicitado reestablecer tu Contraseña.</p>
+                <p>Sigue el sigiente enlace para generar una nueva Contraseña: 
                     <a href="${process.env.FRONTEND_URL}/olvide-password/${token}">
                         Reestablecer Contraseña
                     </a>
