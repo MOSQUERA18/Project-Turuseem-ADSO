@@ -8,7 +8,14 @@ import Alerta from "../components/Alerta";
 import clienteAxios from "../config/axios";
 import { error } from "jquery";
 
-const FormMemorandum = ({ buttonForm, memorandum, updateTextButton,getAllMemorandum }) => {
+const FormMemorandum = ({
+  buttonForm,
+  memorandum,
+  updateTextButton,
+  getAllMemorandum,
+  stateButton,
+  setStateButton,
+}) => {
   const [Fec_Memorando, setFec_Memorando] = useState("");
   const [Mot_Memorando, setMot_Memorando] = useState("");
   const [Id_Aprendiz, setId_Aprendiz] = useState("");
@@ -39,38 +46,37 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton,getAllMemoran
   const sendForm = async (e) => {
     e.preventDefault();
 
-
     if (!Fec_Memorando) {
       setAlerta({
-        msg:"La Fecha No Puede Estar Vacia",
-        error:true
-      })
-      return
+        msg: "La Fecha No Puede Estar Vacia",
+        error: true,
+      });
+      return;
     }
-    if(!Mot_Memorando){
+    if (!Mot_Memorando) {
       setAlerta({
-        msg:"El Motivo No Puede Ir Vacio",
-        error:true
-      })
-      return
+        msg: "El Motivo No Puede Ir Vacio",
+        error: true,
+      });
+      return;
     }
-    if(!Id_Aprendiz){
+    if (!Id_Aprendiz) {
       setAlerta({
-        msg:"El Documento del Aprendiz No Puede Ir Vacio",
-        error:true
-      })
-      return
+        msg: "El Documento del Aprendiz No Puede Ir Vacio",
+        error: true,
+      });
+      return;
     }
-         // Validaciones básicas
-  const soloTextoRegex = /^[a-zA-ZÀ-ÿ\s]+$/; // Solo letras y espacios
+    // Validaciones básicas
+    const soloTextoRegex = /^[a-zA-ZÀ-ÿ\s]+$/; // Solo letras y espacios
 
-  if(!soloTextoRegex.test(Mot_Memorando)){
-    setAlerta({
-      msg:"El motivo debe de Ser En Letras",
-      error:true
-    })
-    return
-  }
+    if (!soloTextoRegex.test(Mot_Memorando)) {
+      setAlerta({
+        msg: "El motivo debe de Ser En Letras",
+        error: true,
+      });
+      return;
+    }
     const token = ReactSession.get("token");
     const config = {
       headers: {
@@ -89,6 +95,7 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton,getAllMemoran
           },
           config
         );
+        setStateButton(true)
         if (respuestApi.status == 200) {
           updateTextButton("Enviar");
           setAlerta({
@@ -221,16 +228,18 @@ const FormMemorandum = ({ buttonForm, memorandum, updateTextButton,getAllMemoran
               className="bg-botones w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
               aria-label="Enviar"
             />
-            <input
-              type="button"
-              id="button"
-              value="Limpiar"
-              onClick={() => {
-                clearForm();
-                updateTextButton("Enviar");
-              }}
-              className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-700 md:w-auto"
-            />
+            {stateButton && (
+              <input
+                type="button"
+                id="button"
+                value="Limpiar"
+                onClick={() => {
+                  clearForm();
+                  updateTextButton("Enviar");
+                }}
+                className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-700 md:w-auto"
+              />
+            )}
           </div>
         </form>
       </div>

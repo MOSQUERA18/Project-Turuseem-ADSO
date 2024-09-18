@@ -2,9 +2,11 @@ import TurnoEspecialModel from "../models/turnoEspecialModel.js";
 import FichasModel from "../models/fichasModel.js";
 import UnitModel from "../models/unitModel.js";
 import OfficialModel from "../models/officialModel.js";
+import ApprenticeModel from "../models/apprenticeModel.js";
+import TurnoEspecialAprendizModel from "../models/turnoEspeciales_Aprendices.js";
 import { logger } from "../middleware/logMiddleware.js";
 import ProgramaModel from "../models/programaModel.js";
-import { Op, Sequelize} from "sequelize";
+import { Op, Sequelize } from "sequelize";
 
 export const getAllTurnosEspeciales = async (req, res) => {
   try {
@@ -49,7 +51,6 @@ export const getAllTurnosEspeciales = async (req, res) => {
     });
   }
 };
-
 
 export const getTurnoEspecial = async (req, res) => {
   try {
@@ -115,7 +116,9 @@ export const createTurnoEspecial = async (req, res) => {
 
     // Intento de crear un nuevo turno especial con los datos proporcionados.
     const newTurnoEspecial = await TurnoEspecialModel.create({
-      Fec_TurnoEspecial: new Date(Fec_TurnoEspecial).toISOString().split('T')[0],
+      Fec_TurnoEspecial: new Date(Fec_TurnoEspecial)
+        .toISOString()
+        .split("T")[0],
       Hor_Inicio,
       Hor_Fin,
       Obs_TurnoEspecial,
@@ -125,14 +128,29 @@ export const createTurnoEspecial = async (req, res) => {
       Id_Funcionario,
       Id_Unidad,
     });
+
+    const aprendices = await ApprenticeModel.findAll({
+      where: { Id_Ficha: Id_Ficha },
+    });
+
+    const asociaciones = aprendices.map((aprendiz) => ({
+      Ind_Asistencia: "Si",
+      Id_Aprendiz: aprendiz.Id_Aprendiz,
+      Id_TurnoEspecial: newTurnoEspecial.Id_TurnoEspecial,
+    }));
+
+    await TurnoEspecialAprendizModel.bulkCreate(asociaciones);
     // Verifico si se creó el nuevo turno especial.
     if (newTurnoEspecial) {
-      res.status(201).json(newTurnoEspecial);
+      res.status(201).json({
+        message: "Turno Especial Creado Exitosamente",
+        newTurnoEspecial,
+      });
       return; // Uso de return para salir de la función después de enviar la respuesta.
     }
   } catch (error) {
     // Capturo y manejo cualquier error ocurrido durante la creación.
-    logger.error(`Error al crear el turno especial: ${error.message}`);
+    logger.error(`Error al crear el turno especial: ${error}`);
     res.status(500).json({
       message: "Error al crear el turno especial.",
     });
@@ -158,7 +176,9 @@ export const updateTurnoEspecial = async (req, res) => {
     // Intento de actualizar un turno especial específico por ID.
     const [updated] = await TurnoEspecialModel.update(
       {
-        Fec_TurnoEspecial: new Date(Fec_TurnoEspecial).toISOString().split('T')[0],
+        Fec_TurnoEspecial: new Date(Fec_TurnoEspecial)
+          .toISOString()
+          .split("T")[0],
         Hor_Inicio,
         Hor_Fin,
         Obs_TurnoEspecial,
@@ -220,19 +240,19 @@ export const deleteTurnoEspecial = async (req, res) => {
 
 export const getTurnoEspecialForFichas = async (req, res) => {
   try {
-
-        // Obtenemos la fecha de hoy y eliminamos la parte de la hora
-        const hoy = new Date();
-        hoy.setHours(0, 0, 0, 0);
-        // Formateamos la fecha en formato de YYYY-MM-DD para usar en la consulta
-        const fechaHoy = hoy.toISOString().split("T")[0]; // 'YYYY-MM-DD'
+    // Obtenemos la fecha de hoy y eliminamos la parte de la hora
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    // Formateamos la fecha en formato de YYYY-MM-DD para usar en la consulta
+    const fechaHoy = hoy.toISOString().split("T")[0]; // 'YYYY-MM-DD'
 
     const turnoEspecialForAprendiz = await TurnoEspecialModel.findAll({
-      where: { Id_Ficha : req.params.Id_Ficha,
+      where: {
+        Id_Ficha: req.params.Id_Ficha,
         [Op.and]: [
           Sequelize.literal(`DATE(Fec_TurnoEspecial) >= '${fechaHoy}'`),
-        ]
-       },
+        ],
+      },
       include: [
         {
           model: FichasModel,
@@ -250,7 +270,9 @@ export const getTurnoEspecialForFichas = async (req, res) => {
     });
 
     if (turnoEspecialForAprendiz.length === 0) {
-      res.status(404).json({ message: "La ficha no esta Programada Para Turno" });
+      res
+        .status(404)
+        .json({ message: "La ficha no esta Programada Para Turno" });
       return;
     }
     res.status(200).json(turnoEspecialForAprendiz);

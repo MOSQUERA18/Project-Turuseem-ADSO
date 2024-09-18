@@ -9,7 +9,8 @@ import {
   getAllApprentices,
   getApprentice,
   updateApprentice,
-  importCSV,
+  importCSV
+
 } from "../controller/apprenticeController.js";
 import checkAuth from "../middleware/authMiddleware.js";
 import ApprenticeModel from "../models/apprenticeModel.js";

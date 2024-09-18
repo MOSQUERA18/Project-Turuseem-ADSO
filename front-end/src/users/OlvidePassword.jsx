@@ -6,6 +6,7 @@ import clienteAxios from "../config/axios.jsx";
 const OlvidePassword = () => {
   const [Cor_User, setCor_User] = useState("");
   const [alerta, setAlerta] = useState({});
+  const [isDisabled, setDisabled] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,6 +25,7 @@ const OlvidePassword = () => {
       setAlerta({
         msg: data.msg,
       });
+      setDisabled(true);
     } catch (error) {
       setAlerta({
         msg: error.response.data.msg,
@@ -61,7 +63,8 @@ const OlvidePassword = () => {
             <input
               type="submit"
               value="Recuperar Contraseña"
-              className="bg-botones w-full py-3 px-8 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
+              className={isDisabled ? "bg-blue-500 text-white font-bold py-2 px-4 rounded opacity-50 cursor-not-allowed uppercase" : "bg-botones w-full py-3 px-8 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto" }
+              disabled={isDisabled}
             />
           </form>
           <nav className="mt-8 lg:flex lg:justify-between">

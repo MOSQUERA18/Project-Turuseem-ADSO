@@ -7,7 +7,6 @@ import FormMemorandum from "./formMemorandum.jsx";
 //BOTON MEMORANDO
 import { MdEmail } from "react-icons/md";
 
-
 // Icons
 import Alerta from "../components/Alerta.jsx";
 import ModalWindow from "../ModalWindow/ModalWindow.jsx";
@@ -15,7 +14,7 @@ import WriteTable from "../Tables/Data-Tables.jsx";
 
 import { MdDeleteOutline } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
-import { AiOutlineEye} from "react-icons/ai";
+import { AiOutlineEye } from "react-icons/ai";
 
 const CrudMemorandum = () => {
   const [memorandumList, setMemorandumList] = useState([]);
@@ -26,19 +25,20 @@ const CrudMemorandum = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const [stateButton, setStateButton] = useState(true);
+
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
 
-
-  const resetForm =()=>{
+  const resetForm = () => {
     setMemorandum({
       Id_OtroMemorando: "",
       Fec_OtroMemorando: "",
       Mot_OtroMemorando: "",
       Id_Aprendiz: "",
-    })
-  }
+    });
+  };
 
   // const navigate = useNavigate();
 
@@ -58,6 +58,7 @@ const CrudMemorandum = () => {
     "Apellido",
     "Fecha Memorando",
     "Motivo Memorando",
+    "Memorando Enviado",
     "Acciones",
   ];
 
@@ -67,6 +68,7 @@ const CrudMemorandum = () => {
         getMemorandum(Id_OtroMemorando),
         setStateAddMemorandum(true),
         toggleModal(),
+        setStateButton(false),
       ]}
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
@@ -92,7 +94,7 @@ const CrudMemorandum = () => {
       className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
       key="delete"
     >
-     <MdEmail />
+      <MdEmail />
     </button>,
   ];
 
@@ -103,6 +105,7 @@ const CrudMemorandum = () => {
       memorandum.aprendiz?.Ape_Aprendiz,
       memorandum.Fec_OtroMemorando,
       memorandum.Mot_OtroMemorando,
+      memorandum.Enviado,
     ];
     rowData.push(ButtonsForMemorandum(memorandum.Id_OtroMemorando));
     return rowData;
@@ -217,7 +220,7 @@ const CrudMemorandum = () => {
         config
       );
       console.log(response);
-      
+
       if (response.status === 201) {
         const pdfWindow = window.open("");
         pdfWindow.document.write(
@@ -227,8 +230,8 @@ const CrudMemorandum = () => {
     } catch (error) {
       setAlerta({
         msg: error.response.data.message,
-        error: true
-      })
+        error: true,
+      });
     }
   };
   const sendMemorandum = async (Id_OtroMemorando) => {
@@ -245,18 +248,18 @@ const CrudMemorandum = () => {
         config
       );
       console.log(response.data.message);
-      
+
       if (response.status === 201) {
         setAlerta({
           msg: response.data.message,
-          error: false
-        })
+          error: false,
+        });
       }
     } catch (error) {
       setAlerta({
         msg: error.response.data.message,
-        error: true
-      })
+        error: true,
+      });
     }
   };
 
@@ -266,7 +269,7 @@ const CrudMemorandum = () => {
     <>
       <h1 className="text-zinc-900 font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar informacion de los{" "}
-        <span className="text-botonesc">Memorandos</span>
+        <span className="text-botones">Memorandos</span>
       </h1>
       <div className="flex pb-3">
         <ModalWindow
@@ -277,6 +280,7 @@ const CrudMemorandum = () => {
           titleForm={titleForm}
           updateTextButtom={updateTextButton}
           resetForm={resetForm}
+          setStateButton={setStateButton}
           form={
             <FormMemorandum
               buttonForm={buttonForm}
@@ -284,6 +288,8 @@ const CrudMemorandum = () => {
               updateTextButton={updateTextButton}
               setMemorandum={setMemorandum}
               getAllMemorandum={getAllMemorandum}
+              stateButton={stateButton}
+              setStateButton={setStateButton}
             />
           }
         />

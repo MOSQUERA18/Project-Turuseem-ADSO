@@ -126,7 +126,7 @@ const LoginForm = () => {
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="absolute right-5 top-1/2 transform -translate-y-2/1"
+                className="absolute right-5 top-12 transform"
               >
                 <FaEye />
               </button>
@@ -134,7 +134,7 @@ const LoginForm = () => {
 
             <input
               type="submit"
-              value={!loading ? "Iniciar Sesión" : "Recargando..."}
+              value={loading ? "Recargando..." : "Iniciar Sesión"}
               className="bg-botones w-full py-3 px-8 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-blue-800 md:w-auto"
               disabled={loading}
             />

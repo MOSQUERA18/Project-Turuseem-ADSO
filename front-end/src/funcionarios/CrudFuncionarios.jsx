@@ -21,6 +21,9 @@ const CrudFuncionarios = () => {
   const [crearDataTable, setCrearDataTable] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+  const [stateButton, setStateButton] = useState(true);
+
+
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
@@ -67,6 +70,7 @@ const CrudFuncionarios = () => {
         getFuncionario(Id_Funcionario),
         setStateAddFuncionario(true),
         toggleModal(),
+        setStateButton(false)
       ]}
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
@@ -225,6 +229,7 @@ const CrudFuncionarios = () => {
           resetForm={resetForm}
           updateTextButtom={updateTextButton}
           titleForm={titleForm}
+          setStateButton={setStateButton}
           form={
             <FormFuncionarios
               buttonForm={buttonForm}
@@ -232,6 +237,8 @@ const CrudFuncionarios = () => {
               updateTextButton={updateTextButton}
               setFuncionario={setFuncionario}
               getAllFuncionarios={getAllFuncionarios}
+              stateButton={stateButton}
+              setStateButton={setStateButton}
             />
           }
         />
