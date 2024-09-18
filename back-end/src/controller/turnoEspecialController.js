@@ -192,17 +192,39 @@ export const updateTurnoEspecial = async (req, res) => {
         where: { Id_TurnoEspecial: req.params.Id_TurnoEspecial },
       }
     );
-    // Verifico si se realizó alguna actualización.
+
     if (updated === 0) {
       res.status(404).json({
         message: "Turno especial no encontrado",
       });
-    } else {
-      res.json({
-        message: "Turno especial actualizado correctamente",
-      });
-      return; // Uso de return para salir de la función después de enviar la respuesta.
+      return;
     }
+
+    // Primero eliminamos los registros de TurnoEspecialAprendiz asociados al turno especial.
+    await TurnoEspecialAprendizModel.destroy({
+      where: { Id_TurnoEspecial: req.params.Id_TurnoEspecial },
+    });
+
+    // Ahora obtenemos los aprendices de la nueva ficha.
+    const aprendicesUpdate = await ApprenticeModel.findAll({
+      where: { Id_Ficha: Id_Ficha },
+    });
+
+    // Creamos las nuevas asociaciones con los aprendices de la nueva ficha.
+    const nuevasAsociaciones = aprendicesUpdate.map((aprendiz) => ({
+      Ind_Asistencia: "Si", // Aquí puedes ajustar este valor según tu lógica de negocio.
+      Id_Aprendiz: aprendiz.Id_Aprendiz,
+      Id_TurnoEspecial: req.params.Id_TurnoEspecial,
+    }));
+
+    // Insertamos las nuevas asociaciones en la tabla TurnoEspecialAprendiz.
+    await TurnoEspecialAprendizModel.bulkCreate(nuevasAsociaciones);
+
+    // Respuesta exitosa
+    res.json({
+      message:
+        "Turno especial actualizado correctamente y aprendices asociados actualizados",
+    });
   } catch (error) {
     // Capturo y manejo cualquier error ocurrido durante la actualización.
     logger.error(`Error al actualizar el turno especial: ${error.message}`);
@@ -214,10 +236,18 @@ export const updateTurnoEspecial = async (req, res) => {
 
 export const deleteTurnoEspecial = async (req, res) => {
   try {
-    // Intento de eliminar un turno especial específico por ID.
-    const result = await TurnoEspecialModel.destroy({
-      where: { Id_TurnoEspecial: req.params.Id_TurnoEspecial },
+    const Id_TurnoEspecial = req.params.Id_TurnoEspecial;
+
+    // Primero eliminamos los registros de TurnoEspecialAprendiz asociados al turno especial.
+    const deletedAssociations = await TurnoEspecialAprendizModel.destroy({
+      where: { Id_TurnoEspecial: Id_TurnoEspecial },
     });
+
+    // Luego intentamos eliminar el turno especial.
+    const result = await TurnoEspecialModel.destroy({
+      where: { Id_TurnoEspecial: Id_TurnoEspecial },
+    });
+
     // Verifico si se realizó la eliminación.
     if (result === 0) {
       res.status(404).json({
@@ -225,7 +255,7 @@ export const deleteTurnoEspecial = async (req, res) => {
       });
     } else {
       res.json({
-        message: "Turno especial eliminado correctamente",
+        message: `Turno especial y ${deletedAssociations} asociaciones de aprendices eliminados correctamente`,
       });
       return; // Uso de return para salir de la función después de enviar la respuesta.
     }

@@ -111,7 +111,7 @@ const ModalTurnoEspeciales = ({
               <div className="px-4 md:p-5 space-y-2">
                 <div className="overflow-auto max-h-[60vh]">
                   <table className="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400 border-b border-black">
-                    <thead className="text-xs text-black uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b border-black">
+                    <thead className="text-xs text-black uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b border-black sticky top-0 z-10">
                       <tr>
                         <th className="py-2 px-4">Documento Aprendiz</th>
                         <th className="py-2 px-4">Nombre</th>
