@@ -4,7 +4,6 @@ import Alerta from "../components/Alerta";
 import clienteAxios from "../config/axios";
 import { ReactSession } from "react-client-session";
 
-
 const ModalTurnoEspeciales = ({
   isOpenTurnos,
   toggleModalTurnos,
@@ -58,19 +57,20 @@ const ModalTurnoEspeciales = ({
           `/turEspAprendiz/${item.Id_TurnoEspecial}`,
           {
             asistio: item.asistio,
-            Id_Aprendiz: item.Id_Aprendiz
+            Id_Aprendiz: item.Id_Aprendiz,
           },
           config
         );
         console.log("Actualizado correctamente:", response.data);
       }
 
-      setAlerta({ msg: "Cambios guardados correctamente", tipo: "exito" });
+      setAlerta({ msg: "Cambios guardados correctamente", error: false });
     } catch (error) {
       console.error("Error al actualizar los datos:", error);
-      setAlerta({ msg: "Hubo un error al guardar los cambios", tipo: "error" });
+      setAlerta({ msg: "Hubo un error al guardar los cambios", error: true });
     }
   };
+  const { msg } = alerta;
 
   return (
     <>
@@ -104,10 +104,11 @@ const ModalTurnoEspeciales = ({
                   </svg>
                 </button>
               </div>
+              <div className="px-6 mt-3">
+                {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
+              </div>
 
-              {alerta.msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
-
-              <div className="p-4 md:p-5 space-y-2">
+              <div className="px-4 md:p-5 space-y-2">
                 <div className="overflow-auto max-h-[60vh]">
                   <table className="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400 border-b border-black">
                     <thead className="text-xs text-black uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b border-black">
