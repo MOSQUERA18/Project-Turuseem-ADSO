@@ -11,8 +11,11 @@ import ModalWindow from "../ModalWindow/ModalWindow.jsx";
 
 import { MdDeleteOutline } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
+import { FaClipboardList } from "react-icons/fa6";
+import ModalTurnoEspeciales from "../ModalWindow/ModalTurnoEspeciales.jsx";
 
 const URI = "/turnoespecial";
+const URI2 = "/turEspAprendiz";
 const URI_FOTOS = "/public/uploads/";
 const URI_AXIOS = import.meta.env.VITE_BACKEND_URL;
 
@@ -23,11 +26,16 @@ const CrudTurnosEspeciales = () => {
   const [alerta, setAlerta] = useState({});
   const [crearDataTable, setCrearDataTable] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenTurnos, setIsOpenTurnos] = useState(false);
 
   const [stateButton, setStateButton] = useState(true);
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
+  };
+
+  const toggleModalTurnos = () => {
+    setIsOpenTurnos(!isOpenTurnos);
   };
 
   const resetForm = () => {
@@ -55,6 +63,7 @@ const CrudTurnosEspeciales = () => {
     Id_Funcionario: "",
     Id_Unidad: "",
   });
+  const [turnoEspecialAprendiz, setTurnoEspecialAprendiz] = useState([]);
 
   const titleModul = ["REPORTE DE TURNOS ESPECIALES"];
   const titleForm = ["CREAR TURNOS ESPECIALES"];
@@ -75,7 +84,6 @@ const CrudTurnosEspeciales = () => {
     "Documento Funcionario",
     "Nombre Funcionario",
     "Nombre Unidad",
-    "Asistencia",
     shouldShowPhoto && "Archivo Asistencia",
     "Acciones",
   ].filter(Boolean);
@@ -88,17 +96,24 @@ const CrudTurnosEspeciales = () => {
         toggleModal(),
         setStateButton(false),
       ]}
-      className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
+      className="text-blue-500 hover:text-blue-700 mr-3 p-1 rounded"
       key="get"
     >
       <FaRegEdit />
     </button>,
     <button
       onClick={() => deleteTurnoEspecial(Id_TurnoEspecial)}
-      className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
+      className="text-red-500 hover:text-red-700 p-1 rounded"
       key="delete"
     >
       <MdDeleteOutline />
+    </button>,
+    <button
+      onClick={() => [toggleModalTurnos(), getTurnoEspecialAprendiz(Id_TurnoEspecial)]}
+      className="text-botones hover:text-botoneshover p-1 rounded"
+      key="view"
+    >
+      <FaClipboardList />
     </button>,
   ];
 
@@ -116,29 +131,6 @@ const CrudTurnosEspeciales = () => {
       turnoEspecial.unidad.Nom_Unidad,
     ];
 
-    const Asistencia = () => {
-      return (
-        <label className="inline-flex items-center cursor-pointer">
-          <span className="text-sm font-medium text-gray-900 dark:text-gray-300 me-2 uppercase">
-            No
-          </span>
-          <input
-            type="checkbox"
-            value=""
-            className="sr-only peer"
-            onClick={() => console.log("Holaaaaaaaaaaaaaa")}
-          />
-          <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-          <span className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 uppercase">
-            Si
-          </span>
-        </label>
-      );
-    };
-    
-    // Ejemplo de cómo insertar el componente Asistencia en la posición 10 de rowData
-    rowData.splice(10, 0, <Asistencia />);
-    
     if (shouldShowPhoto) {
       rowData.push(
         <img
@@ -184,6 +176,7 @@ const CrudTurnosEspeciales = () => {
       console.error(error);
     }
   };
+  
   const getTurnoEspecial = async (Id_TurnoEspecial) => {
     setButtonForm("Actualizar");
     const token = ReactSession.get("token");
@@ -216,7 +209,35 @@ const CrudTurnosEspeciales = () => {
       console.error(error);
     }
   };
-
+  const getTurnoEspecialAprendiz = async (Id_TurnoEspecial) => {
+    const token = ReactSession.get("token");
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const respuestApi = await clienteAxios(
+        `${URI2}/${Id_TurnoEspecial}`,
+        config
+      );
+      if (respuestApi.status === 200) {
+        setTurnoEspecialAprendiz(respuestApi.data);
+      } else {
+        setAlerta({
+          msg: `Error al cargar los registros!`,
+          error: true,
+        });
+      }
+    } catch (error) {
+      setAlerta({
+        msg: `Error al cargar los registros!`,
+        error: true,
+      });
+      console.error(error);
+    }
+  };
   const deleteTurnoEspecial = (Id_TurnoEspecial) => {
     Swal.fire({
       title: "¿Estas seguro?",
@@ -275,7 +296,11 @@ const CrudTurnosEspeciales = () => {
         Gestionar Informacion de los
         <span className="text-botones"> Turnos Especiales</span>
       </h1>
-
+      <ModalTurnoEspeciales
+        toggleModalTurnos={toggleModalTurnos}
+        isOpenTurnos={isOpenTurnos}
+        turnoEspecialAprendiz={turnoEspecialAprendiz}
+      />
       <div className="flex pb-3">
         <ModalWindow
           stateAddNewRow={stateAddturnoEspecial}
@@ -300,7 +325,7 @@ const CrudTurnosEspeciales = () => {
       </div>
 
       <div className="overflow-x-auto">
-        {msg && <Alerta alerta={alerta} />}
+        {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
         <hr />
         {crearDataTable && (
           <WriteTable

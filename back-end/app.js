@@ -4,7 +4,7 @@ import express from "express";
 import cors from "cors";
 import checkAuth from "./src/middleware/authMiddleware.js";
 
-import path from 'path';
+import path from "path";
 
 import db from "./src/database/db.js";
 
@@ -27,8 +27,6 @@ import OtrosMemorandumRoutes from "./src/routes/OtrosMemorandosRoutes.js";
 import userRouter from "./src/routes/UserRoutes.js";
 import { logger } from "./src/middleware/logMiddleware.js";
 
-
-
 //Models
 import cityModel from "./src/models/cityModel.js";
 import ApprenticeModel from "./src/models/apprenticeModel.js";
@@ -43,19 +41,17 @@ import OfficialModel from "./src/models/officialModel.js";
 import TurnosRutinariosModel from "./src/models/turnoRutinarioModel.js";
 import MemorandumModel from "./src/models/memorandumModel.js";
 import OtrosMemorandumModel from "./src/models/Otros_MemorandosModel.js";
+import TurnoEspecialAprendizModel from "./src/models/turnoEspeciales_Aprendices.js";
 
 import reportPDF from "./src/middleware/reportPdf.js";
 import reportXLSX from "./src/middleware/reportXlsx.js";
 import generateSQL from "./src/middleware/exportSql.js";
-
 
 const appExpress = express();
 const PORT = process.env.PORT || 8080;
 
 // Middleware para servir archivos estáticos como los PDFs y Excels
 // appExpress.use('/output', express.static(path.join(__dirname, 'output')));
-
-
 
 appExpress.use(cors());
 appExpress.use(express.json());
@@ -77,21 +73,18 @@ appExpress.use("/ciudades", cityRoutes);
 // appExpress.use('/pdf', pdfRoutes);
 // appExpress.use('/excel', excelRoutes);
 
-appExpress.use(express.static(path.join(import.meta.url, 'public')));
+appExpress.use(express.static(path.join(import.meta.url, "public")));
 
 appExpress.use("/public/uploads/", express.static("public/uploads"));
 appExpress.use("/assets", express.static("public/assets"));
 appExpress.use("/plantillas", express.static("public/plantillas"));
 appExpress.use("/PDFs", express.static("public/PDFs"));
 
-
 appExpress.use("/api/user", userRouter);
 
-appExpress.use("/reportPDF", checkAuth, reportPDF)
-appExpress.use("/reportXLSX", checkAuth, reportXLSX)
-appExpress.use("/exportsSQL", checkAuth, generateSQL)
-
-
+appExpress.use("/reportPDF", checkAuth, reportPDF);
+appExpress.use("/reportXLSX", checkAuth, reportXLSX);
+appExpress.use("/exportsSQL", checkAuth, generateSQL);
 
 try {
   await db.authenticate().then(() => {
@@ -250,6 +243,42 @@ OtrosMemorandumModel.belongsTo(ApprenticeModel, {
 
 // AbsenceModel.belongsTo(TurnoEspecialAprendizModel, { foreignKey: 'Id_TurnoEspecial_Aprendiz', as: 'turnoEspecialAprendiz' })
 // TurnoEspecialAprendizModel.hasMany(AbsenceModel, { foreignKey: 'Id_TurnoEspecial_Aprendiz', as: 'inasistencias' })
+
+// Relación de muchos a muchos entre Aprendices y TurnosEspeciales
+ApprenticeModel.belongsToMany(TurnoEspecialModel, {
+  through: TurnoEspecialAprendizModel, // Tabla intermedia
+  foreignKey: "Id_Aprendiz", // Llave foránea en la tabla intermedia
+  otherKey: "Id_TurnoEspecial", // Llave foránea del otro modelo
+  as: "turnosEspeciales", // Alias para la relación
+});
+
+TurnoEspecialModel.belongsToMany(ApprenticeModel, {
+  through: TurnoEspecialAprendizModel, // Tabla intermedia
+  foreignKey: "Id_TurnoEspecial", // Llave foránea en la tabla intermedia
+  otherKey: "Id_Aprendiz", // Llave foránea del otro modelo
+  as: "aprendices", // Alias para la relación
+});
+
+// Relación individual en la tabla intermedia
+TurnoEspecialAprendizModel.belongsTo(ApprenticeModel, {
+  foreignKey: "Id_Aprendiz",
+  as: "aprendiz", // Alias para la relación
+});
+
+TurnoEspecialAprendizModel.belongsTo(TurnoEspecialModel, {
+  foreignKey: "Id_TurnoEspecial",
+  as: "turnoEspecial", // Alias para la relación
+});
+
+ApprenticeModel.hasMany(TurnoEspecialAprendizModel, {
+  foreignKey: "Id_Aprendiz",
+  as: "turnosEspecialesAprendices", // Alias para la relación
+});
+
+TurnoEspecialModel.hasMany(TurnoEspecialAprendizModel, {
+  foreignKey: "Id_TurnoEspecial",
+  as: "turnosEspecialesAprendices", // Alias para la relación
+});
 
 export {
   AreaModel,
