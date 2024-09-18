@@ -209,7 +209,7 @@ const FormFichas = ({
               value={Id_Ficha}
               onChange={(e) => {
                 const { value } = e.target;
-                if (value.length <= 8) {
+                if (value.length <= 7) {
                   setId_Ficha(value);
                 }
               }}
