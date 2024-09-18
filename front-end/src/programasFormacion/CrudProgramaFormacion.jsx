@@ -21,6 +21,8 @@ const CrudPrograma = () => {
   const [crearDataTable, setCrearDataTable] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+  const [stateButton, setStateButton] = useState(true);
+
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
@@ -56,6 +58,7 @@ const CrudPrograma = () => {
         getPrograma(Id_ProgramaFormacion),
         setStateAddPrograma(true),
         toggleModal(),
+        setStateButton(false),
       ]}
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
@@ -107,7 +110,10 @@ const CrudPrograma = () => {
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);
-      setAlerta({ msg: "Ocurrio un Error No Existen Programas De Formación registradas!.", error: true });
+      setAlerta({
+        msg: "Ocurrio un Error No Existen Programas De Formación registradas!.",
+        error: true,
+      });
     }
   };
 
@@ -212,6 +218,7 @@ const CrudPrograma = () => {
           isOpen={isOpen}
           updateTextButtom={updateTextButton}
           titleForm={titleForm}
+          setStateButton={setStateButton}
           form={
             <FormProgramaFormacion
               buttonForm={buttonForm}
@@ -219,6 +226,8 @@ const CrudPrograma = () => {
               updateTextButton={updateTextButton}
               setPrograma={setPrograma}
               getAllProgramas={getAllProgramas}
+              stateButton={stateButton}
+              setStateButton={setStateButton}
             />
           }
         />

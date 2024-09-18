@@ -127,7 +127,7 @@ const ImportarCSV = () => {
 
   return (
     <div className="">
-      {msg && <Alerta alerta={alerta} />}
+      {msg && <Alerta alerta={alerta} setAlerta={setAlerta}/>}
       <div className="flex items-center space-x-4">
         <input
           id="fileInput"

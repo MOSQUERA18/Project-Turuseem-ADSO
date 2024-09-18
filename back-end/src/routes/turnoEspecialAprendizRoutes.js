@@ -15,9 +15,10 @@ router
   .get(checkAuth, getAllTurnosEspecialesAprendices)
   .post(checkAuth, createTurnoEspecialAprendiz);
 router
-  .route("/:Id_TurnoEspecialAprendiz")
+  .route("/:Id_TurnoEspecial")
   .get(checkAuth, getTurnoEspecialAprendiz)
-  .put(checkAuth, updateTurnoEspecialAprendiz)
+  // .put(checkAuth, updateTurnoEspecialAprendiz)
   .delete(checkAuth, deleteTurnoEspecialAprendiz);
+router.route('/:Id_TurnoEspecial').put(checkAuth, updateTurnoEspecialAprendiz);
 
 export default router;

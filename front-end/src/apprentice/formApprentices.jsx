@@ -9,7 +9,14 @@ import Alerta from "../components/Alerta";
 const URI = "/ciudades/";
 const UriFichas = "/fichas/";
 
-const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllApprentices }) => {
+const FormApprentices = ({
+  buttonForm,
+  apprentice,
+  updateTextButton,
+  getAllApprentices,
+  stateButton,
+  setStateButton
+}) => {
   const [Id_Aprendiz, setId_Aprendiz] = useState("");
   const [Nom_Aprendiz, setNom_Aprendiz] = useState("");
   const [Ape_Aprendiz, setApe_Aprendiz] = useState("");
@@ -47,7 +54,6 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
       Authorization: `Bearer ${token}`,
     },
   };
-
 
   useEffect(() => {
     const fetchCiudades = async () => {
@@ -89,168 +95,184 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
     e.preventDefault();
     //VALIDAR CAMPO POR CAMPO
 
-        // Verificar campo por campo y mostrar alerta si está vacío
-        if (!Id_Aprendiz) {
-          setAlerta({
-              msg: "El campo Documento está vacío.",
-              error: true,
-          });
-          return;
-      }
-      if (!Nom_Aprendiz) {
-          setAlerta({
-              msg: "El campo Nombres está vacío.",
-              error: true,
-          });
-          return;
-      }
-      if (!Ape_Aprendiz) {
-          setAlerta({
-              msg: "El campo Apellidos está vacío.",
-              error: true,
-          });
-          return;
-      }
-      if (!Id_Ficha) {
-          setAlerta({
-              msg: "El campo Ficha está vacío.",
-              error: true,
-          });
-          return;
-      }
-      if (!Fec_Nacimiento) {
-          setAlerta({
-              msg: "El campo Fecha de Nacimiento está vacío.",
-              error: true,
-          });
-          return;
-      }
-      if (!Id_Ciudad) {
-          setAlerta({
-              msg: "El campo Ciudad está vacío.",
-              error: true,
-          });
-          return;
-      }
-      if (!Lugar_Residencia) {
-          setAlerta({
-              msg: "El campo Lugar de Residencia está vacío.",
-              error: true,
-          });
-          return;
-      }
-      if (!Edad) {
-          setAlerta({
-              msg: "El campo Edad está vacío.",
-              error: true,
-          });
-          return;
-      }
-      if(!Hijos){
-        setAlerta({
-          msg:"El Campo de Hijos Esta Vacio"
-        })
-      }
-      if (!Nom_Eps) {
-          setAlerta({
-              msg: "El campo EPS está vacío.",
-              error: true,
-          });
-          return;
-      }
-      if (!Tel_Padre) {
-          setAlerta({
-              msg: "El campo Teléfono del Padre está vacío.",
-              error: true,
-          });
-          return;
-      }
-      if (!Gen_Aprendiz) {
-          setAlerta({
-              msg: "El campo Género está vacío.",
-              error: true,
-          });
-          return;
-      }
-      if (!Cor_Aprendiz) {
-          setAlerta({
-              msg: "El campo Correo está vacío.",
-              error: true,
-          });
-          return;
-      }
-      if (!Tel_Aprendiz) {
-          setAlerta({
-              msg: "El campo Teléfono Aprendiz está vacío.",
-              error: true,
-          });
-          return;
-      }
-      if (!Patrocinio) {
-        setAlerta({
-          msg: "El campo Patrocinio está vacío.",
-              error: true,
-        })
-      }
-      if (!Estado) {
-          setAlerta({
-              msg: "El campo Estado está vacío.",
-              error: true,
-          });
-          return;
-      }
-      if (!CentroConvivencia) {
-          setAlerta({
-              msg: "El campo Centro de Convivencia está vacío.",
-              error: true,
-          });
-          return;
-      }
+    // Verificar campo por campo y mostrar alerta si está vacío
+    if (!Id_Aprendiz) {
+      setAlerta({
+        msg: "El campo Documento está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!Nom_Aprendiz) {
+      setAlerta({
+        msg: "El campo Nombres está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!Ape_Aprendiz) {
+      setAlerta({
+        msg: "El campo Apellidos está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!Id_Ficha) {
+      setAlerta({
+        msg: "El campo Ficha está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!Fec_Nacimiento) {
+      setAlerta({
+        msg: "El campo Fecha de Nacimiento está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!Id_Ciudad) {
+      setAlerta({
+        msg: "El campo Ciudad está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!Lugar_Residencia) {
+      setAlerta({
+        msg: "El campo Lugar de Residencia está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!Edad) {
+      setAlerta({
+        msg: "El campo Edad está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!Hijos) {
+      setAlerta({
+        msg: "El Campo de Hijos Esta Vacio",
+      });
+    }
+    if (!Nom_Eps) {
+      setAlerta({
+        msg: "El campo EPS está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!Tel_Padre) {
+      setAlerta({
+        msg: "El campo Teléfono del Padre está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!Gen_Aprendiz) {
+      setAlerta({
+        msg: "El campo Género está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!Cor_Aprendiz) {
+      setAlerta({
+        msg: "El campo Correo está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!Tel_Aprendiz) {
+      setAlerta({
+        msg: "El campo Teléfono Aprendiz está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!Patrocinio) {
+      setAlerta({
+        msg: "El campo Patrocinio está vacío.",
+        error: true,
+      });
+    }
+    if (!Estado) {
+      setAlerta({
+        msg: "El campo Estado está vacío.",
+        error: true,
+      });
+      return;
+    }
+    if (!CentroConvivencia) {
+      setAlerta({
+        msg: "El campo Centro de Convivencia está vacío.",
+        error: true,
+      });
+      return;
+    }
 
+    // Validaciones básicas
+    const soloTextoRegex = /^[a-zA-ZÀ-ÿ\s]+$/; // Solo letras y espacios
 
-     // Validaciones básicas
-  const soloTextoRegex = /^[a-zA-ZÀ-ÿ\s]+$/; // Solo letras y espacios
+    if (
+      !Id_Aprendiz ||
+      !Nom_Aprendiz ||
+      !Ape_Aprendiz ||
+      !Id_Ficha ||
+      !Fec_Nacimiento ||
+      !Id_Ciudad ||
+      !Lugar_Residencia ||
+      !Edad ||
+      !Nom_Eps ||
+      !Tel_Padre ||
+      !Gen_Aprendiz ||
+      !Cor_Aprendiz ||
+      !Patrocinio ||
+      !Tel_Aprendiz ||
+      !Estado ||
+      !CentroConvivencia
+    ) {
+      setAlerta({
+        msg: "Todos los campos son obligatorios",
+        error: true,
+      });
+      return; // Evitar el envío del formulario
+    }
 
-  if (!Id_Aprendiz || !Nom_Aprendiz || !Ape_Aprendiz || !Id_Ficha || !Fec_Nacimiento || !Id_Ciudad || !Lugar_Residencia || !Edad || !Nom_Eps || !Tel_Padre || !Gen_Aprendiz || !Cor_Aprendiz || !Patrocinio ||!Tel_Aprendiz || !Estado || !CentroConvivencia) {
-    setAlerta({
-      msg: "Todos los campos son obligatorios",
-      error: true,
-    });
-    return; // Evitar el envío del formulario
-  }
+    // Validar que los campos de texto solo contengan letras
+    if (!soloTextoRegex.test(Nom_Aprendiz)) {
+      setAlerta({
+        msg: "El campo de nombres solo debe contener letras.",
+        error: true,
+      });
+      return;
+    }
 
-  // Validar que los campos de texto solo contengan letras
-  if (!soloTextoRegex.test(Nom_Aprendiz)) {
-    setAlerta({
-      msg: "El campo de nombres solo debe contener letras.",
-      error: true,
-    });
-    return;
-  }
+    if (!soloTextoRegex.test(Ape_Aprendiz)) {
+      setAlerta({
+        msg: "El campo de apellidos solo debe contener letras.",
+        error: true,
+      });
+      return;
+    }
 
-  if (!soloTextoRegex.test(Ape_Aprendiz)) {
-    setAlerta({
-      msg: "El campo de apellidos solo debe contener letras.",
-      error: true,
-    });
-    return;
-  }
+    if (!soloTextoRegex.test(Lugar_Residencia)) {
+      setAlerta({
+        msg: "El campo de lugar de residencia solo debe contener letras.",
+        error: true,
+      });
+      return;
+    }
 
-  if (!soloTextoRegex.test(Lugar_Residencia)) {
-    setAlerta({
-      msg: "El campo de lugar de residencia solo debe contener letras.",
-      error: true,
-    });
-    return;
-  }
-
-  if (!soloTextoRegex.test(Nom_Eps)) {
-    setAlerta({
-      msg: "El campo de EPS solo debe contener letras.",
-      error: true,
-    });
-    return;
-  }
+    if (!soloTextoRegex.test(Nom_Eps)) {
+      setAlerta({
+        msg: "El campo de EPS solo debe contener letras.",
+        error: true,
+      });
+      return;
+    }
 
     try {
       const formData = new FormData();
@@ -274,10 +296,10 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
       formData.append("Estado", Estado);
       formData.append("Nom_Empresa", Nom_Empresa);
       formData.append("CentroConvivencia", CentroConvivencia);
-      
+
       if (Foto_Aprendiz) {
         formData.append("Foto_Aprendiz", Foto_Aprendiz);
-    }
+      }
 
       let mensajeCrud = "";
       let respuestApi;
@@ -288,6 +310,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
           config
         );
         // setIsDisabled(true)
+        setStateButton(true)
         mensajeCrud = "Aprendiz actualizado Exitosamente";
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(`/aprendiz`, formData, config);
@@ -416,7 +439,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
               placeholder="Documento del Aprendiz"
               value={Id_Aprendiz}
               onChange={(e) => {
-                const {value} = e.target;
+                const { value } = e.target;
                 if (value.length <= 10) {
                   setId_Aprendiz(value);
                 }
@@ -437,7 +460,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
               placeholder="Nombres"
               value={Nom_Aprendiz}
               onChange={(e) => {
-                const {value} = e.target;
+                const { value } = e.target;
                 if (value.length <= 60) {
                   setNom_Aprendiz(value);
                 }
@@ -537,7 +560,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
               placeholder="Edad"
               value={Edad}
               onChange={(e) => {
-                const {value} = e.target;
+                const { value } = e.target;
                 if (value.length <= 2) {
                   setEdad(value);
                 }
@@ -587,12 +610,12 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
               placeholder="Teléfono del Padre"
               value={Tel_Padre}
               onChange={(e) => {
-                const {value} = e.target;
-                if (value.length <= 10) {
+                const { value } = e.target;
+                if (value.length <= 12) {
                   setTel_Padre(value);
                 }
               }}
-              maxLength={10}
+              maxLength={12}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             />
           </div>
@@ -633,7 +656,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
               placeholder="Correo"
               value={Cor_Aprendiz}
               onChange={(e) => {
-                const {value} = e.target;
+                const { value } = e.target;
                 if (value.length <= 60) {
                   setCor_Aprendiz(value);
                 }
@@ -653,7 +676,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
               placeholder="Teléfono"
               value={Tel_Aprendiz}
               onChange={(e) => {
-                const {value} = e.target;
+                const { value } = e.target;
                 if (value.length <= 10) {
                   setTel_Aprendiz(value);
                 }
@@ -734,7 +757,7 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
               Foto Del Aprendiz
             </label>
             <input
-            accept="image/*"
+              accept="image/*"
               type="file"
               id="Foto_Aprendiz"
               ref={inputFoto}
@@ -751,16 +774,18 @@ const FormApprentices = ({ buttonForm, apprentice, updateTextButton,getAllAppren
             value={buttonForm}
             className="bg-botones w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
           />
-          <input
-            type="button"
-            id="button"
-            value="Limpiar"
-            onClick={() => {
-              clearForm();
-              updateTextButton("Enviar");
-            }}
-            className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-700 md:w-auto"
-          />
+          {stateButton && (
+            <input
+              type="button"
+              id="button"
+              value="Limpiar"
+              onClick={() => {
+                clearForm();
+                updateTextButton("Enviar");
+              }}
+              className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-700 md:w-auto"
+            />
+          )}
         </div>
       </form>
     </div>

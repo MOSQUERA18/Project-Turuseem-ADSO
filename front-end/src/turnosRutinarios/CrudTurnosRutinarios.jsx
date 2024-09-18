@@ -20,6 +20,8 @@ const CrudTurnosRutinarios = () => {
   const [crearDataTable, setCrearDataTable] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+  const [stateButton, setStateButton] = useState(true);
+
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
@@ -36,8 +38,6 @@ const CrudTurnosRutinarios = () => {
       Id_Unidad: "",
     });
   };
-
-
 
   const [turnoRutinario, setTurnoRutinario] = useState({
     Fec_InicioTurno: "",
@@ -63,6 +63,8 @@ const CrudTurnosRutinarios = () => {
     "Observaciones del Turno",
     "Indicador Asistencia",
     "Documento Aprendiz",
+    "Nombre Aprendiz",
+    "Numero Ficha Aprendiz",
     "Nombre Unidad",
     // shouldShowPhoto && "Foto Aprendiz",
     "Acciones",
@@ -74,6 +76,7 @@ const CrudTurnosRutinarios = () => {
         getTurnoRutinario(Id_TurnoRutinario),
         setStateAddturnoRutinario(true),
         toggleModal(),
+        setStateButton(false),
       ]}
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
@@ -99,6 +102,8 @@ const CrudTurnosRutinarios = () => {
       turnoRutinario.Obs_TurnoRutinario,
       turnoRutinario.Ind_Asistencia,
       turnoRutinario.Id_Aprendiz,
+      turnoRutinario.aprendiz.Nom_Aprendiz + " " +turnoRutinario.aprendiz.Ape_Aprendiz,
+      turnoRutinario.aprendiz.fichas.Id_Ficha,
       turnoRutinario.unidad?.Nom_Unidad,
     ];
     rowData.push(ButtonsForOtherModules(turnoRutinario.Id_TurnoRutinario));
@@ -130,7 +135,7 @@ const CrudTurnosRutinarios = () => {
       }
     } catch (error) {
       setAlerta({
-        msg: `Ocurrió un error no existen turnos especiales registrados!`,
+        msg: `Error!!! no existen turnos especiales registrados!`,
         error: true,
       });
       console.error(error);
@@ -208,6 +213,7 @@ const CrudTurnosRutinarios = () => {
               text: "El registro ha sido borrado.",
               icon: "success",
             });
+            getAllTurnosRutinarios();
           } else {
             Swal.fire({
               title: "Error!",
@@ -237,7 +243,7 @@ const CrudTurnosRutinarios = () => {
     <>
       <h1 className="text-zinc-950 font-extrabold text-4xl md:text-4xl text-center mb-7">
         Gestionar Información de los{" "}
-        <span className="text-botonesc"> Turnos Rutinarios</span>
+        <span className="text-botones"> Turnos Rutinarios</span>
       </h1>
 
       <div className="flex pb-3">
@@ -249,12 +255,15 @@ const CrudTurnosRutinarios = () => {
           resetForm={resetForm}
           updateTextButtom={updateTextButton}
           titleForm={titleForm}
+          setStateButton={setStateButton}
           form={
             <FormTurnosRutinarios
               buttonForm={buttonForm}
               turnoRutinario={turnoRutinario}
               updateTextButton={updateTextButton}
               getAllTurnosRutinarios={getAllTurnosRutinarios}
+              stateButton={stateButton}
+              setStateButton={setStateButton}
             />
           }
         />
@@ -262,7 +271,7 @@ const CrudTurnosRutinarios = () => {
 
       <div className="overflow-x-auto">
         <hr />
-        {msg && <Alerta alerta={alerta} />}
+        {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
 
         {crearDataTable && (
           <WriteTable
