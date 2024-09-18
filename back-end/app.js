@@ -205,6 +205,9 @@ TurnoEspecialModel.belongsTo(OfficialModel, {
   as: "funcionario",
 });
 
+
+
+
 //Funcionario No esta relacionado con ninguno sino hasta con Turno Especial....
 
 // RELACIONES PARA TURNOS RUTINARIOS
@@ -237,12 +240,6 @@ OtrosMemorandumModel.belongsTo(ApprenticeModel, {
   as: "aprendiz", // Alias para la relación
 });
 
-// // RELACIONES PARA INASISTENCIAS
-// AbsenceModel.belongsTo(TurnoRutinarioAprendizModel, { foreignKey: 'Id_TurnoRutinario_Aprendiz', as: 'turnoRutinarioAprendiz' })
-// TurnoRutinarioAprenModel.hasMany(AbsenceModel, { foreignKey: 'Id_TurnoRutinario_Aprendiz', as: 'inasistencias' })
-
-// AbsenceModel.belongsTo(TurnoEspecialAprendizModel, { foreignKey: 'Id_TurnoEspecial_Aprendiz', as: 'turnoEspecialAprendiz' })
-// TurnoEspecialAprendizModel.hasMany(AbsenceModel, { foreignKey: 'Id_TurnoEspecial_Aprendiz', as: 'inasistencias' })
 
 // Relación de muchos a muchos entre Aprendices y TurnosEspeciales
 ApprenticeModel.belongsToMany(TurnoEspecialModel, {

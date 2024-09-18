@@ -63,6 +63,8 @@ const CrudTurnosRutinarios = () => {
     "Observaciones del Turno",
     "Indicador Asistencia",
     "Documento Aprendiz",
+    "Nombre Aprendiz",
+    "Numero Ficha Aprendiz",
     "Nombre Unidad",
     // shouldShowPhoto && "Foto Aprendiz",
     "Acciones",
@@ -100,6 +102,8 @@ const CrudTurnosRutinarios = () => {
       turnoRutinario.Obs_TurnoRutinario,
       turnoRutinario.Ind_Asistencia,
       turnoRutinario.Id_Aprendiz,
+      turnoRutinario.aprendiz.Nom_Aprendiz + " " +turnoRutinario.aprendiz.Ape_Aprendiz,
+      turnoRutinario.aprendiz.fichas.Id_Ficha,
       turnoRutinario.unidad?.Nom_Unidad,
     ];
     rowData.push(ButtonsForOtherModules(turnoRutinario.Id_TurnoRutinario));
@@ -131,7 +135,7 @@ const CrudTurnosRutinarios = () => {
       }
     } catch (error) {
       setAlerta({
-        msg: `Ocurrió un error no existen turnos especiales registrados!`,
+        msg: `Error!!! no existen turnos especiales registrados!`,
         error: true,
       });
       console.error(error);
@@ -209,6 +213,7 @@ const CrudTurnosRutinarios = () => {
               text: "El registro ha sido borrado.",
               icon: "success",
             });
+            getAllTurnosRutinarios();
           } else {
             Swal.fire({
               title: "Error!",

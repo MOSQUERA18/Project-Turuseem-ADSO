@@ -245,37 +245,40 @@ function WriteTable({ titles, data, titleModul, tableName }) {
 
   return (
     <>
-      <div className="relative overflow-x-auto container "> 
-        <div className="flex justify-end px-5">
-          <button
-            type="button"
-            className="text-red-600 bg-red-50 hover:bg-red-200 focus:ring-4 focus:outline-none focus:ring-red-600 font-medium rounded-lg text-sm px-5 mx-1 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4 "
-            onClick={exportPDF}
-            title="Export PDF"
-          >
-            <FaRegFilePdf size={17} />
-          </button>
-          <button
-            type="button"
-            className="text-lime-700 bg-emerald-100 hover:bg-emerald-200 focus:ring-4 focus:outline-none focus:ring-green-700 font-medium rounded-lg text-sm px-5 mx-1 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4"
-            onClick={exportToExcel}
-            title="Export XLSX"
-          >
-            <BsFiletypeXlsx size={17} />
-          </button>
-          <button
-            type="button"
-            className="text-green-600 bg-sky-200 hover:bg-sky-300 focus:ring-4 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-5 mx-1 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4"
-            onClick={handleEsportSQL}
-            title="Export SQL"
-          >
-            {loading ? (
-              <MdOutlineDownloading size={17} />
-            ) : (
-              <BsFiletypeSql size={17} />
-            )}
-          </button>
-        </div>
+      <div className="relative overflow-x-auto container ">
+      <div className="flex justify-start px-5">
+  <button
+    type="button"
+    className="text-red-600 bg-red-50 hover:bg-red-200 focus:ring-4 focus:outline-none focus:ring-red-600 font-medium rounded-lg text-sm px-5 mx-1 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4"
+    onClick={exportPDF}
+    title="Export PDF"
+  >
+    <FaRegFilePdf size={17} />
+  </button>
+  <button
+    type="button"
+    className="text-lime-700 bg-emerald-100 hover:bg-emerald-200 focus:ring-4 focus:outline-none focus:ring-green-700 font-medium rounded-lg text-sm px-5 mx-1 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4"
+    onClick={exportToExcel}
+    title="Export XLSX"
+  >
+    <BsFiletypeXlsx size={17} />
+  </button>
+  <button
+    type="button"
+    className="text-green-600 bg-sky-200 hover:bg-sky-300 focus:ring-4 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-5 mx-1 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-4"
+    onClick={handleEsportSQL}
+    title="Export SQL"
+  >
+    {loading ? (
+      <MdOutlineDownloading size={17} />
+    ) : (
+      <BsFiletypeSql size={17} />
+    )}
+  </button>
+</div>
+<br />
+
+
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full">
             <div className="overflow-hidden">
