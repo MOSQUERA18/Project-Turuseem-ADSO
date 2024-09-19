@@ -611,7 +611,6 @@ import { useState, useEffect } from "react";
 import clienteAxios from "../config/axios";
 import Alerta from "../components/Alerta";
 import { ReactSession } from "react-client-session";
-import { error } from "jquery";
 
 const FormTurnoRutinario = ({
   buttonForm,
@@ -937,8 +936,40 @@ const FormTurnoRutinario = ({
 
   const { msg } = alerta;
 
+
+
+
+  //Generar Turnos Automaticos
+  const generarTurnosAutomaticos = () => {
+    const hoy = new Date();
+    const manana = new Date(hoy);
+    manana.setDate(manana.getDate() + 1);
+  
+    // Formatear las fechas a formato yyyy-mm-dd
+    const formatFecha = (fecha) => {
+      const year = fecha.getFullYear();
+      const month = String(fecha.getMonth() + 1).padStart(2, "0");
+      const day = String(fecha.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    };
+
+    setFec_InicioTurno(formatFecha(hoy));
+    setFec_FinTurno(formatFecha(manana));
+    setHor_InicioTurno("07:00");
+    setHor_FinTurno("09:00");
+  };
+
   return (
     <>
+    <div className="flex justify-center items-center">
+  <button
+    type="button"
+    className="bg-botones  py-2 px-4 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-blue-600 md:w-auto"
+    onClick={generarTurnosAutomaticos}
+  >
+    Generar Fechas y Horas Automáticas
+  </button>
+</div>
       <div className="flex justify-center items-center">
         <form
           id="turnoRutinarioForm"

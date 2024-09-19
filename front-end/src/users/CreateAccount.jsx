@@ -55,20 +55,19 @@ const UserForm = () => {
 
   return (
     <>
-      <div className="container mx-auto md:grid md:grid-cols-2 gap-10 p-5 items-center">
+      <div className="flex flex-col items-center justify-center h-screen">
         <div>
-          <h1 className="text-stone-400 font-black text-5xl">
-            Crea una Cuenta y Gestiona {""}
-            <span className="text-green-700">tus Turnos</span>
+          <h1 className="text-stone-400 font-black text-5xl text-center">
+            Crea una Cuenta Y Gestiona{" "}
+            <span className="text-botones">tus Turnos</span>
           </h1>
         </div>
-        <div className="mt-20 md:mt-5 shadow-2xl px-7 py-10 rounded-xl bg-white">
+        <div className="bg-white p-2 md:p-8 rounded-lg w-full max-w-md md:max-w-2xl">
           {msg && <Alerta alerta={alerta} />}
-
           <form onSubmit={handleSubmit}>
             <div className="my-4">
               <label className="uppercase text-stone-600 font-bold block text-base">
-                Documento:{" "}
+                Documento:
               </label>
               <input
                 type="text"
@@ -80,7 +79,7 @@ const UserForm = () => {
             </div>
             <div className="my-4">
               <label className="uppercase text-stone-600 font-bold block text-base">
-                Nombre:{" "}
+                Nombre:
               </label>
               <input
                 type="text"
@@ -92,7 +91,7 @@ const UserForm = () => {
             </div>
             <div className="my-4">
               <label className="uppercase text-stone-600 font-bold block text-base">
-                Correo:{" "}
+                Correo:
               </label>
               <input
                 type="email"
@@ -104,7 +103,7 @@ const UserForm = () => {
             </div>
             <div className="my-4">
               <label className="uppercase text-stone-600 font-bold block text-base">
-                Contraseña:{" "}
+                Contraseña:
               </label>
               <input
                 type="password"
@@ -116,7 +115,7 @@ const UserForm = () => {
             </div>
             <div className="my-4">
               <label className="uppercase text-stone-600 font-bold block text-base">
-                Repetir Contraseña:{" "}
+                Repetir Contraseña:
               </label>
               <input
                 type="password"
@@ -129,7 +128,7 @@ const UserForm = () => {
             <input
               type="submit"
               value="Crear Cuenta"
-              className="bg-green-800 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-green-900 md:w-auto"
+              className="bg-botones w-full py-3 px-8 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-blue-700 md:w-auto"
             />
           </form>
         </div>

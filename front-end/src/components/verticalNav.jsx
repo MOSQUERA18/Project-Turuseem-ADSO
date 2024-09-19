@@ -165,7 +165,7 @@ const VerticalNav = () => {
             { to: "funcionarios", label: "Funcionario", Icon: FaPeopleGroup },
             { to: "talentohumano", label: "Talento Humano", Icon: GiHumanPyramid },
             { to: "inasistencias", label: "Inasistencia", Icon: GiNotebook },
-            { to: "registrar", label: "Registrar User", Icon:TbUsersPlus },
+            { to: "registrar", label: "Registrar Usuario", Icon:TbUsersPlus },
           ].map(({ to, label, Icon }) => (
             <Link key={to} to={to} className="w-full">
               <button className="flex  items-center w-full pl-3 py-2 focus:bg-botoneshover text-white hover:bg-botones rounded border-y border-white active:text-white hover:text-white font-bold uppercase focus:text-white">
