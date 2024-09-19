@@ -355,7 +355,7 @@ const FormTurnosEspeciales = ({
                 value={Tot_AprendicesAsistieron}
                 onChange={(e) => {
                   const {value} = e.target;
-                  if (value.length <= 2) {
+                  if (value === '' || (Number(value) > 0 && value.length <= 2)) {
                     setTot_AprendicesAsistieron(value);
                   }
                 }}

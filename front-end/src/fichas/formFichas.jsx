@@ -207,9 +207,10 @@ const FormFichas = ({
               id="Id_Ficha"
               placeholder="Numero"
               value={Id_Ficha}
+              min="1"
               onChange={(e) => {
-                const { value } = e.target;
-                if (value.length <= 6) {
+                const value = e.target.value;
+                if (value >= 1) { // Solo permite valores positivos
                   setId_Ficha(value);
                 }
               }}
@@ -253,9 +254,10 @@ const FormFichas = ({
               type="number"
               id="can_aprendices"
               value={Can_Aprendices}
+              min="1"
               onChange={(e) => {
-                const { value } = e.target;
-                if (value.length <= 2) {
+                const value = e.target.value;
+                if (value >= 1) { // Solo permite valores positivos
                   setCan_Aprendices(value);
                 }
               }}

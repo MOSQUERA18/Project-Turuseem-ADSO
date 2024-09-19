@@ -270,7 +270,7 @@ const FormTalentoHumano = ({
                 value={Id_Talento_Humano}
                 onChange={(e) => {
                   const { value } = e.target;
-                  if (value.length <= 10) {
+                  if (value === "" || (Number(value) > 0 && value.length <= 10)) {
                     setId_Talento_Humano(value);
                   }
                 }}
@@ -363,7 +363,7 @@ const FormTalentoHumano = ({
                 value={Tel_Talento_Humano}
                 onChange={(e) => {
                   const { value } = e.target;
-                  if (value.length <= 10) {
+                  if (value === "" || (Number(value) > 0 && value.length <= 10)) {
                     setTel_Talento_Humano(value);
                   }
                 }}

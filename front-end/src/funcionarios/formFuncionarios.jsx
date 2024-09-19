@@ -214,15 +214,21 @@ const FormFuncionarios = ({
               Documento
             </label>
             <input
-              type="text"
+              type="number"
               id="id_funcionario"
               placeholder="Documento Funcionario"
               value={Id_Funcionario}
-              onChange={(e) => setId_Funcionario(e.target.value)}
+              onChange={(e) => {
+                const { value } = e.target;
+                if (value === "" || (Number(value) > 0 && value.length <= 10)) {
+                  setId_Funcionario(value);
+                }
+              }}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               disabled={buttonForm === "Actualizar"}
             />
           </div>
+
           <div className="flex items-center mb-3 space-x-4">
             <div className="w-1/2">
               <label className="block text-sm font-medium text-gray-700">
@@ -279,10 +285,16 @@ const FormFuncionarios = ({
               id="telefono"
               placeholder="Teléfono"
               value={Tel_Funcionario}
-              onChange={(e) => setTel_Funcionario(e.target.value)}
+              onChange={(e) => {
+                const { value } = e.target;
+                if (value === "" || (Number(value) > 0 && value.length <= 10)) {
+                  setTel_Funcionario(value);
+                }
+              }}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             />
           </div>
+
           <div className="flex items-center mb-3 space-x-4">
             <div className="w-1/2">
               <label className="block text-sm font-medium text-gray-700">
