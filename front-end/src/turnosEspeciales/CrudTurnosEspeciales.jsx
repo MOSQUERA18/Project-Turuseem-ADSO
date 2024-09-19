@@ -72,6 +72,7 @@ const CrudTurnosEspeciales = () => {
   const shouldShowPhoto = turnoEspecialList.some(
     (row) => row.Img_Asistencia !== undefined
   );
+  
   const titles = [
     "Identificador del Turno",
     "Fecha Turno",
@@ -223,7 +224,7 @@ const CrudTurnosEspeciales = () => {
         config
       );
       if (respuestApi.status === 200) {
-        setTurnoEspecialAprendiz(respuestApi.data);
+        setTurnoEspecialAprendiz(respuestApi.data);        
       } else {
         setAlerta({
           msg: `Error al cargar los registros!`,
