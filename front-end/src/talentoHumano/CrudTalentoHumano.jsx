@@ -202,7 +202,7 @@ const CrudTalentoHumano = () => {
         } catch (error) {
           Swal.fire({
             title: "Error!",
-            text: "Hubo un problema al intentar borrar el registro.",
+            text: "No puedes Borrar Este Registro Porque Esta Asociado A Un Formulario",
             icon: "error",
           });
           console.error(error);

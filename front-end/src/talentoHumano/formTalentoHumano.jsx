@@ -148,7 +148,6 @@ const FormTalentoHumano = ({
         respuestApi = await clienteAxios.put(
           `/talentoHumano/${talentoHumano.Id_Talento_Humano}`,
           {
-            Id_Talento_Humano,
             Nom_Talento_Humano,
             Ape_Talento_Humano,
             Genero_Talento_Humano,
@@ -271,9 +270,12 @@ const FormTalentoHumano = ({
                 onChange={(e) => {
                   const { value } = e.target;
                   if (value.length <= 10) {
-                    setId_Talento_Humano(value);
+                    if (value === '' || (Number(value) > 0 && value.length <= 10)) {
+                      setId_Talento_Humano(value);
+                    }
                   }
                 }}
+                disabled={buttonForm === "Actualizar"}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               />
             </div>
@@ -364,7 +366,9 @@ const FormTalentoHumano = ({
                 onChange={(e) => {
                   const { value } = e.target;
                   if (value.length <= 10) {
-                    setTel_Talento_Humano(value);
+                    if (value === '' || (Number(value) > 0 && value.length <= 10)) {
+                      setTel_Talento_Humano(value);
+                    }
                   }
                 }}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"

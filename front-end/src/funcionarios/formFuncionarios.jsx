@@ -57,9 +57,9 @@ const FormFuncionarios = ({
       return;
     }
 
-    if (!Tel_Funcionario) {
+    if (!Tel_Funcionario || Tel_Funcionario < 9) {
       setAlerta({
-        msg: "El Telefono No puede Estar Vacio",
+        msg: "El Telefono No puede tener menos de 9 Digitos",
         error: true,
       });
       return;
@@ -124,6 +124,7 @@ const FormFuncionarios = ({
         respuestApi = await clienteAxios.put(
           `/funcionarios/${funcionario.Id_Funcionario}`,
           {
+            Id_Funcionario,
             Nom_Funcionario,
             Ape_Funcionario,
             Genero,
@@ -214,11 +215,17 @@ const FormFuncionarios = ({
               Documento
             </label>
             <input
-              type="text"
+              type="number"
               id="id_funcionario"
               placeholder="Documento Funcionario"
               value={Id_Funcionario}
-              onChange={(e) => setId_Funcionario(e.target.value)}
+              onChange={(e) => { 
+                const {value} = e.target
+                if(value.length <= 10)
+                  if (value === '' || (Number(value) > 0 && value.length <= 10)) {
+                    setId_Funcionario(value);
+                  }
+              }}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               disabled={buttonForm === "Actualizar"}
             />
@@ -279,7 +286,13 @@ const FormFuncionarios = ({
               id="telefono"
               placeholder="Teléfono"
               value={Tel_Funcionario}
-              onChange={(e) => setTel_Funcionario(e.target.value)}
+              onChange={(e) => {
+                const {value} = e.target
+              if(value.length <= 10)
+                if (value === '' || (Number(value) > 0 && value.length <= 10)) {
+                  setTel_Funcionario(value);
+                }
+              }}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             />
           </div>

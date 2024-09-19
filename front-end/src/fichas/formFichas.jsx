@@ -212,6 +212,7 @@ const FormFichas = ({
                   setId_Ficha(value);
                 }
               }}
+              disabled={buttonForm === "Actualizar"}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             />
           </div>

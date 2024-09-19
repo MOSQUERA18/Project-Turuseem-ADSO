@@ -166,9 +166,9 @@ const FormApprentices = ({
       });
       return;
     }
-    if (!Tel_Padre) {
+    if (!Tel_Padre || Tel_Padre < 9) {
       setAlerta({
-        msg: "El campo Teléfono del Padre está vacío.",
+        msg: "El campo Teléfono del Padre Debe Tener Minimo 9 Digitos.",
         error: true,
       });
       return;
@@ -187,9 +187,9 @@ const FormApprentices = ({
       });
       return;
     }
-    if (!Tel_Aprendiz) {
+    if (!Tel_Aprendiz || Tel_Aprendiz < 9) {
       setAlerta({
-        msg: "El campo Teléfono Aprendiz está vacío.",
+        msg: "El campo Teléfono Aprendiz Debe Tener Minimo 9 Digitos.",
         error: true,
       });
       return;
@@ -443,12 +443,14 @@ const FormApprentices = ({
               onChange={(e) => {
                 const { value } = e.target;
                 if (value.length <= 10) {
-                  setId_Aprendiz(value);
+                  if (value === '' || (Number(value) > 0 && value.length <= 10)) {
+                    setId_Aprendiz(value);
+                  }
                 }
               }}
               maxLength={10}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-              // disabled={isDisabled}
+              disabled={buttonForm === "Actualizar"}
             />
           </div>
 
@@ -516,6 +518,7 @@ const FormApprentices = ({
               value={Fec_Nacimiento}
               onChange={(e) => setFec_Nacimiento(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+             
             />
           </div>
 
@@ -564,7 +567,9 @@ const FormApprentices = ({
               onChange={(e) => {
                 const { value } = e.target;
                 if (value.length <= 2) {
-                  setEdad(value);
+                  if (value === '' || (Number(value) > 0 && value.length <= 2)) {
+                    setEdad(value);
+                  }
                 }
               }}
               maxLength={2}
@@ -613,8 +618,10 @@ const FormApprentices = ({
               value={Tel_Padre}
               onChange={(e) => {
                 const { value } = e.target;
-                if (value.length <= 12) {
-                  setTel_Padre(value);
+                if (value.length <= 10) {
+                  if (value === '' || (Number(value) > 0 && value.length <= 10)) {
+                    setTel_Padre(value);
+                  }
                 }
               }}
               maxLength={12}
@@ -680,7 +687,9 @@ const FormApprentices = ({
               onChange={(e) => {
                 const { value } = e.target;
                 if (value.length <= 10) {
-                  setTel_Aprendiz(value);
+                  if (value === '' || (Number(value) > 0 && value.length <= 10)) {
+                    setTel_Aprendiz(value);
+                  }
                 }
               }}
               maxLength={10}

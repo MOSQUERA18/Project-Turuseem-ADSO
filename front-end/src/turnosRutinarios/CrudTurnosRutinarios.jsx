@@ -26,6 +26,10 @@ const CrudTurnosRutinarios = () => {
     setIsOpen(!isOpen);
   };
 
+  // const CerrarModal = ()=>{
+  //   setIsOpen(!isOpen)
+  // }
+
   const resetForm = () => {
     setTurnoRutinario({
       Fec_InicioTurno: "",
@@ -224,7 +228,7 @@ const CrudTurnosRutinarios = () => {
         } catch (error) {
           Swal.fire({
             title: "Error!",
-            text: "Hubo un problema al intentar borrar el registro.",
+            text: "No puedes Borrar Este Registro Porque Esta Asociado A Un Formulario",
             icon: "error",
           });
           console.error(error);
@@ -256,6 +260,7 @@ const CrudTurnosRutinarios = () => {
           updateTextButtom={updateTextButton}
           titleForm={titleForm}
           setStateButton={setStateButton}
+          
           form={
             <FormTurnosRutinarios
               buttonForm={buttonForm}
@@ -264,6 +269,7 @@ const CrudTurnosRutinarios = () => {
               getAllTurnosRutinarios={getAllTurnosRutinarios}
               stateButton={stateButton}
               setStateButton={setStateButton}
+              // CerrarModal ={CerrarModal}
             />
           }
         />
