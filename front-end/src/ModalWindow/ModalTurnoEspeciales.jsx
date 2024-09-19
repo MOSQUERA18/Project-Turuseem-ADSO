@@ -14,7 +14,7 @@ const ModalTurnoEspeciales = ({
 
   // Manejar el evento cuando cambia el estado del toggle
   const handleToggle = (e, Id_TurnoEspecial, Id_Aprendiz) => {
-    const checked = e.target.checked;
+    const { checked } = e.target;
     const updatedAsistencia = asistencia.map((item) =>
       item.Id_TurnoEspecial === Id_TurnoEspecial &&
       item.Id_Aprendiz === Id_Aprendiz
@@ -61,10 +61,18 @@ const ModalTurnoEspeciales = ({
           },
           config
         );
-        console.log("Actualizado correctamente:", response.data);
+        if (response.status === 200 || response.status === 204) {
+          setAlerta({
+            msg: "Cambios guardados correctamente",
+            error: false,
+          });
+        } else {
+          setAlerta({
+            msg: "Hubo un error al guardar los cambios",
+            error: true,
+          });
+        }
       }
-
-      setAlerta({ msg: "Cambios guardados correctamente", error: false });
     } catch (error) {
       console.error("Error al actualizar los datos:", error);
       setAlerta({ msg: "Hubo un error al guardar los cambios", error: true });
@@ -124,56 +132,61 @@ const ModalTurnoEspeciales = ({
                       </tr>
                     </thead>
                     <tbody>
-                      {turnoEspecialAprendiz.map((turno, rowIndex) => (
-                        <tr key={rowIndex} className="border-b border-black">
-                          <td className="py-2 px-4">{turno.Id_Aprendiz}</td>
-                          <td className="py-2 px-4">
-                            {turno.aprendiz?.Nom_Aprendiz}
-                          </td>
-                          <td className="py-2 px-4">
-                            {turno.aprendiz?.Ape_Aprendiz}
-                          </td>
-                          <td className="py-2 px-4">
-                            {turno.turnoEspecial?.Id_Ficha}
-                          </td>
-                          <td className="py-2 px-4">
-                            {turno.turnoEspecial?.unidad?.Nom_Unidad}
-                          </td>
-                          <td className="py-2 px-4">
-                            {turno.turnoEspecial?.funcionario?.Nom_Funcionario}
-                          </td>
-                          <td className="py-2 px-4">
-                            {turno.turnoEspecial?.Fec_TurnoEspecial}
-                          </td>
-                          <td className="py-2 px-4">
-                            <label className="inline-flex items-center cursor-pointer">
-                              <input
-                                type="checkbox"
-                                checked={
-                                  asistencia.find(
-                                    (item) =>
-                                      item.Id_TurnoEspecial ===
-                                        turno.turnoEspecial?.Id_TurnoEspecial &&
-                                      item.Id_Aprendiz === turno.Id_Aprendiz
-                                  )?.asistio === "Sí"
-                                }
-                                onChange={(e) =>
-                                  handleToggle(
-                                    e,
-                                    turno.turnoEspecial?.Id_TurnoEspecial,
-                                    turno.Id_Aprendiz
-                                  )
-                                }
-                                className="sr-only peer"
-                              />
-                              <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                              <span className="ml-2 text-sm font-medium">
-                                Asistió
-                              </span>
-                            </label>
-                          </td>
-                        </tr>
-                      ))}
+                      {turnoEspecialAprendiz.map((turno, rowIndex) => {
+                        const asistenciaTurno = asistencia.find(
+                          (item) =>
+                            item.Id_TurnoEspecial ===
+                              turno.turnoEspecial?.Id_TurnoEspecial &&
+                            item.Id_Aprendiz === turno.Id_Aprendiz
+                        );
+
+                        return (
+                          <tr key={rowIndex} className="border-b border-black">
+                            <td className="py-2 px-4">{turno.Id_Aprendiz}</td>
+                            <td className="py-2 px-4">
+                              {turno.aprendiz?.Nom_Aprendiz}
+                            </td>
+                            <td className="py-2 px-4">
+                              {turno.aprendiz?.Ape_Aprendiz}
+                            </td>
+                            <td className="py-2 px-4">
+                              {turno.turnoEspecial?.Id_Ficha}
+                            </td>
+                            <td className="py-2 px-4">
+                              {turno.turnoEspecial?.unidad?.Nom_Unidad}
+                            </td>
+                            <td className="py-2 px-4">
+                              {
+                                turno.turnoEspecial?.funcionario
+                                  ?.Nom_Funcionario
+                              }
+                            </td>
+                            <td className="py-2 px-4">
+                              {turno.turnoEspecial?.Fec_TurnoEspecial}
+                            </td>
+                            <td className="py-2 px-4">
+                              <label className="inline-flex items-center cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={asistenciaTurno?.asistio === "Sí"}
+                                  onChange={(e) =>
+                                    handleToggle(
+                                      e,
+                                      turno.turnoEspecial?.Id_TurnoEspecial,
+                                      turno.Id_Aprendiz
+                                    )
+                                  }
+                                  className="sr-only peer"
+                                />
+                                <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                <span className="ml-2 text-sm font-medium">
+                                  Asistió
+                                </span>
+                              </label>
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>
