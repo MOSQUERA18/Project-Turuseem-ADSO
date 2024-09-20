@@ -86,7 +86,7 @@ const Contacto = () => {
       socialLink: "https://www.facebook.com/profile.php?id=100024303797798",
     },
     {
-      name: "Kimberly Sharlot Hernadez Acosta",
+      name: "Kimberly Sharlot Hernández Acosta",
       info: "Tecnologo en Analisis y Desarrollo de Software",
       age: `${calcularEdad(fechaNacimientoKimberly)} Años`,
       imageUrl: "Public/IMG/Kim.jpeg",
