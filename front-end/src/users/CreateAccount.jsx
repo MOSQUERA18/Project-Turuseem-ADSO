@@ -55,7 +55,7 @@ const UserForm = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center h-screen">
+      <div className="flex flex-col items-center justify-center">
         <div>
           <h1 className="text-stone-400 font-black text-5xl text-center">
             Crea una Cuenta Y Gestiona{" "}

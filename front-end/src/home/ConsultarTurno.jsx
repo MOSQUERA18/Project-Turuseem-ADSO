@@ -11,13 +11,21 @@ const ConsultarTurno = () => {
 
   const sendForm = async (e) => {
     e.preventDefault();
-    if (Id_Aprendiz.trim() === "") {
+    if (Id_Aprendiz.trim() === "" ) {
       setAlerta({
-        msg: "El número de Documento no puede estar vacío",
+        msg: "El número de Documento No Puede Estar Vacio",
+        error: true
+      });
+      return
+    }
+    if (Id_Aprendiz.length < 9 ) {
+      setAlerta({
+        msg: "El número de Documento Debe Tener Minimo 9 Digitos",
         error: true
       });
       return;
     }
+   
     try {
       const respuestaApi = await clienteAxios(`${URI}/${Id_Aprendiz}`);
       if (respuestaApi.status === 200) {
@@ -76,7 +84,9 @@ const ConsultarTurno = () => {
               onChange={(e) => {
                 const {value} = e.target;
                 if (value.length <= 10) {
-                  setId_Aprendiz(value);
+                  if (value === '' || (Number(value) > 0 && value.length <= 10)) {
+                    setId_Aprendiz(value);
+                  }
                 }
               }}
               className="w-full p-2 border rounded"

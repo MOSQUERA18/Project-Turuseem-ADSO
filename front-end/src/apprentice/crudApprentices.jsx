@@ -256,6 +256,7 @@ const CrudApprentices = () => {
           },
         };
         try {
+          // debugger
           const respuestApi = await clienteAxios.delete(
             `/aprendiz/${Id_Aprendiz}`,
             config
@@ -268,9 +269,11 @@ const CrudApprentices = () => {
               text: "El registro ha sido borrado.",
               icon: "success",
             });
+            
           } else {
             alert(respuestApi.data.message);
           }
+          
         } catch (error) {
           Swal.fire({
             title: "Error!",
