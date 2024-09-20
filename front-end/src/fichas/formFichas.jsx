@@ -50,10 +50,9 @@ const FormFichas = ({
     e.preventDefault();
 
     // const soloTextoRegex = /^[a-zA-ZÀ-ÿ\s]+$/; // Solo letras y espacios
-
-    if (!Id_Ficha) {
+    if (!Id_Ficha || Id_Ficha.length < 6) {
       setAlerta({
-        msg: "El Numero de Ficha esta Vacia",
+        msg: "El Numero de Ficha No puede Tener menos de 6 Digitos",
         error: true,
       });
       return;
@@ -209,10 +208,11 @@ const FormFichas = ({
               value={Id_Ficha}
               onChange={(e) => {
                 const { value } = e.target;
-                if (value.length <= 6) {
+                if (value.length <= 7) {
                   setId_Ficha(value);
                 }
               }}
+              disabled={buttonForm === "Actualizar"}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             />
           </div>

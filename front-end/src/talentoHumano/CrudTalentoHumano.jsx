@@ -77,6 +77,7 @@ const CrudTalentoHumano = () => {
       ]}
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
+      title="Editar"
     >
       <FaRegEdit />
     </button>,
@@ -84,6 +85,7 @@ const CrudTalentoHumano = () => {
       onClick={() => deleteTalentoHumano(Id_Talento_Humano)}
       className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
       key="delete"
+      title="Eliminar"
     >
       <MdDeleteOutline />
     </button>,
@@ -202,7 +204,7 @@ const CrudTalentoHumano = () => {
         } catch (error) {
           Swal.fire({
             title: "Error!",
-            text: "Hubo un problema al intentar borrar el registro.",
+            text: "No puedes Borrar Este Registro Porque Esta Asociado A Un Formulario",
             icon: "error",
           });
           console.error(error);

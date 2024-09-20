@@ -26,6 +26,10 @@ const CrudTurnosRutinarios = () => {
     setIsOpen(!isOpen);
   };
 
+  // const CerrarModal = ()=>{
+  //   setIsOpen(!isOpen)
+  // }
+
   const resetForm = () => {
     setTurnoRutinario({
       Fec_InicioTurno: "",
@@ -77,7 +81,9 @@ const CrudTurnosRutinarios = () => {
         setStateAddturnoRutinario(true),
         toggleModal(),
         setStateButton(false),
+        
       ]}
+      title="Editar"
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
     >
@@ -87,6 +93,7 @@ const CrudTurnosRutinarios = () => {
       onClick={() => deleteTurnoRutinario(Id_TurnoRutinario)}
       className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
       key="delete"
+      title="Eliminar"
     >
       <MdDeleteOutline />
     </button>,
@@ -224,7 +231,7 @@ const CrudTurnosRutinarios = () => {
         } catch (error) {
           Swal.fire({
             title: "Error!",
-            text: "Hubo un problema al intentar borrar el registro.",
+            text: "No puedes Borrar Este Registro Porque Esta Asociado A Un Formulario",
             icon: "error",
           });
           console.error(error);
@@ -256,6 +263,7 @@ const CrudTurnosRutinarios = () => {
           updateTextButtom={updateTextButton}
           titleForm={titleForm}
           setStateButton={setStateButton}
+          
           form={
             <FormTurnosRutinarios
               buttonForm={buttonForm}
@@ -264,6 +272,7 @@ const CrudTurnosRutinarios = () => {
               getAllTurnosRutinarios={getAllTurnosRutinarios}
               stateButton={stateButton}
               setStateButton={setStateButton}
+              // CerrarModal ={CerrarModal}
             />
           }
         />

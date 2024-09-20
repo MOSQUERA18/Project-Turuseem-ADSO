@@ -49,8 +49,6 @@ export const getUnidadesByArea = async (req, res) => {
   }
 };
 
-
-
 export const getAprendicesByArea = async (req, res) => {
   const { Id_Area } = req.params;
 

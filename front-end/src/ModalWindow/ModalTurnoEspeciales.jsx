@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Alerta from "../components/Alerta";
 import clienteAxios from "../config/axios";
 import { ReactSession } from "react-client-session";
-
 
 const ModalTurnoEspeciales = ({
   isOpenTurnos,
@@ -13,9 +12,19 @@ const ModalTurnoEspeciales = ({
   const [alerta, setAlerta] = useState({});
   const [asistencia, setAsistencia] = useState([]);
 
+  // Inicializamos el estado de asistencia basado en los turnos recibidos
+  useEffect(() => {
+    const asistenciaInicial = turnoEspecialAprendiz.map((turno) => ({
+      Id_TurnoEspecial: turno.turnoEspecial?.Id_TurnoEspecial,
+      Id_Aprendiz: turno.Id_Aprendiz,
+      asistio: turno.Ind_Asistencia === "Si" ? "Sí" : "No",
+    }));
+    setAsistencia(asistenciaInicial);
+  }, [turnoEspecialAprendiz]);
+
   // Manejar el evento cuando cambia el estado del toggle
   const handleToggle = (e, Id_TurnoEspecial, Id_Aprendiz) => {
-    const checked = e.target.checked;
+    const { checked } = e.target;
     const updatedAsistencia = asistencia.map((item) =>
       item.Id_TurnoEspecial === Id_TurnoEspecial &&
       item.Id_Aprendiz === Id_Aprendiz
@@ -23,24 +32,6 @@ const ModalTurnoEspeciales = ({
         : item
     );
     setAsistencia(updatedAsistencia);
-
-    // Si no existe en el array de asistencia, lo agregamos
-    if (
-      !updatedAsistencia.find(
-        (item) =>
-          item.Id_TurnoEspecial === Id_TurnoEspecial &&
-          item.Id_Aprendiz === Id_Aprendiz
-      )
-    ) {
-      setAsistencia([
-        ...updatedAsistencia,
-        {
-          Id_TurnoEspecial,
-          Id_Aprendiz,
-          asistio: checked ? "Sí" : "No",
-        },
-      ]);
-    }
   };
 
   const handleGuardarCambios = async () => {
@@ -51,26 +42,84 @@ const ModalTurnoEspeciales = ({
         Authorization: `Bearer ${token}`,
       },
     };
+
     try {
-      // Enviar cada entrada de asistencia modificada al backend
       for (const item of asistencia) {
         const response = await clienteAxios.put(
           `/turEspAprendiz/${item.Id_TurnoEspecial}`,
           {
             asistio: item.asistio,
-            Id_Aprendiz: item.Id_Aprendiz
+            Id_Aprendiz: item.Id_Aprendiz,
           },
           config
         );
-        console.log("Actualizado correctamente:", response.data);
-      }
 
-      setAlerta({ msg: "Cambios guardados correctamente", tipo: "exito" });
+        if (response.status === 200 || response.status === 204) {
+          setAlerta({
+            msg: "Cambios guardados correctamente",
+            error: false,
+          });
+
+          // Si la asistencia es "No", crear un registro de inasistencia
+          if (item.asistio === "No") {
+            await crearRegistroInasistencia(item.Id_Aprendiz, item.Id_TurnoEspecial);
+          }
+        } else {
+          setAlerta({
+            msg: "Hubo un error al guardar los cambios",
+            error: true,
+          });
+        }
+      }
     } catch (error) {
       console.error("Error al actualizar los datos:", error);
-      setAlerta({ msg: "Hubo un error al guardar los cambios", tipo: "error" });
+      setAlerta({ msg: "Hubo un error al guardar los cambios", error: true });
     }
   };
+
+  // Función para crear el registro de inasistencia
+  const crearRegistroInasistencia = async (Id_Aprendiz, Id_TurnoEspecial) => {
+    try {
+      const token = ReactSession.get("token");
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      
+      const turno = turnoEspecialAprendiz.find(
+        (t) => t.turnoEspecial?.Id_TurnoEspecial === Id_TurnoEspecial
+      );
+
+      const inasistenciaData = {
+        Fec_Inasistencia: turno?.turnoEspecial?.Fec_TurnoEspecial,
+        Mot_Inasistencia: "Inasistencia a Turno Especial",
+        Id_Aprendiz: Id_Aprendiz,
+      };
+
+      const respuestaInasistencia = await clienteAxios.post(
+        "/inasistencias",
+        inasistenciaData,
+        config
+      );
+
+      if (respuestaInasistencia.status === 201) {
+        console.log("Registro de inasistencia creado correctamente");
+        
+        // Incrementar el conteo de inasistencias
+        await clienteAxios.put(
+          `/aprendiz/${Id_Aprendiz}/actualizar-inasistencia`,
+          { action: "incrementar" },
+          config
+        );
+      }
+    } catch (error) {
+      console.error("Error al crear registro de inasistencia:", error);
+    }
+  };
+
+  const { msg } = alerta;
 
   return (
     <>
@@ -104,13 +153,14 @@ const ModalTurnoEspeciales = ({
                   </svg>
                 </button>
               </div>
+              <div className="px-6 mt-3">
+                {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
+              </div>
 
-              {alerta.msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
-
-              <div className="p-4 md:p-5 space-y-2">
+              <div className="px-4 md:p-5 space-y-2">
                 <div className="overflow-auto max-h-[60vh]">
                   <table className="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400 border-b border-black">
-                    <thead className="text-xs text-black uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b border-black">
+                    <thead className="text-xs text-black uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b border-black sticky top-0 z-10">
                       <tr>
                         <th className="py-2 px-4">Documento Aprendiz</th>
                         <th className="py-2 px-4">Nombre</th>
@@ -123,65 +173,79 @@ const ModalTurnoEspeciales = ({
                       </tr>
                     </thead>
                     <tbody>
-                      {turnoEspecialAprendiz.map((turno, rowIndex) => (
-                        <tr key={rowIndex} className="border-b border-black">
-                          <td className="py-2 px-4">{turno.Id_Aprendiz}</td>
-                          <td className="py-2 px-4">
-                            {turno.aprendiz?.Nom_Aprendiz}
-                          </td>
-                          <td className="py-2 px-4">
-                            {turno.aprendiz?.Ape_Aprendiz}
-                          </td>
-                          <td className="py-2 px-4">
-                            {turno.turnoEspecial?.Id_Ficha}
-                          </td>
-                          <td className="py-2 px-4">
-                            {turno.turnoEspecial?.unidad?.Nom_Unidad}
-                          </td>
-                          <td className="py-2 px-4">
-                            {turno.turnoEspecial?.funcionario?.Nom_Funcionario}
-                          </td>
-                          <td className="py-2 px-4">
-                            {turno.turnoEspecial?.Fec_TurnoEspecial}
-                          </td>
-                          <td className="py-2 px-4">
-                            <label className="inline-flex items-center cursor-pointer">
-                              <input
-                                type="checkbox"
-                                checked={
-                                  asistencia.find(
-                                    (item) =>
-                                      item.Id_TurnoEspecial ===
-                                        turno.turnoEspecial?.Id_TurnoEspecial &&
-                                      item.Id_Aprendiz === turno.Id_Aprendiz
-                                  )?.asistio === "Sí"
-                                }
-                                onChange={(e) =>
-                                  handleToggle(
-                                    e,
-                                    turno.turnoEspecial?.Id_TurnoEspecial,
-                                    turno.Id_Aprendiz
-                                  )
-                                }
-                                className="sr-only peer"
-                              />
-                              <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                              <span className="ml-2 text-sm font-medium">
-                                Asistió
-                              </span>
-                            </label>
-                          </td>
-                        </tr>
-                      ))}
+                      {turnoEspecialAprendiz.map((turno, rowIndex) => {
+                        const asistio =
+                          asistencia.find(
+                            (item) =>
+                              item.Id_TurnoEspecial ===
+                                turno.turnoEspecial?.Id_TurnoEspecial &&
+                              item.Id_Aprendiz === turno.Id_Aprendiz
+                          )?.asistio === "Sí";
+
+                        return (
+                          <tr key={rowIndex} className="border-b border-black">
+                            <td className="py-2 px-4">{turno.Id_Aprendiz}</td>
+                            <td className="py-2 px-4">
+                              {turno.aprendiz?.Nom_Aprendiz}
+                            </td>
+                            <td className="py-2 px-4">
+                              {turno.aprendiz?.Ape_Aprendiz}
+                            </td>
+                            <td className="py-2 px-4">
+                              {turno.turnoEspecial?.Id_Ficha}
+                            </td>
+                            <td className="py-2 px-4">
+                              {turno.turnoEspecial?.unidad?.Nom_Unidad}
+                            </td>
+                            <td className="py-2 px-4">
+                              {
+                                turno.turnoEspecial?.funcionario
+                                  ?.Nom_Funcionario
+                              }
+                            </td>
+                            <td className="py-2 px-4">
+                              {turno.turnoEspecial?.Fec_TurnoEspecial}
+                            </td>
+                            <td className="py-2 px-4">
+                              <label className="inline-flex relative items-center cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  className="sr-only peer"
+                                  checked={asistio}
+                                  onChange={(e) =>
+                                    handleToggle(
+                                      e,
+                                      turno.turnoEspecial?.Id_TurnoEspecial,
+                                      turno.Id_Aprendiz
+                                    )
+                                  }
+                                />
+                                <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                  {asistio ? "Asistió" : "No Asistió"}
+                                </span>
+                              </label>
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>
               </div>
 
-              <div className="flex items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
+              <div className="flex items-center justify-end space-x-2 p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
                 <button
+                  type="button"
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={() => toggleModalTurnos()}
+                >
+                  Cerrar
+                </button>
+                <button
+                  type="button"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                   onClick={handleGuardarCambios}
-                  className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none rounded-lg text-sm px-5 py-2.5"
                 >
                   Guardar Cambios
                 </button>
