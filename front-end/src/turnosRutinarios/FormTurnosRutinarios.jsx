@@ -799,7 +799,6 @@ const FormTurnoRutinario = ({
         if (Ind_Asistencia === "No") {
           await crearRegistroInasistencia(turnoRutinarioId);
           await crearRegistroMemorando(turnoRutinarioId);
-          console.warn("Inasistencia Creada");
         }
         getAllTurnosRutinarios();
         clearForm();

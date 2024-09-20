@@ -224,7 +224,7 @@ const CrudTurnosEspeciales = () => {
         config
       );
       if (respuestApi.status === 200) {
-        setTurnoEspecialAprendiz(respuestApi.data);        
+        setTurnoEspecialAprendiz(respuestApi.data);   
       } else {
         setAlerta({
           msg: `Error al cargar los registros!`,
