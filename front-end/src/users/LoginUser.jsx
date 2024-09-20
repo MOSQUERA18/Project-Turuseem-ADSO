@@ -1,4 +1,5 @@
-import { useState } from "react";
+/* eslint-disable no-debugger */
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Alerta from "../components/Alerta";
 import clienteAxios from "../config/axios";
@@ -58,6 +59,8 @@ const LoginForm = () => {
         Cor_User: Cor_User,
         password: password,
       });
+
+      // Almacenamiento del token en la sesión del cliente
       ReactSession.set("token", data.token);
 
       // Maneja el estado de la verificación del usuario
