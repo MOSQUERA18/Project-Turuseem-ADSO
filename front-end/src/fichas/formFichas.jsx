@@ -210,7 +210,7 @@ const FormFichas = ({
               min="1"
               onChange={(e) => {
                 const value = e.target.value;
-                if (value >= 1) { // Solo permite valores positivos
+                if (value >= 1 && value.length <= 7) { // Solo permite valores positivos
                   setId_Ficha(value);
                 }
               }}

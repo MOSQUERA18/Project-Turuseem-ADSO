@@ -53,7 +53,7 @@ const FormApprentices = ({
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${token}`,
     },
-  };
+  };  
 
   useEffect(() => {
     const fetchCiudades = async () => {
@@ -513,6 +513,7 @@ const FormApprentices = ({
               value={Fec_Nacimiento}
               onChange={(e) => setFec_Nacimiento(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              max="2009-12-31"
             />
           </div>
 

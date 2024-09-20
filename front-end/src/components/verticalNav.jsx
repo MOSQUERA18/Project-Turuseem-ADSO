@@ -9,13 +9,14 @@ import { GiHumanPyramid } from "react-icons/gi";
 
 //Icons
 import { BsFillPeopleFill } from "react-icons/bs";
-import { IoDocumentText, IoLogOut } from "react-icons/io5";
+import { IoDocumentText, IoLogOut, IoHome } from "react-icons/io5";
 import { PiNotebookFill } from "react-icons/pi";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { FaClipboardCheck, FaPeopleGroup } from "react-icons/fa6";
 import { MdAssignmentTurnedIn } from "react-icons/md";
 import clienteAxios from "../config/axios.jsx";
 import useAuth from "../hooks/useAuth.jsx";
+// import Home from "../home/home.jsx";
 
 const VerticalNav = () => {
   const [show, setShow] = useState(true);
@@ -153,6 +154,7 @@ const VerticalNav = () => {
         </div>
         <div className="flex flex-col justify-end items-center pl-4 w-full border-white border-b space-y-3 py-5 active:text-white hover:text-white">
           {[
+            { to: "/admin", label: "Inicio", Icon: IoHome },
             { to: "aprendices", label: "Aprendiz", Icon: BsFillPeopleFill },
             { to: "turnos-especiales", label: "Turno Especial", Icon: MdAssignmentTurnedIn },
             { to: "turnos-rutinarios", label: "Turno Rutinario", Icon: MdAssignmentTurnedIn },
