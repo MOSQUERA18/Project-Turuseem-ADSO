@@ -304,8 +304,8 @@ const CrudApprentices = () => {
       </h1>
       <div className="flex justify-between ">
         <div className="flex justify-between">
-          <div>
-            <h1 className="font-bold text-lg text-gray-500 mb-3 ">
+          <div title="CSV">
+            <h1 className="font-bold text-lg text-gray-500 mb-3 " >
               Subir Archivo CSV
             </h1>
             <ImportarCSV URI={URI} />

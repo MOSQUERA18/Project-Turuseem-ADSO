@@ -41,13 +41,13 @@ router
   .delete(checkAuth, deleteApprentice);
 
 // Ruta para actualizar inasistencias y eliminar memorandos si es necesario
-router.put('/:Id_Aprendiz/actualizar-inasistencia', async (req, res) => {
+router.put('/actualizar-inasistencia/:Id_Aprendiz', async (req, res) => {
   try {
       const { Id_Aprendiz } = req.params;
       const { action } = req.body;
-
-      console.log("Actualizando inasistencia para aprendiz con ID:", Id_Aprendiz);
-      console.log("Acción:", action);
+      // console.log(req)
+      // console.log("Actualizando inasistencia para aprendiz con ID:", Id_Aprendiz);
+      // console.log("Acción:", action);
 
       const aprendiz = await ApprenticeModel.findByPk(Id_Aprendiz);
 
@@ -56,18 +56,22 @@ router.put('/:Id_Aprendiz/actualizar-inasistencia', async (req, res) => {
       }
 
       if (action === "incrementar") {
-          // Incrementar memorandos e inasistencias
-          aprendiz.Tot_Inasistencias += 1;
-          aprendiz.Tot_Memorandos += 1;
-      } else if (action === "decrementar" && aprendiz.Tot_Inasistencias > 0) {
-          // Decrementar solo inasistencias y memorandos si corresponde
-          aprendiz.Tot_Inasistencias -= 1;
-          aprendiz.Tot_Memorandos -= 1;
-          // Eliminar memorando si el indicador de asistencia es "Si"
-          await eliminarMemorando(Id_Aprendiz);
-      } else {
-          return res.status(400).json({ error: 'Acción inválida o inasistencias en 0' });
-      }
+        // Incrementar memorandos e inasistencias
+        console.log("Modo Incrementar:" ,action);
+        
+        aprendiz.Tot_Inasistencias += 1;
+        aprendiz.Tot_Memorandos += 1;
+        console.log("Acción recibida:", action); // Debe mostrar "incrementar" o "decrementar"
+
+    }else if (action === "decrementar" && aprendiz.Tot_Inasistencias > 0) {
+      console.log("Modo decrementar");
+      aprendiz.Tot_Inasistencias = parseInt(aprendiz.Tot_Inasistencias) - 1;
+      aprendiz.Tot_Memorandos = parseInt(aprendiz.Tot_Memorandos) - 1;
+      console.log("Valores después de decrementar:", aprendiz.Tot_Inasistencias, aprendiz.Tot_Memorandos);
+      await eliminarMemorando(Id_Aprendiz)
+    }else {
+        return res.status(400).json({ error: 'Acción inválida o inasistencias en 0' });
+    }
 
       await aprendiz.save();
       console.log("Inasistencia actualizada exitosamente");

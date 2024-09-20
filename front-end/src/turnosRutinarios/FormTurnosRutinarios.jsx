@@ -248,11 +248,11 @@ useEffect(() => {
 
         const turnoRutinarioId =
           respuestApi.data.Id_TurnoRutinario || Id_TurnoRutinario;
-        if (Ind_Asistencia === "No") {
+        // if (Ind_Asistencia === "No") {
           await crearRegistroInasistencia(turnoRutinarioId);
           await crearRegistroMemorando(turnoRutinarioId);
           console.warn("Inasistencia Creada");
-        }
+        // }
         getAllTurnosRutinarios();
         clearForm();
         updateTextButton("Enviar");
@@ -309,6 +309,7 @@ useEffect(() => {
     }
   };
 
+
   const crearRegistroInasistencia = async (Id_TurnoRutinario) => {
     try {
       const token = ReactSession.get("token");
@@ -335,18 +336,21 @@ useEffect(() => {
         inasistenciaData,
         config
       );
-
+      // console.log("Ind_Asistencia:", Ind_Asistencia);  // Asegúrate de que tiene el valor esperado
+      // console.log(respuestaInasistencia)
       if (respuestaInasistencia.status === 201) {
         console.log("Registro de inasistencia creado exitosamente");
+        console.log("Ind_Asistencia:", Ind_Asistencia);  // Asegúrate de que tiene el valor esperado
 
-        const action = Ind_Asistencia === "No" ? "incrementar" : "decrementar";
+        const action = Ind_Asistencia == "No"  ? "incrementar" : "decrementar";
         await clienteAxios.put(
-          `/aprendiz/${Id_Aprendiz}/actualizar-inasistencia`,
+          `/aprendiz/actualizar-inasistencia/${Id_Aprendiz}`,
           { action },
           config
         );
         console.log("Inasistencia actualizada exitosamente");
       }
+     
     } catch (error) {
       console.error("Error al crear registro de inasistencia:", error);
     }
@@ -512,7 +516,8 @@ useEffect(() => {
                     key={aprendiz.Id_Aprendiz}
                     value={aprendiz.Id_Aprendiz}
                   >
-                    {`${aprendiz.Nom_Aprendiz} ${aprendiz.Ape_Aprendiz}`}
+                    {aprendiz.Id_Aprendiz}
+                    {/* {`${aprendiz.Nom_Aprendiz} ${aprendiz.Ape_Aprendiz}`} */}
                   </option>
                 ))}
               </select>
@@ -585,7 +590,7 @@ useEffect(() => {
                 Indicador De Asistencia
               </label>
               <select
-                id="ind_Asistencia"
+                id="Ind_Asistencia"
                 value={Ind_Asistencia}
                 onChange={(e) => setInd_Asistencia(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
@@ -613,7 +618,6 @@ useEffect(() => {
             )}
 
           </div>
-          <hr className="mt-3" />
           <div className="flex justify-around mt-2">
             <input
               type="submit"
