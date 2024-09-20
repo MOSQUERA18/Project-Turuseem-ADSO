@@ -81,7 +81,9 @@ const CrudTurnosRutinarios = () => {
         setStateAddturnoRutinario(true),
         toggleModal(),
         setStateButton(false),
+        
       ]}
+      title="Editar"
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
     >
@@ -91,6 +93,7 @@ const CrudTurnosRutinarios = () => {
       onClick={() => deleteTurnoRutinario(Id_TurnoRutinario)}
       className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
       key="delete"
+      title="Eliminar"
     >
       <MdDeleteOutline />
     </button>,

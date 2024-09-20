@@ -133,8 +133,6 @@ useEffect(() => {
   getAprendicesByArea();
 }, [Id_Area]);// Este efecto se ejecuta cuando cambian `turnoRutinario` o `Id_Area`
 
-
-
   // Enviar formulario
   const sendForm = async (e) => {
     e.preventDefault();

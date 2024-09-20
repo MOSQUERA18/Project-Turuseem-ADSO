@@ -72,6 +72,7 @@ const CrudFichas = () => {
       ]}
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
+      title="Editar"
     >
       <FaRegEdit />
     </button>,
@@ -79,6 +80,7 @@ const CrudFichas = () => {
       onClick={() => deleteFichas(Id_Ficha)}
       className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
       key="delete"
+      title="Eliminar"
     >
       <MdDeleteOutline />
     </button>,

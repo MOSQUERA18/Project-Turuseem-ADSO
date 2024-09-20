@@ -62,6 +62,7 @@ const CrudPrograma = () => {
       ]}
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
+      title="Editar"
     >
       <FaRegEdit />
     </button>,
@@ -69,6 +70,7 @@ const CrudPrograma = () => {
       onClick={() => deletePrograma(Id_ProgramaFormacion)}
       className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
       key="delete"
+      title="Eliminar"
     >
       <MdDeleteOutline />
     </button>,

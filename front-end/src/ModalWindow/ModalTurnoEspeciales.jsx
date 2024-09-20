@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Alerta from "../components/Alerta";
 import clienteAxios from "../config/axios";
 import { ReactSession } from "react-client-session";
@@ -12,6 +12,16 @@ const ModalTurnoEspeciales = ({
   const [alerta, setAlerta] = useState({});
   const [asistencia, setAsistencia] = useState([]);
 
+  // Inicializamos el estado de asistencia basado en los turnos recibidos
+  useEffect(() => {
+    const asistenciaInicial = turnoEspecialAprendiz.map((turno) => ({
+      Id_TurnoEspecial: turno.turnoEspecial?.Id_TurnoEspecial,
+      Id_Aprendiz: turno.Id_Aprendiz,
+      asistio: turno.Ind_Asistencia === "Si" ? "Sí" : "No",
+    }));
+    setAsistencia(asistenciaInicial);
+  }, [turnoEspecialAprendiz]);
+
   // Manejar el evento cuando cambia el estado del toggle
   const handleToggle = (e, Id_TurnoEspecial, Id_Aprendiz) => {
     const { checked } = e.target;
@@ -22,24 +32,6 @@ const ModalTurnoEspeciales = ({
         : item
     );
     setAsistencia(updatedAsistencia);
-
-    // Si no existe en el array de asistencia, lo agregamos
-    if (
-      !updatedAsistencia.find(
-        (item) =>
-          item.Id_TurnoEspecial === Id_TurnoEspecial &&
-          item.Id_Aprendiz === Id_Aprendiz
-      )
-    ) {
-      setAsistencia([
-        ...updatedAsistencia,
-        {
-          Id_TurnoEspecial,
-          Id_Aprendiz,
-          asistio: checked ? "Sí" : "No",
-        },
-      ]);
-    }
   };
 
   const handleGuardarCambios = async () => {
@@ -50,8 +42,8 @@ const ModalTurnoEspeciales = ({
         Authorization: `Bearer ${token}`,
       },
     };
+
     try {
-      // Enviar cada entrada de asistencia modificada al backend
       for (const item of asistencia) {
         const response = await clienteAxios.put(
           `/turEspAprendiz/${item.Id_TurnoEspecial}`,
@@ -61,11 +53,17 @@ const ModalTurnoEspeciales = ({
           },
           config
         );
+
         if (response.status === 200 || response.status === 204) {
           setAlerta({
             msg: "Cambios guardados correctamente",
             error: false,
           });
+
+          // Si la asistencia es "No", crear un registro de inasistencia
+          if (item.asistio === "No") {
+            await crearRegistroInasistencia(item.Id_Aprendiz, item.Id_TurnoEspecial);
+          }
         } else {
           setAlerta({
             msg: "Hubo un error al guardar los cambios",
@@ -78,6 +76,49 @@ const ModalTurnoEspeciales = ({
       setAlerta({ msg: "Hubo un error al guardar los cambios", error: true });
     }
   };
+
+  // Función para crear el registro de inasistencia
+  const crearRegistroInasistencia = async (Id_Aprendiz, Id_TurnoEspecial) => {
+    try {
+      const token = ReactSession.get("token");
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      
+      const turno = turnoEspecialAprendiz.find(
+        (t) => t.turnoEspecial?.Id_TurnoEspecial === Id_TurnoEspecial
+      );
+
+      const inasistenciaData = {
+        Fec_Inasistencia: turno?.turnoEspecial?.Fec_TurnoEspecial,
+        Mot_Inasistencia: "Inasistencia a Turno Especial",
+        Id_Aprendiz: Id_Aprendiz,
+      };
+
+      const respuestaInasistencia = await clienteAxios.post(
+        "/inasistencias",
+        inasistenciaData,
+        config
+      );
+
+      if (respuestaInasistencia.status === 201) {
+        console.log("Registro de inasistencia creado correctamente");
+        
+        // Incrementar el conteo de inasistencias
+        await clienteAxios.put(
+          `/aprendiz/${Id_Aprendiz}/actualizar-inasistencia`,
+          { action: "incrementar" },
+          config
+        );
+      }
+    } catch (error) {
+      console.error("Error al crear registro de inasistencia:", error);
+    }
+  };
+
   const { msg } = alerta;
 
   return (
@@ -133,12 +174,13 @@ const ModalTurnoEspeciales = ({
                     </thead>
                     <tbody>
                       {turnoEspecialAprendiz.map((turno, rowIndex) => {
-                        const asistenciaTurno = asistencia.find(
-                          (item) =>
-                            item.Id_TurnoEspecial ===
-                              turno.turnoEspecial?.Id_TurnoEspecial &&
-                            item.Id_Aprendiz === turno.Id_Aprendiz
-                        );
+                        const asistio =
+                          asistencia.find(
+                            (item) =>
+                              item.Id_TurnoEspecial ===
+                                turno.turnoEspecial?.Id_TurnoEspecial &&
+                              item.Id_Aprendiz === turno.Id_Aprendiz
+                          )?.asistio === "Sí";
 
                         return (
                           <tr key={rowIndex} className="border-b border-black">
@@ -165,10 +207,11 @@ const ModalTurnoEspeciales = ({
                               {turno.turnoEspecial?.Fec_TurnoEspecial}
                             </td>
                             <td className="py-2 px-4">
-                              <label className="inline-flex items-center cursor-pointer">
+                              <label className="inline-flex relative items-center cursor-pointer">
                                 <input
                                   type="checkbox"
-                                  checked={asistenciaTurno?.asistio === "Sí"}
+                                  className="sr-only peer"
+                                  checked={asistio}
                                   onChange={(e) =>
                                     handleToggle(
                                       e,
@@ -176,11 +219,10 @@ const ModalTurnoEspeciales = ({
                                       turno.Id_Aprendiz
                                     )
                                   }
-                                  className="sr-only peer"
                                 />
                                 <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                                <span className="ml-2 text-sm font-medium">
-                                  Asistió
+                                <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                  {asistio ? "Asistió" : "No Asistió"}
                                 </span>
                               </label>
                             </td>
@@ -192,10 +234,18 @@ const ModalTurnoEspeciales = ({
                 </div>
               </div>
 
-              <div className="flex items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
+              <div className="flex items-center justify-end space-x-2 p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
                 <button
+                  type="button"
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={() => toggleModalTurnos()}
+                >
+                  Cerrar
+                </button>
+                <button
+                  type="button"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                   onClick={handleGuardarCambios}
-                  className="text-white bg-botones hover:bg-botoneshover focus:ring-4 focus:outline-none rounded-lg text-sm px-5 py-2.5 uppercase font-semibold"
                 >
                   Guardar Cambios
                 </button>

@@ -99,6 +99,7 @@ const CrudTurnosEspeciales = () => {
       ]}
       className="text-blue-500 hover:text-blue-700 mr-3 p-1 rounded"
       key="get"
+      title="Editar"
     >
       <FaRegEdit />
     </button>,
@@ -106,6 +107,7 @@ const CrudTurnosEspeciales = () => {
       onClick={() => deleteTurnoEspecial(Id_TurnoEspecial)}
       className="text-red-500 hover:text-red-700 p-1 rounded"
       key="delete"
+      title="Eliminar"
     >
       <MdDeleteOutline />
     </button>,
@@ -113,6 +115,7 @@ const CrudTurnosEspeciales = () => {
       onClick={() => [toggleModalTurnos(), getTurnoEspecialAprendiz(Id_TurnoEspecial)]}
       className="text-botones hover:text-botoneshover p-1 rounded"
       key="view"
+      title="Ver Asistencia"
     >
       <FaClipboardList />
     </button>,
@@ -224,7 +227,7 @@ const CrudTurnosEspeciales = () => {
         config
       );
       if (respuestApi.status === 200) {
-        setTurnoEspecialAprendiz(respuestApi.data);        
+        setTurnoEspecialAprendiz(respuestApi.data);   
       } else {
         setAlerta({
           msg: `Error al cargar los registros!`,
