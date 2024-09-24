@@ -147,33 +147,8 @@ cityModel.hasMany(ApprenticeModel, {
 });
 ApprenticeModel.belongsTo(cityModel, { foreignKey: "Id_Ciudad", as: "ciudad" });
 
-// //Inasistencias
-TurnosRutinariosModel.hasMany(AbsenceModel, {
-  foreignKey: "Id_TurnoRutinario",
-  as: "inasistencias",
-});
-AbsenceModel.belongsTo(TurnosRutinariosModel, {
-  foreignKey: "Id_TurnoRutinario",
-  as: "turnorutinario",
-});
 
-ApprenticeModel.hasMany(AbsenceModel, {
-  foreignKey: "Id_TurnoRutinario",
-  as: "inasistencias",
-});
-AbsenceModel.belongsTo(ApprenticeModel, {
-  foreignKey: "Id_TurnoRutinario",
-  as: "aprendiz",
-});
 
-AbsenceModel.hasMany(MemorandumModel, {
-  foreignKey: "Id_Inasistencia",
-  as: "memorandos",
-});
-MemorandumModel.belongsTo(AbsenceModel, {
-  foreignKey: "Id_Inasistencia",
-  as: "inasistencia",
-});
 
 //Turno Especial - Fichas
 FichasModel.hasMany(TurnoEspecialModel, {
@@ -287,4 +262,5 @@ export {
   ApprenticeModel,
   TurnosRutinariosModel,
   TurnoEspecialModel,
+  AbsenceModel
 };

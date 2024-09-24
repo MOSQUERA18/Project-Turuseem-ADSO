@@ -8,24 +8,7 @@ import UnitModel from "../models/unitModel.js";
 export const getAllAbsences = async (req, res) => {
   try {
     // Se busca todas las inasistencias en la base de datos con sus relaciones
-    const inasistencias = await AbsenceModel.findAll({
-      include: [
-        {
-          model: TurnoRutinarioModel,
-          as: "turnorutinario",
-          include: [
-            {
-              model: ApprenticeModel,
-              as: "aprendiz",
-            },
-            {
-              model: UnitModel,
-              as: "unidad",
-            },
-          ],
-        },
-      ],
-    });
+    const inasistencias = await AbsenceModel.findAll();
 
     // Si se encuentran inasistencias, se retornan con un código 200
     if (inasistencias) {
@@ -47,24 +30,7 @@ export const getAllAbsences = async (req, res) => {
 export const getAbsence = async (req, res) => {
   try {
     // Se busca una inasistencia por su ID
-    const inasistencia = await AbsenceModel.findByPk(req.params.Id_Inasistencia, {
-      include: [
-        {
-          model: TurnoRutinarioModel,
-          as: "turnorutinario",
-          include: [
-            {
-              model: ApprenticeModel,
-              as: "aprendiz",
-            },
-            {
-              model: UnitModel,
-              as: "unidad",
-            },
-          ],
-        },
-      ],
-    });
+    const inasistencia = await AbsenceModel.findByPk(req.params.Id_Inasistencia);
 
     // Si se encuentra la inasistencia, se retorna con un código 200
     if (inasistencia) {
@@ -83,13 +49,14 @@ export const getAbsence = async (req, res) => {
 // Crear una nueva inasistencia
 export const createAbsence = async (req, res) => {
   try {
-    const { Fec_Inasistencia, Mot_Inasistencia, Id_TurnoRutinario } = req.body;
+    const { Fec_Inasistencia, Mot_Inasistencia, Turno_Id,Tipo_Inasistencia } = req.body;
 
     // Se crea una nueva inasistencia con los datos proporcionados
     const newInasistencia = await AbsenceModel.create({
       Fec_Inasistencia,
       Mot_Inasistencia,
-      Id_TurnoRutinario,
+      Turno_Id,
+      Tipo_Inasistencia
     });
 
     // Si la inasistencia se crea con éxito, se retorna con un código 201
@@ -106,14 +73,15 @@ export const createAbsence = async (req, res) => {
 // Actualizar una inasistencia existente
 export const updateAbsence = async (req, res) => {
   try {
-    const { Fec_Inasistencia, Mot_Inasistencia, Id_TurnoRutinario } = req.body;
+    const {  Fec_Inasistencia, Mot_Inasistencia, Turno_Id,Tipo_Inasistencia } = req.body;
 
     // Se intenta actualizar la inasistencia con el ID especificado
     const [updated] = await AbsenceModel.update(
       {
         Fec_Inasistencia,
         Mot_Inasistencia,
-        Id_TurnoRutinario,
+        Turno_Id,
+        Tipo_Inasistencia
       },
       {
         where: { Id_Inasistencia: req.params.Id_Inasistencia },
@@ -138,15 +106,15 @@ export const updateAbsence = async (req, res) => {
 
 export const deleteAbsence = async (req, res) => {
   try {
-    const { Id_TurnoRutinario } = req.params;
+    const { Id_Inasistencia } = req.params;
 
     // Asegúrate de que Id_TurnoRutinario no sea undefined o null
-    if (!Id_TurnoRutinario) {
+    if (!Id_Inasistencia) {
       return res.status(400).json({ message: "Id_TurnoRutinario es requerido" });
     }
 
     const result = await AbsenceModel.destroy({
-      where: { Id_TurnoRutinario: req.params.Id_TurnoRutinario },
+      where: { Id_Inasistencia: req.params.Id_Inasistencia },
     });
 
     if (result === 0) {

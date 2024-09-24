@@ -18,6 +18,7 @@ router
   .route("/:Id_Inasistencia")
   .get(checkAuth, getAbsence)
   .put(checkAuth, updateAbsence)
-  router.delete('/inasistencias/:Id_TurnoRutinario',checkAuth, deleteAbsence);
+  router.delete('/:Id_Inasistencia', checkAuth, deleteAbsence);
+
 
 export default router;

@@ -7,9 +7,9 @@ import WriteTable from "../Tables/Data-Tables.jsx";
 import { MdDeleteOutline } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 
-const URI = "inasistencias";
+const URI = "/inasistencias";
 
-const CrudFuncionarios = () => {
+const CrudInasistencias = () => {
   const [inasistenciaList, setInasistenciaList] = useState([]);
   // const [setButtonForm] = useState("Enviar");
   const [crearDataTable, setCrearDataTable] = useState(false);
@@ -21,9 +21,10 @@ const CrudFuncionarios = () => {
 
   const titles = [
     "Identificador",
-    "Fecha Turno",
+    "Fecha Inasistencia",
     "Motivo Inasistencia",
-    "Documento Aprendiz ",
+    "Turno Identificador",
+    "Tipo Inasistencia",
     "Acciones",
   ];
 
@@ -42,20 +43,23 @@ const CrudFuncionarios = () => {
     </button>,
   ];
 
-  const formattedData = inasistenciaList.map((inasistencia) => {
+  const formattedData = inasistenciaList.map((inasistencias) => {
     const rowData = [
-      inasistencia.Id_Inasistencia,
-      inasistencia.Fec_Inasistencia,
-      inasistencia.Mot_Inasistencia,
-      inasistencia.turnorutinario.Id_Aprendiz || "N/A",
+      inasistencias.Id_Inasistencia,
+      inasistencias.Fec_Inasistencia,
+      inasistencias.Mot_Inasistencia,
+      inasistencias.Turno_Id,
+      inasistencias.Tipo_Inasistencia,
     ]
-    rowData.push(ButtonsForOtherModules(inasistencia.Id_Inasistencia));
+      // inasistencias.Fec_Inasistencia,
+    rowData.push(ButtonsForOtherModules(inasistencias.Id_Inasistencia));
     return rowData;
   });
 
   useEffect(() => {
-    getAllInasistencias();
+     getAllInasistencias();
   }, []);
+
 
   const getAllInasistencias = async () => {
     const token = ReactSession.get("token");
@@ -112,4 +116,4 @@ const CrudFuncionarios = () => {
   );
 };
 
-export default CrudFuncionarios;
+export default CrudInasistencias;
