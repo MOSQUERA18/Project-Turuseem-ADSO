@@ -418,6 +418,19 @@ const FormApprentices = ({
 
   const { msg } = alerta;
 
+
+  const calculateAge = (birthDate) => {
+    const today = new Date();
+    const birth = new Date(birthDate);
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDifference = today.getMonth() - birth.getMonth();
+    
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birth.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
   return (
     <div className="flex justify-center items-center">
       <form
@@ -516,7 +529,12 @@ const FormApprentices = ({
               type="date"
               id="birthDate"
               value={Fec_Nacimiento}
-              onChange={(e) => setFec_Nacimiento(e.target.value)}
+              onChange={(e) => {
+                const newBirthDate = e.target.value;
+                setFec_Nacimiento(newBirthDate);
+                const calculatedAge = calculateAge(newBirthDate);
+                setEdad(calculatedAge);
+              }}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
              max="2009-12-31"
             />
@@ -588,8 +606,8 @@ const FormApprentices = ({
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             >
               <option value="">Seleccione</option>
-              <option value="si">Sí</option>
-              <option value="no">No</option>
+              <option value="Si">Si</option>
+              <option value="No">No</option>
             </select>
           </div>
 

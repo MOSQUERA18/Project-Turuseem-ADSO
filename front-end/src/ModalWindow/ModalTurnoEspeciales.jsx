@@ -55,6 +55,8 @@ const ModalTurnoEspeciales = ({
         );
 
         if (response.status === 200 || response.status === 204) {
+          console.log(response);
+          
           setAlerta({
             msg: "Cambios guardados correctamente",
             error: false,
@@ -62,7 +64,20 @@ const ModalTurnoEspeciales = ({
 
           // Si la asistencia es "No", crear un registro de inasistencia
           if (item.asistio === "No") {
-            await crearRegistroInasistencia(item.Id_Aprendiz, item.Id_TurnoEspecial);
+            // await crearRegistroInasistencia(item.Id_Aprendiz, item.Id_TurnoEspecial);
+            console.log(turnoEspecialAprendiz.Fec_TurnoEspecial);
+            
+            await clienteAxios.put(
+              `/aprendiz/actualizar-inasistencia/${item.Id_Aprendiz}`,
+              {
+                Ind_Asistencia: item.asistio,
+                Turno_Id: item.Id_Aprendiz,
+                Fec_Inasistencia: "12/12/24",
+                Motivo: "No fue a turno especial",
+                Tipo_Inasistencia: "aprendiz"
+              },
+              config
+            );
           }
         } else {
           setAlerta({
@@ -78,46 +93,46 @@ const ModalTurnoEspeciales = ({
   };
 
   // Función para crear el registro de inasistencia
-  const crearRegistroInasistencia = async (Id_Aprendiz, Id_TurnoEspecial) => {
-    try {
-      const token = ReactSession.get("token");
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
+  // const crearRegistroInasistencia = async (Id_Aprendiz, Id_TurnoEspecial) => {
+  //   try {
+  //     const token = ReactSession.get("token");
+  //     const config = {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     };
       
-      const turno = turnoEspecialAprendiz.find(
-        (t) => t.turnoEspecial?.Id_TurnoEspecial === Id_TurnoEspecial
-      );
+  //     const turno = turnoEspecialAprendiz.find(
+  //       (t) => t.turnoEspecial?.Id_TurnoEspecial === Id_TurnoEspecial
+  //     );
 
-      const inasistenciaData = {
-        Fec_Inasistencia: turno?.turnoEspecial?.Fec_TurnoEspecial,
-        Mot_Inasistencia: "Inasistencia a Turno Especial",
-        Id_Aprendiz: Id_Aprendiz,
-      };
+  //     const inasistenciaData = {
+  //       Fec_Inasistencia: turno?.turnoEspecial?.Fec_TurnoEspecial,
+  //       Mot_Inasistencia: "Inasistencia a Turno Especial",
+  //       Id_Aprendiz: Id_Aprendiz,
+  //     };
 
-      const respuestaInasistencia = await clienteAxios.post(
-        "/inasistencias",
-        inasistenciaData,
-        config
-      );
+  //     const respuestaInasistencia = await clienteAxios.post(
+  //       "/inasistencias",
+  //       inasistenciaData,
+  //       config
+  //     );
 
-      if (respuestaInasistencia.status === 201) {
-        console.log("Registro de inasistencia creado correctamente");
+  //     if (respuestaInasistencia.status === 201) {
+  //       console.log("Registro de inasistencia creado correctamente");
         
-        // Incrementar el conteo de inasistencias
-        await clienteAxios.put(
-          `/aprendiz/${Id_Aprendiz}/actualizar-inasistencia`,
-          { action: "incrementar" },
-          config
-        );
-      }
-    } catch (error) {
-      console.error("Error al crear registro de inasistencia:", error);
-    }
-  };
+  //       // Incrementar el conteo de inasistencias
+  //       await clienteAxios.put(
+  //         `/aprendiz/${Id_Aprendiz}/actualizar-inasistencia`,
+  //         { action: "incrementar" },
+  //         config
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.error("Error al crear registro de inasistencia:", error);
+  //   }
+  // };
 
   const { msg } = alerta;
 

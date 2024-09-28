@@ -13,7 +13,7 @@ const FormTurnoRutinario = ({
   getAllTurnosRutinarios,
   stateButton,
   setStateButton,
-  CerrarModal
+  CerrarModal,
 }) => {
   // Estados del formulario
   const [Id_TurnoRutinario, setId_TurnoRutinario] = useState("");
@@ -39,9 +39,7 @@ const FormTurnoRutinario = ({
   const [Aprendiz, setAprendiz] = useState([]);
   const [Unidad, setUnidad] = useState([]);
   const [alerta, setAlerta] = useState({});
-
-
-
+  const [Id_Inasistencia, setId_Inasistencia] = useState("");
 
   const getAreaByUnidad = async (unidadId) => {
     try {
@@ -59,79 +57,78 @@ const FormTurnoRutinario = ({
       console.error("Error fetching Area by Unidad:", error);
     }
   };
-  
 
-// Obtener áreas
-useEffect(() => {
-  const getAllAreas = async () => {
-    try {
-      const token = ReactSession.get("token");
-      const response = await clienteAxios("/areas", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setAreas(response.data);
-    } catch (error) {
-      console.error("Error fetching Areas:", error);
-    }
-  };
-
-  getAllAreas();
-}, []); // Este efecto solo se ejecuta una vez al montar el componente
-
-// Obtener aprendices por área seleccionada
-// Obtener unidades por área seleccionada
-useEffect(() => {
-  if (!Id_Area) {
-    setUnidades([]);
-    return;
-  }
-
-  const getUnidadesByArea = async () => {
-    try {
-      const token = ReactSession.get("token");
-      const response = await clienteAxios(`/areas/${Id_Area}/unidades`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.status === 200) {
-        setUnidades(response.data);
+  // Obtener áreas
+  useEffect(() => {
+    const getAllAreas = async () => {
+      try {
+        const token = ReactSession.get("token");
+        const response = await clienteAxios("/areas", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setAreas(response.data);
+      } catch (error) {
+        console.error("Error fetching Areas:", error);
       }
-    } catch (error) {
-      console.error("Error fetching Unidades by Area:", error);
+    };
+
+    getAllAreas();
+  }, []); // Este efecto solo se ejecuta una vez al montar el componente
+
+  // Obtener aprendices por área seleccionada
+  // Obtener unidades por área seleccionada
+  useEffect(() => {
+    if (!Id_Area) {
+      setUnidades([]);
+      return;
     }
-  };
 
-  getUnidadesByArea();
-}, [Id_Area]);
-
-// Obtener aprendices por área seleccionada
-useEffect(() => {
-  if (!Id_Area) {
-    setAprendices([]);
-    return;
-  }
-
-  const getAprendicesByArea = async () => {
-    try {
-      const token = ReactSession.get("token");
-      const response = await clienteAxios(`/areas/${Id_Area}/aprendices`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.status === 200) {
-        setAprendices(response.data);
+    const getUnidadesByArea = async () => {
+      try {
+        const token = ReactSession.get("token");
+        const response = await clienteAxios(`/areas/${Id_Area}/unidades`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.status === 200) {
+          setUnidades(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching Unidades by Area:", error);
       }
-    } catch (error) {
-      console.error("Error Al Buscar Aprendices por Area: ", error);
-    }
-  };
+    };
 
-  getAprendicesByArea();
-}, [Id_Area]);// Este efecto se ejecuta cuando cambian `turnoRutinario` o `Id_Area`
+    getUnidadesByArea();
+  }, [Id_Area]);
+
+  // Obtener aprendices por área seleccionada
+  useEffect(() => {
+    if (!Id_Area) {
+      setAprendices([]);
+      return;
+    }
+
+    const getAprendicesByArea = async () => {
+      try {
+        const token = ReactSession.get("token");
+        const response = await clienteAxios(`/areas/${Id_Area}/aprendices`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.status === 200) {
+          setAprendices(response.data);
+        }
+      } catch (error) {
+        console.error("Error Al Buscar Aprendices por Area: ", error);
+      }
+    };
+
+    getAprendicesByArea();
+  }, [Id_Area]); // Este efecto se ejecuta cuando cambian `turnoRutinario` o `Id_Area`
 
   // Enviar formulario
   const sendForm = async (e) => {
@@ -197,6 +194,22 @@ useEffect(() => {
       let mensajeCRUD = "";
       let respuestApi;
 
+      // Validar los datos antes de enviar la solicitud
+      if (
+        !Fec_InicioTurno ||
+        !Fec_FinTurno ||
+        !Hor_InicioTurno ||
+        !Hor_FinTurno ||
+        !Id_Aprendiz ||
+        !Id_Unidad
+      ) {
+        setAlerta({
+          msg: "Todos los campos son obligatorios.",
+          error: true,
+        });
+        return;
+      }
+
       // Determinar si es actualización o creación
       if (buttonForm === "Actualizar") {
         respuestApi = await clienteAxios.put(
@@ -216,7 +229,6 @@ useEffect(() => {
         );
         setStateButton(true);
         mensajeCRUD = "Turno Rutinario Actualizado Exitosamente";
-        
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
           `/turnoRutinario`,
@@ -235,7 +247,6 @@ useEffect(() => {
         );
         mensajeCRUD = "Turno Rutinario Registrado Exitosamente";
         getAllTurnosRutinarios(); // Actualiza la lista de turnos rutinarios
-        // CerrarModal();
       }
 
       // Manejo de respuesta exitosa
@@ -244,15 +255,22 @@ useEffect(() => {
           msg: mensajeCRUD,
           error: false,
         });
-        // Crear o eliminar registro de inasistencia según Ind_Asistencia
 
-        const turnoRutinarioId =
-          respuestApi.data.Id_TurnoRutinario || Id_TurnoRutinario;
+        // Solo actualizar inasistencia si Ind_Asistencia es "No"
         if (Ind_Asistencia === "No") {
-          await crearRegistroInasistencia(turnoRutinarioId);
-          await crearRegistroMemorando(turnoRutinarioId);
-          console.warn("Inasistencia Creada");
+          await clienteAxios.put(
+            `/aprendiz/actualizar-inasistencia/${Id_Aprendiz}`,
+            {
+              Ind_Asistencia,
+              Turno_Id: respuestApi.data.Id_TurnoRutinario || Id_TurnoRutinario,
+              Fec_Inasistencia: Fec_InicioTurno,
+              Motivo,
+              Tipo_Inasistencia: "turno_rutinario"
+            },
+            config
+          );
         }
+
         getAllTurnosRutinarios();
         clearForm();
         updateTextButton("Enviar");
@@ -265,90 +283,9 @@ useEffect(() => {
     } catch (error) {
       console.error("Error en la solicitud:", error);
       setAlerta({
-        msg: "Todos los campos son Obligatorios!",
+        msg: "Error al procesar la solicitud. Verifica los datos.",
         error: true,
       });
-    }
-  };
-
-  // Crear registro de inasistencia
-  const crearRegistroMemorando = async () => {
-    try {
-      const token = ReactSession.get("token");
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      const memorandoData = {
-        Fec_OtroMemorando: Fec_InicioTurno,
-        Mot_OtroMemorando: Motivo,
-        Id_Aprendiz,
-      };
-
-      console.log("Creando registro de memorando con datos:", memorandoData);
-
-      const respuestaMemorando = await clienteAxios.post(
-        "/otrosmemorandos",
-        memorandoData,
-        config
-      );
-      console.log(respuestaMemorando);
-
-      if (respuestaMemorando.status === 201) {
-        console.log("Registro de memorando creado exitosamente");
-
-        // const action = Ind_Asistencia === "No" ? "incrementar" : "decrementar";
-        // await clienteAxios.put(`/aprendiz/${Id_Aprendiz}/actualizar-inasistencia`, { action }, config);
-        // console.log('Inasistencia y memorandos actualizados exitosamente');
-      }
-    } catch (error) {
-      console.error("Error al crear registro de memorando:", error);
-    }
-  };
-
-  const crearRegistroInasistencia = async (Id_TurnoRutinario) => {
-    try {
-      const token = ReactSession.get("token");
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      const inasistenciaData = {
-        Fec_Inasistencia: Fec_InicioTurno,
-        Mot_Inasistencia: Motivo,
-        Id_TurnoRutinario,
-      };
-
-      console.log(
-        "Creando registro de inasistencia con datos:",
-        inasistenciaData
-      );
-
-      const respuestaInasistencia = await clienteAxios.post(
-        "/inasistencias",
-        inasistenciaData,
-        config
-      );
-
-      if (respuestaInasistencia.status === 201) {
-        console.log("Registro de inasistencia creado exitosamente");
-
-        const action = Ind_Asistencia === "No" ? "incrementar" : "decrementar";
-        await clienteAxios.put(
-          `/aprendiz/${Id_Aprendiz}/actualizar-inasistencia`,
-          { action },
-          config
-        );
-        console.log("Inasistencia actualizada exitosamente");
-      }
-    } catch (error) {
-      console.error("Error al crear registro de inasistencia:", error);
     }
   };
 
@@ -364,9 +301,9 @@ useEffect(() => {
     setId_Aprendiz("");
     setId_Unidad("");
     setMotivo("");
-      // Resetear los estados relacionados con los datos de aprendizaje y unidad, si es necesario
-  setSelectedAprendiz(null);
-  setSelectedUnidad(null);
+    // Resetear los estados relacionados con los datos de aprendizaje y unidad, si es necesario
+    setSelectedAprendiz(null);
+    setSelectedUnidad(null);
   };
 
   // Establecer datos en el formulario para edición
@@ -393,30 +330,25 @@ useEffect(() => {
       );
       setSelectedUnidad(selectedUni || null);
 
-          // Obtener el área asociada a la unidad
-    if (turnoRutinario.Id_Unidad) {
-      getAreaByUnidad(turnoRutinario.Id_Unidad);
-    }
-
+      // Obtener el área asociada a la unidad
+      if (turnoRutinario.Id_Unidad) {
+        getAreaByUnidad(turnoRutinario.Id_Unidad);
+      }
     }
   };
-
 
   useEffect(() => {
     setData();
   }, [turnoRutinario]);
-  
+
   const { msg } = alerta;
-
-
-
 
   //Generar Turnos Automaticos
   const generarTurnosAutomaticos = () => {
     const hoy = new Date();
     const manana = new Date(hoy);
     manana.setDate(manana.getDate() + 1);
-  
+
     // Formatear las fechas a formato yyyy-mm-dd
     const formatFecha = (fecha) => {
       const year = fecha.getFullYear();
@@ -433,17 +365,17 @@ useEffect(() => {
 
   return (
     <>
-{buttonForm !== "Actualizar" && (
-  <div className="flex justify-center items-center">
-    <button
-      type="button"
-      className="bg-botones py-2 px-4 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-blue-600 md:w-auto"
-      onClick={generarTurnosAutomaticos}
-    >
-      Generar Fechas y Horas Automáticas
-    </button>
-  </div>
-)}
+      {buttonForm !== "Actualizar" && (
+        <div className="flex justify-center items-center">
+          <button
+            type="button"
+            className="bg-botones py-2 px-4 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-blue-600 md:w-auto"
+            onClick={generarTurnosAutomaticos}
+          >
+            Generar Fechas y Horas Automáticas
+          </button>
+        </div>
+      )}
       <div className="flex justify-center items-center">
         <form
           id="turnoRutinarioForm"
@@ -452,8 +384,7 @@ useEffect(() => {
         >
           {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
           <div className="grid grid-cols-2 gap-4">
-
-          <div className="space-y-2">
+            <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Área
               </label>
@@ -461,7 +392,7 @@ useEffect(() => {
                 value={Id_Area}
                 onChange={(e) => {
                   setId_Area(e.target.value);
-              }}
+                }}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
                 id="Select"
               >
@@ -504,7 +435,6 @@ useEffect(() => {
                 value={Id_Aprendiz}
                 onChange={(e) => setId_Aprendiz(e.target.value)}
                 // disabled={!Id_Area} // Deshabilitar si no hay área seleccionada
-
               >
                 <option value="">Seleccione un Aprendiz</option>
                 {aprendices.map((aprendiz) => (
@@ -512,7 +442,8 @@ useEffect(() => {
                     key={aprendiz.Id_Aprendiz}
                     value={aprendiz.Id_Aprendiz}
                   >
-                    {`${aprendiz.Nom_Aprendiz} ${aprendiz.Ape_Aprendiz}`}
+                    {aprendiz.Id_Aprendiz}
+                    {/* {`${aprendiz.Nom_Aprendiz} ${aprendiz.Ape_Aprendiz}`} */}
                   </option>
                 ))}
               </select>
@@ -568,11 +499,11 @@ useEffect(() => {
               />
             </div>
 
-             <div className="space-y-2">
+            <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Observaciones
               </label>
-               <textarea
+              <textarea
                 id="observaciones"
                 placeholder="Observaciones"
                 value={Obs_TurnoRutinario}
@@ -585,7 +516,7 @@ useEffect(() => {
                 Indicador De Asistencia
               </label>
               <select
-                id="ind_Asistencia"
+                id="Ind_Asistencia"
                 value={Ind_Asistencia}
                 onChange={(e) => setInd_Asistencia(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
@@ -611,9 +542,7 @@ useEffect(() => {
                 />
               </div>
             )}
-
           </div>
-          <hr className="mt-3" />
           <div className="flex justify-around mt-2">
             <input
               type="submit"
@@ -977,15 +906,12 @@ export default FormTurnoRutinario;
 
 //   const { msg } = alerta;
 
-
-
-
 //   //Generar Turnos Automaticos
 //   const generarTurnosAutomaticos = () => {
 //     const hoy = new Date();
 //     const manana = new Date(hoy);
 //     manana.setDate(manana.getDate() + 1);
-  
+
 //     // Formatear las fechas a formato yyyy-mm-dd
 //     const formatFecha = (fecha) => {
 //       const year = fecha.getFullYear();
@@ -1002,7 +928,7 @@ export default FormTurnoRutinario;
 
 //   return (
 //     <>
-//     { buttonForm !== "Actualizar" && 
+//     { buttonForm !== "Actualizar" &&
 //     <div className="flex justify-center items-center">
 //   <button
 //     type="button"

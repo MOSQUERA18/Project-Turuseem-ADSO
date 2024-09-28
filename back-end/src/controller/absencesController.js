@@ -3,35 +3,44 @@ import TurnoRutinarioModel from "../models/turnoRutinarioModel.js";
 import { logger } from "../middleware/logMiddleware.js";
 import ApprenticeModel from "../models/apprenticeModel.js";
 import UnitModel from "../models/unitModel.js";
+import db from "../database/db.js";
 
 // Obtener todas las inasistencias
 export const getAllAbsences = async (req, res) => {
   try {
-    // Se busca todas las inasistencias en la base de datos con sus relaciones
-    const inasistencias = await AbsenceModel.findAll({
-      include: [
-        {
-          model: TurnoRutinarioModel,
-          as: "turnorutinario",
-          include: [
-            {
-              model: ApprenticeModel,
-              as: "aprendiz",
-            },
-            {
-              model: UnitModel,
-              as: "unidad",
-            },
-          ],
-        },
-      ],
+    // Realizar el LEFT JOIN entre inasistencias, turnosrutinarios y aprendices
+    const inasistencias = await db.query(`
+      SELECT 
+        inasistencias.*, 
+        turnosrutinarios.Fec_InicioTurno, 
+        turnosrutinarios.Fec_FinTurno, 
+        turnosrutinarios.Hor_InicioTurno, 
+        turnosrutinarios.Hor_FinTurno, 
+        turnosrutinarios.Obs_TurnoRutinario,
+        CASE
+          WHEN inasistencias.Turno_Id = turnosrutinarios.Id_TurnoRutinario THEN turnosrutinarios.Id_Aprendiz
+          ELSE inasistencias.Turno_Id
+        END AS Id_Aprendiz,
+        CASE
+          WHEN inasistencias.Turno_Id = turnosrutinarios.Id_TurnoRutinario THEN CONCAT(aprendizTurno.Nom_Aprendiz, ' ', aprendizTurno.Ape_Aprendiz)
+          ELSE CONCAT(aprendices.Nom_Aprendiz, ' ', aprendices.Ape_Aprendiz)
+        END AS NombreCompleto
+      FROM 
+        inasistencias
+      LEFT JOIN 
+        turnosrutinarios ON inasistencias.Turno_Id = turnosrutinarios.Id_TurnoRutinario
+      LEFT JOIN 
+        aprendices AS aprendizTurno ON turnosrutinarios.Id_Aprendiz = aprendizTurno.Id_Aprendiz
+      LEFT JOIN 
+        aprendices ON inasistencias.Turno_Id = aprendices.Id_Aprendiz
+    `, {
+      type: db.QueryTypes.SELECT
     });
 
-    // Si se encuentran inasistencias, se retornan con un código 200
-    if (inasistencias) {
-      return res.status(200).json(inasistencias);
+    // Verificar si se encontraron inasistencias
+    if (inasistencias && inasistencias.length > 0) {
+      return res.status(200).json(inasistencias); // Retornar todas las inasistencias
     } else {
-      // Si no se encuentran inasistencias, se retorna un código 404 con un mensaje
       return res.status(404).json({
         message: "No se encontraron inasistencias.",
       });
@@ -43,28 +52,17 @@ export const getAllAbsences = async (req, res) => {
   }
 };
 
+
+
+
+
 // Obtener una inasistencia específica por ID
 export const getAbsence = async (req, res) => {
   try {
     // Se busca una inasistencia por su ID
-    const inasistencia = await AbsenceModel.findByPk(req.params.Id_Inasistencia, {
-      include: [
-        {
-          model: TurnoRutinarioModel,
-          as: "turnorutinario",
-          include: [
-            {
-              model: ApprenticeModel,
-              as: "aprendiz",
-            },
-            {
-              model: UnitModel,
-              as: "unidad",
-            },
-          ],
-        },
-      ],
-    });
+    const inasistencia = await AbsenceModel.findByPk(
+      req.params.Id_Inasistencia
+    );
 
     // Si se encuentra la inasistencia, se retorna con un código 200
     if (inasistencia) {
@@ -83,13 +81,17 @@ export const getAbsence = async (req, res) => {
 // Crear una nueva inasistencia
 export const createAbsence = async (req, res) => {
   try {
-    const { Fec_Inasistencia, Mot_Inasistencia, Id_TurnoRutinario } = req.body;
+    const { Fec_Inasistencia, Mot_Inasistencia, Turno_Id, Tipo_Inasistencia } =
+      req.body;
+
+      
 
     // Se crea una nueva inasistencia con los datos proporcionados
     const newInasistencia = await AbsenceModel.create({
       Fec_Inasistencia,
       Mot_Inasistencia,
-      Id_TurnoRutinario,
+      Turno_Id,
+      Tipo_Inasistencia,
     });
 
     // Si la inasistencia se crea con éxito, se retorna con un código 201
@@ -106,14 +108,38 @@ export const createAbsence = async (req, res) => {
 // Actualizar una inasistencia existente
 export const updateAbsence = async (req, res) => {
   try {
-    const { Fec_Inasistencia, Mot_Inasistencia, Id_TurnoRutinario } = req.body;
+    const { Fec_Inasistencia, Mot_Inasistencia, Turno_Id, Tipo_Inasistencia } =
+      req.body;
+      console.log("Este es el tipoooooooooooooooooooooooooooooooooooooooooooo",Tipo_Inasistencia);
+    // Validar los datos antes de proceder
+    if (
+      !Fec_Inasistencia ||
+      !Mot_Inasistencia ||
+      !Turno_Id ||
+      !Tipo_Inasistencia
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Todos los campos son obligatorios" });
+    }
 
-    // Se intenta actualizar la inasistencia con el ID especificado
+    // Verificar que el Tipo_Inasistencia sea válido
+    if (
+      Tipo_Inasistencia !== "turno_rutinario" &&
+      Tipo_Inasistencia !== "aprendiz"
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Tipo de Inasistencia no válido" });
+    }
+
+    // Actualizar la inasistencia
     const [updated] = await AbsenceModel.update(
       {
         Fec_Inasistencia,
         Mot_Inasistencia,
-        Id_TurnoRutinario,
+        Turno_Id,
+        Tipo_Inasistencia,
       },
       {
         where: { Id_Inasistencia: req.params.Id_Inasistencia },
@@ -123,30 +149,58 @@ export const updateAbsence = async (req, res) => {
     // Si no se actualiza ninguna fila, significa que no se encontró la inasistencia
     if (updated === 0) {
       return res.status(404).json({ message: "Inasistencia no encontrada" });
-    } else {
-      // Si la actualización es exitosa, se retorna un mensaje de éxito
-      return res.json({ message: "Inasistencia actualizada correctamente" });
     }
+
+    // Obtener los datos del turno rutinario asociado con el inner join
+    const [result] = await db.query(
+      `
+      SELECT inasistencias.*, turnosrutinarios.Fec_InicioTurno, turnosrutinarios.Fec_FinTurno,
+             turnosrutinarios.Hor_InicioTurno, turnosrutinarios.Hor_FinTurno, turnosrutinarios.Obs_TurnoRutinario
+      FROM inasistencias
+      INNER JOIN turnosrutinarios
+      ON inasistencias.Turno_Id = turnosrutinarios.Id_TurnoRutinario
+      WHERE inasistencias.Id_Inasistencia = :Id_Inasistencia
+    `,
+      {
+        replacements: { Id_Inasistencia: req.params.Id_Inasistencia },
+        type: sequelize.QueryTypes.SELECT,
+      }
+    );
+
+    // Si no se encontró el turno rutinario asociado, devolver un error
+    if (!result) {
+      return res
+        .status(404)
+        .json({
+          message: "Turno rutinario no encontrado para esta inasistencia",
+        });
+    }
+
+    // Devolver la inasistencia actualizada junto con los datos del turno rutinario
+    return res.json({
+      message: "Inasistencia actualizada correctamente",
+      data: result, // Aquí se devuelve el resultado del join
+    });
   } catch (error) {
     // Manejo de errores y registro en logs
     logger.error(`Error al actualizar la inasistencia: ${error}`);
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 
-
-
 export const deleteAbsence = async (req, res) => {
   try {
-    const { Id_TurnoRutinario } = req.params;
+    const { Id_Inasistencia } = req.params;
 
     // Asegúrate de que Id_TurnoRutinario no sea undefined o null
-    if (!Id_TurnoRutinario) {
-      return res.status(400).json({ message: "Id_TurnoRutinario es requerido" });
+    if (!Id_Inasistencia) {
+      return res
+        .status(400)
+        .json({ message: "Id_TurnoRutinario es requerido" });
     }
 
     const result = await AbsenceModel.destroy({
-      where: { Id_TurnoRutinario: req.params.Id_TurnoRutinario },
+      where: { Id_Inasistencia: req.params.Id_Inasistencia },
     });
 
     if (result === 0) {
