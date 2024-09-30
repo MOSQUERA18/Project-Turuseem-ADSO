@@ -29,7 +29,7 @@ export default function HeaderPublic() {
       <div className="bg-header shadow py-5 px-7">
         <nav className="flex justify-between">
           <div className="flex items-center space-x-3 lg:pr-16 pr-6">
-            <img src="Public/IMG/LOGOTURUSEEM.png" className="w-11 drop-shadow-2xl" />
+            <img src="/Public/IMG/LOGOTURUSEEM.png" className="w-11 drop-shadow-2xl" />
             <h2 className="font-bold text-2xl leading-6 text-black ">
               TURUSEEM
             </h2>

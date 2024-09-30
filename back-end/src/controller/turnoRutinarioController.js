@@ -282,7 +282,7 @@ export const getTurnoRutinariosForAprendiz = async (req, res) => {
 export const updateInasistencia = async (req, res) => {
   try {
     const { Id_Aprendiz } = req.params;
-    const { Ind_Asistencia, Turno_Id, Fec_Inasistencia, Motivo } = req.body;
+    const { Ind_Asistencia, Turno_Id, Fec_Inasistencia, Motivo, Tipo_Inasistencia } = req.body;
 
     const aprendiz = await ApprenticeModel.findByPk(Id_Aprendiz);
 
@@ -300,7 +300,7 @@ export const updateInasistencia = async (req, res) => {
         Fec_Inasistencia,
         Mot_Inasistencia: Motivo,
         Turno_Id,
-        Tipo_Inasistencia: "turno_rutinario",
+        Tipo_Inasistencia,
       });
 
       // Crear registro de memorando
@@ -312,8 +312,12 @@ export const updateInasistencia = async (req, res) => {
 
     } else if (Ind_Asistencia === "Si") {
       // Decrementar contadores (si son mayores que 0)
-      if (aprendiz.Tot_Inasistencias > 0) aprendiz.Tot_Inasistencias -= 1;
-      if (aprendiz.Tot_Memorandos > 0) aprendiz.Tot_Memorandos -= 1;
+      if (aprendiz.Tot_Inasistencias > 0) {
+        aprendiz.Tot_Inasistencias -= 1;
+      }
+      if (aprendiz.Tot_Memorandos > 0) {
+        aprendiz.Tot_Memorandos -= 1;
+      }
 
       // Eliminar registro de inasistencia
       await AbsenceModel.destroy({
@@ -332,7 +336,7 @@ export const updateInasistencia = async (req, res) => {
 
     res.status(200).json({ message: 'Inasistencia y memorando actualizados exitosamente' });
   } catch (error) {
-    console.error(`Error al actualizar inasistencia y memorando: ${error.message}`);
+    console.error(`Error al actualizar inasistencia y memorando: ${error}`);
     res.status(500).json({ error: 'Error al actualizar la inasistencia y memorando' });
   }
 };

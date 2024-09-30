@@ -13,7 +13,7 @@ const FormTurnoRutinario = ({
   getAllTurnosRutinarios,
   stateButton,
   setStateButton,
-  CerrarModal
+  CerrarModal,
 }) => {
   // Estados del formulario
   const [Id_TurnoRutinario, setId_TurnoRutinario] = useState("");
@@ -41,9 +41,6 @@ const FormTurnoRutinario = ({
   const [alerta, setAlerta] = useState({});
   const [Id_Inasistencia, setId_Inasistencia] = useState("");
 
-
-
-
   const getAreaByUnidad = async (unidadId) => {
     try {
       const token = ReactSession.get("token");
@@ -60,192 +57,207 @@ const FormTurnoRutinario = ({
       console.error("Error fetching Area by Unidad:", error);
     }
   };
-  
 
-// Obtener áreas
-useEffect(() => {
-  const getAllAreas = async () => {
-    try {
-      const token = ReactSession.get("token");
-      const response = await clienteAxios("/areas", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setAreas(response.data);
-    } catch (error) {
-      console.error("Error fetching Areas:", error);
-    }
-  };
-
-  getAllAreas();
-}, []); // Este efecto solo se ejecuta una vez al montar el componente
-
-// Obtener aprendices por área seleccionada
-// Obtener unidades por área seleccionada
-useEffect(() => {
-  if (!Id_Area) {
-    setUnidades([]);
-    return;
-  }
-
-  const getUnidadesByArea = async () => {
-    try {
-      const token = ReactSession.get("token");
-      const response = await clienteAxios(`/areas/${Id_Area}/unidades`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.status === 200) {
-        setUnidades(response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching Unidades by Area:", error);
-    }
-  };
-
-  getUnidadesByArea();
-}, [Id_Area]);
-
-// Obtener aprendices por área seleccionada
-useEffect(() => {
-  if (!Id_Area) {
-    setAprendices([]);
-    return;
-  }
-
-  const getAprendicesByArea = async () => {
-    try {
-      const token = ReactSession.get("token");
-      const response = await clienteAxios(`/areas/${Id_Area}/aprendices`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.status === 200) {
-        setAprendices(response.data);
-      }
-    } catch (error) {
-      console.error("Error Al Buscar Aprendices por Area: ", error);
-    }
-  };
-
-  getAprendicesByArea();
-}, [Id_Area]);// Este efecto se ejecuta cuando cambian `turnoRutinario` o `Id_Area`
-
-    // Enviar formulario
-    const sendForm = async (e) => {
-      e.preventDefault();
-      if (!Fec_InicioTurno) {
-        setAlerta({
-          msg: "La Fecha de Inicio No Puede Estar Vacia",
-          error: true,
-        });
-        return;
-      }
-      if (!Fec_FinTurno) {
-        setAlerta({
-          msg: "La Fecha de Fin No Puede Estar Vacia",
-          error: true,
-        });
-        return;
-      }
-      if (!Hor_InicioTurno) {
-        setAlerta({
-          msg: "La Hora de Inicio No Puede Estar Vacia",
-          error: true,
-        });
-        return;
-      }
-      if (!Hor_FinTurno) {
-        setAlerta({
-          msg: "La Hora de Fin No Puede Estar Vacia",
-          error: true,
-        });
-        return;
-      }
-      if (!Ind_Asistencia) {
-        setAlerta({
-          msg: "El Indicador No Puede Estar Vacio",
-          error: true,
-        });
-        return;
-      }
-      if (!Id_Aprendiz) {
-        setAlerta({
-          msg: "El Nombre Del Aprendiz No puede Estar Vacio",
-          error: true,
-        });
-        return;
-      }
-      if (!Id_Unidad) {
-        setAlerta({
-          msg: "La Unidad No Puede Estar Vacia",
-          error: true,
-        });
-        return;
-      }
-      const token = ReactSession.get("token");
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
+  // Obtener áreas
+  useEffect(() => {
+    const getAllAreas = async () => {
       try {
-        let mensajeCRUD = "";
-        let respuestApi;
+        const token = ReactSession.get("token");
+        const response = await clienteAxios("/areas", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setAreas(response.data);
+      } catch (error) {
+        console.error("Error fetching Areas:", error);
+      }
+    };
 
-        // Determinar si es actualización o creación
-        if (buttonForm === "Actualizar") {
-          respuestApi = await clienteAxios.put(
-            `/turnoRutinario/${Id_TurnoRutinario}`,
-            {
-              Fec_InicioTurno,
-              Fec_FinTurno,
-              Hor_InicioTurno,
-              Hor_FinTurno,
-              Obs_TurnoRutinario,
-              Ind_Asistencia,
-              Id_Aprendiz,
-              Id_Unidad,
-              Motivo,
-            },
-            config
-          );
-          setStateButton(true);
-          mensajeCRUD = "Turno Rutinario Actualizado Exitosamente";
-          
-        } else if (buttonForm === "Enviar") {
-          respuestApi = await clienteAxios.post(
-            `/turnoRutinario`,
-            {
-              Fec_InicioTurno,
-              Fec_FinTurno,
-              Hor_InicioTurno,
-              Hor_FinTurno,
-              Obs_TurnoRutinario,
-              Ind_Asistencia,
-              Id_Aprendiz,
-              Id_Unidad,
-              Motivo,
-            },
-            config
-          );
-          mensajeCRUD = "Turno Rutinario Registrado Exitosamente";
-          getAllTurnosRutinarios(); // Actualiza la lista de turnos rutinarios
-          // CerrarModal();
+    getAllAreas();
+  }, []); // Este efecto solo se ejecuta una vez al montar el componente
+
+  // Obtener aprendices por área seleccionada
+  // Obtener unidades por área seleccionada
+  useEffect(() => {
+    if (!Id_Area) {
+      setUnidades([]);
+      return;
+    }
+
+    const getUnidadesByArea = async () => {
+      try {
+        const token = ReactSession.get("token");
+        const response = await clienteAxios(`/areas/${Id_Area}/unidades`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.status === 200) {
+          setUnidades(response.data);
         }
+      } catch (error) {
+        console.error("Error fetching Unidades by Area:", error);
+      }
+    };
 
-        // Manejo de respuesta exitosa
-        if (respuestApi.status === 201 || respuestApi.status === 200) {
-          setAlerta({
-            msg: mensajeCRUD,
-            error: false,
-          });
+    getUnidadesByArea();
+  }, [Id_Area]);
 
+  // Obtener aprendices por área seleccionada
+  useEffect(() => {
+    if (!Id_Area) {
+      setAprendices([]);
+      return;
+    }
+
+    const getAprendicesByArea = async () => {
+      try {
+        const token = ReactSession.get("token");
+        const response = await clienteAxios(`/areas/${Id_Area}/aprendices`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.status === 200) {
+          setAprendices(response.data);
+        }
+      } catch (error) {
+        console.error("Error Al Buscar Aprendices por Area: ", error);
+      }
+    };
+
+    getAprendicesByArea();
+  }, [Id_Area]); // Este efecto se ejecuta cuando cambian `turnoRutinario` o `Id_Area`
+
+  // Enviar formulario
+  const sendForm = async (e) => {
+    e.preventDefault();
+    if (!Fec_InicioTurno) {
+      setAlerta({
+        msg: "La Fecha de Inicio No Puede Estar Vacia",
+        error: true,
+      });
+      return;
+    }
+    if (!Fec_FinTurno) {
+      setAlerta({
+        msg: "La Fecha de Fin No Puede Estar Vacia",
+        error: true,
+      });
+      return;
+    }
+    if (!Hor_InicioTurno) {
+      setAlerta({
+        msg: "La Hora de Inicio No Puede Estar Vacia",
+        error: true,
+      });
+      return;
+    }
+    if (!Hor_FinTurno) {
+      setAlerta({
+        msg: "La Hora de Fin No Puede Estar Vacia",
+        error: true,
+      });
+      return;
+    }
+    if (!Ind_Asistencia) {
+      setAlerta({
+        msg: "El Indicador No Puede Estar Vacio",
+        error: true,
+      });
+      return;
+    }
+    if (!Id_Aprendiz) {
+      setAlerta({
+        msg: "El Nombre Del Aprendiz No puede Estar Vacio",
+        error: true,
+      });
+      return;
+    }
+    if (!Id_Unidad) {
+      setAlerta({
+        msg: "La Unidad No Puede Estar Vacia",
+        error: true,
+      });
+      return;
+    }
+    const token = ReactSession.get("token");
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      let mensajeCRUD = "";
+      let respuestApi;
+
+      // Validar los datos antes de enviar la solicitud
+      if (
+        !Fec_InicioTurno ||
+        !Fec_FinTurno ||
+        !Hor_InicioTurno ||
+        !Hor_FinTurno ||
+        !Id_Aprendiz ||
+        !Id_Unidad
+      ) {
+        setAlerta({
+          msg: "Todos los campos son obligatorios.",
+          error: true,
+        });
+        return;
+      }
+
+      // Determinar si es actualización o creación
+      if (buttonForm === "Actualizar") {
+        respuestApi = await clienteAxios.put(
+          `/turnoRutinario/${Id_TurnoRutinario}`,
+          {
+            Fec_InicioTurno,
+            Fec_FinTurno,
+            Hor_InicioTurno,
+            Hor_FinTurno,
+            Obs_TurnoRutinario,
+            Ind_Asistencia,
+            Id_Aprendiz,
+            Id_Unidad,
+            Motivo,
+          },
+          config
+        );
+        setStateButton(true);
+        mensajeCRUD = "Turno Rutinario Actualizado Exitosamente";
+      } else if (buttonForm === "Enviar") {
+        respuestApi = await clienteAxios.post(
+          `/turnoRutinario`,
+          {
+            Fec_InicioTurno,
+            Fec_FinTurno,
+            Hor_InicioTurno,
+            Hor_FinTurno,
+            Obs_TurnoRutinario,
+            Ind_Asistencia,
+            Id_Aprendiz,
+            Id_Unidad,
+            Motivo,
+          },
+          config
+        );
+        mensajeCRUD = "Turno Rutinario Registrado Exitosamente";
+        getAllTurnosRutinarios(); // Actualiza la lista de turnos rutinarios
+      }
+
+      // Manejo de respuesta exitosa
+      if (respuestApi.status === 201 || respuestApi.status === 200) {
+        setAlerta({
+          msg: mensajeCRUD,
+          error: false,
+        });
+
+        // Solo actualizar inasistencia si Ind_Asistencia es "No"
+        if (Ind_Asistencia === "No") {
           await clienteAxios.put(
             `/aprendiz/actualizar-inasistencia/${Id_Aprendiz}`,
             {
@@ -253,30 +265,29 @@ useEffect(() => {
               Turno_Id: respuestApi.data.Id_TurnoRutinario || Id_TurnoRutinario,
               Fec_Inasistencia: Fec_InicioTurno,
               Motivo,
+              Tipo_Inasistencia: "turno_rutinario"
             },
             config
           );
-          
-            
-          getAllTurnosRutinarios();
-          clearForm();
-          updateTextButton("Enviar");
-        } else {
-          setAlerta({
-            msg: respuestApi.error.message || "Error al crear el Turno!",
-            error: true,
-          });
         }
-      } catch (error) {
-        console.error("Error en la solicitud:", error);
+
+        getAllTurnosRutinarios();
+        clearForm();
+        updateTextButton("Enviar");
+      } else {
         setAlerta({
-          msg: "Todos los campos son Obligatorios!",
+          msg: respuestApi.error.message || "Error al crear el Turno!",
           error: true,
         });
       }
-    };
-
-
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+      setAlerta({
+        msg: "Error al procesar la solicitud. Verifica los datos.",
+        error: true,
+      });
+    }
+  };
 
   // Limpiar formulario
   const clearForm = () => {
@@ -290,9 +301,9 @@ useEffect(() => {
     setId_Aprendiz("");
     setId_Unidad("");
     setMotivo("");
-      // Resetear los estados relacionados con los datos de aprendizaje y unidad, si es necesario
-  setSelectedAprendiz(null);
-  setSelectedUnidad(null);
+    // Resetear los estados relacionados con los datos de aprendizaje y unidad, si es necesario
+    setSelectedAprendiz(null);
+    setSelectedUnidad(null);
   };
 
   // Establecer datos en el formulario para edición
@@ -319,30 +330,25 @@ useEffect(() => {
       );
       setSelectedUnidad(selectedUni || null);
 
-          // Obtener el área asociada a la unidad
-    if (turnoRutinario.Id_Unidad) {
-      getAreaByUnidad(turnoRutinario.Id_Unidad);
-    }
-
+      // Obtener el área asociada a la unidad
+      if (turnoRutinario.Id_Unidad) {
+        getAreaByUnidad(turnoRutinario.Id_Unidad);
+      }
     }
   };
-
 
   useEffect(() => {
     setData();
   }, [turnoRutinario]);
-  
+
   const { msg } = alerta;
-
-
-
 
   //Generar Turnos Automaticos
   const generarTurnosAutomaticos = () => {
     const hoy = new Date();
     const manana = new Date(hoy);
     manana.setDate(manana.getDate() + 1);
-  
+
     // Formatear las fechas a formato yyyy-mm-dd
     const formatFecha = (fecha) => {
       const year = fecha.getFullYear();
@@ -359,17 +365,17 @@ useEffect(() => {
 
   return (
     <>
-{buttonForm !== "Actualizar" && (
-  <div className="flex justify-center items-center">
-    <button
-      type="button"
-      className="bg-botones py-2 px-4 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-blue-600 md:w-auto"
-      onClick={generarTurnosAutomaticos}
-    >
-      Generar Fechas y Horas Automáticas
-    </button>
-  </div>
-)}
+      {buttonForm !== "Actualizar" && (
+        <div className="flex justify-center items-center">
+          <button
+            type="button"
+            className="bg-botones py-2 px-4 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-blue-600 md:w-auto"
+            onClick={generarTurnosAutomaticos}
+          >
+            Generar Fechas y Horas Automáticas
+          </button>
+        </div>
+      )}
       <div className="flex justify-center items-center">
         <form
           id="turnoRutinarioForm"
@@ -378,8 +384,7 @@ useEffect(() => {
         >
           {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
           <div className="grid grid-cols-2 gap-4">
-
-          <div className="space-y-2">
+            <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Área
               </label>
@@ -387,7 +392,7 @@ useEffect(() => {
                 value={Id_Area}
                 onChange={(e) => {
                   setId_Area(e.target.value);
-              }}
+                }}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
                 id="Select"
               >
@@ -430,7 +435,6 @@ useEffect(() => {
                 value={Id_Aprendiz}
                 onChange={(e) => setId_Aprendiz(e.target.value)}
                 // disabled={!Id_Area} // Deshabilitar si no hay área seleccionada
-
               >
                 <option value="">Seleccione un Aprendiz</option>
                 {aprendices.map((aprendiz) => (
@@ -495,11 +499,11 @@ useEffect(() => {
               />
             </div>
 
-             <div className="space-y-2">
+            <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Observaciones
               </label>
-               <textarea
+              <textarea
                 id="observaciones"
                 placeholder="Observaciones"
                 value={Obs_TurnoRutinario}
@@ -538,7 +542,6 @@ useEffect(() => {
                 />
               </div>
             )}
-
           </div>
           <div className="flex justify-around mt-2">
             <input
@@ -903,15 +906,12 @@ export default FormTurnoRutinario;
 
 //   const { msg } = alerta;
 
-
-
-
 //   //Generar Turnos Automaticos
 //   const generarTurnosAutomaticos = () => {
 //     const hoy = new Date();
 //     const manana = new Date(hoy);
 //     manana.setDate(manana.getDate() + 1);
-  
+
 //     // Formatear las fechas a formato yyyy-mm-dd
 //     const formatFecha = (fecha) => {
 //       const year = fecha.getFullYear();
@@ -928,7 +928,7 @@ export default FormTurnoRutinario;
 
 //   return (
 //     <>
-//     { buttonForm !== "Actualizar" && 
+//     { buttonForm !== "Actualizar" &&
 //     <div className="flex justify-center items-center">
 //   <button
 //     type="button"

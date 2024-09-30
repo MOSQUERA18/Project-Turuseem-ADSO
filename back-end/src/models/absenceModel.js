@@ -20,4 +20,5 @@ const AbsenceModel = db.define(
     updatedAt: "updated_at",
   }
 );
+
 export default AbsenceModel;

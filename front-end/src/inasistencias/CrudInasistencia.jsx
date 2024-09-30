@@ -23,10 +23,12 @@ const CrudInasistencias = () => {
     "Identificador",
     "Fecha Inasistencia",
     "Motivo Inasistencia",
-    "Turno Identificador",
+    "Aprendiz",
     "Tipo Inasistencia",
     "Acciones",
   ];
+  console.log(inasistenciaList);
+  
 
   const ButtonsForOtherModules = () => [
     <button
@@ -48,7 +50,7 @@ const CrudInasistencias = () => {
       inasistencias.Id_Inasistencia,
       inasistencias.Fec_Inasistencia,
       inasistencias.Mot_Inasistencia,
-      inasistencias.Turno_Id,
+      inasistencias.NombreCompleto,
       inasistencias.Tipo_Inasistencia,
     ]
       // inasistencias.Fec_Inasistencia,
