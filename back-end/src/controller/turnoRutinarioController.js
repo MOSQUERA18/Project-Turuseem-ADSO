@@ -277,8 +277,8 @@ export const getTurnoRutinariosForAprendiz = async (req, res) => {
   }
 };
 
+import moment from 'moment';
 
-// Función para actualizar inasistencias y memorandos
 export const updateInasistencia = async (req, res) => {
   try {
     const { Id_Aprendiz } = req.params;
@@ -290,7 +290,11 @@ export const updateInasistencia = async (req, res) => {
       return res.status(404).json({ error: 'Aprendiz no encontrado' });
     }
 
+    const formattedFecInasistencia = moment(Fec_Inasistencia).format('YYYY-MM-DD'); // Normalizar la fecha
+
     if (Ind_Asistencia === "No") {
+      console.log("Entrando al modo incrementar");
+
       // Incrementar contadores
       aprendiz.Tot_Inasistencias += 1;
       aprendiz.Tot_Memorandos += 1;
@@ -301,6 +305,7 @@ export const updateInasistencia = async (req, res) => {
         Mot_Inasistencia: Motivo,
         Turno_Id,
         Tipo_Inasistencia,
+        Id_Aprendiz,
       });
 
       // Crear registro de memorando
@@ -311,33 +316,47 @@ export const updateInasistencia = async (req, res) => {
       });
 
     } else if (Ind_Asistencia === "Si") {
-      // Decrementar contadores (si son mayores que 0)
-      if (aprendiz.Tot_Inasistencias > 0) {
-        aprendiz.Tot_Inasistencias -= 1;
-      }
-      if (aprendiz.Tot_Memorandos > 0) {
-        aprendiz.Tot_Memorandos -= 1;
-      }
+      console.log("Entrando al modo decrementar");
 
-      // Eliminar registro de inasistencia
-      await AbsenceModel.destroy({
-        where: { Turno_Id }
+      // Decrementar contadores si es posible
+      if (aprendiz.Tot_Inasistencias > 0) aprendiz.Tot_Inasistencias -= 1;
+      if (aprendiz.Tot_Memorandos > 0) aprendiz.Tot_Memorandos -= 1;
+
+      // Buscar y eliminar la inasistencia
+      const inasistencia = await AbsenceModel.findOne({
+        where: { Fec_Inasistencia: formattedFecInasistencia, Turno_Id }
       });
 
-      // Eliminar registro de memorando
-      await OtrosMemorandumModel.destroy({
-        where: { 
-          Id_Aprendiz
+      if (inasistencia) {
+        await inasistencia.destroy();
+        console.log("Inasistencia eliminada");
+      } else {
+        console.log("No se encontró inasistencia para eliminar");
+      }
+
+      // Buscar y eliminar el memorando
+      const memorando = await OtrosMemorandumModel.findOne({
+        where: {
+          Id_Aprendiz,
+          Fec_OtroMemorando: formattedFecInasistencia  // Comparar la fecha formateada sin la hora
         }
       });
-      
-    }
-    await aprendiz.save();
 
+      console.log(memorando);
+
+      if (memorando) {
+        await memorando.destroy();
+        console.log("Memorando eliminado");
+      } else {
+        console.log("No se encontró memorando para eliminar");
+      }
+    }
+
+    // Guardar los cambios en aprendiz
+    await aprendiz.save();
     res.status(200).json({ message: 'Inasistencia y memorando actualizados exitosamente' });
   } catch (error) {
     console.error(`Error al actualizar inasistencia y memorando: ${error}`);
     res.status(500).json({ error: 'Error al actualizar la inasistencia y memorando' });
   }
 };
-
