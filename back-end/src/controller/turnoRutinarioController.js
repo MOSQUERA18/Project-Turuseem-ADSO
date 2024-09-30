@@ -310,7 +310,7 @@ export const updateInasistencia = async (req, res) => {
         Id_Aprendiz,
       });
 
-    } else if (Ind_Asistencia === "Si") {
+    } else if (Ind_Asistencia === "Si") { 
       // Decrementar contadores (si son mayores que 0)
       if (aprendiz.Tot_Inasistencias > 0) {
         aprendiz.Tot_Inasistencias -= 1;
