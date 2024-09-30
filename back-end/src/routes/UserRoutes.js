@@ -19,9 +19,6 @@ router.post('/login', autenticar)
 router.post('/olvide-password', olvidePassword)
 router.route('/olvide-password/:token').get(comprobarToken).post(nuevoPassword)
 
-// router.get('/olvideContraseña/:token', comprobarToken)
-// router.post('/olvideContraseña/:token', nuevoPassword)
-
 //Area Privada
 router.get('/perfil',checkAuth, perfil)
 

@@ -71,12 +71,6 @@ const OlvidePassword = () => {
             <Link to="/login" className="block text-center my-5 text-zinc-950 mx-2 hover:text-link hover:scale-105 transition-transform duration-200 ease-in-out hover:rounded-md">
               ¿Tienes una Cuenta? Inicia Sesion
             </Link>
-          {/*  <Link
-              to="/registrar" 
-              className="block text-center my-5 text-gray-600 hover:text-green-600"
-            >
-              ¿No tienes una Cuenta? Registrate
-            </Link>  */}
           </nav>
         </div>
       </div>

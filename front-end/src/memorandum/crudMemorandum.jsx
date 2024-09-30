@@ -72,6 +72,7 @@ const CrudMemorandum = () => {
       ]}
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
+      title="Editar"
     >
       <FaRegEdit />
     </button>,
@@ -79,6 +80,7 @@ const CrudMemorandum = () => {
       onClick={() => deleteMemorandum(Id_OtroMemorando)}
       className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
       key="delete"
+      title="Eliminar"
     >
       <MdDeleteOutline />
     </button>,
@@ -86,6 +88,7 @@ const CrudMemorandum = () => {
       onClick={() => [viewMemorandum(Id_OtroMemorando)]}
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
+      title="Ver PDF"
     >
       <AiOutlineEye />
     </button>,
@@ -93,6 +96,7 @@ const CrudMemorandum = () => {
       onClick={() => sendMemorandum(Id_OtroMemorando)}
       className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
       key="delete"
+      title="Enviar Memorando"
     >
       <MdEmail />
     </button>,

@@ -55,7 +55,7 @@ const Contacto = () => {
     return edad;
   }
   const fechaNacimientoLinares = "2005-09-13";
-  const fechaNacimientoKaleth = '2005-09-13';
+  const fechaNacimientoKaleth = '2006-04-18';
   const fechaNacimientoNatalia = '2004-08-18';
   const fechaNacimientoKimberly = '2003-11-02';
   const fechaNacimientoLina = '1997-02-02';

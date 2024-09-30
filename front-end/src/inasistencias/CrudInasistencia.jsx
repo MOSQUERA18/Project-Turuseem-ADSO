@@ -47,7 +47,7 @@ const CrudFuncionarios = () => {
       inasistencia.Id_Inasistencia,
       inasistencia.Fec_Inasistencia,
       inasistencia.Mot_Inasistencia,
-      inasistencia.turnorutinario.Id_Aprendiz,
+      inasistencia.turnorutinario.Id_Aprendiz || "N/A",
     ]
     rowData.push(ButtonsForOtherModules(inasistencia.Id_Inasistencia));
     return rowData;

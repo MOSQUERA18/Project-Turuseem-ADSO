@@ -55,6 +55,16 @@ CREATE TABLE `aprendices` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `aprendices`
+--
+
+LOCK TABLES `aprendices` WRITE;
+/*!40000 ALTER TABLE `aprendices` DISABLE KEYS */;
+INSERT INTO `aprendices` VALUES ('1107008520','Juan David','Linares Barragán','2671143','2024-09-13','757','Cra 4 #12 - 63',16,'No','ASMED SALUD','3102392251','Masculino','juandavidlinares2005@gmail.com','3209455659',2,2,'No','Activo','','Si','1725249404979-JuanLinares.jpeg','2024-09-02 03:56:44','2024-09-12 20:13:19'),('1107054785','Juan','Pérez','2671143','2000-05-15','437','Calle 123 #45-67',24,'No','EPS Salud','3001234567','Masculino','juan.perez@example.com','3007654321',0,1,'No','Activo','Empresa X','Si','foto_juan.jpg','2024-09-09 19:58:55','2024-09-09 19:58:55'),('1109413867','Leidy Vanessa','Realpe Garcia','2870238','2006-12-17','428','Vereda llanitos kilómetro 9',17,'No','NUEVA EPS','3185011770','Femenino','leidyrealpe203@gmail.com','3044816610',0,0,'Si','Activo','Ganaderia','Si',NULL,'2024-09-11 22:36:34','2024-09-11 22:36:34'),('123456789','Juan David ','Linares','2671143','2090-12-12','1010','FLANDES',20,'Si','NUEVA EPS','1234567890','Masculino','juan.perez@gmail.com','3213554763',2,2,'Si','Activo','SENA LA GRANJA','Si',NULL,'2024-08-29 12:18:59','2024-09-17 19:40:23'),('1584812321','Ana','Gómez','2671143','1998-12-20','437','Carrera 89 #12-34',25,'Si','EPS Vida','3109876543','Femenino','ana.gomez@example.com','3106549876',2,3,'Si','Inactivo','Empresa Y','No','foto_ana.jpg','2024-09-09 19:58:55','2024-09-09 19:58:55'),('2154565521','Ana','Gómez','2671143','1998-12-20','437','Carrera 89 #12-34',25,'Si','EPS Vida','3109876543','Femenino','ana.gomez@example.com','3106549876',2,3,'Si','Inactivo','Empresa Y','No','foto_ana.jpg','2024-09-09 20:00:04','2024-09-09 20:00:04'),('2154664421','Ana','Gómez','2671143','1998-12-20','437','Carrera 89 #12-34',25,'Si','EPS Vida','3109876543','Femenino','ana.gomez@example.com','3106549876',2,3,'Si','Inactivo','Empresa Y','No','foto_ana.jpg','2024-09-09 20:02:01','2024-09-09 20:02:01'),('2154665421','Ana','Gómez','2671143','1998-12-20','437','Carrera 89 #12-34',25,'Si','EPS Vida','3109876543','Femenino','ana.gomez@example.com','3106549876',2,3,'Si','Inactivo','Empresa Y','No','foto_ana.jpg','2024-09-09 20:00:45','2024-09-09 20:00:45'),('2154668421','Ana','Gómez','2671143','1998-12-20','437','Carrera 89 #12-34',25,'Si','EPS Vida','3109876543','Femenino','ana.gomez@example.com','3106549876',2,3,'Si','Inactivo','Empresa Y','No','foto_ana.jpg','2024-09-09 20:02:09','2024-09-09 20:02:09'),('2548712321','Ana','Gómez','2671143','1998-12-20','437','Carrera 89 #12-34',25,'Si','EPS Vida','3109876543','Femenino','ana.gomez@example.com','3106549876',2,3,'Si','Inactivo','Empresa Y','No','foto_ana.jpg','2024-09-09 19:59:29','2024-09-09 19:59:29'),('4512361485','Juan','Pérez','2671143','2000-05-15','437','Calle 123 #45-67',24,'No','EPS Salud','3001234567','Masculino','juan.perez@example.com','3007654321',0,1,'No','Activo','Empresa X','Si','foto_juan.jpg','2024-09-09 20:02:01','2024-09-09 20:02:01'),('4512363485','Juan','Pérez','2671143','2000-05-15','437','Calle 123 #45-67',24,'No','EPS Salud','3001234567','Masculino','juan.perez@example.com','3007654321',0,1,'No','Activo','Empresa X','Si','foto_juan.jpg','2024-09-09 20:02:09','2024-09-09 20:02:09'),('4512364485','Juan','Pérez','2671143','2000-05-15','437','Calle 123 #45-67',24,'No','EPS Salud','3001234567','Masculino','juan.perez@example.com','3007654321',0,1,'No','Activo','Empresa X','Si','foto_juan.jpg','2024-09-09 20:00:27','2024-09-09 20:00:27'),('4512364785','Juan','Pérez','2671143','2000-05-15','437','Calle 123 #45-67',24,'No','EPS Salud','3001234567','Masculino','juan.perez@example.com','3007654321',0,1,'No','Activo','Empresa X','Si','foto_juan.jpg','2024-09-09 20:00:04','2024-09-09 20:00:04'),('4512365485','Juan','Pérez','2671143','2000-05-15','437','Calle 123 #45-67',24,'No','EPS Salud','3001234567','Masculino','juan.perez@example.com','3007654321',0,1,'No','Activo','Empresa X','Si','foto_juan.jpg','2024-09-09 20:00:45','2024-09-09 20:00:45');
+/*!40000 ALTER TABLE `aprendices` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `areas`
 --
 
@@ -107,6 +117,16 @@ CREATE TABLE `fichas` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `fichas`
+--
+
+LOCK TABLES `fichas` WRITE;
+/*!40000 ALTER TABLE `fichas` DISABLE KEYS */;
+INSERT INTO `fichas` VALUES ('1234','2024-08-01','2024-08-27',23,9,'Activo','2024-08-23 18:44:22','2024-09-16 22:17:23'),('2671143','2023-01-24','2025-04-22',19,9,'Activo','2024-08-20 15:46:04','2024-08-22 18:57:25'),('2870238','2024-01-23','2025-10-24',25,19,'Activo','2024-09-11 22:31:48','2024-09-11 22:32:51');
+/*!40000 ALTER TABLE `fichas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `funcionarios`
 --
 
@@ -129,6 +149,16 @@ CREATE TABLE `funcionarios` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `funcionarios`
+--
+
+LOCK TABLES `funcionarios` WRITE;
+/*!40000 ALTER TABLE `funcionarios` DISABLE KEYS */;
+INSERT INTO `funcionarios` VALUES ('1070593778','Carlos','mosquera','Masculino','32456789','Inactivo',NULL,'Planta','2024-08-21 14:50:47','2024-09-16 22:21:43');
+/*!40000 ALTER TABLE `funcionarios` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `inasistencias`
 --
 
@@ -147,6 +177,16 @@ CREATE TABLE `inasistencias` (
   CONSTRAINT `fk_inasistencias_turnosrutinarios` FOREIGN KEY (`Id_TurnoRutinario`) REFERENCES `turnosrutinarios` (`Id_TurnoRutinario`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `inasistencias`
+--
+
+LOCK TABLES `inasistencias` WRITE;
+/*!40000 ALTER TABLE `inasistencias` DISABLE KEYS */;
+INSERT INTO `inasistencias` VALUES (14,'2024-09-02','Ser puntual.',10,'2024-09-02 13:05:02','2024-09-02 13:05:02'),(15,'2024-09-02','Puntualidad',11,'2024-09-02 14:06:57','2024-09-02 14:06:57'),(16,'2024-09-13','',11,'2024-09-12 20:11:54','2024-09-12 20:11:54'),(17,'2024-09-16','',11,'2024-09-12 20:13:19','2024-09-12 20:13:19'),(18,'2024-09-02','',10,'2024-09-16 15:52:06','2024-09-16 15:52:06');
+/*!40000 ALTER TABLE `inasistencias` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `memorandos`
@@ -189,6 +229,16 @@ CREATE TABLE `otros_memorandos` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `otros_memorandos`
+--
+
+LOCK TABLES `otros_memorandos` WRITE;
+/*!40000 ALTER TABLE `otros_memorandos` DISABLE KEYS */;
+INSERT INTO `otros_memorandos` VALUES (54,'2024-09-10','encontrarse consumiendo bebidas alcohólicas\n','1107008520','2024-09-11 00:02:39','2024-09-11 23:42:25'),(84,'2024-09-11','.','1109413867','2024-09-11 23:03:10','2024-09-12 02:24:23'),(85,'2024-09-11','no asistir a formación ','1107008520','2024-09-11 23:47:21','2024-09-11 23:47:53'),(86,'2024-09-16','No se','1107008520','2024-09-12 02:24:47','2024-09-12 02:24:47'),(87,'2024-09-13','','1107008520','2024-09-12 20:11:55','2024-09-12 20:11:55'),(88,'2024-09-16','','1107008520','2024-09-12 20:13:19','2024-09-12 20:13:19'),(89,'2024-09-02','No estaba prestando atencion\n','123456789','2024-09-16 15:52:06','2024-09-16 22:01:38');
+/*!40000 ALTER TABLE `otros_memorandos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `programasformacion`
 --
 
@@ -207,6 +257,16 @@ CREATE TABLE `programasformacion` (
   CONSTRAINT `programasformacion_ibfk_1` FOREIGN KEY (`Id_Area`) REFERENCES `areas` (`Id_Area`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `programasformacion`
+--
+
+LOCK TABLES `programasformacion` WRITE;
+/*!40000 ALTER TABLE `programasformacion` DISABLE KEYS */;
+INSERT INTO `programasformacion` VALUES (9,'Analisis y desarrollo de software','Tecnologo',1,'2024-08-20 15:45:25','2024-09-16 22:06:45'),(18,'mojosos','Tecnologo',2,'2024-09-02 13:47:16','2024-09-02 13:47:16'),(19,'Gestion Agroempresarial','Tecnologo',1,'2024-09-11 22:32:14','2024-09-11 22:32:14');
+/*!40000 ALTER TABLE `programasformacion` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `talento_humano`
@@ -231,6 +291,16 @@ CREATE TABLE `talento_humano` (
   CONSTRAINT `talento_humano_ibfk_1` FOREIGN KEY (`Id_Ficha`) REFERENCES `fichas` (`Id_Ficha`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `talento_humano`
+--
+
+LOCK TABLES `talento_humano` WRITE;
+/*!40000 ALTER TABLE `talento_humano` DISABLE KEYS */;
+INSERT INTO `talento_humano` VALUES ('12344','veronica guzman','mosquera','Femenino','susana@gmail.com','89075','2671143','Activo','2024-08-21 17:26:15','2024-09-16 22:59:05');
+/*!40000 ALTER TABLE `talento_humano` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `turnosespeciales`
@@ -263,6 +333,16 @@ CREATE TABLE `turnosespeciales` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `turnosespeciales`
+--
+
+LOCK TABLES `turnosespeciales` WRITE;
+/*!40000 ALTER TABLE `turnosespeciales` DISABLE KEYS */;
+INSERT INTO `turnosespeciales` VALUES (7,'2024-09-01','09:23:00','10:24:00','Asistir ','18','2671143',NULL,'1070593778',23,'2024-09-17 13:26:52','2024-09-17 19:39:13'),(8,'2024-09-25','08:28:00','10:27:00','ddd','17','2870238',NULL,'1070593778',22,'2024-09-17 13:28:20','2024-09-17 13:28:20'),(10,'2024-09-20','10:29:00','09:29:00','QQQ','12','2671143',NULL,'1070593778',22,'2024-09-17 13:29:52','2024-09-17 13:29:52');
+/*!40000 ALTER TABLE `turnosespeciales` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `turnosespeciales_aprendices`
 --
 
@@ -283,6 +363,16 @@ CREATE TABLE `turnosespeciales_aprendices` (
   CONSTRAINT `turnosespecialesaprendices_ibfk_2` FOREIGN KEY (`Id_TurnoEspecial`) REFERENCES `turnosespeciales` (`Id_TurnoEspecial`)
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `turnosespeciales_aprendices`
+--
+
+LOCK TABLES `turnosespeciales_aprendices` WRITE;
+/*!40000 ALTER TABLE `turnosespeciales_aprendices` DISABLE KEYS */;
+INSERT INTO `turnosespeciales_aprendices` VALUES (1,'Si','1107008520',7,'2024-09-17 13:26:52','2024-09-18 12:08:53'),(2,'Si','1107054785',7,'2024-09-17 13:26:52','2024-09-18 12:08:53'),(3,'Si','123456789',7,'2024-09-17 13:26:52','2024-09-18 12:08:53'),(4,'Si','1584812321',7,'2024-09-17 13:26:52','2024-09-18 12:08:53'),(5,'Si','2154565521',7,'2024-09-17 13:26:52','2024-09-18 12:08:53'),(6,'Si','2154664421',7,'2024-09-17 13:26:52','2024-09-18 12:08:53'),(7,'Si','2154665421',7,'2024-09-17 13:26:52','2024-09-18 12:08:53'),(8,'Si','2154668421',7,'2024-09-17 13:26:52','2024-09-18 12:08:53'),(9,'Si','2548712321',7,'2024-09-17 13:26:52','2024-09-18 12:08:53'),(10,'Si','4512361485',7,'2024-09-17 13:26:52','2024-09-18 12:08:53'),(11,'Si','4512363485',7,'2024-09-17 13:26:52','2024-09-18 12:08:53'),(12,'Si','4512364485',7,'2024-09-17 13:26:52','2024-09-18 12:08:54'),(13,'Si','4512364785',7,'2024-09-17 13:26:52','2024-09-18 12:08:54'),(14,'Si','4512365485',7,'2024-09-17 13:26:52','2024-09-18 12:08:54'),(15,'Si','1109413867',8,'2024-09-17 13:28:20','2024-09-18 00:42:48'),(16,'Si','1107008520',10,'2024-09-17 13:29:52','2024-09-18 00:42:20'),(17,'Si','1107054785',10,'2024-09-17 13:29:52','2024-09-18 00:42:20'),(18,'Si','123456789',10,'2024-09-17 13:29:52','2024-09-18 00:42:20'),(19,'Si','1584812321',10,'2024-09-17 13:29:52','2024-09-18 00:42:20'),(20,'Si','2154565521',10,'2024-09-17 13:29:52','2024-09-18 00:38:18'),(21,'Si','2154664421',10,'2024-09-17 13:29:52','2024-09-18 00:38:18'),(22,'Si','2154665421',10,'2024-09-17 13:29:52','2024-09-18 00:38:18'),(23,'Si','2154668421',10,'2024-09-17 13:29:52','2024-09-18 00:38:18'),(24,'Si','2548712321',10,'2024-09-17 13:29:52','2024-09-18 00:38:18'),(25,'Si','4512361485',10,'2024-09-17 13:29:52','2024-09-18 00:38:18'),(26,'Si','4512363485',10,'2024-09-17 13:29:52','2024-09-18 00:38:18'),(27,'Si','4512364485',10,'2024-09-17 13:29:52','2024-09-18 00:38:18'),(28,'Si','4512364785',10,'2024-09-17 13:29:52','2024-09-18 00:38:18'),(29,'Si','4512365485',10,'2024-09-17 13:29:52','2024-09-18 00:38:18');
+/*!40000 ALTER TABLE `turnosespeciales_aprendices` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `turnosrutinarios`
@@ -312,6 +402,16 @@ CREATE TABLE `turnosrutinarios` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `turnosrutinarios`
+--
+
+LOCK TABLES `turnosrutinarios` WRITE;
+/*!40000 ALTER TABLE `turnosrutinarios` DISABLE KEYS */;
+INSERT INTO `turnosrutinarios` VALUES (10,'2024-09-02','2024-09-06','07:00:00','09:00:00','Ser puntual.','No','123456789',23,'2024-09-02 01:39:59','2024-09-16 15:52:06'),(11,'2024-09-16','2024-09-20','11:06:00','11:06:00','Puntualidad','No','1107008520',23,'2024-09-02 14:06:39','2024-09-12 20:13:19');
+/*!40000 ALTER TABLE `turnosrutinarios` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `unidades`
 --
 
@@ -334,6 +434,16 @@ CREATE TABLE `unidades` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `unidades`
+--
+
+LOCK TABLES `unidades` WRITE;
+/*!40000 ALTER TABLE `unidades` DISABLE KEYS */;
+INSERT INTO `unidades` VALUES (22,'Cunicultura','11:36:00','03:35:00','Inactivo',2,'2024-08-22 16:35:07','2024-09-16 22:12:55'),(23,'Porcinos','07:00:00','16:00:00','Activo',2,'2024-09-02 01:38:35','2024-09-02 01:38:35'),(24,'Juan','05:47:00','04:47:00','Activo',5,'2024-09-05 16:47:37','2024-09-05 16:47:37');
+/*!40000 ALTER TABLE `unidades` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `users`
 --
 
@@ -353,6 +463,16 @@ CREATE TABLE `users` (
   PRIMARY KEY (`Id_User`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1234567,'marlon Sarmiento','sarmientomarlon452@gmail.com','$2a$10$lr6vajtTSXGlE54lfbtDneZG/cmatP7Oj1/YDlyf5REtA0vqS7Shi','1i5r4ric9beds2b66qf8',0,'Activo','2024-08-21 18:58:14','2024-08-21 18:58:14'),(1070593778,'Marlon Mosquera','kalethsarmiento1234@gmail.com','$2b$10$72ENMMNNVbly4G1WPh89N.HN8BpNR4BcHxdvc.qnAgsZMWorfjYiy','1i58jiccapvu9qrqtgn',1,'Activo','2024-08-08 19:18:08','2024-08-14 14:09:48'),(1107008520,'Juan David Linares','juandavidlinares2005@gmail.com','$2b$10$BTaTJcRk15gFQDBueqzwXu13ygVWeJoL5D0.VTc8JOTArzU7LfbrK','1i7tsen4ia2i5bmi6c2o',1,'Activo','2024-06-10 03:59:20','2024-09-16 17:00:32');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -363,4 +483,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-17 11:57:16
+-- Dump completed on 2024-09-18  7:49:19

@@ -25,9 +25,9 @@ const FormFuncionarios = ({
   const sendForm = async (e) => {
     e.preventDefault();
 
-    if (!Id_Funcionario) {
+    if (!Id_Funcionario || Id_Funcionario.length < 7) {
       setAlerta({
-        msg: "El Documento no puede estar Vacio",
+        msg: "El Documento No Puede Tener Menos de 7 Digitos",
         error: true,
       });
       return;
@@ -57,9 +57,9 @@ const FormFuncionarios = ({
       return;
     }
 
-    if (!Tel_Funcionario) {
+    if (!Tel_Funcionario || Tel_Funcionario < 9) {
       setAlerta({
-        msg: "El Telefono No puede Estar Vacio",
+        msg: "El Telefono No puede tener menos de 9 Digitos",
         error: true,
       });
       return;
@@ -124,6 +124,7 @@ const FormFuncionarios = ({
         respuestApi = await clienteAxios.put(
           `/funcionarios/${funcionario.Id_Funcionario}`,
           {
+            Id_Funcionario,
             Nom_Funcionario,
             Ape_Funcionario,
             Genero,
@@ -218,17 +219,17 @@ const FormFuncionarios = ({
               id="id_funcionario"
               placeholder="Documento Funcionario"
               value={Id_Funcionario}
-              onChange={(e) => {
-                const { value } = e.target;
-                if (value === "" || (Number(value) > 0 && value.length <= 10)) {
-                  setId_Funcionario(value);
-                }
+              onChange={(e) => { 
+                const {value} = e.target
+                if(value.length <= 10)
+                  if (value === '' || (Number(value) > 0 && value.length <= 10)) {
+                    setId_Funcionario(value);
+                  }
               }}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               disabled={buttonForm === "Actualizar"}
             />
           </div>
-
           <div className="flex items-center mb-3 space-x-4">
             <div className="w-1/2">
               <label className="block text-sm font-medium text-gray-700">
@@ -286,15 +287,15 @@ const FormFuncionarios = ({
               placeholder="Teléfono"
               value={Tel_Funcionario}
               onChange={(e) => {
-                const { value } = e.target;
-                if (value === "" || (Number(value) > 0 && value.length <= 10)) {
+                const {value} = e.target
+              if(value.length <= 10)
+                if (value === '' || (Number(value) > 0 && value.length <= 10)) {
                   setTel_Funcionario(value);
                 }
               }}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             />
           </div>
-
           <div className="flex items-center mb-3 space-x-4">
             <div className="w-1/2">
               <label className="block text-sm font-medium text-gray-700">

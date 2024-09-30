@@ -17,6 +17,9 @@ import CrudTalentoHumano from "./talentoHumano/CrudTalentoHumano.jsx";
 import CrudInasistencia from "./inasistencias/CrudInasistencia.jsx";
 
 
+
+
+
 //Rutas Publicas
 import RutaPublica from "./layout/RutaPublica.jsx";
 import Home from "./home/home.jsx"
@@ -47,7 +50,6 @@ function App() {
               <Route path="consultarespecial" element={<ConsultarTurnoEspecial />} />
               <Route path="manual" element={<Manual />} />
               <Route path="login" element={<LoginForm />} />
-              <Route path="registrar" element={<UserForm />} />
               <Route path="olvide-password" element={<OlvidePassword />} />
               <Route path="olvide-password/:token" element={<CambiarPassword />} />
               <Route path="confirmar/:id" element={<ConfirmarCuenta />} />
@@ -67,6 +69,7 @@ function App() {
               <Route path="programa-formacion" element={<CrudPrograma />} />
               <Route path="talentohumano" element={<CrudTalentoHumano />} />
               <Route path="inasistencias" element={<CrudInasistencia />} />
+              <Route path="registrar" element={<UserForm />} />
 
               {/* <Route path='/perfil' element={<MemorandumPDF/>}/> */}
               <Route path="PdfView" element={<VerPdf />} />

@@ -18,6 +18,13 @@ const ConsultarTurnoEspecial = () => {
       });
       return;
     }
+    if (Id_Ficha.length < 5 ) {
+      setAlerta({
+        msg: "El número de Ficha Debe Tener Minimo 5 Digitos",
+        error: true
+      });
+      return;
+    }
     try {
       const respuestaApi = await clienteAxios(`${URI}/${Id_Ficha}`);
       if (respuestaApi.status === 200) {
@@ -86,7 +93,7 @@ const ConsultarTurnoEspecial = () => {
               value={Id_Ficha}
               onChange={(e) => {
                 const {value} = e.target;
-                if (value.length <= 8) {
+                if (value.length <= 7) {
                   setId_Ficha(value);
                 }
               }}

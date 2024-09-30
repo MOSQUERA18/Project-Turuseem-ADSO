@@ -5,6 +5,7 @@ import { useRef, useState, useEffect } from "react";
 import clienteAxios from "../config/axios";
 import { ReactSession } from "react-client-session";
 import Alerta from "../components/Alerta";
+import { error } from "jquery";
 
 const URI = "/ciudades/";
 const UriFichas = "/fichas/";
@@ -53,7 +54,7 @@ const FormApprentices = ({
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${token}`,
     },
-  };  
+  };
 
   useEffect(() => {
     const fetchCiudades = async () => {
@@ -95,14 +96,15 @@ const FormApprentices = ({
     e.preventDefault();
     //VALIDAR CAMPO POR CAMPO
 
-    // Verificar campo por campo y mostrar alerta si está vacío
-    if (!Id_Aprendiz) {
-      setAlerta({
-        msg: "El campo Documento está vacío.",
-        error: true,
-      });
-      return;
-    }
+  // Verificar si el Documento tiene menos de 7 dígitos
+  if (!Id_Aprendiz || Id_Aprendiz.length < 7) {
+    setAlerta({
+      msg: "El Documento del Aprendiz debe tener al menos 7 dígitos.",
+      error: true,
+    });
+    return;  // Detiene el envío del formulario si no pasa la validación
+  }
+
     if (!Nom_Aprendiz) {
       setAlerta({
         msg: "El campo Nombres está vacío.",
@@ -164,9 +166,9 @@ const FormApprentices = ({
       });
       return;
     }
-    if (!Tel_Padre) {
+    if (!Tel_Padre || Tel_Padre < 9) {
       setAlerta({
-        msg: "El campo Teléfono del Padre está vacío.",
+        msg: "El campo Teléfono del Padre Debe Tener Minimo 9 Digitos.",
         error: true,
       });
       return;
@@ -185,9 +187,9 @@ const FormApprentices = ({
       });
       return;
     }
-    if (!Tel_Aprendiz) {
+    if (!Tel_Aprendiz || Tel_Aprendiz < 9) {
       setAlerta({
-        msg: "El campo Teléfono Aprendiz está vacío.",
+        msg: "El campo Teléfono Aprendiz Debe Tener Minimo 9 Digitos.",
         error: true,
       });
       return;
@@ -452,13 +454,15 @@ const FormApprentices = ({
               value={Id_Aprendiz}
               onChange={(e) => {
                 const { value } = e.target;
-                if (value === '' || (Number(value) > 0 && value.length <= 10)) {
-                  setId_Aprendiz(value);
+                if (value.length <= 10) {
+                  if (value === '' || (Number(value) > 0 && value.length <= 10)) {
+                    setId_Aprendiz(value);
+                  }
                 }
               }}
               maxLength={10}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-              // disabled={isDisabled}
+              disabled={buttonForm === "Actualizar"}
             />
           </div>
 
@@ -629,8 +633,10 @@ const FormApprentices = ({
               value={Tel_Padre}
               onChange={(e) => {
                 const { value } = e.target;
-                if (value === '' || (Number(value) > 0 && value.length <= 10)) {
-                  setTel_Padre(value);
+                if (value.length <= 10) {
+                  if (value === '' || (Number(value) > 0 && value.length <= 10)) {
+                    setTel_Padre(value);
+                  }
                 }
               }}
               maxLength={12}
@@ -695,8 +701,10 @@ const FormApprentices = ({
               value={Tel_Aprendiz}
               onChange={(e) => {
                 const { value } = e.target;
-                if (value === '' || (Number(value) > 0 && value.length <= 10)) {
-                  setTel_Aprendiz(value);
+                if (value.length <= 10) {
+                  if (value === '' || (Number(value) > 0 && value.length <= 10)) {
+                    setTel_Aprendiz(value);
+                  }
                 }
               }}
               maxLength={10}

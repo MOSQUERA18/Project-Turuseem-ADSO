@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import clienteAxios from "../config/axios";
 import Alerta from "../components/Alerta";
 import { ReactSession } from "react-client-session";
-import { error } from "jquery";
 
 const FormTurnoRutinario = ({
   buttonForm,
@@ -14,6 +13,7 @@ const FormTurnoRutinario = ({
   getAllTurnosRutinarios,
   stateButton,
   setStateButton,
+  CerrarModal
 }) => {
   // Estados del formulario
   const [Id_TurnoRutinario, setId_TurnoRutinario] = useState("");
@@ -40,98 +40,98 @@ const FormTurnoRutinario = ({
   const [Unidad, setUnidad] = useState([]);
   const [alerta, setAlerta] = useState({});
 
-  // Obtener datos de Aprendiz y Unidad
-  useEffect(() => {
-    // const getAllAprendiz = async () => {
-    //   try {
-    //     const token = ReactSession.get("token");
-    //     const responseAprendiz = await clienteAxios("/aprendiz", {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //       },
-    //     });
-    //     if (responseAprendiz.status === 200) {
-    //       setAprendiz(responseAprendiz.data);
-    //     }
-    //   } catch (error) {
-    //     console.error("Error fetching Aprendiz:", error);
-    //   }
-    // };
 
-    const getAllAreas = async () => {
-      try {
-        const token = ReactSession.get("token");
-        const response = await clienteAxios("/areas", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setAreas(response.data);
-      } catch (error) {
-        console.error("Error fetching Areas:", error);
+
+
+  const getAreaByUnidad = async (unidadId) => {
+    try {
+      const token = ReactSession.get("token");
+      const response = await clienteAxios(`/unidades/${unidadId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        const areaId = response.data.Id_Area;
+        setId_Area(areaId);
       }
-    };
-
-    const getAprendicesByArea = async () => {
-      try {
-        const token = ReactSession.get("token");
-        const response = await clienteAxios(`/areas/${Id_Area}/aprendices`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (response.status === 200) {
-          setAprendices(response.data);
-        }
-      } catch (error) {
-        console.error("Error fetching Aprendices by Area:", error);
-      }
-    };
-
-    
-      if (Id_Area) {
-        getAprendicesByArea();
-      }
-    
-
-    // const getAllUnidad = async () => {
-    //   try {
-    //     const token = ReactSession.get("token");
-    //     const responseUnidad = await clienteAxios("/unidades", {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //       },
-    //     });
-    //     if (responseUnidad.status === 200) {
-    //       setUnidad(responseUnidad.data);
-    //     }
-    //   } catch (error) {
-    //     console.error("Error fetching Unidad:", error);
-    //   }
-    // };
-
-    if (Id_Area) {
-      console.log(`Buscando unidades for area: ${Id_Area}`); // Depuración
-      const getUnidadesByArea = async () => {
-        try {
-          const token = ReactSession.get("token");
-          const response = await clienteAxios(`/areas/${Id_Area}/unidades`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          setUnidades(response.data);
-        } catch (error) {
-          console.error("Error Al Buscar Unidades:", error);
-        }
-      };
-      getUnidadesByArea();
+    } catch (error) {
+      console.error("Error fetching Area by Unidad:", error);
     }
-    
-    getAllAreas();
-    // getAllAprendiz();
-    // getAllUnidad();
-  }, [Id_Area]);
+  };
+  
+
+// Obtener áreas
+useEffect(() => {
+  const getAllAreas = async () => {
+    try {
+      const token = ReactSession.get("token");
+      const response = await clienteAxios("/areas", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setAreas(response.data);
+    } catch (error) {
+      console.error("Error fetching Areas:", error);
+    }
+  };
+
+  getAllAreas();
+}, []); // Este efecto solo se ejecuta una vez al montar el componente
+
+// Obtener aprendices por área seleccionada
+// Obtener unidades por área seleccionada
+useEffect(() => {
+  if (!Id_Area) {
+    setUnidades([]);
+    return;
+  }
+
+  const getUnidadesByArea = async () => {
+    try {
+      const token = ReactSession.get("token");
+      const response = await clienteAxios(`/areas/${Id_Area}/unidades`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        setUnidades(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching Unidades by Area:", error);
+    }
+  };
+
+  getUnidadesByArea();
+}, [Id_Area]);
+
+// Obtener aprendices por área seleccionada
+useEffect(() => {
+  if (!Id_Area) {
+    setAprendices([]);
+    return;
+  }
+
+  const getAprendicesByArea = async () => {
+    try {
+      const token = ReactSession.get("token");
+      const response = await clienteAxios(`/areas/${Id_Area}/aprendices`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        setAprendices(response.data);
+      }
+    } catch (error) {
+      console.error("Error Al Buscar Aprendices por Area: ", error);
+    }
+  };
+
+  getAprendicesByArea();
+}, [Id_Area]);// Este efecto se ejecuta cuando cambian `turnoRutinario` o `Id_Area`
 
   // Enviar formulario
   const sendForm = async (e) => {
@@ -216,6 +216,7 @@ const FormTurnoRutinario = ({
         );
         setStateButton(true);
         mensajeCRUD = "Turno Rutinario Actualizado Exitosamente";
+        
       } else if (buttonForm === "Enviar") {
         respuestApi = await clienteAxios.post(
           `/turnoRutinario`,
@@ -234,6 +235,7 @@ const FormTurnoRutinario = ({
         );
         mensajeCRUD = "Turno Rutinario Registrado Exitosamente";
         getAllTurnosRutinarios(); // Actualiza la lista de turnos rutinarios
+        // CerrarModal();
       }
 
       // Manejo de respuesta exitosa
@@ -390,17 +392,58 @@ const FormTurnoRutinario = ({
         (unidad) => unidad.Id_Unidad === turnoRutinario.Id_Unidad
       );
       setSelectedUnidad(selectedUni || null);
+
+          // Obtener el área asociada a la unidad
+    if (turnoRutinario.Id_Unidad) {
+      getAreaByUnidad(turnoRutinario.Id_Unidad);
+    }
+
     }
   };
 
+
   useEffect(() => {
     setData();
-  }, [turnoRutinario,aprendices,Unidad,Id_Area]);
-
+  }, [turnoRutinario]);
+  
   const { msg } = alerta;
+
+
+
+
+  //Generar Turnos Automaticos
+  const generarTurnosAutomaticos = () => {
+    const hoy = new Date();
+    const manana = new Date(hoy);
+    manana.setDate(manana.getDate() + 1);
+  
+    // Formatear las fechas a formato yyyy-mm-dd
+    const formatFecha = (fecha) => {
+      const year = fecha.getFullYear();
+      const month = String(fecha.getMonth() + 1).padStart(2, "0");
+      const day = String(fecha.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    };
+
+    setFec_InicioTurno(formatFecha(hoy));
+    setFec_FinTurno(formatFecha(manana));
+    setHor_InicioTurno("07:00");
+    setHor_FinTurno("09:00");
+  };
 
   return (
     <>
+{buttonForm !== "Actualizar" && (
+  <div className="flex justify-center items-center">
+    <button
+      type="button"
+      className="bg-botones py-2 px-4 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-blue-600 md:w-auto"
+      onClick={generarTurnosAutomaticos}
+    >
+      Generar Fechas y Horas Automáticas
+    </button>
+  </div>
+)}
       <div className="flex justify-center items-center">
         <form
           id="turnoRutinarioForm"
@@ -410,15 +453,17 @@ const FormTurnoRutinario = ({
           {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
           <div className="grid grid-cols-2 gap-4">
 
-
           <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Área
               </label>
               <select
                 value={Id_Area}
-                onChange={(e) => setId_Area(e.target.value)}
+                onChange={(e) => {
+                  setId_Area(e.target.value);
+              }}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                id="Select"
               >
                 <option value="">Seleccione un Área</option>
                 {areas.map((area) => (
@@ -523,11 +568,11 @@ const FormTurnoRutinario = ({
               />
             </div>
 
-            <div className="space-y-2">
+             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Observaciones
               </label>
-              <textarea
+               <textarea
                 id="observaciones"
                 placeholder="Observaciones"
                 value={Obs_TurnoRutinario}
@@ -598,8 +643,6 @@ const FormTurnoRutinario = ({
 
 export default FormTurnoRutinario;
 
-
-
 // /* eslint-disable no-unused-vars */
 // /* eslint-disable react-hooks/exhaustive-deps */
 // /* eslint-disable react/prop-types */
@@ -607,13 +650,13 @@ export default FormTurnoRutinario;
 // import clienteAxios from "../config/axios";
 // import Alerta from "../components/Alerta";
 // import { ReactSession } from "react-client-session";
-// import { error } from "jquery";
 
 // const FormTurnoRutinario = ({
 //   buttonForm,
 //   turnoRutinario,
 //   updateTextButton,
 //   getAllTurnosRutinarios,
+//   // CerrarModal
 // }) => {
 //   // Estados del formulario
 //   const [Id_TurnoRutinario, setId_TurnoRutinario] = useState("");
@@ -633,7 +676,6 @@ export default FormTurnoRutinario;
 //   const [Aprendiz, setAprendiz] = useState([]);
 //   const [Unidad, setUnidad] = useState([]);
 //   const [alerta, setAlerta] = useState({});
-  
 
 //   // Obtener datos de Aprendiz y Unidad
 //   useEffect(() => {
@@ -754,6 +796,7 @@ export default FormTurnoRutinario;
 //           config
 //         );
 //         mensajeCRUD = "Turno Rutinario Actualizado Exitosamente";
+//         // CerrarModal();
 //       } else if (buttonForm === "Enviar") {
 //         respuestApi = await clienteAxios.post(
 //           `/turnoRutinario`,
@@ -934,8 +977,43 @@ export default FormTurnoRutinario;
 
 //   const { msg } = alerta;
 
+
+
+
+//   //Generar Turnos Automaticos
+//   const generarTurnosAutomaticos = () => {
+//     const hoy = new Date();
+//     const manana = new Date(hoy);
+//     manana.setDate(manana.getDate() + 1);
+  
+//     // Formatear las fechas a formato yyyy-mm-dd
+//     const formatFecha = (fecha) => {
+//       const year = fecha.getFullYear();
+//       const month = String(fecha.getMonth() + 1).padStart(2, "0");
+//       const day = String(fecha.getDate()).padStart(2, "0");
+//       return `${year}-${month}-${day}`;
+//     };
+
+//     setFec_InicioTurno(formatFecha(hoy));
+//     setFec_FinTurno(formatFecha(manana));
+//     setHor_InicioTurno("07:00");
+//     setHor_FinTurno("09:00");
+//   };
+
 //   return (
 //     <>
+//     { buttonForm !== "Actualizar" && 
+//     <div className="flex justify-center items-center">
+//   <button
+//     type="button"
+//     className="bg-botones  py-2 px-4 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-blue-600 md:w-auto"
+//     onClick={generarTurnosAutomaticos}
+//   >
+//     Generar Fechas y Horas Automáticas
+//   </button>
+// </div>
+// }
+// <br />
 //       <div className="flex justify-center items-center">
 //         <form
 //           id="turnoRutinarioForm"
@@ -975,10 +1053,24 @@ export default FormTurnoRutinario;
 //               </label>
 //               <input
 //                 type="time"
-//                 id="hora_inicio"
+//                 id="Hora_Inicio"
 //                 value={Hor_InicioTurno}
-//                 onChange={(e) => setHor_InicioTurno(e.target.value)}
+//                 onChange={(e) => {
+//                   const selectedTime = e.target.value;
+//                   const maxTime = "06:59"; // 7:00 AM en formato de 24 horas
+
+//                   if (selectedTime > maxTime) {
+//                     setHor_InicioTurno(selectedTime);
+//                   } else {
+//                     setAlerta({
+//                       msg:"La Hora no Puede ser Menor a las 7:00 AM.",
+//                       error:true
+//                     })
+//                     setHor_InicioTurno(""); // Opcional: Limpia el campo si es mayor a 4:00 PM
+//                   }
+//                 }}
 //                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+//                 max="16:00" // Este atributo limita el valor máximo que puede seleccionarse
 //               />
 //             </div>
 
@@ -988,10 +1080,25 @@ export default FormTurnoRutinario;
 //               </label>
 //               <input
 //                 type="time"
-//                 id="hora_fin"
+//                 id="Hora_Fin"
 //                 value={Hor_FinTurno}
-//                 onChange={(e) => setHor_FinTurno(e.target.value)}
+//                 onChange={(e) => {
+//                   const selectedTime = e.target.value;
+//                   const maxTime = "16:01"; // 5:00 PM en formato de 24 horas
+
+//                   // Validar si la hora seleccionada es menor o igual a las 5:00 PM
+//                   if (selectedTime <= maxTime) {
+//                     setHor_FinTurno(selectedTime);
+//                   } else {
+//                     setAlerta({
+//                       msg:"La hora no puede ser mayor a las 4:00 PM.",
+//                       error:true
+//                     })
+//                     setHor_FinTurno(""); // Opcional: Limpia el campo si es mayor a 5:00 PM
+//                   }
+//                 }}
 //                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+//                 max="16:01" // Este atributo limita el valor máximo que puede seleccionarse
 //               />
 //             </div>
 

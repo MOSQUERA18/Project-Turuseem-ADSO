@@ -18,6 +18,8 @@ import clienteAxios from "../config/axios.jsx";
 import useAuth from "../hooks/useAuth.jsx";
 // import Home from "../home/home.jsx";
 
+import { TbUsersPlus } from "react-icons/tb";
+
 const VerticalNav = () => {
   const [show, setShow] = useState(true);
   const [user, setUser] = useState(null); // Inicializa el estado del usuario como null
@@ -165,6 +167,7 @@ const VerticalNav = () => {
             { to: "funcionarios", label: "Funcionario", Icon: FaPeopleGroup },
             { to: "talentohumano", label: "Talento Humano", Icon: GiHumanPyramid },
             { to: "inasistencias", label: "Inasistencia", Icon: GiNotebook },
+            { to: "registrar", label: "Registrar Usuario", Icon:TbUsersPlus },
           ].map(({ to, label, Icon }) => (
             <Link key={to} to={to} className="w-full">
               <button className="flex  items-center w-full pl-3 py-2 focus:bg-botoneshover text-white hover:bg-botones rounded border-y border-white active:text-white hover:text-white font-bold uppercase focus:text-white">
