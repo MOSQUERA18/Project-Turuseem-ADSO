@@ -175,6 +175,10 @@ const CrudApprentices = () => {
     return rowData;
   });
 
+  useEffect(() => {
+    getAllApprentices();
+  }, []);
+
   const getAllApprentices = async () => {
     const token = ReactSession.get("token");
     const config = {
@@ -263,13 +267,11 @@ const CrudApprentices = () => {
           );
           if (respuestApi.status == 200) {
             getAllApprentices();
-            updateTextButton("Enviar");
             Swal.fire({
               title: "Borrado!",
               text: "El registro ha sido borrado.",
               icon: "success",
             });
-            
           } else {
             alert(respuestApi.data.message);
           }
@@ -281,6 +283,7 @@ const CrudApprentices = () => {
             icon: "error",
           });
           console.error(error);
+          getAllApprentices()
         }
       }
     });
@@ -292,9 +295,6 @@ const CrudApprentices = () => {
 
   const { msg } = alerta;
 
-  useEffect(() => {
-    getAllApprentices();
-  }, []);
 
   return (
     <>
@@ -304,8 +304,8 @@ const CrudApprentices = () => {
       </h1>
       <div className="flex justify-between ">
         <div className="flex justify-between">
-          <div>
-            <h1 className="font-bold text-lg text-gray-500 mb-3 ">
+          <div title="CSV">
+            <h1 className="font-bold text-lg text-gray-500 mb-3 " >
               Subir Archivo CSV
             </h1>
             <ImportarCSV URI={URI} />
@@ -327,8 +327,8 @@ const CrudApprentices = () => {
                 apprentice={apprentice}
                 updateTextButton={updateTextButton}
                 setApprentice={setApprentice}
-                toggleModal={toggleModal}
                 getAllApprentices={getAllApprentices}
+                toggleModal={toggleModal}
                 isOpen={isOpen}
                 stateButton={stateButton}
                 setStateButton={setStateButton}

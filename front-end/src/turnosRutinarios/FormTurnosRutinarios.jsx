@@ -39,6 +39,7 @@ const FormTurnoRutinario = ({
   const [Aprendiz, setAprendiz] = useState([]);
   const [Unidad, setUnidad] = useState([]);
   const [alerta, setAlerta] = useState({});
+  const [Id_Inasistencia, setId_Inasistencia] = useState("");
 
 
 
@@ -133,224 +134,149 @@ useEffect(() => {
   getAprendicesByArea();
 }, [Id_Area]);// Este efecto se ejecuta cuando cambian `turnoRutinario` o `Id_Area`
 
-  // Enviar formulario
-  const sendForm = async (e) => {
-    e.preventDefault();
-    if (!Fec_InicioTurno) {
-      setAlerta({
-        msg: "La Fecha de Inicio No Puede Estar Vacia",
-        error: true,
-      });
-      return;
-    }
-    if (!Fec_FinTurno) {
-      setAlerta({
-        msg: "La Fecha de Fin No Puede Estar Vacia",
-        error: true,
-      });
-      return;
-    }
-    if (!Hor_InicioTurno) {
-      setAlerta({
-        msg: "La Hora de Inicio No Puede Estar Vacia",
-        error: true,
-      });
-      return;
-    }
-    if (!Hor_FinTurno) {
-      setAlerta({
-        msg: "La Hora de Fin No Puede Estar Vacia",
-        error: true,
-      });
-      return;
-    }
-    if (!Ind_Asistencia) {
-      setAlerta({
-        msg: "El Indicador No Puede Estar Vacio",
-        error: true,
-      });
-      return;
-    }
-    if (!Id_Aprendiz) {
-      setAlerta({
-        msg: "El Nombre Del Aprendiz No puede Estar Vacio",
-        error: true,
-      });
-      return;
-    }
-    if (!Id_Unidad) {
-      setAlerta({
-        msg: "La Unidad No Puede Estar Vacia",
-        error: true,
-      });
-      return;
-    }
-    const token = ReactSession.get("token");
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    try {
-      let mensajeCRUD = "";
-      let respuestApi;
-
-      // Determinar si es actualización o creación
-      if (buttonForm === "Actualizar") {
-        respuestApi = await clienteAxios.put(
-          `/turnoRutinario/${Id_TurnoRutinario}`,
-          {
-            Fec_InicioTurno,
-            Fec_FinTurno,
-            Hor_InicioTurno,
-            Hor_FinTurno,
-            Obs_TurnoRutinario,
-            Ind_Asistencia,
-            Id_Aprendiz,
-            Id_Unidad,
-            Motivo,
-          },
-          config
-        );
-        setStateButton(true);
-        mensajeCRUD = "Turno Rutinario Actualizado Exitosamente";
-        
-      } else if (buttonForm === "Enviar") {
-        respuestApi = await clienteAxios.post(
-          `/turnoRutinario`,
-          {
-            Fec_InicioTurno,
-            Fec_FinTurno,
-            Hor_InicioTurno,
-            Hor_FinTurno,
-            Obs_TurnoRutinario,
-            Ind_Asistencia,
-            Id_Aprendiz,
-            Id_Unidad,
-            Motivo,
-          },
-          config
-        );
-        mensajeCRUD = "Turno Rutinario Registrado Exitosamente";
-        getAllTurnosRutinarios(); // Actualiza la lista de turnos rutinarios
-        // CerrarModal();
-      }
-
-      // Manejo de respuesta exitosa
-      if (respuestApi.status === 201 || respuestApi.status === 200) {
+    // Enviar formulario
+    const sendForm = async (e) => {
+      e.preventDefault();
+      if (!Fec_InicioTurno) {
         setAlerta({
-          msg: mensajeCRUD,
-          error: false,
+          msg: "La Fecha de Inicio No Puede Estar Vacia",
+          error: true,
         });
-        // Crear o eliminar registro de inasistencia según Ind_Asistencia
-
-        const turnoRutinarioId =
-          respuestApi.data.Id_TurnoRutinario || Id_TurnoRutinario;
-        if (Ind_Asistencia === "No") {
-          await crearRegistroInasistencia(turnoRutinarioId);
-          await crearRegistroMemorando(turnoRutinarioId);
-          console.warn("Inasistencia Creada");
-        }
-        getAllTurnosRutinarios();
-        clearForm();
-        updateTextButton("Enviar");
-      } else {
+        return;
+      }
+      if (!Fec_FinTurno) {
         setAlerta({
-          msg: respuestApi.error.message || "Error al crear el Turno!",
+          msg: "La Fecha de Fin No Puede Estar Vacia",
+          error: true,
+        });
+        return;
+      }
+      if (!Hor_InicioTurno) {
+        setAlerta({
+          msg: "La Hora de Inicio No Puede Estar Vacia",
+          error: true,
+        });
+        return;
+      }
+      if (!Hor_FinTurno) {
+        setAlerta({
+          msg: "La Hora de Fin No Puede Estar Vacia",
+          error: true,
+        });
+        return;
+      }
+      if (!Ind_Asistencia) {
+        setAlerta({
+          msg: "El Indicador No Puede Estar Vacio",
+          error: true,
+        });
+        return;
+      }
+      if (!Id_Aprendiz) {
+        setAlerta({
+          msg: "El Nombre Del Aprendiz No puede Estar Vacio",
+          error: true,
+        });
+        return;
+      }
+      if (!Id_Unidad) {
+        setAlerta({
+          msg: "La Unidad No Puede Estar Vacia",
+          error: true,
+        });
+        return;
+      }
+      const token = ReactSession.get("token");
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      try {
+        let mensajeCRUD = "";
+        let respuestApi;
+
+        // Determinar si es actualización o creación
+        if (buttonForm === "Actualizar") {
+          respuestApi = await clienteAxios.put(
+            `/turnoRutinario/${Id_TurnoRutinario}`,
+            {
+              Fec_InicioTurno,
+              Fec_FinTurno,
+              Hor_InicioTurno,
+              Hor_FinTurno,
+              Obs_TurnoRutinario,
+              Ind_Asistencia,
+              Id_Aprendiz,
+              Id_Unidad,
+              Motivo,
+            },
+            config
+          );
+          setStateButton(true);
+          mensajeCRUD = "Turno Rutinario Actualizado Exitosamente";
+          
+        } else if (buttonForm === "Enviar") {
+          respuestApi = await clienteAxios.post(
+            `/turnoRutinario`,
+            {
+              Fec_InicioTurno,
+              Fec_FinTurno,
+              Hor_InicioTurno,
+              Hor_FinTurno,
+              Obs_TurnoRutinario,
+              Ind_Asistencia,
+              Id_Aprendiz,
+              Id_Unidad,
+              Motivo,
+            },
+            config
+          );
+          mensajeCRUD = "Turno Rutinario Registrado Exitosamente";
+          getAllTurnosRutinarios(); // Actualiza la lista de turnos rutinarios
+          // CerrarModal();
+        }
+
+        // Manejo de respuesta exitosa
+        if (respuestApi.status === 201 || respuestApi.status === 200) {
+          setAlerta({
+            msg: mensajeCRUD,
+            error: false,
+          });
+
+          await clienteAxios.put(
+            `/aprendiz/actualizar-inasistencia/${Id_Aprendiz}`,
+            {
+              Ind_Asistencia,
+              Turno_Id: respuestApi.data.Id_TurnoRutinario || Id_TurnoRutinario,
+              Fec_Inasistencia: Fec_InicioTurno,
+              Motivo,
+            },
+            config
+          );
+          
+            
+          getAllTurnosRutinarios();
+          clearForm();
+          updateTextButton("Enviar");
+        } else {
+          setAlerta({
+            msg: respuestApi.error.message || "Error al crear el Turno!",
+            error: true,
+          });
+        }
+      } catch (error) {
+        console.error("Error en la solicitud:", error);
+        setAlerta({
+          msg: "Todos los campos son Obligatorios!",
           error: true,
         });
       }
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
-      setAlerta({
-        msg: "Todos los campos son Obligatorios!",
-        error: true,
-      });
-    }
-  };
+    };
 
-  // Crear registro de inasistencia
-  const crearRegistroMemorando = async () => {
-    try {
-      const token = ReactSession.get("token");
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
 
-      const memorandoData = {
-        Fec_OtroMemorando: Fec_InicioTurno,
-        Mot_OtroMemorando: Motivo,
-        Id_Aprendiz,
-      };
-
-      console.log("Creando registro de memorando con datos:", memorandoData);
-
-      const respuestaMemorando = await clienteAxios.post(
-        "/otrosmemorandos",
-        memorandoData,
-        config
-      );
-      console.log(respuestaMemorando);
-
-      if (respuestaMemorando.status === 201) {
-        console.log("Registro de memorando creado exitosamente");
-
-        // const action = Ind_Asistencia === "No" ? "incrementar" : "decrementar";
-        // await clienteAxios.put(`/aprendiz/${Id_Aprendiz}/actualizar-inasistencia`, { action }, config);
-        // console.log('Inasistencia y memorandos actualizados exitosamente');
-      }
-    } catch (error) {
-      console.error("Error al crear registro de memorando:", error);
-    }
-  };
-
-  const crearRegistroInasistencia = async (Id_TurnoRutinario) => {
-    try {
-      const token = ReactSession.get("token");
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      const inasistenciaData = {
-        Fec_Inasistencia: Fec_InicioTurno,
-        Mot_Inasistencia: Motivo,
-        Id_TurnoRutinario,
-      };
-
-      console.log(
-        "Creando registro de inasistencia con datos:",
-        inasistenciaData
-      );
-
-      const respuestaInasistencia = await clienteAxios.post(
-        "/inasistencias",
-        inasistenciaData,
-        config
-      );
-
-      if (respuestaInasistencia.status === 201) {
-        console.log("Registro de inasistencia creado exitosamente");
-
-        const action = Ind_Asistencia === "No" ? "incrementar" : "decrementar";
-        await clienteAxios.put(
-          `/aprendiz/${Id_Aprendiz}/actualizar-inasistencia`,
-          { action },
-          config
-        );
-        console.log("Inasistencia actualizada exitosamente");
-      }
-    } catch (error) {
-      console.error("Error al crear registro de inasistencia:", error);
-    }
-  };
 
   // Limpiar formulario
   const clearForm = () => {
@@ -512,7 +438,8 @@ useEffect(() => {
                     key={aprendiz.Id_Aprendiz}
                     value={aprendiz.Id_Aprendiz}
                   >
-                    {`${aprendiz.Nom_Aprendiz} ${aprendiz.Ape_Aprendiz}`}
+                    {aprendiz.Id_Aprendiz}
+                    {/* {`${aprendiz.Nom_Aprendiz} ${aprendiz.Ape_Aprendiz}`} */}
                   </option>
                 ))}
               </select>
@@ -585,7 +512,7 @@ useEffect(() => {
                 Indicador De Asistencia
               </label>
               <select
-                id="ind_Asistencia"
+                id="Ind_Asistencia"
                 value={Ind_Asistencia}
                 onChange={(e) => setInd_Asistencia(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
@@ -613,7 +540,6 @@ useEffect(() => {
             )}
 
           </div>
-          <hr className="mt-3" />
           <div className="flex justify-around mt-2">
             <input
               type="submit"

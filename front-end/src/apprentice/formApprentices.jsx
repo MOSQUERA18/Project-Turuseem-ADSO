@@ -428,7 +428,6 @@ const FormApprentices = ({
     }
     return age;
   };
-  
 
   return (
     <div className="flex justify-center items-center">
@@ -603,8 +602,8 @@ const FormApprentices = ({
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             >
               <option value="">Seleccione</option>
-              <option value="si">Sí</option>
-              <option value="no">No</option>
+              <option value="Si">Si</option>
+              <option value="No">No</option>
             </select>
           </div>
 

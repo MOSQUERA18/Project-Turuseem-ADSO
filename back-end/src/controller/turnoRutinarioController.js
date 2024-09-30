@@ -7,6 +7,8 @@ import FichasModel from "../models/fichasModel.js";
 import ProgramaModel from "../models/programaModel.js";
 import cron from "node-cron"
 import { Op, Sequelize} from "sequelize";
+import OtrosMemorandumModel from "../models/Otros_MemorandosModel.js";
+
 
 cron.schedule('5 9 * * *', () => {
   console.log('Tarea programada ejecutada con exito');
@@ -187,7 +189,7 @@ export const updateTurnoRutinario = async (req, res) => {
       if (Ind_Asistencia === "Si") {
         await AbsenceModel.destroy({
           where: {
-            Id_TurnoRutinario: req.params.Id_TurnoRutinario,
+            Turno_Id: req.params.Id_TurnoRutinario,
           },
         });
       }
@@ -274,3 +276,64 @@ export const getTurnoRutinariosForAprendiz = async (req, res) => {
     });
   }
 };
+
+
+// Función para actualizar inasistencias y memorandos
+export const updateInasistencia = async (req, res) => {
+  try {
+    const { Id_Aprendiz } = req.params;
+    const { Ind_Asistencia, Turno_Id, Fec_Inasistencia, Motivo } = req.body;
+
+    const aprendiz = await ApprenticeModel.findByPk(Id_Aprendiz);
+
+    if (!aprendiz) {
+      return res.status(404).json({ error: 'Aprendiz no encontrado' });
+    }
+
+    if (Ind_Asistencia === "No") {
+      // Incrementar contadores
+      aprendiz.Tot_Inasistencias += 1;
+      aprendiz.Tot_Memorandos += 1;
+
+      // Crear registro de inasistencia
+      await AbsenceModel.create({
+        Fec_Inasistencia,
+        Mot_Inasistencia: Motivo,
+        Turno_Id,
+        Tipo_Inasistencia: "turno_rutinario",
+      });
+
+      // Crear registro de memorando
+      await OtrosMemorandumModel.create({
+        Fec_OtroMemorando: Fec_Inasistencia,
+        Mot_OtroMemorando: Motivo,
+        Id_Aprendiz,
+      });
+
+    } else if (Ind_Asistencia === "Si") {
+      // Decrementar contadores (si son mayores que 0)
+      if (aprendiz.Tot_Inasistencias > 0) aprendiz.Tot_Inasistencias -= 1;
+      if (aprendiz.Tot_Memorandos > 0) aprendiz.Tot_Memorandos -= 1;
+
+      // Eliminar registro de inasistencia
+      await AbsenceModel.destroy({
+        where: { Turno_Id }
+      });
+
+      // Eliminar registro de memorando
+      await OtrosMemorandumModel.destroy({
+        where: { 
+          Id_Aprendiz
+        }
+      });
+      
+    }
+    await aprendiz.save();
+
+    res.status(200).json({ message: 'Inasistencia y memorando actualizados exitosamente' });
+  } catch (error) {
+    console.error(`Error al actualizar inasistencia y memorando: ${error.message}`);
+    res.status(500).json({ error: 'Error al actualizar la inasistencia y memorando' });
+  }
+};
+
