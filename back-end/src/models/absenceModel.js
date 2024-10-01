@@ -11,7 +11,7 @@ const AbsenceModel = db.define(
     Fec_Inasistencia : {type: DataTypes.TIME},
     Mot_Inasistencia: { type: DataTypes.STRING(50) },
     Turno_Id: {type: DataTypes.INTEGER},
-    Tipo_Inasistencia: {type: DataTypes.ENUM('turno_rutinario','aprendiz')},
+    Tipo_Inasistencia: {type: DataTypes.ENUM('turno_rutinario','turno_especial')},
   },
   {
     freezeTableName: true,

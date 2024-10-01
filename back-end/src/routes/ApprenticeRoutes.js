@@ -13,8 +13,7 @@ import {
 
 } from "../controller/apprenticeController.js";
 import checkAuth from "../middleware/authMiddleware.js";
-import ApprenticeModel from "../models/apprenticeModel.js";
-import Otros_MemorandosModel from "../models/Otros_MemorandosModel.js"
+
 
 const router = express.Router();
 
@@ -32,6 +31,7 @@ const upload = multer({
 
 import { updateInasistencia } from "../controller/turnoRutinarioController.js";
 
+
 router
   .route("/")
   .get(checkAuth, getAllApprentices)
@@ -44,6 +44,7 @@ router
 
 
 router.put('/actualizar-inasistencia/:Id_Aprendiz',checkAuth,updateInasistencia)
+
   
 // Ruta para importar CSV de aprendices
 router.post("/import-csv", checkAuth, upload.single('file'), importCSV);

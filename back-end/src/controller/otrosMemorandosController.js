@@ -10,26 +10,27 @@ import { emailMemorandos } from "../helpers/emailMemorandos.js";
 
 export const getAllOtrosMemorandum = async (req, res) => {
   try {
-    const memorandums = await OtrosMemorandumModel.findAll({
-      include: [
-        {
-          model: ApprenticeModel,
-          as: "aprendiz",
-          include: [
-            {
-              model: FichasModel,
-              as: "fichas",
-              include: [
-                {
-                  model: ProgramaModel,
-                  as: "programasFormacion",
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    });
+    const query = `
+    SELECT om.Id_OtroMemorando,
+           om.Fec_OtroMemorando,
+           om.Mot_OtroMemorando,
+           om.Referencia_Id,
+           a.Id_Aprendiz,
+           a.Nom_Aprendiz,
+           a.Ape_Aprendiz,
+           a.Id_Ficha,  -- Ahora traemos el Id_Ficha desde aprendices
+           f.Id_ProgramaFormacion,
+           p.Nom_ProgramaFormacion,
+           tr.Id_TurnoRutinario
+    FROM otros_memorandos om
+    LEFT JOIN aprendices a ON om.Referencia_Id = a.Id_Aprendiz
+    LEFT JOIN fichas f ON a.Id_Ficha = f.Id_Ficha -- Usar Id_Ficha para unirse a fichas
+    LEFT JOIN programasformacion p ON f.Id_ProgramaFormacion = p.Id_ProgramaFormacion
+    LEFT JOIN turnosrutinarios tr ON om.Referencia_Id = tr.Id_TurnoRutinario
+    WHERE (a.Id_Aprendiz IS NOT NULL OR tr.Id_TurnoRutinario IS NOT NULL);
+`;
+    const [memorandums] = await db.query(query);
+
     if (memorandums.length > 0) {
       res.status(200).json(memorandums);
       return;
@@ -48,29 +49,32 @@ export const getAllOtrosMemorandum = async (req, res) => {
 
 export const getOtroMemorandum = async (req, res) => {
   try {
-    const memorandum = await OtrosMemorandumModel.findOne({
-      where: { Id_OtroMemorando: req.params.Id_OtroMemorando },
-      include: [
-        {
-          model: ApprenticeModel,
-          as: "aprendiz",
-          include: [
-            {
-              model: FichasModel,
-              as: "fichas",
-              include: [
-                {
-                  model: ProgramaModel,
-                  as: "programasFormacion",
-                },
-              ],
-            },
-          ],
-        },
-      ],
+    const query = `
+      SELECT om.Id_OtroMemorando,
+             om.Fec_OtroMemorando,
+             om.Mot_OtroMemorando,
+             om.Referencia_Id,
+             a.Id_Aprendiz,
+             a.Nom_Aprendiz,
+             a.Ape_Aprendiz,
+             a.Id_Ficha,
+             f.Id_ProgramaFormacion,
+             p.Nom_ProgramaFormacion,
+             tr.Id_TurnoRutinario
+      FROM otros_memorandos om
+      LEFT JOIN aprendices a ON om.Referencia_Id = a.Id_Aprendiz
+      LEFT JOIN fichas f ON a.Id_Ficha = f.Id_Ficha
+      LEFT JOIN programasformacion p ON f.Id_ProgramaFormacion = p.Id_ProgramaFormacion
+      LEFT JOIN turnosrutinarios tr ON om.Referencia_Id = tr.Id_TurnoRutinario
+      WHERE om.Id_OtroMemorando = :Id_OtroMemorando;
+    `;
+    
+    const [memorandum] = await db.query(query, {
+      replacements: { Id_OtroMemorando: req.params.Id_OtroMemorando }
     });
-    if (memorandum) {
-      res.status(200).json(memorandum);
+
+    if (memorandum.length > 0) {
+      res.status(200).json(memorandum[0]); // Retorna el primer elemento si se encontró
       return;
     } else {
       res.status(404).json({
@@ -78,7 +82,7 @@ export const getOtroMemorandum = async (req, res) => {
       });
     }
   } catch (error) {
-    logger.error("Error fetching memorandum: ", error.message);
+    logger.error("Error fetching memorandum: ", error);
     res.status(500).json({
       message: "Error al recuperar el memorando.",
     });
@@ -89,7 +93,8 @@ export const getTotalOtrosMemorandums = async () => {
   try {
     return await OtrosMemorandumModel.count();
   } catch (error) {
-    logger.error("Error obteniendo el total de memorandos: ", error.message);
+    console.error("Error del total de memorandos",error);
+    logger.error("Error obteniendo el total de memorandos: ", error);
     throw new Error("Error al obtener el total de memorandos.");
   }
 };
@@ -99,7 +104,7 @@ export const getTotalOtrosMemorandumsForAprendiz = async (Id_Aprendiz) => {
       where: { Id_Aprendiz },
     });
   } catch (error) {
-    logger.error("Error obteniendo el total de memorandos: ", error.message);
+    logger.error("Error obteniendo el total de memorandos: ", error);
     throw new Error("Error al obtener el total de memorandos.");
   }
 };
@@ -112,7 +117,7 @@ export const createOtroMemorandum = async (req, res) => {
       {
         Fec_OtroMemorando,
         Mot_OtroMemorando,
-        Id_Aprendiz,
+        Referencia_Id: Id_Aprendiz,
       },
       {
         transaction,
@@ -139,63 +144,60 @@ export const createOtroMemorandum = async (req, res) => {
 export const viewOtherMemorandumPdf = async (req, res) => {
   const transacción = await db.transaction();
   const { Id_OtroMemorando } = req.params;
-  
+
   try {
-    const memorandumPdf = await OtrosMemorandumModel.findOne({
-      where: {
-        Id_OtroMemorando: Id_OtroMemorando,
-      },
-      include: [
-        {
-          model: ApprenticeModel,
-          as: "aprendiz",
-          include: [
-            {
-              model: FichasModel,
-              as: "fichas",
-              include: [
-                {
-                  model: ProgramaModel,
-                  as: "programasFormacion",
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      transacción,
+    const query = `
+      SELECT om.Id_OtroMemorando,
+             om.Fec_OtroMemorando,
+             om.Mot_OtroMemorando,
+             om.Referencia_Id,
+             a.Id_Aprendiz,
+             a.Nom_Aprendiz,
+             a.Ape_Aprendiz,
+             a.Id_Ficha,  -- Traemos el Id_Ficha desde aprendices
+             f.Id_ProgramaFormacion,
+             p.Nom_ProgramaFormacion
+      FROM otros_memorandos om
+      LEFT JOIN aprendices a ON om.Referencia_Id = a.Id_Aprendiz
+      LEFT JOIN fichas f ON a.Id_Ficha = f.Id_Ficha
+      LEFT JOIN programasformacion p ON f.Id_ProgramaFormacion = p.Id_ProgramaFormacion
+      WHERE om.Id_OtroMemorando = :id;
+    `;
+
+    const [memorandumPdf] = await db.query(query, {
+      replacements: { id: Id_OtroMemorando },
+      transaction: transacción,
     });
 
-    const totalMemorandumForApprentice =
-      await getTotalOtrosMemorandumsForAprendiz(
-        memorandumPdf.aprendiz.Id_Aprendiz
-      );
-      
+    if (!memorandumPdf || memorandumPdf.length === 0) {
+      throw new Error('Memorando no encontrado');
+    }
+
+    const totalMemorandumForApprentice = await getTotalOtrosMemorandumsForAprendiz(
+      memorandumPdf[0].Id_Aprendiz
+    );
+
     const totalMemorandums = await getTotalOtrosMemorandums();
-    
 
     const pdfBase64 = await generateOtroMemorandumPdf(
-      memorandumPdf,
+      memorandumPdf[0],
       totalMemorandums,
       totalMemorandumForApprentice
     );
-    
-    
 
     await transacción.commit();
 
     res.status(201).json({
       message: "PDF generado correctamente!",
-      data: memorandumPdf,
+      data: memorandumPdf[0],
       pdfBase64: pdfBase64,
     });
-  } catch (error) {    
+  } catch (error) {
     await transacción.rollback();
-    res
-      .status(404)
-      .json({ message: "Ocurrio un error, memorando no encontrado" });
+    res.status(404).json({ message: "Ocurrió un error, memorando no encontrado" });
   }
 };
+
 export const sendMemorandumPdf = async (req, res) => {
   const transacción = await db.transaction();
   const { Id_OtroMemorando } = req.params;
@@ -232,7 +234,7 @@ export const sendMemorandumPdf = async (req, res) => {
     // Obtener el total de memorandos
     const totalMemorandumForApprentice =
       await getTotalOtrosMemorandumsForAprendiz(
-        memorandumPdf.aprendiz.Id_Aprendiz
+        memorandumPdf.Id_Aprendiz
       );
     const totalMemorandums = await getTotalOtrosMemorandums();
     const hoy = new Date();
@@ -399,7 +401,6 @@ export const generateOtroMemorandumPdf = (
     pdf.create(htmlContent, options).toBuffer((err, buffer) => {
       if (err) {
         return reject(err);
-        
       }
       const base64 = buffer.toString("base64");
       resolve(base64);
