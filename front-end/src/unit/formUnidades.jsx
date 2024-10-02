@@ -201,6 +201,7 @@ const FormUnidades = ({
               value={Nom_Unidad}
               onChange={(e) => setNom_Unidad(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Ingrese el nombre de la unidad"
             />
           </div>
 
@@ -215,6 +216,7 @@ const FormUnidades = ({
                 value={Hor_Apertura}
                 onChange={(e) => setHor_Apertura(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Ingrese o seleccione hora apertura unidad"
               />
             </div>
 
@@ -228,6 +230,7 @@ const FormUnidades = ({
                 value={Hor_Cierre}
                 onChange={(e) => setHor_Cierre(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Ingrese o seleccione hora cierre unidad"
               />
             </div>
           </div>
@@ -241,6 +244,7 @@ const FormUnidades = ({
               value={Estado}
               onChange={(e) => setEstado(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Seleccione el estado actual de la unidad"
             >
               <option value="">Seleccione un Estado:</option>
               <option value="Activo">Activa</option>
@@ -257,6 +261,7 @@ const FormUnidades = ({
               value={Id_Area}
               onChange={(e) => setId_Area(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Seleccione area a la que pertenece la unidad"
             >
               <option value="">Seleccione un Área:</option>
               {Areas.map((area) => (
@@ -273,6 +278,7 @@ const FormUnidades = ({
               id="button"
               value={buttonForm}
               className="bg-botones w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
+              title="Envia y guarda la información"
             />
             {stateButton && (
               <input
@@ -285,6 +291,7 @@ const FormUnidades = ({
                 }}
                 className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-500 md:w-auto"
                 aria-label="Limpiar"
+                title="Limpia el formulario borrando los datos del mismo"
               />
             )}
           </div>

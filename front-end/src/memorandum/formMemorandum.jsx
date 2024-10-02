@@ -178,6 +178,7 @@ const FormMemorandum = ({
                 value={Fec_Memorando}
                 onChange={(e) => setFec_Memorando(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Ingrese la fecha del memorando"
               />
             </div>
 
@@ -194,6 +195,7 @@ const FormMemorandum = ({
                 value={Mot_Memorando}
                 onChange={(e) => setMot_Memorando(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Ingrese el motivo por el cual se esta realizando el memorando"
               />
             </div>
 
@@ -206,6 +208,7 @@ const FormMemorandum = ({
                 value={Id_Aprendiz}
                 onChange={(e) => setId_Aprendiz(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Seleccione el aprendiz al que se le va enviar el memorando"
               >
                 <option value="">Seleccione el Documento de Aprendiz:</option>
                 {aprendices.map((aprendiz) => (
@@ -227,6 +230,7 @@ const FormMemorandum = ({
               value={buttonForm}
               className="bg-botones w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
               aria-label="Enviar"
+              title="Envia y guarda la información"
             />
             {stateButton && (
               <input
@@ -238,6 +242,7 @@ const FormMemorandum = ({
                   updateTextButton("Enviar");
                 }}
                 className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-700 md:w-auto"
+                title="Limpia el formulario borrando los datos del mismo"
               />
             )}
           </div>

@@ -395,6 +395,7 @@ const FormTurnoRutinario = ({
                 }}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
                 id="Select"
+                title="Selecciona un area"
               >
                 <option value="">Seleccione un Área</option>
                 {areas.map((area) => (
@@ -414,6 +415,7 @@ const FormTurnoRutinario = ({
                 value={Id_Unidad}
                 onChange={(e) => setId_Unidad(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Selecciona una unidad"
                 // disabled={!Id_Area} // Deshabilitar si no hay área seleccionada
               >
                 <option value="">Seleccione una Unidad</option>
@@ -434,6 +436,7 @@ const FormTurnoRutinario = ({
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
                 value={Id_Aprendiz}
                 onChange={(e) => setId_Aprendiz(e.target.value)}
+                title="Selecciona un aprendiz que ya ha sido registrado con anterioridad"
                 // disabled={!Id_Area} // Deshabilitar si no hay área seleccionada
               >
                 <option value="">Seleccione un Aprendiz</option>
@@ -448,6 +451,7 @@ const FormTurnoRutinario = ({
                 ))}
               </select>
             </div>
+
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Fecha Inicio Turno Rutinario
@@ -458,6 +462,7 @@ const FormTurnoRutinario = ({
                 value={Fec_InicioTurno}
                 onChange={(e) => setFec_InicioTurno(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Ingrese la fecha inicio del turno"
               />
             </div>
 
@@ -471,8 +476,10 @@ const FormTurnoRutinario = ({
                 value={Fec_FinTurno}
                 onChange={(e) => setFec_FinTurno(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Ingrese fecha fin del turno"
               />
             </div>
+
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Hora Inicio
@@ -483,6 +490,7 @@ const FormTurnoRutinario = ({
                 value={Hor_InicioTurno}
                 onChange={(e) => setHor_InicioTurno(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Ingrese hora inicio del turno"
               />
             </div>
 
@@ -496,6 +504,7 @@ const FormTurnoRutinario = ({
                 value={Hor_FinTurno}
                 onChange={(e) => setHor_FinTurno(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Ingrese hora fin del turno"
               />
             </div>
 
@@ -509,8 +518,10 @@ const FormTurnoRutinario = ({
                 value={Obs_TurnoRutinario}
                 onChange={(e) => setObs_TurnoRutinario(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Ingrese las observaciones con respecto al turno"
               />
             </div>
+
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Indicador De Asistencia
@@ -520,6 +531,7 @@ const FormTurnoRutinario = ({
                 value={Ind_Asistencia}
                 onChange={(e) => setInd_Asistencia(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Indique si el aprendiz asistio o no al turno"
               >
                 <option value="">Seleccione:</option>
                 <option value="Si">Si</option>
@@ -539,16 +551,19 @@ const FormTurnoRutinario = ({
                   value={Motivo}
                   onChange={(e) => setMotivo(e.target.value)}
                   className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                  title="Ingrese la justificacion indicando porque el aprendiz no asistio al turno"
                 />
               </div>
             )}
           </div>
+
           <div className="flex justify-around mt-2">
             <input
               type="submit"
               id="button"
               value={buttonForm}
               className="bg-botones w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
+              title="Envia el resgistro y lo guarda"
             />
             {stateButton && (
               <input
@@ -561,6 +576,7 @@ const FormTurnoRutinario = ({
                 }}
                 className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-500 md:w-auto"
                 aria-label="Limpiar"
+                title="Limpia el formulario borrando los datos del mismo"
               />
             )}
           </div>

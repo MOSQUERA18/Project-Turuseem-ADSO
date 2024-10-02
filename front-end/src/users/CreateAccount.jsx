@@ -72,11 +72,13 @@ const UserForm = () => {
               <input
                 type="text"
                 className="border w-full p-2 mt-2 bg-gray-100 rounded-xl"
+                title="Ingrese documento de identificación"
                 placeholder="Su Documento"
                 value={Id_User}
                 onChange={(e) => setId_User(e.target.value)}
               />
             </div>
+
             <div className="my-4">
               <label className="uppercase text-stone-600 font-bold block text-base">
                 Nombre:
@@ -84,11 +86,13 @@ const UserForm = () => {
               <input
                 type="text"
                 className="border w-full p-2 mt-2 bg-gray-100 rounded-xl"
+                title="Ingrese nombre"
                 placeholder="Su Nombre"
                 value={Nom_User}
                 onChange={(e) => setNom_User(e.target.value)}
               />
             </div>
+
             <div className="my-4">
               <label className="uppercase text-stone-600 font-bold block text-base">
                 Correo:
@@ -96,6 +100,7 @@ const UserForm = () => {
               <input
                 type="email"
                 className="border w-full p-2 mt-2 bg-gray-100 rounded-xl"
+                title="Ingrese correo electronico"
                 placeholder="Su Correo Ej: example@gmail.com"
                 value={Cor_User}
                 onChange={(e) => setCor_User(e.target.value)}
@@ -108,6 +113,7 @@ const UserForm = () => {
               <input
                 type="password"
                 className="border w-full p-2 mt-2 bg-gray-100 rounded-xl"
+                title="Ingrese contraseña"
                 placeholder="Su Contraseña"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -120,6 +126,7 @@ const UserForm = () => {
               <input
                 type="password"
                 className="border w-full p-2 mt-2 bg-gray-100 rounded-xl"
+                title="Repita la contraseña ingresada anteriormente"
                 placeholder="Repita Su Contraseña"
                 value={passwordRepeat}
                 onChange={(e) => setPasswordRepeat(e.target.value)}
@@ -129,6 +136,7 @@ const UserForm = () => {
               type="submit"
               value="Crear Cuenta"
               className="bg-botones w-full py-3 px-8 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:bg-blue-700 md:w-auto"
+              title="Crea y guarda la cuenta"
             />
           </form>
         </div>

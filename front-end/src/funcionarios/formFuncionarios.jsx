@@ -228,8 +228,10 @@ const FormFuncionarios = ({
               }}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               disabled={buttonForm === "Actualizar"}
+              title="Ingrese el documento de identificación del Funcionario"
             />
           </div>
+
           <div className="flex items-center mb-3 space-x-4">
             <div className="w-1/2">
               <label className="block text-sm font-medium text-gray-700">
@@ -242,6 +244,7 @@ const FormFuncionarios = ({
                 value={Nom_Funcionario}
                 onChange={(e) => setNom_Funcionario(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Ingrese el nombre del funcionario"
               />
             </div>
 
@@ -256,6 +259,7 @@ const FormFuncionarios = ({
                 value={Ape_Funcionario}
                 onChange={(e) => setApe_Funcionario(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Ingrese el apellido del funcionario"
               />
             </div>
           </div>
@@ -269,6 +273,7 @@ const FormFuncionarios = ({
               value={Genero}
               onChange={(e) => setGenero(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Seleccione el genero del funcionario"
             >
               <option value="">Seleccione un Género</option>
               <option value="Masculino">Masculino</option>
@@ -294,8 +299,10 @@ const FormFuncionarios = ({
                 }
               }}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Ingrese el telefono del funcionario"
             />
           </div>
+
           <div className="flex items-center mb-3 space-x-4">
             <div className="w-1/2">
               <label className="block text-sm font-medium text-gray-700">
@@ -306,6 +313,7 @@ const FormFuncionarios = ({
                 value={Estado}
                 onChange={(e) => setEstado(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Seleccione el estado actual del funcionario"
               >
                 <option value="">Seleccione un Estado</option>
                 <option value="Activo">Activo</option>
@@ -322,6 +330,7 @@ const FormFuncionarios = ({
                 value={Cargo}
                 onChange={(e) => setCargo(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Seleccione el cargo actual del funcionario"
               >
                 <option value="">Seleccione un Cargo</option>
                 <option value="Planta">Planta</option>
@@ -329,6 +338,7 @@ const FormFuncionarios = ({
               </select>
             </div>
           </div>
+
           <hr className="mt-3" />
           <div className="flex justify-around mt-2">
             <input
@@ -336,6 +346,7 @@ const FormFuncionarios = ({
               id="button"
               value={buttonForm}
               className="bg-botones w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
+              title="Envia y guarda la información"
             />
             {stateButton && (
               <input
@@ -347,6 +358,7 @@ const FormFuncionarios = ({
                 }}
                 className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-500 md:w-auto"
                 aria-label="Limpiar"
+                title="Limpia el formulario borrando los datos del mismo"
               />
             )}
           </div>

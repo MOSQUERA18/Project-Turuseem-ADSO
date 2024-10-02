@@ -245,7 +245,7 @@ function WriteTable({ titles, data, titleModul, tableName }) {
 
   return (
     <>
-      <div className="relative overflow-x-auto container ">
+      <div className="relative overflow-x-auto container">
       <div className="flex justify-start px-5">
   <button
     type="button"
