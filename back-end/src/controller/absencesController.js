@@ -126,7 +126,7 @@ export const updateAbsence = async (req, res) => {
     // Verificar que el Tipo_Inasistencia sea válido
     if (
       Tipo_Inasistencia !== "turno_rutinario" &&
-      Tipo_Inasistencia !== "aprendiz"
+      Tipo_Inasistencia !== "turno_especial"
     ) {
       return res
         .status(400)

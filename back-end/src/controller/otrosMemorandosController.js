@@ -10,26 +10,30 @@ import { emailMemorandos } from "../helpers/emailMemorandos.js";
 
 export const getAllOtrosMemorandum = async (req, res) => {
   try {
-    const memorandums = await OtrosMemorandumModel.findAll({
-      include: [
-        {
-          model: ApprenticeModel,
-          as: "aprendiz",
-          include: [
-            {
-              model: FichasModel,
-              as: "fichas",
-              include: [
-                {
-                  model: ProgramaModel,
-                  as: "programasFormacion",
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    });
+    const query = `
+    SELECT om.Id_OtroMemorando,
+       om.Fec_OtroMemorando,
+       om.Mot_OtroMemorando,
+       om.Referencia_Id,
+       a.Id_Aprendiz,
+       a.Nom_Aprendiz,
+       a.Ape_Aprendiz,
+       a.Id_Ficha,
+       f.Id_ProgramaFormacion,
+       p.Nom_ProgramaFormacion,
+       tr.Id_TurnoRutinario,
+       inas.Id_Inasistencia
+FROM otros_memorandos om
+LEFT JOIN inasistencias inas ON om.Referencia_Id = inas.Id_Inasistencia
+LEFT JOIN turnosrutinarios tr ON inas.Turno_Id = tr.Id_TurnoRutinario
+LEFT JOIN aprendices a ON tr.Id_Aprendiz = a.Id_Aprendiz
+LEFT JOIN fichas f ON a.Id_Ficha = f.Id_Ficha
+LEFT JOIN programasformacion p ON f.Id_ProgramaFormacion = p.Id_ProgramaFormacion
+WHERE a.Id_Aprendiz IS NOT NULL;
+`;
+    const [memorandums] = await db.query(query);
+    console.log(memorandums);
+
     if (memorandums.length > 0) {
       res.status(200).json(memorandums);
       return;
@@ -48,29 +52,34 @@ export const getAllOtrosMemorandum = async (req, res) => {
 
 export const getOtroMemorandum = async (req, res) => {
   try {
-    const memorandum = await OtrosMemorandumModel.findOne({
-      where: { Id_OtroMemorando: req.params.Id_OtroMemorando },
-      include: [
-        {
-          model: ApprenticeModel,
-          as: "aprendiz",
-          include: [
-            {
-              model: FichasModel,
-              as: "fichas",
-              include: [
-                {
-                  model: ProgramaModel,
-                  as: "programasFormacion",
-                },
-              ],
-            },
-          ],
-        },
-      ],
+    const query = `
+        SELECT om.Id_OtroMemorando,
+          om.Fec_OtroMemorando,
+          om.Mot_OtroMemorando,
+          om.Referencia_Id,
+          a.Id_Aprendiz,
+          a.Nom_Aprendiz,
+          a.Ape_Aprendiz,
+          a.Id_Ficha,
+          f.Id_ProgramaFormacion,
+          p.Nom_ProgramaFormacion,
+          tr.Id_TurnoRutinario,
+          inas.Id_Inasistencia
+        FROM otros_memorandos om
+        LEFT JOIN inasistencias inas ON om.Referencia_Id = inas.Id_Inasistencia
+        LEFT JOIN turnosrutinarios tr ON inas.Turno_Id = tr.Id_TurnoRutinario
+        LEFT JOIN aprendices a ON tr.Id_Aprendiz = a.Id_Aprendiz
+        LEFT JOIN fichas f ON a.Id_Ficha = f.Id_Ficha
+        LEFT JOIN programasformacion p ON f.Id_ProgramaFormacion = p.Id_ProgramaFormacion
+        WHERE om.Id_OtroMemorando = :Id_OtroMemorando;
+    `;
+
+    const [memorandum] = await db.query(query, {
+      replacements: { Id_OtroMemorando: req.params.Id_OtroMemorando },
     });
-    if (memorandum) {
-      res.status(200).json(memorandum);
+
+    if (memorandum.length > 0) {
+      res.status(200).json(memorandum[0]); // Retorna el primer elemento si se encontró
       return;
     } else {
       res.status(404).json({
@@ -78,7 +87,7 @@ export const getOtroMemorandum = async (req, res) => {
       });
     }
   } catch (error) {
-    logger.error("Error fetching memorandum: ", error.message);
+    logger.error("Error fetching memorandum: ", error);
     res.status(500).json({
       message: "Error al recuperar el memorando.",
     });
@@ -89,17 +98,18 @@ export const getTotalOtrosMemorandums = async () => {
   try {
     return await OtrosMemorandumModel.count();
   } catch (error) {
-    logger.error("Error obteniendo el total de memorandos: ", error.message);
+    console.error("Error del total de memorandos", error);
+    logger.error("Error obteniendo el total de memorandos: ", error);
     throw new Error("Error al obtener el total de memorandos.");
   }
 };
 export const getTotalOtrosMemorandumsForAprendiz = async (Id_Aprendiz) => {
   try {
     return await OtrosMemorandumModel.count({
-      where: { Id_Aprendiz },
+      where: { Referencia_Id: Id_Aprendiz },
     });
   } catch (error) {
-    logger.error("Error obteniendo el total de memorandos: ", error.message);
+    logger.error("Error obteniendo el total de memorandos: ", error);
     throw new Error("Error al obtener el total de memorandos.");
   }
 };
@@ -112,7 +122,7 @@ export const createOtroMemorandum = async (req, res) => {
       {
         Fec_OtroMemorando,
         Mot_OtroMemorando,
-        Id_Aprendiz,
+        Referencia_Id: Id_Aprendiz,
       },
       {
         transaction,
@@ -139,101 +149,109 @@ export const createOtroMemorandum = async (req, res) => {
 export const viewOtherMemorandumPdf = async (req, res) => {
   const transacción = await db.transaction();
   const { Id_OtroMemorando } = req.params;
-  
+
   try {
-    const memorandumPdf = await OtrosMemorandumModel.findOne({
-      where: {
-        Id_OtroMemorando: Id_OtroMemorando,
-      },
-      include: [
-        {
-          model: ApprenticeModel,
-          as: "aprendiz",
-          include: [
-            {
-              model: FichasModel,
-              as: "fichas",
-              include: [
-                {
-                  model: ProgramaModel,
-                  as: "programasFormacion",
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      transacción,
+    const query = `
+        SELECT om.Id_OtroMemorando,
+          om.Fec_OtroMemorando,
+          om.Mot_OtroMemorando,
+          om.Referencia_Id,
+          a.Id_Aprendiz,
+          a.Nom_Aprendiz,
+          a.Ape_Aprendiz,
+          a.Id_Ficha,
+          f.Id_ProgramaFormacion,
+          p.Nom_ProgramaFormacion,
+          tr.Id_TurnoRutinario,
+          inas.Id_Inasistencia
+        FROM otros_memorandos om
+        LEFT JOIN inasistencias inas ON om.Referencia_Id = inas.Id_Inasistencia
+        LEFT JOIN turnosrutinarios tr ON inas.Turno_Id = tr.Id_TurnoRutinario
+        LEFT JOIN aprendices a ON tr.Id_Aprendiz = a.Id_Aprendiz
+        LEFT JOIN fichas f ON a.Id_Ficha = f.Id_Ficha
+        LEFT JOIN programasformacion p ON f.Id_ProgramaFormacion = p.Id_ProgramaFormacion
+        WHERE om.Id_OtroMemorando = :Id_OtroMemorando;
+    `;
+
+    const [memorandumPdf] = await db.query(query, {
+      replacements: { Id_OtroMemorando: Id_OtroMemorando },
+      transaction: transacción,
     });
 
+    if (!memorandumPdf || memorandumPdf.length === 0) {
+      throw new Error("Memorando no encontrado");
+    }
+
     const totalMemorandumForApprentice =
-      await getTotalOtrosMemorandumsForAprendiz(
-        memorandumPdf.aprendiz.Id_Aprendiz
-      );
-      
+      await getTotalOtrosMemorandumsForAprendiz(memorandumPdf[0].Referencia_Id);
+
     const totalMemorandums = await getTotalOtrosMemorandums();
-    
+    console.log("Total de memorandos del ese aprendiz", memorandumPdf);
 
     const pdfBase64 = await generateOtroMemorandumPdf(
-      memorandumPdf,
+      memorandumPdf[0],
       totalMemorandums,
       totalMemorandumForApprentice
     );
-    
-    
+    console.log("Este es el pdf", pdfBase64);
 
     await transacción.commit();
 
     res.status(201).json({
       message: "PDF generado correctamente!",
-      data: memorandumPdf,
+      data: memorandumPdf[0],
       pdfBase64: pdfBase64,
     });
-  } catch (error) {    
+  } catch (error) {
     await transacción.rollback();
     res
       .status(404)
-      .json({ message: "Ocurrio un error, memorando no encontrado" });
+      .json({ message: "Ocurrió un error, memorando no encontrado" });
   }
 };
+
 export const sendMemorandumPdf = async (req, res) => {
   const transacción = await db.transaction();
   const { Id_OtroMemorando } = req.params;
 
   try {
     // Obtener la información del memorando
-    const memorandumPdf = await OtrosMemorandumModel.findOne({
-      where: { Id_OtroMemorando: Id_OtroMemorando },
-      include: [
-        {
-          model: ApprenticeModel,
-          as: "aprendiz",
-          include: [
-            {
-              model: FichasModel,
-              as: "fichas",
-              include: [
-                {
-                  model: ProgramaModel,
-                  as: "programasFormacion",
-                },
-              ],
-            },
-          ],
-        },
-      ],
+    const query = `
+        SELECT om.Id_OtroMemorando,
+          om.Fec_OtroMemorando,
+          om.Mot_OtroMemorando,
+          om.Referencia_Id,
+          a.Id_Aprendiz,
+          a.Nom_Aprendiz,
+          a.Ape_Aprendiz,
+          a.Id_Ficha,
+          a.Cor_Aprendiz,
+          f.Id_ProgramaFormacion,
+          p.Nom_ProgramaFormacion,
+          tr.Id_TurnoRutinario,
+          inas.Id_Inasistencia
+        FROM otros_memorandos om
+        LEFT JOIN inasistencias inas ON om.Referencia_Id = inas.Id_Inasistencia
+        LEFT JOIN turnosrutinarios tr ON inas.Turno_Id = tr.Id_TurnoRutinario
+        LEFT JOIN aprendices a ON tr.Id_Aprendiz = a.Id_Aprendiz
+        LEFT JOIN fichas f ON a.Id_Ficha = f.Id_Ficha
+        LEFT JOIN programasformacion p ON f.Id_ProgramaFormacion = p.Id_ProgramaFormacion
+        WHERE om.Id_OtroMemorando = :Id_OtroMemorando;
+    `;
+
+    const [memorandumPdf] = await db.query(query, {
+      replacements: { Id_OtroMemorando: Id_OtroMemorando },
       transaction: transacción,
     });
 
     if (!memorandumPdf) {
       throw new Error("Memorando no encontrado");
     }
+    console.log("Este es el memorando para ver", memorandumPdf);
 
     // Obtener el total de memorandos
     const totalMemorandumForApprentice =
-      await getTotalOtrosMemorandumsForAprendiz(
-        memorandumPdf.aprendiz.Id_Aprendiz
-      );
+      await getTotalOtrosMemorandumsForAprendiz(memorandumPdf[0].Referencia_Id);
     const totalMemorandums = await getTotalOtrosMemorandums();
     const hoy = new Date();
     const mes = hoy.getMonth() + 1;
@@ -256,16 +274,16 @@ export const sendMemorandumPdf = async (req, res) => {
       trimestreActual,
       año
     );
+    console.log("Correo para enviar memorando",memorandumPdf[0].Cor_Aprendiz);
+    
 
     // Enviar el memorando por email (pasando el PDF en base64)
     await emailMemorandos({
-      Cor_Aprendiz: memorandumPdf.aprendiz?.Cor_Aprendiz,
-      Nom_Aprendiz: memorandumPdf.aprendiz?.Nom_Aprendiz,
+      Cor_Aprendiz: memorandumPdf[0].Cor_Aprendiz,
+      Nom_Aprendiz: memorandumPdf[0].Nom_Aprendiz,
       Tot_Memorandos: totalMemorandumForApprentice,
       Nom_TalentoHumano: "Monica Talento Humano",
-      Nom_ProgramaFormacion:
-        memorandumPdf.aprendiz?.fichas?.programasFormacion
-          ?.Nom_ProgramaFormacion,
+      Nom_ProgramaFormacion: memorandumPdf[0].Nom_ProgramaFormacion,
       trimestreActual: trimestreActual,
       añoActual: año,
       pdfBase64: pdfBase64, // Envía el PDF generado en base64 al helper del email
@@ -345,9 +363,14 @@ export const generateOtroMemorandumPdf = (
   totalMemorandumForApprentice
 ) => {
   return new Promise((resolve, reject) => {
-    const { aprendiz, Fec_OtroMemorando, Mot_OtroMemorando } = memorandum;
-    const { fichas } = aprendiz;
-    const { programasFormacion } = fichas;
+    const {
+      Fec_OtroMemorando,
+      Nom_Aprendiz,
+      Ape_Aprendiz,
+      Nom_ProgramaFormacion,
+      Id_Ficha,
+      Mot_OtroMemorando,
+    } = memorandum;
     const raiz = process.cwd();
 
     const hoy = new Date();
@@ -372,13 +395,10 @@ export const generateOtroMemorandumPdf = (
     const htmlContent = plantillaHtml
       .replace("{{FechaActual}}", Fec_OtroMemorando)
       .replace("{{NumeroMemorando}}", totalMemorandums)
-      .replace("{{NombreAprendiz}}", aprendiz.Nom_Aprendiz)
-      .replace("{{ApellidoAprendiz}}", aprendiz.Ape_Aprendiz)
-      .replace(
-        "{{ProgramaFormacion}}",
-        programasFormacion.Nom_ProgramaFormacion
-      )
-      .replace("{{FichaNo}}", fichas.Id_Ficha)
+      .replace("{{NombreAprendiz}}", Nom_Aprendiz)
+      .replace("{{ApellidoAprendiz}}", Ape_Aprendiz)
+      .replace("{{ProgramaFormacion}}", Nom_ProgramaFormacion)
+      .replace("{{FichaNo}}", Id_Ficha)
       .replace("{{UnidadAsignada}}", "Sena Empresa")
       .replace("{{FechaActual}}", Fec_OtroMemorando)
       .replace("{{Mot_OtroMemorando}}", Mot_OtroMemorando)
@@ -399,7 +419,6 @@ export const generateOtroMemorandumPdf = (
     pdf.create(htmlContent, options).toBuffer((err, buffer) => {
       if (err) {
         return reject(err);
-        
       }
       const base64 = buffer.toString("base64");
       resolve(base64);

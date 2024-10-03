@@ -121,7 +121,7 @@ export const updateTurnoRutinarioAprendiz = async (req, res) => {
     }
   } catch (error) {
     // Capturo y manejo cualquier error ocurrido durante la actualización.
-    logger.error(`Error al actualizar el turno rutinario de aprendiz: ${error.message}`);
+    logger.error(`Error al actualizar el turno rutinario de aprendiz: ${error}`);
     res.status(500).json({
       message: "Error al actualizar el turno rutinario de aprendiz.",
     });
