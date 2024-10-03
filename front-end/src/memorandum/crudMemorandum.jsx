@@ -105,8 +105,8 @@ const CrudMemorandum = () => {
   const formattedData = memorandumList.map((memorandum) => {
     const rowData = [
       memorandum.Id_Aprendiz,
-      memorandum.aprendiz?.Nom_Aprendiz,
-      memorandum.aprendiz?.Ape_Aprendiz,
+      memorandum.Nom_Aprendiz,
+      memorandum.Ape_Aprendiz,
       memorandum.Fec_OtroMemorando,
       memorandum.Mot_OtroMemorando,
       memorandum.Enviado,

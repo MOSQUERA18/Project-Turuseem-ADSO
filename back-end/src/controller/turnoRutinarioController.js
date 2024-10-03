@@ -5,13 +5,12 @@ import { logger } from "../middleware/logMiddleware.js";
 import AbsenceModel from "../models/absenceModel.js";
 import FichasModel from "../models/fichasModel.js";
 import ProgramaModel from "../models/programaModel.js";
-import cron from "node-cron"
-import { Op, Sequelize} from "sequelize";
+import cron from "node-cron";
+import { Op, Sequelize } from "sequelize";
 import OtrosMemorandumModel from "../models/Otros_MemorandosModel.js";
 
-
-cron.schedule('5 9 * * *', () => {
-  console.log('Tarea programada ejecutada con exito');
+cron.schedule("5 9 * * *", () => {
+  console.log("Tarea programada ejecutada con exito");
 });
 
 export const getAllTurnosRutinarios = async (req, res) => {
@@ -61,8 +60,6 @@ export const getAllTurnosRutinarios = async (req, res) => {
 
 export const getTurnoRutinario = async (req, res) => {
   try {
-
-
     // Intento de obtener un turno rutinario específico por ID con relaciones anidadas.
     const turnoRutinario = await TurnosRutinariosModel.findByPk(
       req.params.Id_TurnoRutinario,
@@ -160,10 +157,9 @@ export const updateTurnoRutinario = async (req, res) => {
       Ind_Asistencia,
       Id_Aprendiz,
       Id_Unidad,
-      Motivo
+      Motivo,
     } = req.body;
     console.log("Motti:", Motivo);
-    
 
     // Intento de actualizar un turno rutinario específico por ID.
     const [updated] = await TurnosRutinariosModel.update(
@@ -176,7 +172,7 @@ export const updateTurnoRutinario = async (req, res) => {
         Ind_Asistencia,
         Id_Aprendiz,
         Id_Unidad,
-        Motivo
+        Motivo,
       },
       {
         where: { Id_TurnoRutinario: req.params.Id_TurnoRutinario },
@@ -197,12 +193,12 @@ export const updateTurnoRutinario = async (req, res) => {
           },
         });
         console.log("Hollaaa borrando memorando...");
-        
+
         await OtrosMemorandumModel.destroy({
           where: {
-            Id_Aprendiz: Id_Aprendiz,
-          }
-        })
+            Referencia_Id: Id_Aprendiz,
+          },
+        });
       }
       res.json({
         message:
@@ -261,7 +257,7 @@ export const getTurnoRutinariosForAprendiz = async (req, res) => {
         [Op.and]: [
           Sequelize.literal(`DATE(Fec_InicioTurno) >= '${fechaHoy}'`),
           // Sequelize.literal(`DATE(Fec_FinTurno) >= '${fechaHoy}'`)
-        ]
+        ],
       },
       include: [
         {
@@ -276,32 +272,43 @@ export const getTurnoRutinariosForAprendiz = async (req, res) => {
     });
     // console.log(turnoRutinarioForAprendiz);
     if (turnoRutinarioForAprendiz.length === 0) {
-      return res.status(404).json({ message: "No tienes turno programado para hoy" });
+      return res
+        .status(404)
+        .json({ message: "No tienes turno programado para hoy" });
     }
 
     res.status(200).json(turnoRutinarioForAprendiz);
   } catch (error) {
-    logger.error(`Error al obtener los turnos rutinarios para el aprendiz: ${error.message}`);
+    logger.error(
+      `Error al obtener los turnos rutinarios para el aprendiz: ${error.message}`
+    );
     res.status(500).json({
       message: "Error al obtener los turnos rutinarios para el aprendiz.",
     });
   }
 };
 
-import moment from 'moment';
+import moment from "moment";
 
 export const updateInasistencia = async (req, res) => {
   try {
     const { Id_Aprendiz } = req.params;
-    const { Ind_Asistencia, Turno_Id, Fec_Inasistencia, Motivo, Tipo_Inasistencia } = req.body;
+    const {
+      Ind_Asistencia,
+      Turno_Id,
+      Fec_Inasistencia,
+      Motivo,
+      Tipo_Inasistencia,
+    } = req.body;
 
     const aprendiz = await ApprenticeModel.findByPk(Id_Aprendiz);
 
     if (!aprendiz) {
-      return res.status(404).json({ error: 'Aprendiz no encontrado' });
+      return res.status(404).json({ error: "Aprendiz no encontrado" });
     }
 
-    const formattedFecInasistencia = moment(Fec_Inasistencia).format('YYYY-MM-DD'); // Normalizar la fecha
+    const formattedFecInasistencia =
+      moment(Fec_Inasistencia).format("YYYY-MM-DD"); // Normalizar la fecha
 
     if (Ind_Asistencia === "No") {
       console.log("Entrando al modo incrementar");
@@ -314,18 +321,20 @@ export const updateInasistencia = async (req, res) => {
       await AbsenceModel.create({
         Fec_Inasistencia,
         Mot_Inasistencia: Motivo,
-        Turno_Id,
+        Turno_Id: Turno_Id,
         Tipo_Inasistencia,
-        Turno_Id: aprendiz.Id_Aprendiz,
       });
-
+      const inasistencia = await AbsenceModel.findOne({
+        where: {
+          Turno_Id: Turno_Id,
+        },
+      });
       // Crear registro de memorando
       await OtrosMemorandumModel.create({
         Fec_OtroMemorando: Fec_Inasistencia,
         Mot_OtroMemorando: Motivo,
-        Referencia_Id: aprendiz.Id_Aprendiz,
+        Referencia_Id: inasistencia.Id_Inasistencia,
       });
-
     } else if (Ind_Asistencia === "Si") {
       console.log("Entrando al modo decrementar");
 
@@ -335,39 +344,44 @@ export const updateInasistencia = async (req, res) => {
 
       // Buscar y eliminar la inasistencia
       const inasistencia = await AbsenceModel.findOne({
-        where: { Fec_Inasistencia: formattedFecInasistencia, Turno_Id }
+        where: {
+          // Fec_Inasistencia: formattedFecInasistencia,
+          Turno_Id: Id_Aprendiz,
+        },
       });
+      console.log("Esta es la inasistencia", inasistencia);
 
       if (inasistencia) {
+      // Buscar y eliminar el memorando
+        const memorando = await OtrosMemorandumModel.findOne({
+          where: {
+            Referencia_Id: inasistencia.Id_Inasistencia,
+            // Fec_OtroMemorando: formattedFecInasistencia  // Comparar la fecha formateada sin la hora
+          },
+        });
+        console.log("Este es el memorando", memorando);
+        if (memorando) {
+          await memorando.destroy();
+          console.log("Memorando eliminado");
+        } else {
+          console.log("No se encontró memorando para eliminar");
+        }
         await inasistencia.destroy();
         console.log("Inasistencia eliminada");
       } else {
         console.log("No se encontró inasistencia para eliminar");
       }
-
-      // Buscar y eliminar el memorando
-      const memorando = await OtrosMemorandumModel.findOne({
-        where: {
-          Id_Aprendiz,
-          Fec_OtroMemorando: formattedFecInasistencia  // Comparar la fecha formateada sin la hora
-        }
-      });
-
-      console.log(memorando);
-
-      if (memorando) {
-        await memorando.destroy();
-        console.log("Memorando eliminado");
-      } else {
-        console.log("No se encontró memorando para eliminar");
-      }
     }
-
     // Guardar los cambios en aprendiz
     await aprendiz.save();
-    res.status(200).json({ message: 'Inasistencia y memorando actualizados exitosamente' });
+    res
+      .status(200)
+      .json({ message: "Inasistencia y memorando actualizados exitosamente" });
   } catch (error) {
-    console.error(`Error al actualizar inasistencia y memorando: ${error}`);
-    res.status(500).json({ error: 'Error al actualizar la inasistencia y memorando' });
+    console.error(`Error al actualizar inasistencia y memorando: ${error.message}`);
+    logger.error(error);
+    res
+      .status(500)
+      .json({ error: "Error al actualizar la inasistencia y memorando" });
   }
 };
