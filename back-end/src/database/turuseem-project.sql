@@ -60,7 +60,7 @@ CREATE TABLE `aprendices` (
 
 LOCK TABLES `aprendices` WRITE;
 /*!40000 ALTER TABLE `aprendices` DISABLE KEYS */;
-INSERT INTO `aprendices` VALUES ('1070593778','angie','Mosquera','2671143','2000-01-01','1001','Calle Falsa 123',24,'No','Salud S.A.','1234567890','Masculino','juan.perez@example.com','0987654321',2,2,'No','Activo','Empresa XYZ','No',NULL,'2024-09-22 20:54:06','2024-10-02 00:29:09'),('1108455213','anggie','capera','2824123','2000-01-01','1001','Calle Falsa 123',24,'No','Salud S.A.','1234567890','Masculino','juan.perez@example.com','0987654321',10,10,'No','Activo','Empresa XYZ','No',NULL,'2024-09-23 21:00:48','2024-10-02 00:37:45'),('5909080','edinson','Quiroga','2671143','2000-01-01','1001','Calle Falsa ',24,'No','Salud SA','1234567890','Masculino','juandavidlinares2005@gmail.com','0987654321',4,4,'No','Activo','Empresa XYZ','No',NULL,'2024-09-23 19:57:52','2024-10-02 22:33:18');
+INSERT INTO `aprendices` VALUES ('1070593778','angie','Mosquera','2671143','2000-01-01','1001','Calle Falsa 123',24,'No','Salud S.A.','1234567890','Masculino','juan.perez@example.com','0987654321',5,5,'No','Activo','Empresa XYZ','No',NULL,'2024-09-22 20:54:06','2024-10-03 18:27:33'),('1108455213','anggie','capera','2824123','2000-01-01','1001','Calle Falsa 123',24,'No','Salud S.A.','1234567890','Masculino','juan.perez@example.com','0987654321',10,10,'No','Activo','Empresa XYZ','No',NULL,'2024-09-23 21:00:48','2024-10-02 00:37:45'),('5909080','edinson','Quiroga','2671143','2000-01-01','1001','Calle Falsa ',24,'No','Salud SA','1234567890','Masculino','juandavidlinares2005@gmail.com','0987654321',7,7,'No','Activo','Empresa XYZ','No',NULL,'2024-09-23 19:57:52','2024-10-03 18:27:33');
 /*!40000 ALTER TABLE `aprendices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -194,8 +194,8 @@ CREATE TABLE `inasistencias` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id_Inasistencia`),
-  CONSTRAINT `inasistencias_chk_1` CHECK ((`Tipo_Inasistencia` in (_utf8mb4'turno_rutinario',_utf8mb4'aprendiz')))
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `inasistencias_chk_1` CHECK ((`Tipo_Inasistencia` in (_utf8mb4'turno_rutinario',_utf8mb4'turno_especial')))
+) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -204,7 +204,7 @@ CREATE TABLE `inasistencias` (
 
 LOCK TABLES `inasistencias` WRITE;
 /*!40000 ALTER TABLE `inasistencias` DISABLE KEYS */;
-INSERT INTO `inasistencias` VALUES (105,'2024-09-23','Yo que voy a saber',17,'turno_rutinario','2024-10-02 01:03:59','2024-10-02 01:03:59');
+INSERT INTO `inasistencias` VALUES (105,'2024-09-23','Yo que voy a saber',17,'turno_rutinario','2024-10-02 01:03:59','2024-10-02 01:03:59'),(106,'2012-12-24','No fue a turno especial',1070593778,'turno_especial','2024-10-03 18:19:50','2024-10-03 18:19:50'),(107,'2012-12-24','No fue a turno especial',5909080,'turno_especial','2024-10-03 18:19:50','2024-10-03 18:19:50'),(108,'2012-12-24','No fue a turno especial',1070593778,'turno_especial','2024-10-03 18:25:42','2024-10-03 18:25:42'),(109,'2012-12-24','No fue a turno especial',5909080,'turno_especial','2024-10-03 18:25:42','2024-10-03 18:25:42'),(110,'2012-12-24','No fue a turno especial',1070593778,'turno_especial','2024-10-03 18:27:33','2024-10-03 18:27:33'),(111,'2012-12-24','No fue a turno especial',5909080,'turno_especial','2024-10-03 18:27:33','2024-10-03 18:27:33');
 /*!40000 ALTER TABLE `inasistencias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -252,7 +252,7 @@ CREATE TABLE `otros_memorandos` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id_OtroMemorando`)
-) ENGINE=InnoDB AUTO_INCREMENT=192 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=198 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -261,7 +261,7 @@ CREATE TABLE `otros_memorandos` (
 
 LOCK TABLES `otros_memorandos` WRITE;
 /*!40000 ALTER TABLE `otros_memorandos` DISABLE KEYS */;
-INSERT INTO `otros_memorandos` VALUES (188,'2024-09-23','',0,104,'2024-10-02 00:52:52','2024-10-02 00:52:52'),(189,'2024-09-23','Yo que voy a saber',0,105,'2024-10-02 01:03:59','2024-10-02 01:03:59'),(190,'2024-10-24','JJDJDJDJ',0,1070593778,'2024-10-02 20:21:05','2024-10-02 20:21:05'),(191,'2024-10-29','sss',0,1070593778,'2024-10-02 20:22:37','2024-10-02 20:22:37');
+INSERT INTO `otros_memorandos` VALUES (188,'2024-09-23','',0,104,'2024-10-02 00:52:52','2024-10-02 00:52:52'),(189,'2024-09-23','Yo que voy a saber',0,105,'2024-10-02 01:03:59','2024-10-02 01:03:59'),(190,'2024-10-24','JJDJDJDJ',0,1070593778,'2024-10-02 20:21:05','2024-10-02 20:21:05'),(191,'2024-10-29','sss',0,1070593778,'2024-10-02 20:22:37','2024-10-02 20:22:37'),(192,'2024-12-12','No fue a turno especial',0,106,'2024-10-03 18:19:50','2024-10-03 18:19:50'),(193,'2024-12-12','No fue a turno especial',0,107,'2024-10-03 18:19:50','2024-10-03 18:19:50'),(194,'2024-12-12','No fue a turno especial',0,106,'2024-10-03 18:25:42','2024-10-03 18:25:42'),(195,'2024-12-12','No fue a turno especial',0,107,'2024-10-03 18:25:42','2024-10-03 18:25:42'),(196,'2024-12-12','No fue a turno especial',0,106,'2024-10-03 18:27:33','2024-10-03 18:27:33'),(197,'2024-12-12','No fue a turno especial',0,107,'2024-10-03 18:27:33','2024-10-03 18:27:33');
 /*!40000 ALTER TABLE `otros_memorandos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -356,7 +356,7 @@ CREATE TABLE `turnosespeciales` (
   CONSTRAINT `turnosespeciales_ibfk_1` FOREIGN KEY (`Id_Ficha`) REFERENCES `fichas` (`Id_Ficha`),
   CONSTRAINT `turnosespeciales_ibfk_2` FOREIGN KEY (`Id_Funcionario`) REFERENCES `funcionarios` (`Id_Funcionario`),
   CONSTRAINT `turnosespeciales_ibfk_3` FOREIGN KEY (`Id_Unidad`) REFERENCES `unidades` (`Id_Unidad`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -365,6 +365,7 @@ CREATE TABLE `turnosespeciales` (
 
 LOCK TABLES `turnosespeciales` WRITE;
 /*!40000 ALTER TABLE `turnosespeciales` DISABLE KEYS */;
+INSERT INTO `turnosespeciales` VALUES (20,'2024-10-10','07:00:00','16:00:00','LALALALA','2','2671143',NULL,'1070593778',25,'2024-10-03 17:47:42','2024-10-03 17:47:42');
 /*!40000 ALTER TABLE `turnosespeciales` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -387,7 +388,7 @@ CREATE TABLE `turnosespeciales_aprendices` (
   KEY `Id_TurnoEspecial` (`Id_TurnoEspecial`),
   CONSTRAINT `turnosespecialesaprendices_ibfk_1` FOREIGN KEY (`Id_Aprendiz`) REFERENCES `aprendices` (`Id_Aprendiz`),
   CONSTRAINT `turnosespecialesaprendices_ibfk_2` FOREIGN KEY (`Id_TurnoEspecial`) REFERENCES `turnosespeciales` (`Id_TurnoEspecial`)
-) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -396,6 +397,7 @@ CREATE TABLE `turnosespeciales_aprendices` (
 
 LOCK TABLES `turnosespeciales_aprendices` WRITE;
 /*!40000 ALTER TABLE `turnosespeciales_aprendices` DISABLE KEYS */;
+INSERT INTO `turnosespeciales_aprendices` VALUES (104,'No','1070593778',20,'2024-10-03 17:47:42','2024-10-03 18:27:33'),(105,'No','5909080',20,'2024-10-03 17:47:42','2024-10-03 18:27:33');
 /*!40000 ALTER TABLE `turnosespeciales_aprendices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -508,4 +510,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-03 12:15:28
+-- Dump completed on 2024-10-03 13:28:53

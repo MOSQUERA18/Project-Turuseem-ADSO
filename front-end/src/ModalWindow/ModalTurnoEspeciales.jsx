@@ -66,7 +66,8 @@ const ModalTurnoEspeciales = ({
           if (item.asistio === "No") {
             // await crearRegistroInasistencia(item.Id_Aprendiz, item.Id_TurnoEspecial);
             console.log(turnoEspecialAprendiz.Fec_TurnoEspecial);
-            
+            console.log(item);
+
             await clienteAxios.put(
               `/aprendiz/actualizar-inasistencia/${item.Id_Aprendiz}`,
               {
@@ -74,7 +75,7 @@ const ModalTurnoEspeciales = ({
                 Turno_Id: item.Id_Aprendiz,
                 Fec_Inasistencia: "12/12/24",
                 Motivo: "No fue a turno especial",
-                Tipo_Inasistencia: "aprendiz"
+                Tipo_Inasistencia: "turno_especial"
               },
               config
             );
