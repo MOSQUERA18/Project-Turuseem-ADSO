@@ -7,7 +7,7 @@ const Home = () => {
         BIENVENIDOS A <span className="text-botones">TURUSEEM</span>
       </h1>
       <div className="flex flex-col sm:flex-row justify-evenly items-center mt- sm:mt-20">
-        <img src="/IMG/LOGOTURUSEEM.png" className="w-48 sm:w-64 mb-6 sm:mb-0" />
+        <img src="/src/IMG/LOGOTURUSEEM.png" className="w-48 sm:w-64 mb-6 sm:mb-0" />
         <h2 className="text-center font-bold text-lg sm:text-xl px-4">
           Desarrollar e implementar un software para la gestión
           <br className="hidden sm:block" /> de turnos Sena Empresa del Centro
@@ -15,7 +15,7 @@ const Home = () => {
           <br className="hidden sm:block" /> Sena Regional Tolima
           <span className="text-botones"> “TURUSEEM”</span>.
         </h2>
-        <img src="/IMG/SenaEmpresa.png" className="w-48 sm:w-64 mt-6 sm:mt-0" />
+        <img src="/src/IMG/SenaEmpresa.png" className="w-48 sm:w-64 mt-6 sm:mt-0" />
       </div>
     </>
   );
