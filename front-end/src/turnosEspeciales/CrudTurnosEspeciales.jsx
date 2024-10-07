@@ -74,17 +74,17 @@ const CrudTurnosEspeciales = () => {
   );
   
   const titles = [
-    "Identificador del Turno",
+    "ID",
     "Fecha Turno",
     "Hora Inicio",
     "Hora Fin",
-    "Observaciones del Turno",
-    "Total Aprendices que asistieron",
+    "Observaciones",
+    "Total Aprendices",
     "Ficha",
     // "Imagen Asistencia",
     "Documento Funcionario",
     "Nombre Funcionario",
-    "Nombre Unidad",
+    "Unidad",
     shouldShowPhoto && "Archivo Asistencia",
     "Acciones",
   ].filter(Boolean);

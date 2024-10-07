@@ -4,8 +4,6 @@ import { ReactSession } from "react-client-session";
 
 import Alerta from "../components/Alerta.jsx";
 import WriteTable from "../Tables/Data-Tables.jsx";
-import { MdDeleteOutline } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
 
 const URI = "/inasistencias";
 
@@ -26,23 +24,10 @@ const CrudInasistencias = () => {
     "Aprendiz",
     "Tipo Inasistencia",
     "Acciones",
-  ];
-  console.log(inasistenciaList);
-  
+  ];  
 
   const ButtonsForOtherModules = () => [
-    <button
-      className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
-      key="get"
-    >
-      <FaRegEdit />
-    </button>,
-    <button
-      className="text-red-500 hover:text-red-700 hover:border hover:border-red-500 p-1 rounded"
-      key="delete"
-    >
-      <MdDeleteOutline />
-    </button>,
+    <h1 key="text">No Buttons</h1>
   ];
 
   const formattedData = inasistenciaList.map((inasistencias) => {

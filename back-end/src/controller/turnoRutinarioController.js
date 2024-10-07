@@ -159,7 +159,6 @@ export const updateTurnoRutinario = async (req, res) => {
       Id_Unidad,
       Motivo,
     } = req.body;
-    console.log("Motti:", Motivo);
 
     // Intento de actualizar un turno rutinario específico por ID.
     const [updated] = await TurnosRutinariosModel.update(
