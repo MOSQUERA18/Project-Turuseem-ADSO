@@ -70,7 +70,7 @@ const VerticalNav = () => {
       <div className="flex justify-between items-center space-x-3">
       {/* Imagen que se muestra en pantallas grandes y se oculta en pantallas pequeñas */}
       <img
-        src="/Public/IMG/LOGOTURUSEEM.png"
+        src="/IMG/LOGOTURUSEEM.png"
         className="hidden sm:block w-12 drop-shadow-2xl"
       />
       <p className="text-2xl leading-6 text-black font-bold">TURUSEEM</p>
