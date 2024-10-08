@@ -47,7 +47,7 @@ function App() {
               <Route index element={<Home />} />
               <Route path="contacto" element={<Contacto />} />
               <Route path="consultarturno" element={<ConsultarTurno />} />
-              <Route path="consultarespecial" element={<ConsultarTurnoEspecial />} />
+              <Route path="consultarturnoespecial" element={<ConsultarTurnoEspecial />} />
               <Route path="manual" element={<Manual />} />
               <Route path="login" element={<LoginForm />} />
               <Route path="olvide-password" element={<OlvidePassword />} />
