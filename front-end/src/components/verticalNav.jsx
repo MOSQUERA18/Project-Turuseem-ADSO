@@ -70,7 +70,7 @@ const VerticalNav = () => {
       <div className="flex justify-between items-center space-x-3">
       {/* Imagen que se muestra en pantallas grandes y se oculta en pantallas pequeñas */}
       <img
-        src="/src/IMG/LOGOTURUSEEM.png"
+        src="/IMG/LOGOTURUSEEM.png"
         className="hidden sm:block w-12 drop-shadow-2xl"
       />
       <p className="text-2xl leading-6 text-black font-bold">TURUSEEM</p>
@@ -150,7 +150,7 @@ const VerticalNav = () => {
         } transform xl:translate-x-0 ease-in-out transition duration-500 flex justify-center items-start h-full w-full sm:w-64 bg-sidebar flex-col`}
       >
         <div className="hidden xl:flex justify-start p-6 items-center space-x-3">
-          <img src="/src/IMG/LOGOTURUSEEM.png" className="w-12 drop-shadow-2xl" />
+          <img src="/IMG/LOGOTURUSEEM.png" className="w-12 drop-shadow-2xl" />
           <p className="text-3xl leading-6 text-white font-bold">TURUSEEM</p>
         </div>
         <div className="flex flex-col justify-end items-center pl-4 w-full border-white border-b space-y-3 py-5 active:text-white hover:text-white">
