@@ -33,6 +33,7 @@ import ConfirmarCuenta from "./users/ConfirmarCuenta";
 import CambiarPassword from "./users/CambiarPassword";
 import ConsultarTurnoEspecial from "./home/ConsultarTurnoEspecial.jsx";
 
+//APP DONDE SE TRAEN LOS CRUD
 import { AuthProvider } from "./context/authProvider";
 
 import VerPdf from "./memorandum/verPDF";
