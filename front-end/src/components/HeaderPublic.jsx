@@ -168,7 +168,7 @@ export default function HeaderPublic() {
                 Manual
               </Link>
               <Link to='consultarturnoespecial'
-                onClick={() => setSelectedText("Consultar Especial")}
+                onClick={() => setSelectedText("Consultar Especial")} 
                 className="px-4 py-3 text-gray-600 bg-gray-50 border border-gray-50 focus:outline-none focus:bg-gray-100 hover:bg-gray-100 duration-100 cursor-pointer text-xs leading-3 font-bold uppercase"
               >
                 Consultar Turno Especial
