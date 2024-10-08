@@ -180,39 +180,50 @@ export const updateTurnoRutinario = async (req, res) => {
 
     // Verifico si se realizó alguna actualización.
     if (updated === 0) {
-      res.status(404).json({
+      return res.status(404).json({
         message: "Turno rutinario no encontrado.",
       });
     } else {
-      // Si `Ind_Asistencia` es "Sí", elimino la inasistencia correspondiente.
+      // Si Ind_Asistencia es "Sí", elimino la inasistencia correspondiente.
       if (Ind_Asistencia === "Si") {
-        await AbsenceModel.destroy({
+        // Busco la inasistencia asociada.
+        const absence = await AbsenceModel.findOne({
           where: {
             Turno_Id: req.params.Id_TurnoRutinario,
           },
         });
-        console.log("Hollaaa borrando memorando...");
 
-        await OtrosMemorandumModel.destroy({
-          where: {
-            Referencia_Id: Id_Aprendiz,
-          },
-        });
+        if (absence) {
+          // Busco el memorando asociado a la inasistencia.
+          await OtrosMemorandumModel.destroy({
+            where: {
+              Referencia_Id: absence.Id_Inasistencia, // Asegúrate de que 'Id_Inasistencia' sea el campo correcto.
+            },
+          });
+
+          // Elimino la inasistencia.
+          await AbsenceModel.destroy({
+            where: {
+              Turno_Id: req.params.Id_TurnoRutinario,
+            },
+          });
+        }
       }
-      res.json({
+
+      return res.json({
         message:
           "Turno rutinario actualizado correctamente y se eliminó la inasistencia si existía.",
       });
-      return; // Uso de return para salir de la función después de enviar la respuesta.
     }
   } catch (error) {
     // Capturo y manejo cualquier error ocurrido durante la actualización.
     logger.error(`Error al actualizar el turno rutinario: ${error}`);
-    res.status(500).json({
+    return res.status(500).json({
       message: "Error al actualizar el turno rutinario.",
     });
   }
 };
+
 
 export const deleteTurnoRutinario = async (req, res) => {
   try {
@@ -317,23 +328,20 @@ export const updateInasistencia = async (req, res) => {
       aprendiz.Tot_Memorandos += 1;
 
       // Crear registro de inasistencia
-      await AbsenceModel.create({
+      const inasistencia = await AbsenceModel.create({
         Fec_Inasistencia,
         Mot_Inasistencia: Motivo,
         Turno_Id: Turno_Id,
         Tipo_Inasistencia,
       });
-      const inasistencia = await AbsenceModel.findOne({
-        where: {
-          Turno_Id: Turno_Id,
-        },
-      });
+
       // Crear registro de memorando
       await OtrosMemorandumModel.create({
         Fec_OtroMemorando: Fec_Inasistencia,
         Mot_OtroMemorando: Motivo,
         Referencia_Id: inasistencia.Id_Inasistencia,
       });
+
     } else if (Ind_Asistencia === "Si") {
       console.log("Entrando al modo decrementar");
 
@@ -341,41 +349,46 @@ export const updateInasistencia = async (req, res) => {
       if (aprendiz.Tot_Inasistencias > 0) aprendiz.Tot_Inasistencias -= 1;
       if (aprendiz.Tot_Memorandos > 0) aprendiz.Tot_Memorandos -= 1;
 
-      // Buscar y eliminar la inasistencia
+      // Buscar la inasistencia
       const inasistencia = await AbsenceModel.findOne({
         where: {
-          // Fec_Inasistencia: formattedFecInasistencia,
-          Turno_Id: Id_Aprendiz,
+          Turno_Id: Turno_Id,
         },
       });
+
       console.log("Esta es la inasistencia", inasistencia);
 
       if (inasistencia) {
-      // Buscar y eliminar el memorando
+        // Buscar y eliminar el memorando
         const memorando = await OtrosMemorandumModel.findOne({
           where: {
             Referencia_Id: inasistencia.Id_Inasistencia,
-            // Fec_OtroMemorando: formattedFecInasistencia  // Comparar la fecha formateada sin la hora
           },
         });
+
         console.log("Este es el memorando", memorando);
+
         if (memorando) {
           await memorando.destroy();
           console.log("Memorando eliminado");
         } else {
           console.log("No se encontró memorando para eliminar");
         }
+
+        // Eliminar la inasistencia
         await inasistencia.destroy();
         console.log("Inasistencia eliminada");
       } else {
         console.log("No se encontró inasistencia para eliminar");
       }
     }
+
     // Guardar los cambios en aprendiz
     await aprendiz.save();
     res
       .status(200)
       .json({ message: "Inasistencia y memorando actualizados exitosamente" });
+      
   } catch (error) {
     console.error(`Error al actualizar inasistencia y memorando: ${error.message}`);
     logger.error(error);
@@ -384,3 +397,4 @@ export const updateInasistencia = async (req, res) => {
       .json({ error: "Error al actualizar la inasistencia y memorando" });
   }
 };
+

@@ -11,28 +11,60 @@ import { emailMemorandos } from "../helpers/emailMemorandos.js";
 export const getAllOtrosMemorandum = async (req, res) => {
   try {
     const query = `
-    SELECT om.Id_OtroMemorando,
-       om.Fec_OtroMemorando,
-       om.Mot_OtroMemorando,
-       om.Referencia_Id,
-       a.Id_Aprendiz,
-       a.Nom_Aprendiz,
-       a.Ape_Aprendiz,
-       a.Id_Ficha,
-       f.Id_ProgramaFormacion,
-       p.Nom_ProgramaFormacion,
-       tr.Id_TurnoRutinario,
-       inas.Id_Inasistencia
-FROM otros_memorandos om
-LEFT JOIN inasistencias inas ON om.Referencia_Id = inas.Id_Inasistencia
-LEFT JOIN turnosrutinarios tr ON inas.Turno_Id = tr.Id_TurnoRutinario
-LEFT JOIN aprendices a ON tr.Id_Aprendiz = a.Id_Aprendiz
-LEFT JOIN fichas f ON a.Id_Ficha = f.Id_Ficha
-LEFT JOIN programasformacion p ON f.Id_ProgramaFormacion = p.Id_ProgramaFormacion
-WHERE a.Id_Aprendiz IS NOT NULL;
+SELECT 
+    om.Id_OtroMemorando,
+    om.Fec_OtroMemorando,
+    om.Mot_OtroMemorando,
+    om.Referencia_Id,
+    -- Obtener el aprendiz de la inasistencia, turno rutinario o referencia directa
+    COALESCE(a.Id_Aprendiz, aprendizTurno.Id_Aprendiz, aprendizDirecto.Id_Aprendiz) AS Id_Aprendiz,
+    COALESCE(a.Nom_Aprendiz, aprendizTurno.Nom_Aprendiz, aprendizDirecto.Nom_Aprendiz) AS Nom_Aprendiz,
+    COALESCE(a.Ape_Aprendiz, aprendizTurno.Ape_Aprendiz, aprendizDirecto.Ape_Aprendiz) AS Ape_Aprendiz,
+    inas.Id_Inasistencia,
+    tr.Id_TurnoRutinario,
+    tr.Fec_InicioTurno,
+    tr.Fec_FinTurno,
+    tr.Hor_InicioTurno,
+    tr.Hor_FinTurno,
+    tr.Obs_TurnoRutinario,
+    programasTurno.Nom_ProgramaFormacion,
+    -- Ficha y programa de formación del turno rutinario o referencia directa
+    COALESCE(fichasTurno.Id_Ficha, fichasDirectas.Id_Ficha) AS Ficha_Turno,
+    COALESCE(programasTurno.Id_ProgramaFormacion, programasDirectos.Id_ProgramaFormacion) AS Programa_Turno
+FROM 
+    otros_memorandos om
+-- Si Referencia_Id es Id_Inasistencia
+LEFT JOIN 
+    inasistencias inas ON om.Referencia_Id = inas.Id_Inasistencia
+LEFT JOIN 
+    turnosrutinarios tr ON inas.Turno_Id = tr.Id_TurnoRutinario
+LEFT JOIN 
+    aprendices a ON inas.Turno_Id = a.Id_Aprendiz -- Aprendiz relacionado con la inasistencia
+-- Si Referencia_Id es Id_Aprendiz relacionado con el turno rutinario
+LEFT JOIN 
+    aprendices AS aprendizTurno ON tr.Id_Aprendiz = aprendizTurno.Id_Aprendiz
+LEFT JOIN 
+    fichas AS fichasTurno ON aprendizTurno.Id_Ficha = fichasTurno.Id_Ficha
+LEFT JOIN 
+    programasformacion AS programasTurno ON fichasTurno.Id_ProgramaFormacion = programasTurno.Id_ProgramaFormacion
+-- Si Referencia_Id es Id_Aprendiz directo
+LEFT JOIN 
+    aprendices AS aprendizDirecto ON om.Referencia_Id = aprendizDirecto.Id_Aprendiz -- Aprendiz relacionado directamente
+LEFT JOIN 
+    fichas AS fichasDirectas ON aprendizDirecto.Id_Ficha = fichasDirectas.Id_Ficha
+LEFT JOIN 
+    programasformacion AS programasDirectos ON fichasDirectas.Id_ProgramaFormacion = programasDirectos.Id_ProgramaFormacion
+-- Obtener la ficha y programa de formación del aprendiz de inasistencia o turno rutinario
+LEFT JOIN 
+    fichas f ON a.Id_Ficha = f.Id_Ficha
+LEFT JOIN 
+    programasformacion p ON f.Id_ProgramaFormacion = p.Id_ProgramaFormacion
+WHERE 
+    om.Referencia_Id IS NOT NULL;
+
 `;
     const [memorandums] = await db.query(query);
-    console.log(memorandums);
+    console.log("Memorands ", memorandums);
 
     if (memorandums.length > 0) {
       res.status(200).json(memorandums);
@@ -152,25 +184,52 @@ export const viewOtherMemorandumPdf = async (req, res) => {
 
   try {
     const query = `
-        SELECT om.Id_OtroMemorando,
-          om.Fec_OtroMemorando,
-          om.Mot_OtroMemorando,
-          om.Referencia_Id,
-          a.Id_Aprendiz,
-          a.Nom_Aprendiz,
-          a.Ape_Aprendiz,
-          a.Id_Ficha,
-          f.Id_ProgramaFormacion,
-          p.Nom_ProgramaFormacion,
-          tr.Id_TurnoRutinario,
-          inas.Id_Inasistencia
-        FROM otros_memorandos om
-        LEFT JOIN inasistencias inas ON om.Referencia_Id = inas.Id_Inasistencia
-        LEFT JOIN turnosrutinarios tr ON inas.Turno_Id = tr.Id_TurnoRutinario
-        LEFT JOIN aprendices a ON tr.Id_Aprendiz = a.Id_Aprendiz
-        LEFT JOIN fichas f ON a.Id_Ficha = f.Id_Ficha
-        LEFT JOIN programasformacion p ON f.Id_ProgramaFormacion = p.Id_ProgramaFormacion
-        WHERE om.Id_OtroMemorando = :Id_OtroMemorando;
+SELECT 
+    om.Id_OtroMemorando,
+    om.Fec_OtroMemorando,
+    om.Mot_OtroMemorando,
+    om.Referencia_Id,
+    COALESCE(a.Id_Aprendiz, aprendizTurno.Id_Aprendiz, aprendizDirecto.Id_Aprendiz) AS Id_Aprendiz, -- Maneja el Id_Aprendiz del turno, inasistencia o referencia directa
+    COALESCE(a.Nom_Aprendiz, aprendizTurno.Nom_Aprendiz, aprendizDirecto.Nom_Aprendiz) AS Nom_Aprendiz,
+    COALESCE(a.Ape_Aprendiz, aprendizTurno.Ape_Aprendiz, aprendizDirecto.Ape_Aprendiz) AS Ape_Aprendiz,
+    COALESCE(a.Id_Ficha, aprendizTurno.Id_Ficha, aprendizDirecto.Id_Ficha) AS Id_Ficha,
+    COALESCE(f.Id_ProgramaFormacion, fichasTurno.Id_ProgramaFormacion, fichasDirectas.Id_ProgramaFormacion) AS Id_ProgramaFormacion,
+    COALESCE(p.Nom_ProgramaFormacion, programasTurno.Nom_ProgramaFormacion, programasDirectos.Nom_ProgramaFormacion) AS Nom_ProgramaFormacion,
+    tr.Id_TurnoRutinario,
+    inas.Id_Inasistencia
+FROM 
+    otros_memorandos om
+-- Si Referencia_Id es Id_Inasistencia
+LEFT JOIN 
+    inasistencias inas ON om.Referencia_Id = inas.Id_Inasistencia
+LEFT JOIN 
+    turnosrutinarios tr ON inas.Turno_Id = tr.Id_TurnoRutinario
+LEFT JOIN 
+    aprendices a ON inas.Turno_Id = a.Id_Aprendiz -- Aprendiz relacionado con inasistencia
+-- Si Referencia_Id es Id_Aprendiz relacionado con el turno rutinario
+LEFT JOIN 
+    aprendices AS aprendizTurno ON tr.Id_Aprendiz = aprendizTurno.Id_Aprendiz
+LEFT JOIN 
+    fichas AS fichasTurno ON aprendizTurno.Id_Ficha = fichasTurno.Id_Ficha
+LEFT JOIN 
+    programasformacion AS programasTurno ON fichasTurno.Id_ProgramaFormacion = programasTurno.Id_ProgramaFormacion
+-- Si Referencia_Id es Id_Aprendiz directo
+LEFT JOIN 
+    aprendices AS aprendizDirecto ON om.Referencia_Id = aprendizDirecto.Id_Aprendiz -- Aprendiz relacionado directamente en Referencia_Id
+LEFT JOIN 
+    fichas AS fichasDirectas ON aprendizDirecto.Id_Ficha = fichasDirectas.Id_Ficha
+LEFT JOIN 
+    programasformacion AS programasDirectos ON fichasDirectas.Id_ProgramaFormacion = programasDirectos.Id_ProgramaFormacion
+-- Relación con el programa de formación del aprendiz de inasistencia
+LEFT JOIN 
+    fichas f ON a.Id_Ficha = f.Id_Ficha
+LEFT JOIN 
+    programasformacion p ON f.Id_ProgramaFormacion = p.Id_ProgramaFormacion
+WHERE 
+    om.Id_OtroMemorando = :Id_OtroMemorando;
+
+
+
     `;
 
     const [memorandumPdf] = await db.query(query, {
@@ -193,7 +252,6 @@ export const viewOtherMemorandumPdf = async (req, res) => {
       totalMemorandums,
       totalMemorandumForApprentice
     );
-    console.log("Este es el pdf", pdfBase64);
 
     await transacción.commit();
 
@@ -217,26 +275,40 @@ export const sendMemorandumPdf = async (req, res) => {
   try {
     // Obtener la información del memorando
     const query = `
-        SELECT om.Id_OtroMemorando,
-          om.Fec_OtroMemorando,
-          om.Mot_OtroMemorando,
-          om.Referencia_Id,
-          a.Id_Aprendiz,
-          a.Nom_Aprendiz,
-          a.Ape_Aprendiz,
-          a.Id_Ficha,
-          a.Cor_Aprendiz,
-          f.Id_ProgramaFormacion,
-          p.Nom_ProgramaFormacion,
-          tr.Id_TurnoRutinario,
-          inas.Id_Inasistencia
-        FROM otros_memorandos om
-        LEFT JOIN inasistencias inas ON om.Referencia_Id = inas.Id_Inasistencia
-        LEFT JOIN turnosrutinarios tr ON inas.Turno_Id = tr.Id_TurnoRutinario
-        LEFT JOIN aprendices a ON tr.Id_Aprendiz = a.Id_Aprendiz
-        LEFT JOIN fichas f ON a.Id_Ficha = f.Id_Ficha
-        LEFT JOIN programasformacion p ON f.Id_ProgramaFormacion = p.Id_ProgramaFormacion
-        WHERE om.Id_OtroMemorando = :Id_OtroMemorando;
+SELECT 
+    om.Id_OtroMemorando,
+    om.Fec_OtroMemorando,
+    om.Mot_OtroMemorando,
+    om.Referencia_Id,
+    COALESCE(a.Id_Aprendiz, aprendizTurno.Id_Aprendiz) AS Id_Aprendiz,
+    COALESCE(a.Nom_Aprendiz, aprendizTurno.Nom_Aprendiz) AS Nom_Aprendiz,
+    COALESCE(a.Ape_Aprendiz, aprendizTurno.Ape_Aprendiz) AS Ape_Aprendiz,
+    COALESCE(a.Id_Ficha, fichasTurno.Id_Ficha) AS Id_Ficha,
+    f.Id_ProgramaFormacion,
+    p.Nom_ProgramaFormacion,
+    tr.Id_TurnoRutinario,
+    inas.Id_Inasistencia
+FROM 
+    otros_memorandos om
+LEFT JOIN 
+    inasistencias inas ON om.Referencia_Id = inas.Id_Inasistencia
+LEFT JOIN 
+    turnosrutinarios tr ON inas.Turno_Id = tr.Id_TurnoRutinario
+LEFT JOIN 
+    aprendices a ON inas.Id_Aprendiz = a.Id_Aprendiz  -- Relación directa con inasistencia
+LEFT JOIN 
+    aprendices AS aprendizTurno ON tr.Id_Aprendiz = aprendizTurno.Id_Aprendiz  -- Aprendiz del turno rutinario
+LEFT JOIN 
+    fichas f ON a.Id_Ficha = f.Id_Ficha  -- Ficha del aprendiz de la inasistencia
+LEFT JOIN 
+    fichas AS fichasTurno ON aprendizTurno.Id_Ficha = fichasTurno.Id_Ficha  -- Ficha del aprendiz del turno
+LEFT JOIN 
+    programasformacion p ON f.Id_ProgramaFormacion = p.Id_ProgramaFormacion  -- Programa de formación del aprendiz
+LEFT JOIN 
+    programasformacion AS programasTurno ON fichasTurno.Id_ProgramaFormacion = programasTurno.Id_ProgramaFormacion  -- Programa de formación del aprendiz del turno
+WHERE 
+    om.Id_OtroMemorando = :Id_OtroMemorando;
+
     `;
 
     const [memorandumPdf] = await db.query(query, {

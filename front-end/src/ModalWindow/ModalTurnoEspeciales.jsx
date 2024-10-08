@@ -69,7 +69,7 @@ const ModalTurnoEspeciales = ({
                 Ind_Asistencia: item.asistio,
                 Turno_Id: item.Id_Aprendiz,
                 Fec_Inasistencia: turnoEspecialAprendiz[0].turnoEspecial?.Fec_TurnoEspecial,
-                Motivo: "No asistir a turno especial",
+                Motivo: "no asistir a turno especial",
                 Tipo_Inasistencia: "turno_especial"
               },
               config
