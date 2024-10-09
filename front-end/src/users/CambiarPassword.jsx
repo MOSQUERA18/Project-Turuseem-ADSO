@@ -22,7 +22,6 @@ const CambiarPassword = () => {
       try {
         const url = `/api/user/olvide-password`;
         await clienteAxios.get(`${url}/${token}`);
-        console.log(url, token);
         setTokenValido(true);
         setAlerta({
           msg: "Coloca tu Nueva Contraseña",

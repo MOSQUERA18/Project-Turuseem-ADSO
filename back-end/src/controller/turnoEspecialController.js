@@ -236,7 +236,7 @@ export const updateTurnoEspecial = async (req, res) => {
 
 export const deleteTurnoEspecial = async (req, res) => {
   try {
-    const Id_TurnoEspecial = req.params.Id_TurnoEspecial;
+    const {Id_TurnoEspecial} = req.params;
 
     // Primero eliminamos los registros de TurnoEspecialAprendiz asociados al turno especial.
     const deletedAssociations = await TurnoEspecialAprendizModel.destroy({

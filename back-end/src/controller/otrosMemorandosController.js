@@ -1,11 +1,8 @@
 import { logger } from "../middleware/logMiddleware.js";
-import ApprenticeModel from "../models/apprenticeModel.js";
 import fs from "fs";
 import pdf from "html-pdf";
 import db from "../database/db.js";
 import OtrosMemorandumModel from "../models/Otros_MemorandosModel.js";
-import FichasModel from "../models/fichasModel.js";
-import ProgramaModel from "../models/programaModel.js";
 import { emailMemorandos } from "../helpers/emailMemorandos.js";
 
 export const getAllOtrosMemorandum = async (req, res) => {
@@ -16,6 +13,7 @@ SELECT
     om.Fec_OtroMemorando,
     om.Mot_OtroMemorando,
     om.Referencia_Id,
+    om.ENVIADO,
     -- Obtener el aprendiz de la inasistencia, turno rutinario o referencia directa
     COALESCE(a.Id_Aprendiz, aprendizTurno.Id_Aprendiz, aprendizDirecto.Id_Aprendiz) AS Id_Aprendiz,
     COALESCE(a.Nom_Aprendiz, aprendizTurno.Nom_Aprendiz, aprendizDirecto.Nom_Aprendiz) AS Nom_Aprendiz,
@@ -64,8 +62,7 @@ WHERE
 
 `;
     const [memorandums] = await db.query(query);
-    console.log("Memorands ", memorandums);
-
+    console.log(memorandums)
     if (memorandums.length > 0) {
       res.status(200).json(memorandums);
       return;
@@ -236,6 +233,8 @@ WHERE
       replacements: { Id_OtroMemorando: Id_OtroMemorando },
       transaction: transacción,
     });
+    console.log(memorandumPdf);
+    
 
     if (!memorandumPdf || memorandumPdf.length === 0) {
       throw new Error("Memorando no encontrado");
@@ -245,10 +244,9 @@ WHERE
       await getTotalOtrosMemorandumsForAprendiz(memorandumPdf[0].Referencia_Id);
 
     const totalMemorandums = await getTotalOtrosMemorandums();
-    console.log("Total de memorandos del ese aprendiz", memorandumPdf);
 
     const pdfBase64 = await generateOtroMemorandumPdf(
-      memorandumPdf[0],
+      memorandumPdf,
       totalMemorandums,
       totalMemorandumForApprentice
     );
@@ -261,6 +259,7 @@ WHERE
       pdfBase64: pdfBase64,
     });
   } catch (error) {
+    logger.error(error);
     await transacción.rollback();
     res
       .status(404)
@@ -275,51 +274,60 @@ export const sendMemorandumPdf = async (req, res) => {
   try {
     // Obtener la información del memorando
     const query = `
-SELECT 
+    SELECT 
     om.Id_OtroMemorando,
     om.Fec_OtroMemorando,
     om.Mot_OtroMemorando,
     om.Referencia_Id,
-    COALESCE(a.Id_Aprendiz, aprendizTurno.Id_Aprendiz) AS Id_Aprendiz,
-    COALESCE(a.Nom_Aprendiz, aprendizTurno.Nom_Aprendiz) AS Nom_Aprendiz,
-    COALESCE(a.Ape_Aprendiz, aprendizTurno.Ape_Aprendiz) AS Ape_Aprendiz,
-    COALESCE(a.Id_Ficha, fichasTurno.Id_Ficha) AS Id_Ficha,
-    f.Id_ProgramaFormacion,
-    p.Nom_ProgramaFormacion,
+    COALESCE(a.Id_Aprendiz, aprendizTurno.Id_Aprendiz, aprendizDirecto.Id_Aprendiz) AS Id_Aprendiz, -- Maneja el Id_Aprendiz del turno, inasistencia o referencia directa
+    COALESCE(a.Nom_Aprendiz, aprendizTurno.Nom_Aprendiz, aprendizDirecto.Nom_Aprendiz) AS Nom_Aprendiz,
+    COALESCE(a.Ape_Aprendiz, aprendizTurno.Ape_Aprendiz, aprendizDirecto.Ape_Aprendiz) AS Ape_Aprendiz,
+    a.Cor_Aprendiz,
+    COALESCE(a.Id_Ficha, aprendizTurno.Id_Ficha, aprendizDirecto.Id_Ficha) AS Id_Ficha,
+    COALESCE(f.Id_ProgramaFormacion, fichasTurno.Id_ProgramaFormacion, fichasDirectas.Id_ProgramaFormacion) AS Id_ProgramaFormacion,
+    COALESCE(p.Nom_ProgramaFormacion, programasTurno.Nom_ProgramaFormacion, programasDirectos.Nom_ProgramaFormacion) AS Nom_ProgramaFormacion,
     tr.Id_TurnoRutinario,
     inas.Id_Inasistencia
 FROM 
     otros_memorandos om
+-- Si Referencia_Id es Id_Inasistencia
 LEFT JOIN 
     inasistencias inas ON om.Referencia_Id = inas.Id_Inasistencia
 LEFT JOIN 
     turnosrutinarios tr ON inas.Turno_Id = tr.Id_TurnoRutinario
 LEFT JOIN 
-    aprendices a ON inas.Id_Aprendiz = a.Id_Aprendiz  -- Relación directa con inasistencia
+    aprendices a ON inas.Turno_Id = a.Id_Aprendiz -- Aprendiz relacionado con inasistencia
+-- Si Referencia_Id es Id_Aprendiz relacionado con el turno rutinario
 LEFT JOIN 
-    aprendices AS aprendizTurno ON tr.Id_Aprendiz = aprendizTurno.Id_Aprendiz  -- Aprendiz del turno rutinario
+    aprendices AS aprendizTurno ON tr.Id_Aprendiz = aprendizTurno.Id_Aprendiz
 LEFT JOIN 
-    fichas f ON a.Id_Ficha = f.Id_Ficha  -- Ficha del aprendiz de la inasistencia
+    fichas AS fichasTurno ON aprendizTurno.Id_Ficha = fichasTurno.Id_Ficha
 LEFT JOIN 
-    fichas AS fichasTurno ON aprendizTurno.Id_Ficha = fichasTurno.Id_Ficha  -- Ficha del aprendiz del turno
+    programasformacion AS programasTurno ON fichasTurno.Id_ProgramaFormacion = programasTurno.Id_ProgramaFormacion
+-- Si Referencia_Id es Id_Aprendiz directo
 LEFT JOIN 
-    programasformacion p ON f.Id_ProgramaFormacion = p.Id_ProgramaFormacion  -- Programa de formación del aprendiz
+    aprendices AS aprendizDirecto ON om.Referencia_Id = aprendizDirecto.Id_Aprendiz -- Aprendiz relacionado directamente en Referencia_Id
 LEFT JOIN 
-    programasformacion AS programasTurno ON fichasTurno.Id_ProgramaFormacion = programasTurno.Id_ProgramaFormacion  -- Programa de formación del aprendiz del turno
+    fichas AS fichasDirectas ON aprendizDirecto.Id_Ficha = fichasDirectas.Id_Ficha
+LEFT JOIN 
+    programasformacion AS programasDirectos ON fichasDirectas.Id_ProgramaFormacion = programasDirectos.Id_ProgramaFormacion
+-- Relación con el programa de formación del aprendiz de inasistencia
+LEFT JOIN 
+    fichas f ON a.Id_Ficha = f.Id_Ficha
+LEFT JOIN 
+    programasformacion p ON f.Id_ProgramaFormacion = p.Id_ProgramaFormacion
 WHERE 
     om.Id_OtroMemorando = :Id_OtroMemorando;
-
     `;
 
     const [memorandumPdf] = await db.query(query, {
-      replacements: { Id_OtroMemorando: Id_OtroMemorando },
+      replacements: { Id_OtroMemorando },
       transaction: transacción,
     });
-
+    console.log(memorandumPdf)
     if (!memorandumPdf) {
       throw new Error("Memorando no encontrado");
     }
-    console.log("Este es el memorando para ver", memorandumPdf);
 
     // Obtener el total de memorandos
     const totalMemorandumForApprentice =
@@ -338,6 +346,7 @@ WHERE
     } else if (mes >= 10 && mes <= 12) {
       trimestreActual = "IV";
     }
+
     // Generar el PDF en base64
     const pdfBase64 = await generateOtroMemorandumPdf(
       memorandumPdf,
@@ -346,11 +355,9 @@ WHERE
       trimestreActual,
       año
     );
-    console.log("Correo para enviar memorando",memorandumPdf[0].Cor_Aprendiz);
-    
 
-    // Enviar el memorando por email (pasando el PDF en base64)
-    await emailMemorandos({
+    // Enviar el memorando por email y recibir la confirmación
+    const emailSent = await emailMemorandos({
       Cor_Aprendiz: memorandumPdf[0].Cor_Aprendiz,
       Nom_Aprendiz: memorandumPdf[0].Nom_Aprendiz,
       Tot_Memorandos: totalMemorandumForApprentice,
@@ -358,8 +365,18 @@ WHERE
       Nom_ProgramaFormacion: memorandumPdf[0].Nom_ProgramaFormacion,
       trimestreActual: trimestreActual,
       añoActual: año,
-      pdfBase64: pdfBase64, // Envía el PDF generado en base64 al helper del email
+      pdfBase64: pdfBase64
     });
+
+    // Si el correo se envió correctamente, actualizar el campo ENVIADO
+    if (emailSent) {
+      await db.query(
+        `UPDATE otros_memorandos SET ENVIADO = true WHERE Id_OtroMemorando = :Id_OtroMemorando`,
+        { replacements: { Id_OtroMemorando }, transaction: transacción }
+      );
+    } else {
+      throw new Error("No se pudo enviar el email");
+    }
 
     // Confirmar la transacción
     await transacción.commit();
@@ -373,6 +390,7 @@ WHERE
   } catch (error) {
     // Si ocurre un error, hacer rollback de la transacción
     await transacción.rollback();
+    logger.error(error);
     // Enviar el error en la respuesta
     res.status(404).json({
       message: "Ocurrió un error, memorando no encontrado o fallo en el envío",
@@ -442,7 +460,7 @@ export const generateOtroMemorandumPdf = (
       Nom_ProgramaFormacion,
       Id_Ficha,
       Mot_OtroMemorando,
-    } = memorandum;
+    } = memorandum[0];
     const raiz = process.cwd();
 
     const hoy = new Date();

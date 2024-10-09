@@ -154,7 +154,6 @@ const CrudFichas = () => {
         msg: error.response.data.message,
         error: true,
       });
-      console.log(error);
     }
   };
 

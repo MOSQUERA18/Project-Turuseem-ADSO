@@ -29,7 +29,6 @@ const ConsultarTurno = () => {
     try {
       const respuestaApi = await clienteAxios(`${URI}/${Id_Aprendiz}`);
       if (respuestaApi.status === 200) {
-        console.log(respuestaApi.data);
         if (respuestaApi.data.length > 0) {
           setTurnoRutinarioList(respuestaApi.data);
           clearForm();

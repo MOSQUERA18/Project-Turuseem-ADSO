@@ -60,7 +60,6 @@ export const getAllTurnosEspecialesAprendices = async (req, res) => {
 export const getTurnoEspecialAprendiz = async (req, res) => {
   try {
     const { Id_TurnoEspecial } = req.params;
-    console.log(Id_TurnoEspecial);
     const turnoEspecialAprendiz = await TurnoEspecialAprendizModel.findAll({
       where: { Id_TurnoEspecial: Id_TurnoEspecial },
       include: [

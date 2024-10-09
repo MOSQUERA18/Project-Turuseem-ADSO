@@ -17,6 +17,9 @@ const OtrosMemorandumModel = db.define(
       type: DataTypes.STRING(255), // Tamaño cambiado a 255 para coincidir con la tabla
       allowNull: false, // Asegurarse de que este campo no sea nulo
     },
+    ENVIADO: {
+      type: DataTypes.BOOLEAN
+    },
     Referencia_Id: { 
       type: DataTypes.INTEGER, // Ahora es un campo de entero, sin referencias explícitas
       allowNull: true, // Manteniendo el valor por defecto NULL

@@ -63,16 +63,15 @@ const CrudInasistencias = () => {
         setCrearDataTable(true);
       } else {
         setAlerta({
-          msg: `Error al cargar los registros!`,
+          msg: respuestApi.data.msg,
           error: true,
         });
       }
     } catch (error) {
       setAlerta({
-        msg: `Error al cargar los registros!`,
+        msg: error.response.data.message,
         error: true,
       });
-      console.error(error);
     }
   };
 

@@ -35,7 +35,6 @@ const FormFichas = ({
           },
         });
         if (response.status === 200) {
-          console.log("Programas de formación:", response.data); // Imprime los datos para verificar
           setProgramasFormacion(response.data);
         }
       } catch (error) {
@@ -135,7 +134,6 @@ const FormFichas = ({
         );
         mensajCRUD = "Ficha Registrada Exitosamente";
       }
-      console.log(respuestApi.status);
 
       if (respuestApi.status === 201 || respuestApi.status === 200) {
         setAlerta({

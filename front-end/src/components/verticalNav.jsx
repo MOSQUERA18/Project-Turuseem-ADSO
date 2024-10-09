@@ -16,6 +16,7 @@ import { FaClipboardCheck, FaPeopleGroup } from "react-icons/fa6";
 import { MdAssignmentTurnedIn } from "react-icons/md";
 import clienteAxios from "../config/axios.jsx";
 import useAuth from "../hooks/useAuth.jsx";
+import Alerta from "./Alerta.jsx";
 
 import { TbUsersPlus } from "react-icons/tb";
 
@@ -23,6 +24,7 @@ const VerticalNav = () => {
   const [show, setShow] = useState(true);
   const [user, setUser] = useState(null); // Inicializa el estado del usuario como null
   const { cerrarSesion } = useAuth() // Uso el contexto para acceder a la función cerrarSesion
+  const [ alerta, setAlerta] = useState({})
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -47,7 +49,10 @@ const VerticalNav = () => {
         if (responseApi.status === 200) {
           setUser(responseApi.data);
         } else {
-          console.log(`Código de estado inesperado: ${responseApi.status}`);
+          setAlerta({
+            msg: responseApi.data.message || "Error en la solicitud",
+            error: true,
+          });
         }
       } catch (error) {
         console.error(
@@ -64,6 +69,7 @@ const VerticalNav = () => {
   if (!user) {
     return <div>Cargando...</div>;
   }
+  const { msg } = alerta;
   return (
     <div className="min-h-screen">
       <div className="bg-sidebar xl:hidden flex justify-between w-full p-6 items-center">
@@ -184,6 +190,7 @@ const VerticalNav = () => {
             onClick={cerrarSesion}
             className="flex justify-start items-center w-full space-x-4 pl-3 py-2 focus:outline-none text-white focus:bg-botoneshover hover:bg-botones rounded border-y border-white active:text-white hover:text-white focus:text-white font-bold uppercase"
           >
+                    {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
             <IoLogOut size={22} className="mr-2"/> Cerrar Sesión
             {/* <span className="text-black text-sm uppercase font-bold active:text-white hover:text-white focus:text-white">Cerrar Sesión</span> */}
           </button>
