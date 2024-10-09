@@ -392,61 +392,6 @@ export const updateInasistencia = async (req, res) => {
         Referencia_Id: absence.Id_Inasistencia,
       });
     }
-    // if (Ind_Asistencia === "No") {
-    //   // Incrementar contadores
-    //   aprendiz.Tot_Inasistencias += 1;
-    //   aprendiz.Tot_Memorandos += 1;
-
-    //   // Crear registro de inasistencia
-    //   const inasistencia = await AbsenceModel.create({
-    //     Fec_Inasistencia,
-    //     Mot_Inasistencia: Motivo,
-    //     Turno_Id: Turno_Id,
-    //     Tipo_Inasistencia,
-    //   });
-
-    //   // Crear registro de memorando
-    //   await OtrosMemorandumModel.create({
-    //     Fec_OtroMemorando: Fec_Inasistencia,
-    //     Mot_OtroMemorando: Motivo,
-    //     Referencia_Id: inasistencia.Id_Inasistencia,
-    //   });
-    // } else if (Ind_Asistencia === "Si") {
-    //   // Decrementar contadores si es posible
-    //   if (aprendiz.Tot_Inasistencias > 0) {
-    //     aprendiz.Tot_Inasistencias -= 1;
-    //   }
-    //   if (aprendiz.Tot_Memorandos > 0) {
-    //     aprendiz.Tot_Memorandos -= 1;
-    //   }
-
-    //   // Buscar la inasistencia
-    //   const inasistencia = await AbsenceModel.findOne({
-    //     where: {
-    //       Turno_Id: Id_Aprendiz,
-    //     },
-    //   });
-
-    //   if (inasistencia) {
-    //     // Buscar y eliminar el memorando
-    //     await OtrosMemorandumModel.destroy({
-    //       where: {
-    //         Referencia_Id: inasistencia.Id_Inasistencia, // Asegúrate de que 'Id_Inasistencia' sea el campo correcto.
-    //       },
-    //     });
-
-    //     await AbsenceModel.destroy({
-    //       where: {
-    //         Turno_Id: Id_Aprendiz,
-    //       },
-    //     });
-    //   } else {
-    //     res.status(404).json({
-    //       message: "No se entontro inasistencia para eliminar",
-    //     });
-    //     return;
-    //   }
-    // }
     // Guardar los cambios en aprendiz
     await aprendiz.save();
     res

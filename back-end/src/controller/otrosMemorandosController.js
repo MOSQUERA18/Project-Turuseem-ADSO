@@ -282,7 +282,7 @@ export const sendMemorandumPdf = async (req, res) => {
     COALESCE(a.Id_Aprendiz, aprendizTurno.Id_Aprendiz, aprendizDirecto.Id_Aprendiz) AS Id_Aprendiz, -- Maneja el Id_Aprendiz del turno, inasistencia o referencia directa
     COALESCE(a.Nom_Aprendiz, aprendizTurno.Nom_Aprendiz, aprendizDirecto.Nom_Aprendiz) AS Nom_Aprendiz,
     COALESCE(a.Ape_Aprendiz, aprendizTurno.Ape_Aprendiz, aprendizDirecto.Ape_Aprendiz) AS Ape_Aprendiz,
-    a.Cor_Aprendiz,
+	  COALESCE(a.Cor_Aprendiz, aprendizTurno.Cor_Aprendiz, aprendizDirecto.Cor_Aprendiz) AS Cor_Aprendiz,
     COALESCE(a.Id_Ficha, aprendizTurno.Id_Ficha, aprendizDirecto.Id_Ficha) AS Id_Ficha,
     COALESCE(f.Id_ProgramaFormacion, fichasTurno.Id_ProgramaFormacion, fichasDirectas.Id_ProgramaFormacion) AS Id_ProgramaFormacion,
     COALESCE(p.Nom_ProgramaFormacion, programasTurno.Nom_ProgramaFormacion, programasDirectos.Nom_ProgramaFormacion) AS Nom_ProgramaFormacion,
@@ -324,7 +324,7 @@ WHERE
       replacements: { Id_OtroMemorando },
       transaction: transacción,
     });
-    console.log(memorandumPdf)
+    console.log("Memorando ", memorandumPdf)
     if (!memorandumPdf) {
       throw new Error("Memorando no encontrado");
     }
