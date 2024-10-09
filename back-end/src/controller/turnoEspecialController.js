@@ -40,7 +40,7 @@ export const getAllTurnosEspeciales = async (req, res) => {
       return; // Uso de return para salir de la función después de enviar la respuesta.
     } else {
       res.status(404).json({
-        message: "No se encontraron turnos especiales.",
+        message: "No se encontraron turnos especiales registrados.",
       });
     }
   } catch (error) {

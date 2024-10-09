@@ -85,11 +85,12 @@ const FormUnidades = ({
     }
 
     // Validaciones básicas
-    const soloTextoRegex = /^[a-zA-ZÀ-ÿ\s]+$/; // Solo letras y espacios
+    const textoYNumerosRegex = /^[a-zA-ZÀ-ÿ0-9\s]+$/;
+    // Solo letras y espacios
 
-    if (!soloTextoRegex.test(Nom_Unidad)) {
+    if (!textoYNumerosRegex.test(Nom_Unidad)) {
       setAlerta({
-        msg: "El Nombre Debe de Ir en Letras",
+        msg: "El Nombre Debe de Ir en Letras y Numeros",
         error: true,
       });
       return;

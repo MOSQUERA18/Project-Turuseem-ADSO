@@ -8,7 +8,7 @@ export const getAllFuncionarios = async (req, res) => {
     if (Funcionarios.length > 0) {
       return res.status(200).json(Funcionarios);
     } else {
-      return res.status(404).json({ message: "No se encontraron funcionarios." });
+      return res.status(404).json({ message: "No se encontraron funcionarios registrados." });
     }
   } catch (error) {
     logger.error(`Error al obtener los funcionarios: ${error.message}`);

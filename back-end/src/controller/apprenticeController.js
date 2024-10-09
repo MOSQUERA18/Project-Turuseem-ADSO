@@ -22,7 +22,7 @@ export const getAllApprentices = async (req, res) => {
     if (apprentices.length > 0) {
       return res.status(200).json(apprentices);
     } else {
-      return res.status(404).json({ message: "No se encontraron aprendices." });
+      return res.status(404).json({ message: "No se encontraron aprendices registrados." });
     }
   } catch (error) {
     logger.error(`Error al obtener los aprendices: ${error.message}`);

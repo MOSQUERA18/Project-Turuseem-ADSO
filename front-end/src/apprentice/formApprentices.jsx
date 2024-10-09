@@ -36,7 +36,6 @@ const FormApprentices = ({
   const [Nom_Empresa, setNom_Empresa] = useState("");
   const [Foto_Aprendiz, setFoto_Aprendiz] = useState(null);
   const [CentroConvivencia, setCentroConvivencia] = useState("");
-  // const [isDisabled, setIsDisabled] = useState(false);
 
   const [SelectedFicha, setSelectedFicha] = useState(null);
   const [fichas, setFichas] = useState([]);
@@ -218,7 +217,8 @@ const FormApprentices = ({
     }
 
     // Validaciones básicas
-    const soloTextoRegex = /^[a-zA-ZÀ-ÿ\s]+$/; // Solo letras y espacios
+    const soloTextoRegex = /^[a-zA-ZÀ-ÿ0-9\s]+$/; // Solo letras y espacios
+    const TextoYNumeroRegex = /^[a-zA-ZÀ-ÿ0-9\s]+$/; // Solo letras y espacios
 
     if (
       !Id_Aprendiz ||
@@ -262,7 +262,7 @@ const FormApprentices = ({
       return;
     }
 
-    if (!soloTextoRegex.test(Lugar_Residencia)) {
+    if (!TextoYNumeroRegex.test(Lugar_Residencia)) {
       setAlerta({
         msg: "El campo de lugar de residencia solo debe contener letras.",
         error: true,
@@ -335,10 +335,6 @@ const FormApprentices = ({
         });
       }
     } catch (error) {
-      console.error(
-        "Error details!   : ",
-        error.response || error.request || error.message
-      );
       if (error.response) {
         setAlerta({
           msg: error.response.data.message || "Error en la solicitud",
