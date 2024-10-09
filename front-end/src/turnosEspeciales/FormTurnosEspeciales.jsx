@@ -120,7 +120,6 @@ const FormTurnosEspeciales = ({
     e.preventDefault();
 
     if (!Fec_TurnoEspecial) {
-      // console.log("Fecha Vacia");
       setAlerta({
         msg: "La Fecha Del Turno No puede Estar Vacia",
         error: true,

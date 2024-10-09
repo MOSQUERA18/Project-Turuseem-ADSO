@@ -5,7 +5,6 @@ import { useRef, useState, useEffect } from "react";
 import clienteAxios from "../config/axios";
 import { ReactSession } from "react-client-session";
 import Alerta from "../components/Alerta";
-import { error } from "jquery";
 
 const URI = "/ciudades/";
 const UriFichas = "/fichas/";
@@ -85,7 +84,10 @@ const FormApprentices = ({
           setFichas(response.data);
         }
       } catch (err) {
-        console.log("error al cargar las Fichas", err);
+        setAlerta({
+          msg: err.response.data.message,
+          error: true
+        })
       }
     };
     fetchFichas();
@@ -319,7 +321,6 @@ const FormApprentices = ({
         mensajeCrud = "Aprendiz Registrado Exitosamente";
       }
       if (respuestApi.status === 200 || respuestApi.status === 201) {
-        console.log("Actualizando alerta con éxito"); // Log para depuración
         setAlerta({
           msg: respuestApi.data.message,
           error: false,
@@ -328,7 +329,6 @@ const FormApprentices = ({
         clearForm();
         updateTextButton("Enviar");
       } else {
-        console.log("Actualizando alerta con error"); // Log para depuración
         setAlerta({
           msg: respuestApi.data.message || "Error al registrar al Aprendiz.",
           error: true,

@@ -72,7 +72,6 @@ function WriteTable({ titles, data, titleModul, tableName }) {
         console.error("No se encontró el reporte");
       }
 
-      console.log("Respuesta del servidor:", response.data);
 
       // Restaurar el valor de registros mostrados
       table.page.len(currentPageLength).draw();
@@ -207,7 +206,6 @@ function WriteTable({ titles, data, titleModul, tableName }) {
       link.download = `${tableName}.sql`;
       link.click();
 
-      console.log("Archivo SQL descargado correctamente");
     } catch (error) {
       console.error("Error al exportar el archivo SQL:", error);
     } finally {

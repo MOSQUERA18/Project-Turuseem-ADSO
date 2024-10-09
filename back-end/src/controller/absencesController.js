@@ -61,7 +61,7 @@ export const getAllAbsences = async (req, res) => {
   } catch (error) {
     // Manejo de errores y registro en logs
     logger.error(`Error al obtener las inasistencias: ${error}`);
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: "Ocurrio un error con el servidor" });
   }
 };
 
@@ -117,10 +117,6 @@ export const updateAbsence = async (req, res) => {
   try {
     const { Fec_Inasistencia, Mot_Inasistencia, Turno_Id, Tipo_Inasistencia } =
       req.body;
-    console.log(
-      "Este es el tipoooooooooooooooooooooooooooooooooooooooooooo",
-      Tipo_Inasistencia
-    );
     // Validar los datos antes de proceder
     if (
       !Fec_Inasistencia ||

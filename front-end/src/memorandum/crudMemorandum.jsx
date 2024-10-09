@@ -101,7 +101,6 @@ const CrudMemorandum = () => {
       <MdEmail />
     </button>,
   ];
-
   const formattedData = memorandumList.map((memorandum) => {
     const rowData = [
       memorandum.Id_Aprendiz,
@@ -109,8 +108,9 @@ const CrudMemorandum = () => {
       memorandum.Ape_Aprendiz,
       memorandum.Fec_OtroMemorando,
       memorandum.Mot_OtroMemorando,
-      memorandum.Enviado,
+      memorandum.ENVIADO === 1 ? 'Sí' : 'No', // Conversión de 0/1 a "Sí"/"No"
     ];
+  
     rowData.push(ButtonsForMemorandum(memorandum.Id_OtroMemorando));
     return rowData;
   });
@@ -223,8 +223,6 @@ const CrudMemorandum = () => {
         `/otrosmemorandos/view/pdf/${Id_OtroMemorando}`,
         config
       );
-      console.log(response);
-
       if (response.status === 201) {
         const pdfWindow = window.open("");
         pdfWindow.document.write(
@@ -251,7 +249,6 @@ const CrudMemorandum = () => {
         `/otrosmemorandos/send/pdf/${Id_OtroMemorando}`,
         config
       );
-      console.log(response.data.message);
 
       if (response.status === 201) {
         setAlerta({
