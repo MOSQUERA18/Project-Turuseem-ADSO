@@ -136,7 +136,10 @@ const CrudMemorandum = () => {
         console.log("Error: " + respuestApi.status);
       }
     } catch (error) {
-      console.error(error);
+      setAlerta({
+        msg: error.response.data.message,
+        error: true,
+      });
     }
   };
 
@@ -255,6 +258,7 @@ const CrudMemorandum = () => {
           msg: response.data.message,
           error: false,
         });
+        getAllMemorandum()
       }
     } catch (error) {
       setAlerta({

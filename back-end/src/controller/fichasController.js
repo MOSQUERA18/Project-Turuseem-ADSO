@@ -21,7 +21,7 @@ export const getAllFichas = async (req, res) => {
 
     // Si no se encontraron fichas, se devuelve un código 404 con un mensaje
     return res.status(404).json({
-      message: "No se encontraron Fichas.",
+      message: "No se encontraron fichas registradas.",
     });
   } catch (error) {
     // Registro del error y retorno de un código 500 con mensaje de error

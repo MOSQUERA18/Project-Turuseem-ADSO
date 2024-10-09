@@ -18,7 +18,7 @@ export const getAllTalentoHumano = async (req, res) => {
       return; // Uso de return para salir de la función después de enviar la respuesta.
     } else {
       res.status(404).json({
-        message: "No se encontró talento humano.",
+        message: "No se encontraron aprendices de talento humano registrados.",
       });
     }
   } catch (error) {

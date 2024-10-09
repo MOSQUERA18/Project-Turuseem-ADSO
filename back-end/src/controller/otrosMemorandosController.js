@@ -68,7 +68,7 @@ WHERE
       return;
     } else {
       res.status(404).json({
-        message: "No se encontraron memorandos.",
+        message: "No se encontraron memorandos registrados.",
       });
     }
   } catch (error) {

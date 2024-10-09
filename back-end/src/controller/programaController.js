@@ -19,14 +19,14 @@ export const getAllProgramas = async (req, res) => {
       return; // Uso de return para salir de la función después de enviar la respuesta.
     } else {
       res.status(404).json({
-        message: "No se encontraron programas.",
+        message: "No se encontraron programas de formacion registrados.",
       });
     }
   } catch (error) {
     // Capturo y manejo cualquier error ocurrido durante la consulta.
     logger.error(`Error al obtener los programas: ${error.message}`);
     res.status(500).json({
-      message: "Error al obtener los programas.",
+      message: "Error al obtener los programas de formacion.",
     });
   }
 };

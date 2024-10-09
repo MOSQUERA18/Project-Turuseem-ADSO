@@ -41,7 +41,7 @@ export const getAllTurnosRutinarios = async (req, res) => {
       return; // Uso de return para salir de la función después de enviar la respuesta.
     } else {
       res.status(404).json({
-        message: "No se encontraron turnos rutinarios.",
+        message: "No se encontraron turnos rutinarios registrados.",
       });
     }
   } catch (error) {
@@ -179,8 +179,31 @@ export const updateTurnoRutinario = async (req, res) => {
         message: "Turno rutinario no encontrado.",
       });
     } else {
+      console.log("Inasistencia de tu papa ", Ind_Asistencia);
+      const aprendiz = await ApprenticeModel.findByPk(Id_Aprendiz);
+      console.log("Este es el aprendiz del turno", aprendiz);
+
+      if (!aprendiz) {
+        return res.status(404).json({ error: "Aprendiz no encontrado" });
+      }
       // Si Ind_Asistencia es "Sí", elimino la inasistencia correspondiente.
       if (Ind_Asistencia === "Si") {
+        // Decrementar contadores si es posible
+        let inasistenciasModificadas = false;
+        if (aprendiz.Tot_Inasistencias > 0) {
+          aprendiz.Tot_Inasistencias -= 1;
+          inasistenciasModificadas = true;
+        }
+        if (aprendiz.Tot_Memorandos > 0) {
+          aprendiz.Tot_Memorandos -= 1;
+          inasistenciasModificadas = true;
+        }
+
+        // Guarda los cambios si alguno de los contadores fue modificado
+        if (inasistenciasModificadas) {
+          await aprendiz.save();
+        }
+
         // Busco la inasistencia asociada.
         const absence = await AbsenceModel.findOne({
           where: {
@@ -296,12 +319,10 @@ export const getTurnoRutinariosForAprendiz = async (req, res) => {
   }
 };
 
-import moment from "moment";
-
 export const updateInasistencia = async (req, res) => {
   try {
     const { Id_Aprendiz } = req.params;
-    
+
     const {
       Ind_Asistencia,
       Turno_Id,
