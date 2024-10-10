@@ -114,9 +114,8 @@ const CrudUnidades = () => {
         });
       }
     } catch (error) {
-      console.error("Error en la solicitud:", error);
       setAlerta({
-        msg: "Error No Existen Unidades Registradas!.",
+        msg: error.response.data.message,
         error: true,
       });
     }

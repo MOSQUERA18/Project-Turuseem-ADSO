@@ -5,7 +5,6 @@ import { useRef, useState, useEffect } from "react";
 import clienteAxios from "../config/axios";
 import { ReactSession } from "react-client-session";
 import Alerta from "../components/Alerta";
-import { error } from "jquery";
 
 const URI = "/ciudades/";
 const UriFichas = "/fichas/";
@@ -37,7 +36,6 @@ const FormApprentices = ({
   const [Nom_Empresa, setNom_Empresa] = useState("");
   const [Foto_Aprendiz, setFoto_Aprendiz] = useState(null);
   const [CentroConvivencia, setCentroConvivencia] = useState("");
-  // const [isDisabled, setIsDisabled] = useState(false);
 
   const [SelectedFicha, setSelectedFicha] = useState(null);
   const [fichas, setFichas] = useState([]);
@@ -85,7 +83,10 @@ const FormApprentices = ({
           setFichas(response.data);
         }
       } catch (err) {
-        console.log("error al cargar las Fichas", err);
+        setAlerta({
+          msg: err.response.data.message,
+          error: true
+        })
       }
     };
     fetchFichas();
@@ -216,7 +217,8 @@ const FormApprentices = ({
     }
 
     // Validaciones básicas
-    const soloTextoRegex = /^[a-zA-ZÀ-ÿ\s]+$/; // Solo letras y espacios
+    const soloTextoRegex = /^[a-zA-ZÀ-ÿ0-9\s]+$/; // Solo letras y espacios
+    const TextoYNumeroRegex = /^[a-zA-ZÀ-ÿ0-9\s]+$/; // Solo letras y espacios
 
     if (
       !Id_Aprendiz ||
@@ -260,7 +262,7 @@ const FormApprentices = ({
       return;
     }
 
-    if (!soloTextoRegex.test(Lugar_Residencia)) {
+    if (!TextoYNumeroRegex.test(Lugar_Residencia)) {
       setAlerta({
         msg: "El campo de lugar de residencia solo debe contener letras.",
         error: true,
@@ -318,7 +320,6 @@ const FormApprentices = ({
         mensajeCrud = "Aprendiz Registrado Exitosamente";
       }
       if (respuestApi.status === 200 || respuestApi.status === 201) {
-        console.log("Actualizando alerta con éxito"); // Log para depuración
         setAlerta({
           msg: respuestApi.data.message,
           error: false,
@@ -327,17 +328,12 @@ const FormApprentices = ({
         clearForm();
         updateTextButton("Enviar");
       } else {
-        console.log("Actualizando alerta con error"); // Log para depuración
         setAlerta({
           msg: respuestApi.data.message || "Error al registrar al Aprendiz.",
           error: true,
         });
       }
     } catch (error) {
-      console.error(
-        "Error details!   : ",
-        error.response || error.request || error.message
-      );
       if (error.response) {
         setAlerta({
           msg: error.response.data.message || "Error en la solicitud",

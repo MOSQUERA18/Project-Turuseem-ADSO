@@ -257,8 +257,6 @@ const FormTurnoRutinario = ({
         });
 
         if (Ind_Asistencia === "Si") {
-          console.log(Ind_Asistencia, "Entro al indicador de si");
-        
           // Eliminar inasistencia y memorandos del aprendiz si ya existen
           await clienteAxios.put(
             `/aprendiz/actualizar-inasistencia/${Id_Aprendiz}`,
@@ -272,17 +270,6 @@ const FormTurnoRutinario = ({
             config // Aquí está la configuración
           );
         } else if (Ind_Asistencia === "No") {
-          console.log(Ind_Asistencia, "Inasistencia creada exitosamente");
-
-          console.log("Datos enviados al backend:", {
-            Ind_Asistencia,
-            Turno_Id: respuestApi.data.Id_TurnoRutinario || Id_TurnoRutinario,
-            Fec_Inasistencia: Fec_InicioTurno,
-            Motivo,
-            Tipo_Inasistencia: "turno_rutinario"
-          });
-          
-          
           // Mantener la lógica actual para registrar inasistencias cuando no hay asistencia
           await clienteAxios.put(
             `/aprendiz/actualizar-inasistencia/${Id_Aprendiz}`,

@@ -55,30 +55,53 @@ const ModalTurnoEspeciales = ({
         );
 
         if (response.status === 200 || response.status === 204) {
-          console.log(response);
-          
           setAlerta({
             msg: "Cambios guardados correctamente",
             error: false,
           });
 
-          // Si la asistencia es "No", crear un registro de inasistencia
-          if (item.asistio === "No") {
-            // await crearRegistroInasistencia(item.Id_Aprendiz, item.Id_TurnoEspecial);
-            console.log(turnoEspecialAprendiz.Fec_TurnoEspecial);
-            
+          if (item.asistio === "Sí") {
             await clienteAxios.put(
               `/aprendiz/actualizar-inasistencia/${item.Id_Aprendiz}`,
               {
                 Ind_Asistencia: item.asistio,
                 Turno_Id: item.Id_Aprendiz,
-                Fec_Inasistencia: "12/12/24",
-                Motivo: "No fue a turno especial",
-                Tipo_Inasistencia: "aprendiz"
+                Fec_Inasistencia:
+                  turnoEspecialAprendiz[0].turnoEspecial?.Fec_TurnoEspecial,
+                Motivo: "no asistir a turno especial",
+                Tipo_Inasistencia: "turno_especial",
+              },
+              config
+            );
+          } else if (item.asistio === "No") {
+            await clienteAxios.put(
+              `/aprendiz/actualizar-inasistencia/${item.Id_Aprendiz}`,
+              {
+                Ind_Asistencia: item.asistio,
+                Turno_Id: item.Id_Aprendiz,
+                Fec_Inasistencia:
+                  turnoEspecialAprendiz[0].turnoEspecial?.Fec_TurnoEspecial,
+                Motivo: "no asistir a turno especial",
+                Tipo_Inasistencia: "turno_especial",
               },
               config
             );
           }
+
+          // Si la asistencia es "No", crear un registro de inasistencia
+          // if (item.asistio === "No") {
+          //   await clienteAxios.put(
+          //     `/aprendiz/actualizar-inasistencia/${item.Id_Aprendiz}`,
+          //     {
+          //       Ind_Asistencia: item.asistio,
+          //       Turno_Id: item.Id_Aprendiz,
+          //       Fec_Inasistencia: turnoEspecialAprendiz[0].turnoEspecial?.Fec_TurnoEspecial,
+          //       Motivo: "no asistir a turno especial",
+          //       Tipo_Inasistencia: "turno_especial"
+          //     },
+          //     config
+          //   );
+          // }
         } else {
           setAlerta({
             msg: "Hubo un error al guardar los cambios",
@@ -91,48 +114,6 @@ const ModalTurnoEspeciales = ({
       setAlerta({ msg: "Hubo un error al guardar los cambios", error: true });
     }
   };
-
-  // Función para crear el registro de inasistencia
-  // const crearRegistroInasistencia = async (Id_Aprendiz, Id_TurnoEspecial) => {
-  //   try {
-  //     const token = ReactSession.get("token");
-  //     const config = {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     };
-      
-  //     const turno = turnoEspecialAprendiz.find(
-  //       (t) => t.turnoEspecial?.Id_TurnoEspecial === Id_TurnoEspecial
-  //     );
-
-  //     const inasistenciaData = {
-  //       Fec_Inasistencia: turno?.turnoEspecial?.Fec_TurnoEspecial,
-  //       Mot_Inasistencia: "Inasistencia a Turno Especial",
-  //       Id_Aprendiz: Id_Aprendiz,
-  //     };
-
-  //     const respuestaInasistencia = await clienteAxios.post(
-  //       "/inasistencias",
-  //       inasistenciaData,
-  //       config
-  //     );
-
-  //     if (respuestaInasistencia.status === 201) {
-  //       console.log("Registro de inasistencia creado correctamente");
-        
-  //       // Incrementar el conteo de inasistencias
-  //       await clienteAxios.put(
-  //         `/aprendiz/${Id_Aprendiz}/actualizar-inasistencia`,
-  //         { action: "incrementar" },
-  //         config
-  //       );
-  //     }
-  //   } catch (error) {
-  //     console.error("Error al crear registro de inasistencia:", error);
-  //   }
-  // };
 
   const { msg } = alerta;
 

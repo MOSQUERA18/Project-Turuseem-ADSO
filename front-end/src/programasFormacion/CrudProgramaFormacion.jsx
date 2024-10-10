@@ -106,14 +106,13 @@ const CrudPrograma = () => {
         setCrearDataTable(true);
       } else {
         setAlerta({
-          msg: `Error al cargar los programas!`,
+          msg: `Error al cargar los programas de formacion.`,
           error: true,
         });
       }
     } catch (error) {
-      console.error("Error en la solicitud:", error);
       setAlerta({
-        msg: "Ocurrio un Error No Existen Programas De Formación registradas!.",
+        msg: error.response.data.message,
         error: true,
       });
     }
@@ -145,7 +144,7 @@ const CrudPrograma = () => {
       }
     } catch (error) {
       setAlerta({
-        msg: `Error al cargar los programas!`,
+        msg: error.response.data.message,
         error: true,
       });
       console.error(error);

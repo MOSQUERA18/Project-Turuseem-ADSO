@@ -16,7 +16,7 @@ import { FaClipboardCheck, FaPeopleGroup } from "react-icons/fa6";
 import { MdAssignmentTurnedIn } from "react-icons/md";
 import clienteAxios from "../config/axios.jsx";
 import useAuth from "../hooks/useAuth.jsx";
-// import Home from "../home/home.jsx";
+import Alerta from "./Alerta.jsx";
 
 import { TbUsersPlus } from "react-icons/tb";
 
@@ -24,6 +24,7 @@ const VerticalNav = () => {
   const [show, setShow] = useState(true);
   const [user, setUser] = useState(null); // Inicializa el estado del usuario como null
   const { cerrarSesion } = useAuth() // Uso el contexto para acceder a la función cerrarSesion
+  const [ alerta, setAlerta] = useState({})
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -48,7 +49,10 @@ const VerticalNav = () => {
         if (responseApi.status === 200) {
           setUser(responseApi.data);
         } else {
-          console.log(`Código de estado inesperado: ${responseApi.status}`);
+          setAlerta({
+            msg: responseApi.data.message || "Error en la solicitud",
+            error: true,
+          });
         }
       } catch (error) {
         console.error(
@@ -65,13 +69,14 @@ const VerticalNav = () => {
   if (!user) {
     return <div>Cargando...</div>;
   }
+  const { msg } = alerta;
   return (
     <div className="min-h-screen">
       <div className="bg-sidebar xl:hidden flex justify-between w-full p-6 items-center">
       <div className="flex justify-between items-center space-x-3">
       {/* Imagen que se muestra en pantallas grandes y se oculta en pantallas pequeñas */}
       <img
-        src="/Public/IMG/LOGOTURUSEEM.png"
+        src="/IMG/LOGOTURUSEEM.png"
         className="hidden sm:block w-12 drop-shadow-2xl"
       />
       <p className="text-2xl leading-6 text-black font-bold">TURUSEEM</p>
@@ -151,7 +156,7 @@ const VerticalNav = () => {
         } transform xl:translate-x-0 ease-in-out transition duration-500 flex justify-center items-start h-full w-full sm:w-64 bg-sidebar flex-col`}
       >
         <div className="hidden xl:flex justify-start p-6 items-center space-x-3">
-          <img src="/Public/IMG/LOGOTURUSEEM.png" className="w-12 drop-shadow-2xl" />
+          <img src="/IMG/LOGOTURUSEEM.png" className="w-12 drop-shadow-2xl" />
           <p className="text-3xl leading-6 text-white font-bold">TURUSEEM</p>
         </div>
         <div className="flex flex-col justify-end items-center pl-4 w-full border-white border-b space-y-3 py-5 active:text-white hover:text-white">
@@ -185,6 +190,7 @@ const VerticalNav = () => {
             onClick={cerrarSesion}
             className="flex justify-start items-center w-full space-x-4 pl-3 py-2 focus:outline-none text-white focus:bg-botoneshover hover:bg-botones rounded border-y border-white active:text-white hover:text-white focus:text-white font-bold uppercase"
           >
+                    {msg && <Alerta alerta={alerta} setAlerta={setAlerta} />}
             <IoLogOut size={22} className="mr-2"/> Cerrar Sesión
             {/* <span className="text-black text-sm uppercase font-bold active:text-white hover:text-white focus:text-white">Cerrar Sesión</span> */}
           </button>

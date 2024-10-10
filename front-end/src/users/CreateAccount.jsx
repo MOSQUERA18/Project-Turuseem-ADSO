@@ -63,7 +63,7 @@ const UserForm = () => {
           </h1>
         </div>
         <div className="bg-white p-2 md:p-8 rounded-lg w-full max-w-md md:max-w-2xl">
-          {msg && <Alerta alerta={alerta} />}
+          {msg && <Alerta alerta={alerta} setAlerta={setAlerta}/>}
           <form onSubmit={handleSubmit}>
             <div className="my-4">
               <label className="uppercase text-stone-600 font-bold block text-base">

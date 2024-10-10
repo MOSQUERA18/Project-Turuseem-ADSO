@@ -22,7 +22,6 @@ const CambiarPassword = () => {
       try {
         const url = `/api/user/olvide-password`;
         await clienteAxios.get(`${url}/${token}`);
-        console.log(url, token);
         setTokenValido(true);
         setAlerta({
           msg: "Coloca tu Nueva Contraseña",
@@ -76,7 +75,7 @@ const CambiarPassword = () => {
           </h1>
         </div>
         <div className="mt-20 md:mt-5 shadow-2xl px-7 py-10 rounded-xl bg-white">
-          {msg && <Alerta alerta={alerta}  setAlerta={setAlerta}/>}
+          {msg && <Alerta alerta={alerta} setAlerta={setAlerta}/>}
           {tokenValido && (
             <>
               <form onSubmit={handleSubmit}>

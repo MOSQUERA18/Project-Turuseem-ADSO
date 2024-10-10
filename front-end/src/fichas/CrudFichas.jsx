@@ -24,7 +24,6 @@ const CrudFichas = () => {
 
   const [stateButton, setStateButton] = useState(true);
 
-
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
@@ -50,7 +49,7 @@ const CrudFichas = () => {
   });
   const titleModul = ["REPORTE DE FICHAS"];
   const titleForm = ["REGISTRAR FICHAS"];
-    const tableName = "Fichas"
+  const tableName = "Fichas";
 
   const titles = [
     "Numero Ficha",
@@ -68,7 +67,7 @@ const CrudFichas = () => {
         getFicha(Id_Ficha),
         setStateAddFichas(true),
         toggleModal(),
-        setStateButton(false)
+        setStateButton(false),
       ]}
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
@@ -124,7 +123,10 @@ const CrudFichas = () => {
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);
-      setAlerta({ msg: "Ocurrio Un Error No Existen Fichas registradas!.", error: true });
+      setAlerta({
+        msg: error.response.data.message,
+        error: true,
+      });
     }
   };
 
@@ -154,7 +156,6 @@ const CrudFichas = () => {
         msg: error.response.data.message,
         error: true,
       });
-      console.log(error);
     }
   };
 

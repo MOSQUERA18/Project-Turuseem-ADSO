@@ -40,7 +40,7 @@ export const getAllTurnosEspeciales = async (req, res) => {
       return; // Uso de return para salir de la función después de enviar la respuesta.
     } else {
       res.status(404).json({
-        message: "No se encontraron turnos especiales.",
+        message: "No se encontraron turnos especiales registrados.",
       });
     }
   } catch (error) {
@@ -236,7 +236,7 @@ export const updateTurnoEspecial = async (req, res) => {
 
 export const deleteTurnoEspecial = async (req, res) => {
   try {
-    const Id_TurnoEspecial = req.params.Id_TurnoEspecial;
+    const {Id_TurnoEspecial} = req.params;
 
     // Primero eliminamos los registros de TurnoEspecialAprendiz asociados al turno especial.
     const deletedAssociations = await TurnoEspecialAprendizModel.destroy({

@@ -29,7 +29,7 @@ export default function HeaderPublic() {
       <div className="bg-header shadow py-5 px-7">
         <nav className="flex justify-between">
           <div className="flex items-center space-x-3 lg:pr-16 pr-6">
-            <img src="/Public/IMG/LOGOTURUSEEM.png" className="w-11 drop-shadow-2xl" />
+            <img src="/IMG/LOGOTURUSEEM.png" className="w-11 drop-shadow-2xl" />
             <h2 className="font-bold text-2xl leading-6 text-black ">
               TURUSEEM
             </h2>
@@ -65,7 +65,7 @@ export default function HeaderPublic() {
             >
               Consultar Turno Rutinario
             </Link>
-            <Link to='consultarespecial'
+            <Link to='consultarturnoespecial'
               onClick={() => selected(4)}
               className={`${
                 style[4]
@@ -168,7 +168,7 @@ export default function HeaderPublic() {
                 Manual
               </Link>
               <Link to='consultarturnoespecial'
-                onClick={() => setSelectedText("Consultar Especial")}
+                onClick={() => setSelectedText("Consultar Especial")} 
                 className="px-4 py-3 text-gray-600 bg-gray-50 border border-gray-50 focus:outline-none focus:bg-gray-100 hover:bg-gray-100 duration-100 cursor-pointer text-xs leading-3 font-bold uppercase"
               >
                 Consultar Turno Especial

@@ -1,15 +1,13 @@
 import AbsenceModel from "../models/absenceModel.js";
-import TurnoRutinarioModel from "../models/turnoRutinarioModel.js";
 import { logger } from "../middleware/logMiddleware.js";
-import ApprenticeModel from "../models/apprenticeModel.js";
-import UnitModel from "../models/unitModel.js";
 import db from "../database/db.js";
 
 // Obtener todas las inasistencias
 export const getAllAbsences = async (req, res) => {
   try {
     // Realizar el LEFT JOIN entre inasistencias, turnosrutinarios y aprendices
-    const inasistencias = await db.query(`
+    const inasistencias = await db.query(
+      `
       SELECT 
         inasistencias.*, 
         turnosrutinarios.Fec_InicioTurno, 
@@ -17,25 +15,40 @@ export const getAllAbsences = async (req, res) => {
         turnosrutinarios.Hor_InicioTurno, 
         turnosrutinarios.Hor_FinTurno, 
         turnosrutinarios.Obs_TurnoRutinario,
-        CASE
-          WHEN inasistencias.Turno_Id = turnosrutinarios.Id_TurnoRutinario THEN turnosrutinarios.Id_Aprendiz
-          ELSE inasistencias.Turno_Id
-        END AS Id_Aprendiz,
-        CASE
-          WHEN inasistencias.Turno_Id = turnosrutinarios.Id_TurnoRutinario THEN CONCAT(aprendizTurno.Nom_Aprendiz, ' ', aprendizTurno.Ape_Aprendiz)
-          ELSE CONCAT(aprendices.Nom_Aprendiz, ' ', aprendices.Ape_Aprendiz)
-        END AS NombreCompleto
+  
+      CASE
+        WHEN inasistencias.Turno_Id = turnosrutinarios.Id_TurnoRutinario THEN turnosrutinarios.Id_Aprendiz
+        ELSE inasistencias.Turno_Id
+      END AS Id_Aprendiz,
+      CASE
+        WHEN inasistencias.Turno_Id = turnosrutinarios.Id_TurnoRutinario THEN CONCAT(aprendizTurno.Nom_Aprendiz, ' ', aprendizTurno.Ape_Aprendiz)
+        ELSE CONCAT(aprendices.Nom_Aprendiz, ' ', aprendices.Ape_Aprendiz)
+      END AS NombreCompleto,
+      CASE
+        WHEN inasistencias.Turno_Id = turnosrutinarios.Id_TurnoRutinario THEN programasTurno.Nom_ProgramaFormacion
+        ELSE programasAprendices.Nom_ProgramaFormacion
+      END AS ProgramaFormacion
       FROM 
         inasistencias
-      LEFT JOIN 
-        turnosrutinarios ON inasistencias.Turno_Id = turnosrutinarios.Id_TurnoRutinario
-      LEFT JOIN 
-        aprendices AS aprendizTurno ON turnosrutinarios.Id_Aprendiz = aprendizTurno.Id_Aprendiz
-      LEFT JOIN 
-        aprendices ON inasistencias.Turno_Id = aprendices.Id_Aprendiz
-    `, {
-      type: db.QueryTypes.SELECT
-    });
+      LEFT JOIN turnosrutinarios 
+        ON inasistencias.Turno_Id = turnosrutinarios.Id_TurnoRutinario
+      LEFT JOIN aprendices AS aprendizTurno 
+        ON turnosrutinarios.Id_Aprendiz = aprendizTurno.Id_Aprendiz
+      LEFT JOIN aprendices 
+        ON inasistencias.Turno_Id = aprendices.Id_Aprendiz
+      LEFT JOIN fichas AS fichasTurno 
+        ON aprendizTurno.Id_Ficha = fichasTurno.Id_Ficha
+      LEFT JOIN fichas AS fichasAprendiz 
+        ON aprendices.Id_Ficha = fichasAprendiz.Id_Ficha
+      LEFT JOIN programasformacion AS programasTurno 
+        ON fichasTurno.Id_ProgramaFormacion = programasTurno.Id_ProgramaFormacion
+      LEFT JOIN programasformacion AS programasAprendices 
+        ON fichasAprendiz.Id_ProgramaFormacion = programasAprendices.Id_ProgramaFormacion;
+    `,
+      {
+        type: db.QueryTypes.SELECT,
+      }
+    );
 
     // Verificar si se encontraron inasistencias
     if (inasistencias && inasistencias.length > 0) {
@@ -48,13 +61,9 @@ export const getAllAbsences = async (req, res) => {
   } catch (error) {
     // Manejo de errores y registro en logs
     logger.error(`Error al obtener las inasistencias: ${error}`);
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: "Ocurrio un error con el servidor" });
   }
 };
-
-
-
-
 
 // Obtener una inasistencia específica por ID
 export const getAbsence = async (req, res) => {
@@ -84,8 +93,6 @@ export const createAbsence = async (req, res) => {
     const { Fec_Inasistencia, Mot_Inasistencia, Turno_Id, Tipo_Inasistencia } =
       req.body;
 
-      
-
     // Se crea una nueva inasistencia con los datos proporcionados
     const newInasistencia = await AbsenceModel.create({
       Fec_Inasistencia,
@@ -110,7 +117,6 @@ export const updateAbsence = async (req, res) => {
   try {
     const { Fec_Inasistencia, Mot_Inasistencia, Turno_Id, Tipo_Inasistencia } =
       req.body;
-      console.log("Este es el tipoooooooooooooooooooooooooooooooooooooooooooo",Tipo_Inasistencia);
     // Validar los datos antes de proceder
     if (
       !Fec_Inasistencia ||
@@ -169,11 +175,9 @@ export const updateAbsence = async (req, res) => {
 
     // Si no se encontró el turno rutinario asociado, devolver un error
     if (!result) {
-      return res
-        .status(404)
-        .json({
-          message: "Turno rutinario no encontrado para esta inasistencia",
-        });
+      return res.status(404).json({
+        message: "Turno rutinario no encontrado para esta inasistencia",
+      });
     }
 
     // Devolver la inasistencia actualizada junto con los datos del turno rutinario

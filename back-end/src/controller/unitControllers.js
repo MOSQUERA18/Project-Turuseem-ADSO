@@ -20,7 +20,7 @@ export const getAllUnits = async (req, res) => {
       return; // Uso de return para salir de la función después de enviar la respuesta.
     } else {
       res.status(404).json({
-        message: "No se encontraron unidades.",
+        message: "No se encontraron unidades registradas.",
       });
     }
   } catch (error) {

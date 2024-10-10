@@ -56,7 +56,6 @@ const CrudApprentices = () => {
       CentroConvivencia: "",
       Foto_Aprendiz: "",
     });
-    // setFormData({})
   };
 
   const [apprentice, setApprentice] = useState({
@@ -200,10 +199,9 @@ const CrudApprentices = () => {
       }
     } catch (error) {
       setAlerta({
-        msg: `Error!!!! No Existen Aprendices Registrados!`,
+        msg: error.response.data.message,
         error: true,
       });
-      console.error(error);
     }
   };
 
@@ -236,7 +234,6 @@ const CrudApprentices = () => {
         msg: `Error al cargar los registros!`,
         error: true,
       });
-      console.error(error);
     }
   };
 
@@ -260,7 +257,6 @@ const CrudApprentices = () => {
           },
         };
         try {
-          // debugger
           const respuestApi = await clienteAxios.delete(
             `/aprendiz/${Id_Aprendiz}`,
             config
@@ -275,15 +271,13 @@ const CrudApprentices = () => {
           } else {
             alert(respuestApi.data.message);
           }
-          
         } catch (error) {
           Swal.fire({
             title: "Error!",
             text: "No puedes Borrar Este Registro Porque Esta Asociado A Un Formulario",
             icon: "error",
           });
-          console.error(error);
-          getAllApprentices()
+          getAllApprentices();
         }
       }
     });
@@ -295,7 +289,6 @@ const CrudApprentices = () => {
 
   const { msg } = alerta;
 
-
   return (
     <>
       <h1 className="text-zinc-950 font-extrabold text-4xl md:text-4xl text-center mb-7">
@@ -305,7 +298,7 @@ const CrudApprentices = () => {
       <div className="flex justify-between ">
         <div className="flex justify-between">
           <div title="CSV">
-            <h1 className="font-bold text-lg text-gray-500 mb-3 " >
+            <h1 className="font-bold text-lg text-gray-500 mb-3 ">
               Subir Archivo CSV
             </h1>
             <ImportarCSV URI={URI} />
@@ -340,7 +333,7 @@ const CrudApprentices = () => {
             onClick={async (e) => {
               e.preventDefault();
 
-              const filePath = "/Public/assets/Aprendiz.csv";
+              const filePath = "/assets/Aprendiz.csv";
               try {
                 const response = await fetch(filePath, { method: "HEAD" });
 

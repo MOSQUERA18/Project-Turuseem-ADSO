@@ -23,7 +23,6 @@ const CrudFuncionarios = () => {
 
   const [stateButton, setStateButton] = useState(true);
 
-
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
@@ -70,7 +69,7 @@ const CrudFuncionarios = () => {
         getFuncionario(Id_Funcionario),
         setStateAddFuncionario(true),
         toggleModal(),
-        setStateButton(false)
+        setStateButton(false),
       ]}
       className="text-blue-500 hover:text-blue-700 hover:border hover:border-blue-500 mr-3 p-1 rounded"
       key="get"
@@ -99,7 +98,7 @@ const CrudFuncionarios = () => {
       funcionario.Cargo,
     ];
     rowData.push(ButtonsForOtherModules(funcionario.Id_Funcionario));
-    return rowData
+    return rowData;
   });
 
   useEffect(() => {
@@ -127,7 +126,10 @@ const CrudFuncionarios = () => {
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);
-      setAlerta({ msg: "Error No Existen Funcionarios registrados!.", error: true });
+      setAlerta({
+        msg: error.response.data.message,
+        error: true,
+      });
     }
   };
 
