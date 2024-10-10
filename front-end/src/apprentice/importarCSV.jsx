@@ -10,7 +10,7 @@ const ImportarCSV = () => {
   const [alerta, setAlerta] = useState({});
 
   const expectedHeaders = [
-    "Id_Aprendiz", "Nom_Aprendiz", "Ape_Aprendiz", "Id_Ficha", "Id_Ciudad", "Edad"
+    "Id_Aprendiz", "Nom_Aprendiz", "Ape_Aprendiz", "Id_Ficha", "Edad"
   ];
 
   const handleFileChange = (e) => {

@@ -254,7 +254,6 @@ export const importCSV = async (req, res) => {
             Nom_Aprendiz,
             Ape_Aprendiz,
             Id_Ficha,
-            Id_Ciudad,
             Edad,
           } = row;
 
@@ -288,8 +287,8 @@ export const importCSV = async (req, res) => {
             Ape_Aprendiz: Ape_Aprendiz,
             Id_Ficha: Id_Ficha,
             Fec_Nacimiento: "2000-01-01", // Manejar fecha vacía
-            Id_Ciudad: Id_Ciudad,
-            Lugar_Residencia: "mz j ?",
+            Id_Ciudad: 91,
+            Lugar_Residencia: "mz j ",
             Edad: Edad,
             // Otros campos con valores por defecto o vacíos
             Hijos: "No", // Valor por defecto
