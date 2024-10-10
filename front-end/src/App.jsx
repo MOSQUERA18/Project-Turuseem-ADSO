@@ -17,8 +17,7 @@ import CrudTalentoHumano from "./talentoHumano/CrudTalentoHumano.jsx";
 import CrudInasistencia from "./inasistencias/CrudInasistencia.jsx";
 
 
-
-
+//MINICAMBIOS
 
 //Rutas Publicas
 import RutaPublica from "./layout/RutaPublica.jsx";
