@@ -494,7 +494,6 @@ export const generateOtroMemorandumPdf = (
       .replace("{{trimestre}}", trimestreActual)
       .replace("{{AnoActual}}", año)
       .replace("{{NombreLider}}", "Daniel Cardenas Lozano")
-      .replace("{{TalentoHumano}}", "No tengo la info");
 
     const options = {
       format: "A4",

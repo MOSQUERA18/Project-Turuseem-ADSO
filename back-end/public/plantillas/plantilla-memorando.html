@@ -57,9 +57,7 @@
         font-size: 18px;
         text-align: justify;
       }
-      .text p {
-        margin-bottom: 20px;
-      }
+
       .signature {
         display: flex;
         justify-content: space-between;
@@ -145,21 +143,19 @@
         </p>
       </div>
       <div class="signature">
-        <table style="width: 100%; border-spacing: 0">
+        <table style="width: 100%;">
           <tr>
-            <td style="width: 50%; text-align: left">
-              <p>{{NombreLider}}</p>
+            <td style="width: 50%; text-align: left; vertical-align: top;">
+              <img src="/plantillas/firma.png" alt="Firma del líder" width="140px" height="70px">
+              <p style="margin: 5px 0 0;"><strong>{{NombreLider}}</strong></p>
               <p>Líder Sena Empresa</p>
             </td>
-            <td style="width: 50%; text-align: right">
-              <p>{{TalentoHumano}}</p>
-              <p>Líder Talento Humano</p>
+            <td style="width: 50%; text-align: right; vertical-align: top;">
+              <img src="/plantillas/firma.png" alt="Firma de Talento Humano" width="140px" height="70px">
+              <p style="margin: 5px 0 0;">Líder Talento Humano</p>
             </td>
           </tr>
         </table>
-      </div>
-      <div class="footer">
-        <p>Elaborado por: Lider Talento Humano</p>
       </div>
     </div>
   </body>
