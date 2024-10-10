@@ -85,15 +85,15 @@ const FormUnidades = ({
     }
 
     // Validaciones básicas
-    const soloTextoRegex = /^[a-zA-ZÀ-ÿ\s]+$/; // Solo letras y espacios
+    // const soloTextoRegex = /^[a-zA-ZÀ-ÿ\s]+$/; // Solo letras y espacios
 
-    if (!soloTextoRegex.test(Nom_Unidad)) {
-      setAlerta({
-        msg: "El Nombre Debe de Ir en Letras",
-        error: true,
-      });
-      return;
-    }
+    // if (!soloTextoRegex.test(Nom_Unidad)) {
+    //   setAlerta({
+    //     msg: "El Nombre Debe de Ir en Letras",
+    //     error: true,
+    //   });
+    //   return;
+    // }
 
     const token = ReactSession.get("token");
     const config = {

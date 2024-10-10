@@ -163,7 +163,13 @@ const FormProgramaFormacion = ({
               id="nombre"
               placeholder="Nombre"
               value={Nom_ProgramaFormacion}
-              onChange={(e) => setNom_ProgramaFormacion(e.target.value)}
+              onChange={(e) => {
+                // Usamos una expresión regular para permitir solo letras y espacios
+                const regex = /^[a-zA-Z\s]*$/;
+                if (regex.test(e.target.value)) {
+                  setNom_ProgramaFormacion(e.target.value);
+                }
+              }}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               title="Ingrese el nombre del programa de formación"
             />

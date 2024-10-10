@@ -247,7 +247,7 @@ const CrudFuncionarios = () => {
       </div>
       <div className="overflow-x-auto">
         <hr />
-        {msg && <Alerta alerta={alerta} />}
+        {msg && <Alerta alerta={alerta} setAlerta={setAlerta}/>}
         {crearDataTable && (
           <WriteTable
             titles={titles}
