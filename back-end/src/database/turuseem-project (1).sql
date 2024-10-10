@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
--- Host: localhost    Database: turuseem-project
+-- Host: 127.0.0.1    Database: turuseem-project
 -- ------------------------------------------------------
 -- Server version	8.0.39
 
@@ -60,6 +60,7 @@ CREATE TABLE `aprendices` (
 
 LOCK TABLES `aprendices` WRITE;
 /*!40000 ALTER TABLE `aprendices` DISABLE KEYS */;
+INSERT INTO `aprendices` VALUES ('1070593778','Marlon Kaleth','Sarmiento Mosquera','2671143','2000-01-01','91','mz j casa 153',18,'No','No','3202768600','Otro','kalethsarmiento1234@gmail.com','3213554763',1,1,'No','Activo','','No',NULL,'2024-10-10 19:28:28','2024-10-10 19:30:09'),('1108455213','Angie Barbara','Mosquera Capera','2671143','2000-01-01','91','mz j ',20,'No','No','0','Otro','ejemplo@gmail.com','0',0,0,'No','Activo','','No','default.png','2024-10-10 19:41:55','2024-10-10 19:41:55');
 /*!40000 ALTER TABLE `aprendices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,6 +142,7 @@ CREATE TABLE `fichas` (
 
 LOCK TABLES `fichas` WRITE;
 /*!40000 ALTER TABLE `fichas` DISABLE KEYS */;
+INSERT INTO `fichas` VALUES ('2365120','2000-12-12','2020-12-12',25,24,'Activo','2024-10-10 19:25:38','2024-10-10 19:25:38'),('2671143','2024-10-11','2024-10-26',23,23,'Activo','2024-10-10 19:25:22','2024-10-10 19:25:22');
 /*!40000 ALTER TABLE `fichas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,6 +174,7 @@ CREATE TABLE `funcionarios` (
 
 LOCK TABLES `funcionarios` WRITE;
 /*!40000 ALTER TABLE `funcionarios` DISABLE KEYS */;
+INSERT INTO `funcionarios` VALUES ('1020304050','Daniel','Cardenas','Masculino','3201574874','Activo',NULL,'Planta','2024-10-10 19:21:28','2024-10-10 19:21:28');
 /*!40000 ALTER TABLE `funcionarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -192,7 +195,7 @@ CREATE TABLE `inasistencias` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id_Inasistencia`),
   CONSTRAINT `inasistencias_chk_1` CHECK ((`Tipo_Inasistencia` in (_utf8mb4'turno_rutinario',_utf8mb4'turno_especial')))
-) ENGINE=InnoDB AUTO_INCREMENT=148 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=149 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -201,6 +204,7 @@ CREATE TABLE `inasistencias` (
 
 LOCK TABLES `inasistencias` WRITE;
 /*!40000 ALTER TABLE `inasistencias` DISABLE KEYS */;
+INSERT INTO `inasistencias` VALUES (148,'2024-10-10','no asistio a turno',24,'turno_rutinario','2024-10-10 19:30:09','2024-10-10 19:30:09');
 /*!40000 ALTER TABLE `inasistencias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -220,7 +224,7 @@ CREATE TABLE `otros_memorandos` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id_OtroMemorando`)
-) ENGINE=InnoDB AUTO_INCREMENT=239 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=240 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -229,6 +233,7 @@ CREATE TABLE `otros_memorandos` (
 
 LOCK TABLES `otros_memorandos` WRITE;
 /*!40000 ALTER TABLE `otros_memorandos` DISABLE KEYS */;
+INSERT INTO `otros_memorandos` VALUES (239,'2024-10-10','no asistio a turno',1,148,'2024-10-10 19:30:09','2024-10-10 19:30:48');
 /*!40000 ALTER TABLE `otros_memorandos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -249,7 +254,7 @@ CREATE TABLE `programasformacion` (
   PRIMARY KEY (`Id_ProgramaFormacion`),
   KEY `Id_Area` (`Id_Area`),
   CONSTRAINT `programasformacion_ibfk_1` FOREIGN KEY (`Id_Area`) REFERENCES `areas` (`Id_Area`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -258,6 +263,7 @@ CREATE TABLE `programasformacion` (
 
 LOCK TABLES `programasformacion` WRITE;
 /*!40000 ALTER TABLE `programasformacion` DISABLE KEYS */;
+INSERT INTO `programasformacion` VALUES (23,'ADSO','Tecnologo',1,'2024-10-10 19:24:34','2024-10-10 19:24:34'),(24,'GANADERIA','Tecnologo',2,'2024-10-10 19:24:46','2024-10-10 19:24:46'),(25,'GESTION AGRICOLA','Tecnologo',5,'2024-10-10 19:25:04','2024-10-10 19:25:04');
 /*!40000 ALTER TABLE `programasformacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -388,7 +394,7 @@ CREATE TABLE `turnosrutinarios` (
   KEY `Id_Unidad` (`Id_Unidad`),
   CONSTRAINT `turnosrutinarios_ibfk_1` FOREIGN KEY (`Id_Aprendiz`) REFERENCES `aprendices` (`Id_Aprendiz`),
   CONSTRAINT `turnosrutinarios_ibfk_2` FOREIGN KEY (`Id_Unidad`) REFERENCES `unidades` (`Id_Unidad`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -397,6 +403,7 @@ CREATE TABLE `turnosrutinarios` (
 
 LOCK TABLES `turnosrutinarios` WRITE;
 /*!40000 ALTER TABLE `turnosrutinarios` DISABLE KEYS */;
+INSERT INTO `turnosrutinarios` VALUES (24,'2024-10-10','2024-10-10','07:00:00','09:00:00','ninguna','No','1070593778',29,'2024-10-10 19:29:37','2024-10-10 19:30:09');
 /*!40000 ALTER TABLE `turnosrutinarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -419,7 +426,7 @@ CREATE TABLE `unidades` (
   PRIMARY KEY (`Id_Unidad`),
   KEY `Id_Area` (`Id_Area`),
   CONSTRAINT `unidades_ibfk_1` FOREIGN KEY (`Id_Area`) REFERENCES `areas` (`Id_Area`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -428,6 +435,7 @@ CREATE TABLE `unidades` (
 
 LOCK TABLES `unidades` WRITE;
 /*!40000 ALTER TABLE `unidades` DISABLE KEYS */;
+INSERT INTO `unidades` VALUES (27,'Panaderia','14:22:00','14:22:00','Activo',3,'2024-10-10 19:21:53','2024-10-10 19:22:36'),(28,'pescados','15:22:00','14:25:00','Activo',2,'2024-10-10 19:22:09','2024-10-10 19:22:15'),(29,'Mercasena I','14:23:00','14:24:00','Activo',1,'2024-10-10 19:22:30','2024-10-10 19:22:30'),(30,'plantas','12:12:00','11:11:00','Activo',5,'2024-10-10 19:22:54','2024-10-10 19:22:54'),(31,'llantas','16:23:00','17:26:00','Activo',4,'2024-10-10 19:23:13','2024-10-10 19:23:13');
 /*!40000 ALTER TABLE `unidades` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -471,4 +479,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-09  7:17:18
+-- Dump completed on 2024-10-10 14:52:11
