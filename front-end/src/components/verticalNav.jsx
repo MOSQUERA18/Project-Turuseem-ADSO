@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ReactSession } from "react-client-session";
+
 
 //ICONO DE INASISTENCIAS
 import { GiNotebook } from "react-icons/gi";
@@ -14,7 +14,7 @@ import { PiNotebookFill } from "react-icons/pi";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { FaClipboardCheck, FaPeopleGroup } from "react-icons/fa6";
 import { MdAssignmentTurnedIn } from "react-icons/md";
-import clienteAxios from "../config/axios.jsx";
+
 import useAuth from "../hooks/useAuth.jsx";
 import Alerta from "./Alerta.jsx";
 
@@ -22,53 +22,10 @@ import { TbUsersPlus } from "react-icons/tb";
 
 const VerticalNav = () => {
   const [show, setShow] = useState(true);
-  const [user, setUser] = useState(null); // Inicializa el estado del usuario como null
+
   const { cerrarSesion } = useAuth() // Uso el contexto para acceder a la función cerrarSesion
   const [ alerta, setAlerta] = useState({})
 
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const token = ReactSession.get("token");
-
-        if (!token) {
-          console.log("No se encontró token, redirigiendo al login.");
-          return;
-        }
-
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        };
-
-        const url = `/api/user/perfil`;
-        const responseApi = await clienteAxios.get(url, config);
-
-        if (responseApi.status === 200) {
-          setUser(responseApi.data);
-        } else {
-          setAlerta({
-            msg: responseApi.data.message || "Error en la solicitud",
-            error: true,
-          });
-        }
-      } catch (error) {
-        console.error(
-          "Error al obtener el perfil de usuario:",
-          error.response ? error.response.data : error.message
-        );
-      }
-    };
-
-    fetchUserProfile();
-  }, []);
-
-  // Renderiza un loader o un mensaje de carga mientras `user` es null
-  if (!user) {
-    return <div>Cargando...</div>;
-  }
   const { msg } = alerta;
   return (
     <div className="min-h-screen">
