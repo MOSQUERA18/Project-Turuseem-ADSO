@@ -179,9 +179,7 @@ export const updateTurnoRutinario = async (req, res) => {
         message: "Turno rutinario no encontrado.",
       });
     } else {
-      console.log("Inasistencia de tu papa ", Ind_Asistencia);
       const aprendiz = await ApprenticeModel.findByPk(Id_Aprendiz);
-      console.log("Este es el aprendiz del turno", aprendiz);
 
       if (!aprendiz) {
         return res.status(404).json({ error: "Aprendiz no encontrado" });

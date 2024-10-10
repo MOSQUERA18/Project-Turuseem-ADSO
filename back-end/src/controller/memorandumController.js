@@ -261,4 +261,3 @@ export const generateMemorandumPdf = (memorandum, totalMemorandums, res) => {
     return res.status(500).json({ message: "Error al generar el PDF." });
   }
 };
-

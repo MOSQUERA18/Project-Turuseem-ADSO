@@ -90,4 +90,3 @@ export const getAprendicesByArea = async (req, res) => {
 
 
 
-

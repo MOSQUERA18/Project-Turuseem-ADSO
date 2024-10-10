@@ -62,7 +62,6 @@ WHERE
 
 `;
     const [memorandums] = await db.query(query);
-    console.log(memorandums)
     if (memorandums.length > 0) {
       res.status(200).json(memorandums);
       return;
@@ -233,7 +232,7 @@ WHERE
       replacements: { Id_OtroMemorando: Id_OtroMemorando },
       transaction: transacción,
     });
-    console.log(memorandumPdf);
+
     
 
     if (!memorandumPdf || memorandumPdf.length === 0) {
@@ -274,7 +273,7 @@ export const sendMemorandumPdf = async (req, res) => {
   try {
     // Obtener la información del memorando
     const query = `
-    SELECT 
+ SELECT 
     om.Id_OtroMemorando,
     om.Fec_OtroMemorando,
     om.Mot_OtroMemorando,
@@ -282,7 +281,7 @@ export const sendMemorandumPdf = async (req, res) => {
     COALESCE(a.Id_Aprendiz, aprendizTurno.Id_Aprendiz, aprendizDirecto.Id_Aprendiz) AS Id_Aprendiz, -- Maneja el Id_Aprendiz del turno, inasistencia o referencia directa
     COALESCE(a.Nom_Aprendiz, aprendizTurno.Nom_Aprendiz, aprendizDirecto.Nom_Aprendiz) AS Nom_Aprendiz,
     COALESCE(a.Ape_Aprendiz, aprendizTurno.Ape_Aprendiz, aprendizDirecto.Ape_Aprendiz) AS Ape_Aprendiz,
-	  COALESCE(a.Cor_Aprendiz, aprendizTurno.Cor_Aprendiz, aprendizDirecto.Cor_Aprendiz) AS Cor_Aprendiz,
+	COALESCE(a.Cor_Aprendiz, aprendizTurno.Cor_Aprendiz, aprendizDirecto.Cor_Aprendiz) AS Cor_Aprendiz,
     COALESCE(a.Id_Ficha, aprendizTurno.Id_Ficha, aprendizDirecto.Id_Ficha) AS Id_Ficha,
     COALESCE(f.Id_ProgramaFormacion, fichasTurno.Id_ProgramaFormacion, fichasDirectas.Id_ProgramaFormacion) AS Id_ProgramaFormacion,
     COALESCE(p.Nom_ProgramaFormacion, programasTurno.Nom_ProgramaFormacion, programasDirectos.Nom_ProgramaFormacion) AS Nom_ProgramaFormacion,
@@ -324,7 +323,6 @@ WHERE
       replacements: { Id_OtroMemorando },
       transaction: transacción,
     });
-    console.log("Memorando ", memorandumPdf)
     if (!memorandumPdf) {
       throw new Error("Memorando no encontrado");
     }
@@ -496,7 +494,6 @@ export const generateOtroMemorandumPdf = (
       .replace("{{trimestre}}", trimestreActual)
       .replace("{{AnoActual}}", año)
       .replace("{{NombreLider}}", "Daniel Cardenas Lozano")
-      .replace("{{TalentoHumano}}", "No tengo la info");
 
     const options = {
       format: "A4",

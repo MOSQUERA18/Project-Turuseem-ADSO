@@ -18,7 +18,7 @@ const ConsultarTurno = () => {
       });
       return
     }
-    if (Id_Aprendiz.length < 9 ) {
+    if (Id_Aprendiz.length < 7 ) {
       setAlerta({
         msg: "El número de Documento Debe Tener Minimo 9 Digitos",
         error: true

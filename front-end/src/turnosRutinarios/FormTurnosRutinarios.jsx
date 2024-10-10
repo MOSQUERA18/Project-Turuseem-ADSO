@@ -372,7 +372,7 @@ const FormTurnoRutinario = ({
     };
 
     setFec_InicioTurno(formatFecha(hoy));
-    setFec_FinTurno(formatFecha(manana));
+    setFec_FinTurno(formatFecha(hoy));
     setHor_InicioTurno("07:00");
     setHor_FinTurno("09:00");
   };
