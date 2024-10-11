@@ -283,6 +283,7 @@ const CrudApprentices = () => {
     });
   };
 
+  //TOCA COMENTAR ALGO PARA HACER CAMBIOS
   const updateTextButton = (text) => {
     setButtonForm(text);
   };
