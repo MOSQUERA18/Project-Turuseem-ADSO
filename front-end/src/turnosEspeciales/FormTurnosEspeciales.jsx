@@ -300,6 +300,7 @@ const FormTurnosEspeciales = ({
                 value={Fec_TurnoEspecial}
                 onChange={(e) => setFec_TurnoEspecial(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Seleccione la fecha del turno especial"
               />
             </div>
 
@@ -314,6 +315,7 @@ const FormTurnosEspeciales = ({
                   value={Hor_Inicio}
                   onChange={(e) => setHor_Inicio(e.target.value)}
                   className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                  title="Ingrese la hora de inicio del turno especial"
                 />
               </div>
 
@@ -327,6 +329,7 @@ const FormTurnosEspeciales = ({
                   value={Hor_Fin}
                   onChange={(e) => setHor_Fin(e.target.value)}
                   className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                  title="Ingrese la hora fin del turno especial"
                 />
               </div>
             </div>
@@ -341,8 +344,10 @@ const FormTurnosEspeciales = ({
                 onChange={(e) => setObs_TurnoEspecial(e.target.value)}
                 maxLength={70}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Escriba las observaciones con respecto al turno especial"
               />
             </div>
+            
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Total Aprendices
@@ -360,6 +365,7 @@ const FormTurnosEspeciales = ({
                 }}
                 
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Ingrese el total de aprendices que se requieren para el turno"
               />
             </div>
 
@@ -372,6 +378,7 @@ const FormTurnosEspeciales = ({
                 value={Id_Ficha}
                 onChange={(e) => setId_Ficha(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Seleccione la ficha de formación"
               >
                 <option value="">Seleccione una Ficha:</option>
                 {Fichas.map((ficha) => (
@@ -391,6 +398,7 @@ const FormTurnosEspeciales = ({
                 value={Id_Funcionario}
                 onChange={(e) => setId_Funcionario(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Seleccione un funcionario"
               >
                 <option value="">Seleccione un Funcionario:</option>
                 {Funcionarios.map((funcionario) => (
@@ -403,6 +411,7 @@ const FormTurnosEspeciales = ({
                 ))}
               </select>
             </div>
+
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Unidad
@@ -412,6 +421,7 @@ const FormTurnosEspeciales = ({
                 value={Id_Unidad}
                 onChange={(e) => setId_Unidad(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Seleccione la unidad en la que se va a realizar el turno"
               >
                 <option value="">Seleccione una Unidad:</option>
                 {Unidades.map((unidad) => (
@@ -431,6 +441,7 @@ const FormTurnosEspeciales = ({
                 id="img_asistencia"
                 onChange={(e) => setImg_Asistencia(e.target.files[0])}
                 className="border-2 w-full mt-2 placeholder-gray-400 rounded-md"
+                title="Seleccione una imagen con la asistencia de los aprendices que asistieron al turno"
               />
             </div>
           </div>
@@ -441,6 +452,7 @@ const FormTurnosEspeciales = ({
               id="button"
               value={buttonForm}
               className="bg-botones w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
+              title="Envia la informacion y la guarda"
             />
             {stateButton && (
               <input
@@ -452,6 +464,7 @@ const FormTurnosEspeciales = ({
                   updateTextButton("Enviar");
                 }}
                 className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-700 md:w-auto"
+                title="Limpia el formulario borrando los datos del mismo"
               />
             )}
           </div>

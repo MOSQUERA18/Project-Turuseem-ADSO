@@ -349,6 +349,7 @@ const CrudApprentices = () => {
               }
             }}
             className="bg-botones text-white px-4 py-2 rounded hover:bg-blue-800 font-semibold flex items-center"
+            title="Descarga un archivo tipo CSV"
           >
             <FaArrowCircleDown className="mx-1" />
             Descargar CSV

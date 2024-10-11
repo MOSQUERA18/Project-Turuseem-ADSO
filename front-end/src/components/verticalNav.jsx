@@ -9,7 +9,7 @@ import { GiHumanPyramid } from "react-icons/gi";
 
 //Icons
 import { BsFillPeopleFill } from "react-icons/bs";
-import { IoDocumentText, IoLogOut,IoHome  } from "react-icons/io5";
+import { IoDocumentText, IoLogOut, IoHome } from "react-icons/io5";
 import { PiNotebookFill } from "react-icons/pi";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { FaClipboardCheck, FaPeopleGroup } from "react-icons/fa6";

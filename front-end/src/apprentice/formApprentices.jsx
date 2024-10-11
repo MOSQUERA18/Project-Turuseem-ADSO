@@ -300,7 +300,6 @@ const FormApprentices = ({
       formData.append("Estado", Estado);
       formData.append("Nom_Empresa", Nom_Empresa);
       formData.append("CentroConvivencia", CentroConvivencia);
-
       if (Foto_Aprendiz) {
         formData.append("Foto_Aprendiz", Foto_Aprendiz);
       }
@@ -414,7 +413,6 @@ const FormApprentices = ({
 
   const { msg } = alerta;
 
-
   const calculateAge = (birthDate) => {
     const today = new Date();
     const birth = new Date(birthDate);
@@ -460,6 +458,7 @@ const FormApprentices = ({
               maxLength={10}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               disabled={buttonForm === "Actualizar"}
+              title="Ingrese documento de identificación del aprendiz"
             />
           </div>
 
@@ -480,6 +479,7 @@ const FormApprentices = ({
               }}
               maxLength={60}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Ingrese el nombre del aprendiz"
             />
           </div>
 
@@ -494,6 +494,7 @@ const FormApprentices = ({
               value={Ape_Aprendiz}
               onChange={(e) => setApe_Aprendiz(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Ingrese apellido del aprendiz"
             />
           </div>
 
@@ -507,6 +508,7 @@ const FormApprentices = ({
               value={Id_Ficha}
               onChange={(e) => setId_Ficha(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Seleccione la ficha al que pertenece el aprendiz"
             >
               <option value="">Seleccione la Ficha: </option>
               {fichas.map((ficha) => (
@@ -532,7 +534,8 @@ const FormApprentices = ({
                 setEdad(calculatedAge);
               }}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-             max="2009-12-31"
+              max="2008-12-31"
+              title="Seleccione o ingrese la fecha de nacimiento del aprendiz"
             />
           </div>
 
@@ -545,6 +548,7 @@ const FormApprentices = ({
               value={Id_Ciudad}
               onChange={(e) => setId_Ciudad(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Seleccione una ciudad de la lista"
             >
               <option value="">Seleccione una Ciudad:</option>
               {ciudades.map((ciudad) => (
@@ -566,6 +570,7 @@ const FormApprentices = ({
               value={Lugar_Residencia}
               onChange={(e) => setLugarResidencia(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Ingrese la dirección donde vive el aprendiz "
             />
           </div>
 
@@ -580,16 +585,15 @@ const FormApprentices = ({
               value={Edad}
               onChange={(e) => {
                 const { value } = e.target;
-                if (value.length <= 2) {
-                  if (value === '' || (Number(value) > 0 && value.length <= 2)) {
-                    setEdad(value);
-                  }
+                if (value === '' || (Number(value) > 0 && value.length <= 2)) {
+                  setEdad(value);
                 }
               }}
               maxLength={2}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Edad actual del aprendiz"
             />
-          </div>
+          </div>  
 
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">
@@ -600,6 +604,7 @@ const FormApprentices = ({
               value={Hijos}
               onChange={(e) => setHijos(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Seleccione si tiene hijos o no"
             >
               <option value="">Seleccione</option>
               <option value="Si">Si</option>
@@ -618,6 +623,7 @@ const FormApprentices = ({
               value={Nom_Eps}
               onChange={(e) => setNom_Eps(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Ingrese el nombre de la EPS a la que pertenece"
             />
           </div>
 
@@ -640,6 +646,7 @@ const FormApprentices = ({
               }}
               maxLength={12}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Ingrese el télefono del padre del aprendiz"
             />
           </div>
 
@@ -653,6 +660,7 @@ const FormApprentices = ({
               value={Gen_Aprendiz}
               onChange={(e) => setGen_Aprendiz(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Seleccione el genero del aprendiz"
             >
               <option value="" className="">
                 Selecione Uno
@@ -686,6 +694,7 @@ const FormApprentices = ({
               }}
               maxLength={60}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Ingrese el correo del aprendiz"
             />
           </div>
 
@@ -708,6 +717,7 @@ const FormApprentices = ({
               }}
               maxLength={10}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Ingrese el télefono del aprendiz"
             />
           </div>
 
@@ -720,6 +730,7 @@ const FormApprentices = ({
               value={Patrocinio}
               onChange={(e) => setPatrocinio(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Seleccione si el aprendiz tiene patrocinio"
             >
               <option value="">Seleccione</option>
               <option value="Si">Si</option>
@@ -738,6 +749,7 @@ const FormApprentices = ({
                 value={Nom_Empresa}
                 onChange={(e) => setNom_Empresa(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Ingrese el nombre de la empresa que patrocinia al aprendiz"
               />
             </div>
           )}
@@ -751,6 +763,7 @@ const FormApprentices = ({
               value={Estado}
               onChange={(e) => setEstado(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Seleccione el estado del aprendiz"
             >
               <option value="">Seleccione un Estado</option>
               <option value="Activo">Activo</option>
@@ -767,6 +780,7 @@ const FormApprentices = ({
               value={CentroConvivencia}
               onChange={(e) => setCentroConvivencia(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Seleccione el si pertenece al internado de Sena"
             >
               <option value="">Seleccione</option>
               <option value="Si">Sí</option>
@@ -788,6 +802,7 @@ const FormApprentices = ({
               ref={inputFoto}
               onChange={(e) => setFoto_Aprendiz(e.target.files[0])}
               className="border-2 w-full mt-2 placeholder-gray-400 rounded-md"
+              title="Suba la foto que identifique al aprendiz"
             />
           </div>
         </div>
@@ -809,6 +824,7 @@ const FormApprentices = ({
                 updateTextButton("Enviar");
               }}
               className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-700 md:w-auto"
+              title="Limpiara todo el formulario dejandolo SIN datos (VASÍO)"
             />
           )}
         </div>

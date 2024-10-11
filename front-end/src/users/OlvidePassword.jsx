@@ -49,7 +49,7 @@ const OlvidePassword = () => {
           {msg && <Alerta alerta={alerta} setAlerta={setAlerta}/>}
           <form onSubmit={handleSubmit}>
             <div className="my-5">
-              <label className="uppercase text-stone-600 font-bold block text-xl">
+              <label className="uppercase text-zinc-900 font-bold block text-xl">
                 Correo:{" "}
               </label>
               <input

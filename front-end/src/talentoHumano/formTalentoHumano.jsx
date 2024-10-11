@@ -277,6 +277,7 @@ const FormTalentoHumano = ({
                 }}
                 disabled={buttonForm === "Actualizar"}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Ingrese documento identificación Talento Humano"
               />
             </div>
 
@@ -296,6 +297,7 @@ const FormTalentoHumano = ({
                   }
                 }}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Ingrese nombre Talento Humano"
               />
             </div>
 
@@ -315,6 +317,7 @@ const FormTalentoHumano = ({
                   }
                 }}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Ingrese apellido Talento Humano"
               />
             </div>
 
@@ -327,6 +330,7 @@ const FormTalentoHumano = ({
                 value={Genero_Talento_Humano}
                 onChange={(e) => setGen_Talento_Humano(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Seleccione genero Talento Humano"
               >
                 <option value="">Seleccione un Género</option>
                 <option value="Masculino">Masculino</option>
@@ -351,6 +355,7 @@ const FormTalentoHumano = ({
                   }
                 }}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Ingrese el correo electronico Talento Humano"
               />
             </div>
 
@@ -372,6 +377,7 @@ const FormTalentoHumano = ({
                   }
                 }}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Ingrese teléfono Talento Humano"
               />
             </div>
 
@@ -384,6 +390,7 @@ const FormTalentoHumano = ({
                 value={Id_Ficha}
                 onChange={(e) => setId_Ficha(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Seleccione ficha"
               >
                 <option value="">Seleccione una Ficha</option>
                 {Ficha.map((fichas) => (
@@ -403,6 +410,7 @@ const FormTalentoHumano = ({
                 value={Estado}
                 onChange={(e) => setEstado(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Seleccione estado actual Talento Humano"
               >
                 <option value="">Seleccione un Estado</option>
                 <option value="Activo">Activo</option>
@@ -417,6 +425,7 @@ const FormTalentoHumano = ({
               id="button"
               value={buttonForm}
               className="bg-botones w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
+              title="Envia y guarda la información"
             />
             {stateButton && (
               <input
@@ -428,6 +437,7 @@ const FormTalentoHumano = ({
                   updateTextButton("Enviar");
                 }}
                 className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-700 md:w-auto"
+                title="Limpia el formulario borrando los datos del mismo"
               />
             )}
           </div>

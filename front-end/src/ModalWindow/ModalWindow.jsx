@@ -26,6 +26,7 @@ function ModalWindow({
         }}
         className="bg-botones text-white px-4 py-2 font-semibold rounded hover:bg-blue-800 flex items-center"
         type="button"
+        title="Registra Información Con Repecto Al Modulo"
       >
         <FaPlusCircle className="mx-1"/>
         Agregar
@@ -62,13 +63,14 @@ function ModalWindow({
                     
                   }}
                   className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                >
+                  title="Cerrar formulario"
+                > 
                   <AiOutlineClose size={16} />
                   <span className="sr-only">Close modal</span>
                 </button>
               </div>
               {/* Aquí se renderiza el formulario */}
-              <div className="pt-2">{form}</div>
+              <div className="pt-2" title="Envia la información ingresada y la guarda">{form}</div>
             </div>
           </div>
         </div>

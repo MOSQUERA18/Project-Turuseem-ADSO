@@ -91,7 +91,7 @@ const LoginForm = () => {
     <>
       <div className="container mx-auto md:grid md:grid-cols-2 gap-10 p-5 items-center">
         <div>
-          <h1 className="text-stone-400 font-black text-5xl">
+          <h1 className="text-zinc-900 font-black text-5xl">
             INICIA SESIÓN Y GESTIONA {""}
             <span className="text-botones">TUS TURNOS</span>
           </h1>

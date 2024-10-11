@@ -212,6 +212,7 @@ const FormFichas = ({
               }}
               disabled={buttonForm === "Actualizar"}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Ingrese el número de la ficha de formación"
             />
           </div>
 
@@ -226,6 +227,7 @@ const FormFichas = ({
                 value={Fec_InicioEtapaLectiva}
                 onChange={(e) => setFec_InicioEtapaLectiva(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Ingrese o seleccione la fecha inicio de la etapa LECTIVA"
               />
             </div>
 
@@ -239,6 +241,7 @@ const FormFichas = ({
                 value={Fec_FinEtapaLectiva}
                 onChange={(e) => setFec_FinEtapaLectiva(e.target.value)}
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                title="Ingrese o seleccione la fecha fin de la etapa LECTIVA"
               />
             </div>
           </div>
@@ -258,6 +261,7 @@ const FormFichas = ({
                 }
               }}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Ingrese la cantidad de aprendices registrados en el programa de formación"
             />
           </div>
 
@@ -270,6 +274,7 @@ const FormFichas = ({
               value={Id_ProgramaFormacion}
               onChange={(e) => setId_ProgramaFormacion(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Ingrese el nombre del programa de formación"
             >
               <option value="">Seleccione un Nombre de Programa:</option>
               {programasformacion.map((programasFormacion) => (
@@ -292,6 +297,7 @@ const FormFichas = ({
               value={Estado}
               onChange={(e) => setEstado(e.target.value)}
               className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+              title="Seleccione el estado actual de la ficha"
             >
               <option value="">Seleccione un Estado:</option>
               <option value="Activo">Activa</option>
@@ -305,6 +311,7 @@ const FormFichas = ({
               id="button"
               value={buttonForm}
               className="bg-botones w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-botoneshover md:w-auto"
+              title="Envia y guarda la información"
             />
             {stateButton && (
               <input
@@ -317,6 +324,7 @@ const FormFichas = ({
                 }}
                 className="bg-yellow-400 w-full py-3 px-8 rounded-xl text-white mt-2 uppercase font-bold hover:cursor-pointer hover:bg-yellow-500 md:w-auto"
                 aria-label="Limpiar"
+                title="Limpia el formulario borrando los datos del mismo"
               />
             )}
           </div>
